@@ -1,0 +1,3165 @@
+openapi: 3.1.0
+info:
+  title: Search
+  description: Needs a description.
+paths:
+  /drives/{drive-id}/items/{driveItem-id}/search(q='{q}'):
+    description: Provides operations to call the search method.
+    get:
+      tags:
+        - drives.driveItem
+      summary: Invoke function search
+      description: "Search the hierarchy of items for items matching a query.\r\nYou can search within a folder hierarchy, a whole drive, or files shared with the current user."
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/driveitem-search?view=graph-rest-1.0
+      operationId: drives.drive.items.driveItem.search
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of driveItem
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                  - type: object
+                    properties:
+                      value:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/microsoft.graph.driveItem'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+    parameters:
+      - name: drive-id
+        in: path
+        description: The unique identifier of drive
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: drive
+      - name: driveItem-id
+        in: path
+        description: The unique identifier of driveItem
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: driveItem
+      - name: q
+        in: path
+        description: 'Usage: q=''{q}'''
+        required: true
+        schema:
+          type: string
+          nullable: true
+    x-ms-docs-grouped-path:
+      - /drives/{drive-id}/search(q='{q}')
+  /drives/{drive-id}/search(q='{q}'):
+    description: Provides operations to call the search method.
+    get:
+      tags:
+        - drives.drive.Functions
+      summary: Invoke function search
+      description: "Search the hierarchy of items for items matching a query.\r\nYou can search within a folder hierarchy, a whole drive, or files shared with the current user."
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/driveitem-search?view=graph-rest-1.0
+      operationId: drives.drive.search
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of driveItem
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                  - type: object
+                    properties:
+                      value:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/microsoft.graph.driveItem'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+    parameters:
+      - name: drive-id
+        in: path
+        description: The unique identifier of drive
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: drive
+      - name: q
+        in: path
+        description: 'Usage: q=''{q}'''
+        required: true
+        schema:
+          type: string
+          nullable: true
+    x-ms-docs-grouped-path:
+      - /drives/{drive-id}/items/{driveItem-id}/search(q='{q}')
+  /search:
+    description: Provides operations to manage the searchEntity singleton.
+    get:
+      tags:
+        - search.searchEntity
+      summary: Get search
+      operationId: search.searchEntity.GetSearchEntity
+      parameters:
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Retrieved entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.searchEntity'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+        - search.searchEntity
+      summary: Update search
+      operationId: search.searchEntity.UpdateSearchEntity
+      requestBody:
+        description: New property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.searchEntity'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.searchEntity'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+  /search/acronyms:
+    description: >-
+      Provides operations to manage the acronyms property of the
+      microsoft.graph.searchEntity entity.
+    get:
+      tags:
+        - search.acronym
+      summary: List acronyms
+      description: Get a list of the acronym objects and their properties.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-searchentity-list-acronyms?view=graph-rest-1.0
+      operationId: search.ListAcronyms
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          $ref: >-
+            #/components/responses/microsoft.graph.search.acronymCollectionResponse
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    post:
+      tags:
+        - search.acronym
+      summary: Create acronym
+      description: Create a new acronym object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-searchentity-post-acronyms?view=graph-rest-1.0
+      operationId: search.CreateAcronyms
+      requestBody:
+        description: New navigation property
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.search.acronym'
+        required: true
+      responses:
+        2XX:
+          description: Created navigation property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.search.acronym'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+  /search/acronyms/{acronym-id}:
+    description: >-
+      Provides operations to manage the acronyms property of the
+      microsoft.graph.searchEntity entity.
+    get:
+      tags:
+        - search.acronym
+      summary: Get acronym
+      description: Read the properties and relationships of an acronym object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-acronym-get?view=graph-rest-1.0
+      operationId: search.GetAcronyms
+      parameters:
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.search.acronym'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+        - search.acronym
+      summary: Update acronym
+      description: Update the properties of an acronym object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-acronym-update?view=graph-rest-1.0
+      operationId: search.UpdateAcronyms
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.search.acronym'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.search.acronym'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+        - search.acronym
+      summary: Delete acronym
+      description: Delete an acronym object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-acronym-delete?view=graph-rest-1.0
+      operationId: search.DeleteAcronyms
+      parameters:
+        - name: If-Match
+          in: header
+          description: ETag
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: acronym-id
+        in: path
+        description: The unique identifier of acronym
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: acronym
+  /search/acronyms/$count:
+    description: Provides operations to count the resources in the collection.
+    get:
+      tags:
+        - search.acronym
+      summary: Get the number of the resource
+      operationId: search.acronyms.GetCount-b41d
+      parameters:
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+  /search/bookmarks:
+    description: >-
+      Provides operations to manage the bookmarks property of the
+      microsoft.graph.searchEntity entity.
+    get:
+      tags:
+        - search.bookmark
+      summary: List bookmarks
+      description: Get a list of bookmark objects and their properties.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-searchentity-list-bookmarks?view=graph-rest-1.0
+      operationId: search.ListBookmarks
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          $ref: >-
+            #/components/responses/microsoft.graph.search.bookmarkCollectionResponse
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    post:
+      tags:
+        - search.bookmark
+      summary: Create bookmark
+      description: Create a new bookmark object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-searchentity-post-bookmarks?view=graph-rest-1.0
+      operationId: search.CreateBookmarks
+      requestBody:
+        description: New navigation property
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.search.bookmark'
+        required: true
+      responses:
+        2XX:
+          description: Created navigation property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.search.bookmark'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+  /search/bookmarks/{bookmark-id}:
+    description: >-
+      Provides operations to manage the bookmarks property of the
+      microsoft.graph.searchEntity entity.
+    get:
+      tags:
+        - search.bookmark
+      summary: Get bookmark
+      description: Read the properties and relationships of a bookmark object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-bookmark-get?view=graph-rest-1.0
+      operationId: search.GetBookmarks
+      parameters:
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.search.bookmark'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+        - search.bookmark
+      summary: Update bookmark
+      description: Update the properties of a bookmark object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-bookmark-update?view=graph-rest-1.0
+      operationId: search.UpdateBookmarks
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.search.bookmark'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.search.bookmark'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+        - search.bookmark
+      summary: Delete bookmark
+      description: Delete a bookmark object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-bookmark-delete?view=graph-rest-1.0
+      operationId: search.DeleteBookmarks
+      parameters:
+        - name: If-Match
+          in: header
+          description: ETag
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: bookmark-id
+        in: path
+        description: The unique identifier of bookmark
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: bookmark
+  /search/bookmarks/$count:
+    description: Provides operations to count the resources in the collection.
+    get:
+      tags:
+        - search.bookmark
+      summary: Get the number of the resource
+      operationId: search.bookmarks.GetCount-b2b7
+      parameters:
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+  /search/query:
+    description: Provides operations to call the query method.
+    post:
+      tags:
+        - search.searchEntity.Actions
+      summary: Invoke action query
+      description: >-
+        Runs the query specified in the request body. Search results are
+        provided in the response.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/search-query?view=graph-rest-1.0
+      operationId: search.query
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requests:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/microsoft.graph.searchRequest'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                  - type: object
+                    properties:
+                      value:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/microsoft.graph.searchResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+  /search/qnas:
+    description: >-
+      Provides operations to manage the qnas property of the
+      microsoft.graph.searchEntity entity.
+    get:
+      tags:
+        - search.qna
+      summary: List qnas
+      description: Get a list of the qna objects and their properties.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-searchentity-list-qnas?view=graph-rest-1.0
+      operationId: search.ListQnas
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          $ref: '#/components/responses/microsoft.graph.search.qnaCollectionResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    post:
+      tags:
+        - search.qna
+      summary: Create qna
+      description: Create a new qna object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-searchentity-post-qnas?view=graph-rest-1.0
+      operationId: search.CreateQnas
+      requestBody:
+        description: New navigation property
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.search.qna'
+        required: true
+      responses:
+        2XX:
+          description: Created navigation property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.search.qna'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+  /search/qnas/{qna-id}:
+    description: >-
+      Provides operations to manage the qnas property of the
+      microsoft.graph.searchEntity entity.
+    get:
+      tags:
+        - search.qna
+      summary: Get qna
+      description: Read the properties and relationships of a qna object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-qna-get?view=graph-rest-1.0
+      operationId: search.GetQnas
+      parameters:
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.search.qna'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+        - search.qna
+      summary: Update qna
+      description: Update the properties of a qna object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-qna-update?view=graph-rest-1.0
+      operationId: search.UpdateQnas
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.search.qna'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.search.qna'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+        - search.qna
+      summary: Delete qna
+      description: Delete a qna object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/search-qna-delete?view=graph-rest-1.0
+      operationId: search.DeleteQnas
+      parameters:
+        - name: If-Match
+          in: header
+          description: ETag
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: qna-id
+        in: path
+        description: The unique identifier of qna
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: qna
+  /search/qnas/$count:
+    description: Provides operations to count the resources in the collection.
+    get:
+      tags:
+        - search.qna
+      summary: Get the number of the resource
+      operationId: search.qnas.GetCount-ef94
+      parameters:
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches:
+    description: >-
+      Provides operations to manage the searches property of the
+      microsoft.graph.security.ediscoveryCase entity.
+    get:
+      tags:
+        - security.casesRoot
+      summary: List searches
+      description: >-
+        Get the list of ediscoverySearch resources from an eDiscoveryCase
+        object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/security-ediscoverycase-list-searches?view=graph-rest-1.0
+      operationId: security.cases.ediscoveryCases.ListSearches
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          $ref: >-
+            #/components/responses/microsoft.graph.security.ediscoverySearchCollectionResponse
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    post:
+      tags:
+        - security.casesRoot
+      summary: Create searches
+      description: Create a new ediscoverySearch object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/security-ediscoverycase-post-searches?view=graph-rest-1.0
+      operationId: security.cases.ediscoveryCases.CreateSearches
+      requestBody:
+        description: New navigation property
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.security.ediscoverySearch'
+        required: true
+      responses:
+        2XX:
+          description: Created navigation property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.security.ediscoverySearch'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}:
+    description: >-
+      Provides operations to manage the searches property of the
+      microsoft.graph.security.ediscoveryCase entity.
+    get:
+      tags:
+        - security.casesRoot
+      summary: Get ediscoverySearch
+      description: Read the properties and relationships of an ediscoverySearch object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/security-ediscoverysearch-get?view=graph-rest-1.0
+      operationId: security.cases.ediscoveryCases.GetSearches
+      parameters:
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.security.ediscoverySearch'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+        - security.casesRoot
+      summary: Update ediscoverySearch
+      description: Update the properties of an ediscoverySearch object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/security-ediscoverysearch-update?view=graph-rest-1.0
+      operationId: security.cases.ediscoveryCases.UpdateSearches
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.security.ediscoverySearch'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.security.ediscoverySearch'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+        - security.casesRoot
+      summary: Delete ediscoverySearch
+      description: Delete an ediscoverySearch object.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/security-ediscoverycase-delete-searches?view=graph-rest-1.0
+      operationId: security.cases.ediscoveryCases.DeleteSearches
+      parameters:
+        - name: If-Match
+          in: header
+          description: ETag
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/additionalSources:
+    description: >-
+      Provides operations to manage the additionalSources property of the
+      microsoft.graph.security.ediscoverySearch entity.
+    get:
+      tags:
+        - security.casesRoot
+      summary: List additionalSources
+      description: Get the list of additional sources associated with an eDiscovery search.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/security-ediscoverysearch-list-additionalsources?view=graph-rest-1.0
+      operationId: security.cases.ediscoveryCases.searches.ListAdditionalSources
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          $ref: >-
+            #/components/responses/microsoft.graph.security.dataSourceCollectionResponse
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    post:
+      tags:
+        - security.casesRoot
+      summary: Add additional sources
+      description: Create a new additional source associated with an eDiscovery search.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/security-ediscoverysearch-post-additionalsources?view=graph-rest-1.0
+      operationId: security.cases.ediscoveryCases.searches.CreateAdditionalSources
+      requestBody:
+        description: New navigation property
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.security.dataSource'
+        required: true
+      responses:
+        2XX:
+          description: Created navigation property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.security.dataSource'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/additionalSources/{dataSource-id}:
+    description: >-
+      Provides operations to manage the additionalSources property of the
+      microsoft.graph.security.ediscoverySearch entity.
+    get:
+      tags:
+        - security.casesRoot
+      summary: Get additionalSources from security
+      description: Adds an additional source to the eDiscovery search.
+      operationId: security.cases.ediscoveryCases.searches.GetAdditionalSources
+      parameters:
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.security.dataSource'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+        - security.casesRoot
+      summary: Update the navigation property additionalSources in security
+      operationId: security.cases.ediscoveryCases.searches.UpdateAdditionalSources
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.security.dataSource'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.security.dataSource'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+        - security.casesRoot
+      summary: Delete navigation property additionalSources for security
+      operationId: security.cases.ediscoveryCases.searches.DeleteAdditionalSources
+      parameters:
+        - name: If-Match
+          in: header
+          description: ETag
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+      - name: dataSource-id
+        in: path
+        description: The unique identifier of dataSource
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: dataSource
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/additionalSources/$count:
+    description: Provides operations to count the resources in the collection.
+    get:
+      tags:
+        - security.casesRoot
+      summary: Get the number of the resource
+      operationId: security.cases.ediscoveryCases.searches.additionalSources.GetCount-f0d1
+      parameters:
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/addToReviewSetOperation:
+    description: >-
+      Provides operations to manage the addToReviewSetOperation property of the
+      microsoft.graph.security.ediscoverySearch entity.
+    get:
+      tags:
+        - security.casesRoot
+      summary: Get addToReviewSetOperation from security
+      description: Adds the results of the eDiscovery search to the specified reviewSet.
+      operationId: security.cases.ediscoveryCases.searches.GetAddToReviewSetOperation
+      parameters:
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/microsoft.graph.security.ediscoveryAddToReviewSetOperation
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/custodianSources:
+    description: >-
+      Provides operations to manage the custodianSources property of the
+      microsoft.graph.security.ediscoverySearch entity.
+    get:
+      tags:
+        - security.casesRoot
+      summary: List custodianSources
+      description: >-
+        Get the list of custodial data sources associated with an eDiscovery
+        search.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/security-ediscoverysearch-list-custodiansources?view=graph-rest-1.0
+      operationId: security.cases.ediscoveryCases.searches.ListCustodianSources
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          $ref: >-
+            #/components/responses/microsoft.graph.security.dataSourceCollectionResponse
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/custodianSources/{dataSource-id}:
+    description: >-
+      Provides operations to manage the custodianSources property of the
+      microsoft.graph.security.ediscoverySearch entity.
+    get:
+      tags:
+        - security.casesRoot
+      summary: Get custodianSources from security
+      description: Custodian sources that are included in the eDiscovery search.
+      operationId: security.cases.ediscoveryCases.searches.GetCustodianSources
+      parameters:
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.security.dataSource'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+      - name: dataSource-id
+        in: path
+        description: The unique identifier of dataSource
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: dataSource
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/custodianSources/$count:
+    description: Provides operations to count the resources in the collection.
+    get:
+      tags:
+        - security.casesRoot
+      summary: Get the number of the resource
+      operationId: security.cases.ediscoveryCases.searches.custodianSources.GetCount-fb3f
+      parameters:
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/lastEstimateStatisticsOperation:
+    description: >-
+      Provides operations to manage the lastEstimateStatisticsOperation property
+      of the microsoft.graph.security.ediscoverySearch entity.
+    get:
+      tags:
+        - security.casesRoot
+      summary: List lastEstimateStatisticsOperation
+      description: Get the last  ediscoveryEstimateOperation objects and their properties.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/security-ediscoverysearch-list-lastestimatestatisticsoperation?view=graph-rest-1.0
+      operationId: >-
+        security.cases.ediscoveryCases.searches.GetLastEstimateStatisticsOperation
+      parameters:
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/microsoft.graph.security.ediscoveryEstimateOperation
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/microsoft.graph.security.estimateStatistics:
+    description: Provides operations to call the estimateStatistics method.
+    post:
+      tags:
+        - security.casesRoot
+      summary: Invoke action estimateStatistics
+      description: >-
+        Run an estimate of the number of emails and documents in the eDiscovery
+        search. To learn more about searches in eDiscovery, see Collect data for
+        a case in eDiscovery (Premium).
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/security-ediscoverysearch-estimatestatistics?view=graph-rest-1.0
+      operationId: >-
+        security.cases.ediscoveryCases.ediscoveryCase.searches.ediscoverySearch.estimateStatistics
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/microsoft.graph.security.exportReport:
+    description: Provides operations to call the exportReport method.
+    post:
+      tags:
+        - security.casesRoot
+      summary: Invoke action exportReport
+      description: >-
+        Export an item report from an estimated ediscoverySearch. For details,
+        see Manage a collection estimate.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/security-ediscoverysearch-exportreport?view=graph-rest-1.0
+      operationId: >-
+        security.cases.ediscoveryCases.ediscoveryCase.searches.ediscoverySearch.exportReport
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  type: string
+                  nullable: true
+                description:
+                  type: string
+                  nullable: true
+                exportCriteria:
+                  anyOf:
+                    - $ref: >-
+                        #/components/schemas/microsoft.graph.security.exportCriteria
+                    - type: object
+                      nullable: true
+                exportLocation:
+                  anyOf:
+                    - $ref: >-
+                        #/components/schemas/microsoft.graph.security.exportLocation
+                    - type: object
+                      nullable: true
+                additionalOptions:
+                  anyOf:
+                    - $ref: >-
+                        #/components/schemas/microsoft.graph.security.additionalOptions
+                    - type: object
+                      nullable: true
+                cloudAttachmentVersion:
+                  anyOf:
+                    - $ref: >-
+                        #/components/schemas/microsoft.graph.security.cloudAttachmentVersion
+                    - type: object
+                      nullable: true
+                documentVersion:
+                  anyOf:
+                    - $ref: >-
+                        #/components/schemas/microsoft.graph.security.documentVersion
+                    - type: object
+                      nullable: true
+        required: true
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/microsoft.graph.security.exportResult:
+    description: Provides operations to call the exportResult method.
+    post:
+      tags:
+        - security.casesRoot
+      summary: Invoke action exportResult
+      description: >-
+        Export results from an estimated ediscoverySearch. For details, see
+        Manage a collection estimate.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/security-ediscoverysearch-exportresult?view=graph-rest-1.0
+      operationId: >-
+        security.cases.ediscoveryCases.ediscoveryCase.searches.ediscoverySearch.exportResult
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  type: string
+                  nullable: true
+                description:
+                  type: string
+                  nullable: true
+                exportCriteria:
+                  anyOf:
+                    - $ref: >-
+                        #/components/schemas/microsoft.graph.security.exportCriteria
+                    - type: object
+                      nullable: true
+                exportLocation:
+                  anyOf:
+                    - $ref: >-
+                        #/components/schemas/microsoft.graph.security.exportLocation
+                    - type: object
+                      nullable: true
+                additionalOptions:
+                  anyOf:
+                    - $ref: >-
+                        #/components/schemas/microsoft.graph.security.additionalOptions
+                    - type: object
+                      nullable: true
+                exportFormat:
+                  anyOf:
+                    - $ref: >-
+                        #/components/schemas/microsoft.graph.security.exportFormat
+                    - type: object
+                      nullable: true
+                exportSingleItems:
+                  type: boolean
+                  default: false
+                  nullable: true
+                cloudAttachmentVersion:
+                  anyOf:
+                    - $ref: >-
+                        #/components/schemas/microsoft.graph.security.cloudAttachmentVersion
+                    - type: object
+                      nullable: true
+                documentVersion:
+                  anyOf:
+                    - $ref: >-
+                        #/components/schemas/microsoft.graph.security.documentVersion
+                    - type: object
+                      nullable: true
+        required: true
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/microsoft.graph.security.purgeData:
+    description: Provides operations to call the purgeData method.
+    post:
+      tags:
+        - security.casesRoot
+      summary: Invoke action purgeData
+      description: "Delete Exchange mailbox items or Microsoft Teams messages contained in an eDiscovery search. You can collect and purge the following categories of Teams content:\r\n- Teams 1:1 chats - Chat messages, posts, and attachments shared in a Teams conversation between two people. Teams 1:1 chats are also called *conversations*.\r\n- Teams group chats - Chat messages, posts, and attachments shared in a Teams conversation between three or more people. Also called *1:N* chats or *group conversations*.\r\n- Teams channels - Chat messages, posts, replies, and attachments shared in a standard Teams channel.\r\n- Private channels - Message posts, replies, and attachments shared in a private Teams channel.\r\n- Shared channels - Message posts, replies, and attachments shared in a shared Teams channel. For more information about purging Teams messages, see:\r\n- eDiscovery solution series: Data spillage scenario - Search and purge\r\n- eDiscovery (Premium) workflow for content in Microsoft Teams "
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/security-ediscoverysearch-purgedata?view=graph-rest-1.0
+      operationId: >-
+        security.cases.ediscoveryCases.ediscoveryCase.searches.ediscoverySearch.purgeData
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                purgeType:
+                  anyOf:
+                    - $ref: '#/components/schemas/microsoft.graph.security.purgeType'
+                    - type: object
+                      nullable: true
+                purgeAreas:
+                  anyOf:
+                    - $ref: '#/components/schemas/microsoft.graph.security.purgeAreas'
+                    - type: object
+                      nullable: true
+        required: true
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/noncustodialSources:
+    description: >-
+      Provides operations to manage the noncustodialSources property of the
+      microsoft.graph.security.ediscoverySearch entity.
+    get:
+      tags:
+        - security.casesRoot
+      summary: Get noncustodialSources from security
+      description: >-
+        noncustodialDataSource sources that are included in the eDiscovery
+        search
+      operationId: security.cases.ediscoveryCases.searches.ListNoncustodialSources
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          $ref: >-
+            #/components/responses/microsoft.graph.security.ediscoveryNoncustodialDataSourceCollectionResponse
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/noncustodialSources/{ediscoveryNoncustodialDataSource-id}:
+    description: >-
+      Provides operations to manage the noncustodialSources property of the
+      microsoft.graph.security.ediscoverySearch entity.
+    get:
+      tags:
+        - security.casesRoot
+      summary: Get noncustodialSources from security
+      description: >-
+        noncustodialDataSource sources that are included in the eDiscovery
+        search
+      operationId: security.cases.ediscoveryCases.searches.GetNoncustodialSources
+      parameters:
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/microsoft.graph.security.ediscoveryNoncustodialDataSource
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+      - name: ediscoveryNoncustodialDataSource-id
+        in: path
+        description: The unique identifier of ediscoveryNoncustodialDataSource
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryNoncustodialDataSource
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{ediscoverySearch-id}/noncustodialSources/$count:
+    description: Provides operations to count the resources in the collection.
+    get:
+      tags:
+        - security.casesRoot
+      summary: Get the number of the resource
+      operationId: >-
+        security.cases.ediscoveryCases.searches.noncustodialSources.GetCount-14fa
+      parameters:
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+      - name: ediscoverySearch-id
+        in: path
+        description: The unique identifier of ediscoverySearch
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoverySearch
+  /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/$count:
+    description: Provides operations to count the resources in the collection.
+    get:
+      tags:
+        - security.casesRoot
+      summary: Get the number of the resource
+      operationId: security.cases.ediscoveryCases.searches.GetCount-87f1
+      parameters:
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+    parameters:
+      - name: ediscoveryCase-id
+        in: path
+        description: The unique identifier of ediscoveryCase
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: ediscoveryCase
+  /solutions/backupRestore/restorePoints/search:
+    description: Provides operations to call the search method.
+    post:
+      tags:
+        - solutions.backupRestoreRoot
+      summary: Invoke action search
+      description: Search for the restorePoint objects associated with a protectionUnit.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/restorepoint-search?view=graph-rest-1.0
+      operationId: solutions.backupRestore.restorePoints.search
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                protectionUnitIds:
+                  type: array
+                  items:
+                    type: string
+                    nullable: true
+                protectionTimePeriod:
+                  anyOf:
+                    - $ref: '#/components/schemas/microsoft.graph.timePeriod'
+                    - type: object
+                      nullable: true
+                restorePointPreference:
+                  anyOf:
+                    - $ref: >-
+                        #/components/schemas/microsoft.graph.restorePointPreference
+                    - type: object
+                      nullable: true
+                tags:
+                  anyOf:
+                    - $ref: '#/components/schemas/microsoft.graph.restorePointTags'
+                    - type: object
+                      nullable: true
+                artifactQuery:
+                  anyOf:
+                    - $ref: '#/components/schemas/microsoft.graph.artifactQuery'
+                    - type: object
+                      nullable: true
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: >-
+                      #/components/schemas/microsoft.graph.restorePointSearchResponse
+                  - type: object
+                    nullable: true
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+components:
+  schemas:
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type: integer
+          format: int64
+          nullable: true
+        '@odata.nextLink':
+          type: string
+          nullable: true
+    microsoft.graph.driveItem:
+      allOf:
+        - $ref: '#/components/schemas/microsoft.graph.baseItem'
+        - title: driveItem
+          required:
+            - '@odata.type'
+          type: object
+          properties:
+            audio:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.audio'
+                - type: object
+                  nullable: true
+              description: >-
+                Audio metadata, if the item is an audio file. Read-only.
+                Read-only. Only on OneDrive Personal.
+            bundle:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.bundle'
+                - type: object
+                  nullable: true
+              description: Bundle metadata, if the item is a bundle. Read-only.
+            content:
+              type: string
+              description: The content stream, if the item represents a file.
+              format: base64url
+              nullable: true
+            cTag:
+              type: string
+              description: >-
+                An eTag for the content of the item. This eTag isn't changed if
+                only the metadata is changed. Note This property isn't returned
+                if the item is a folder. Read-only.
+              nullable: true
+            deleted:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.deleted'
+                - type: object
+                  nullable: true
+              description: Information about the deleted state of the item. Read-only.
+            file:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.file'
+                - type: object
+                  nullable: true
+              description: File metadata, if the item is a file. Read-only.
+            fileSystemInfo:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.fileSystemInfo'
+                - type: object
+                  nullable: true
+              description: File system information on client. Read-write.
+            folder:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.folder'
+                - type: object
+                  nullable: true
+              description: Folder metadata, if the item is a folder. Read-only.
+            image:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.image'
+                - type: object
+                  nullable: true
+              description: Image metadata, if the item is an image. Read-only.
+            location:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.geoCoordinates'
+                - type: object
+                  nullable: true
+              description: Location metadata, if the item has location data. Read-only.
+            malware:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.malware'
+                - type: object
+                  nullable: true
+              description: >-
+                Malware metadata, if the item was detected to contain malware.
+                Read-only.
+            package:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.package'
+                - type: object
+                  nullable: true
+              description: >-
+                If present, indicates that this item is a package instead of a
+                folder or file. Packages are treated like files in some contexts
+                and folders in others. Read-only.
+            pendingOperations:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.pendingOperations'
+                - type: object
+                  nullable: true
+              description: >-
+                If present, indicates that one or more operations that might
+                affect the state of the driveItem are pending completion.
+                Read-only.
+            photo:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.photo'
+                - type: object
+                  nullable: true
+              description: Photo metadata, if the item is a photo. Read-only.
+            publication:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.publicationFacet'
+                - type: object
+                  nullable: true
+              description: >-
+                Provides information about the published or checked-out state of
+                an item, in locations that support such actions. This property
+                isn't returned by default. Read-only.
+            remoteItem:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.remoteItem'
+                - type: object
+                  nullable: true
+              description: >-
+                Remote item data, if the item is shared from a drive other than
+                the one being accessed. Read-only.
+            root:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.root'
+                - type: object
+                  nullable: true
+              description: >-
+                If this property is non-null, it indicates that the driveItem is
+                the top-most driveItem in the drive.
+            searchResult:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.searchResult'
+                - type: object
+                  nullable: true
+              description: Search metadata, if the item is from a search result. Read-only.
+            shared:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.shared'
+                - type: object
+                  nullable: true
+              description: >-
+                Indicates that the item was shared with others and provides
+                information about the shared state of the item. Read-only.
+            sharepointIds:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.sharepointIds'
+                - type: object
+                  nullable: true
+              description: >-
+                Returns identifiers useful for SharePoint REST compatibility.
+                Read-only.
+            size:
+              type: number
+              description: Size of the item in bytes. Read-only.
+              format: int64
+              nullable: true
+            specialFolder:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.specialFolder'
+                - type: object
+                  nullable: true
+              description: >-
+                If the current item is also available as a special folder, this
+                facet is returned. Read-only.
+            video:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.video'
+                - type: object
+                  nullable: true
+              description: Video metadata, if the item is a video. Read-only.
+            webDavUrl:
+              type: string
+              description: WebDAV compatible URL for the item.
+              nullable: true
+            analytics:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.itemAnalytics'
+                - type: object
+                  nullable: true
+              description: >-
+                Analytics about the view activities that took place on this
+                item.
+              x-ms-navigationProperty: true
+            children:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.driveItem'
+              description: >-
+                Collection containing Item objects for the immediate children of
+                Item. Only items representing folders have children. Read-only.
+                Nullable.
+              x-ms-navigationProperty: true
+            listItem:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.listItem'
+                - type: object
+                  nullable: true
+              description: >-
+                For drives in SharePoint, the associated document library list
+                item. Read-only. Nullable.
+              x-ms-navigationProperty: true
+            permissions:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.permission'
+              description: The set of permissions for the item. Read-only. Nullable.
+              x-ms-navigationProperty: true
+            retentionLabel:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.itemRetentionLabel'
+                - type: object
+                  nullable: true
+              description: >-
+                Information about retention label and settings enforced on the
+                driveItem. Read-write.
+              x-ms-navigationProperty: true
+            subscriptions:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.subscription'
+              description: >-
+                The set of subscriptions on the item. Only supported on the root
+                of a drive.
+              x-ms-navigationProperty: true
+            thumbnails:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.thumbnailSet'
+              description: >-
+                Collection of thumbnailSet objects associated with the item. For
+                more information, see getting thumbnails. Read-only. Nullable.
+              x-ms-navigationProperty: true
+            versions:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.driveItemVersion'
+              description: >-
+                The list of previous versions of the item. For more info, see
+                getting previous versions. Read-only. Nullable.
+              x-ms-navigationProperty: true
+            workbook:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.workbook'
+                - type: object
+                  nullable: true
+              description: >-
+                For files that are Excel spreadsheets, access to the workbook
+                API to work with the spreadsheet's contents. Nullable.
+              x-ms-navigationProperty: true
+            '@odata.type':
+              type: string
+              default: '#microsoft.graph.driveItem'
+      x-ms-discriminator-value: '#microsoft.graph.driveItem'
+    microsoft.graph.searchEntity:
+      allOf:
+        - $ref: '#/components/schemas/microsoft.graph.entity'
+        - title: searchEntity
+          required:
+            - '@odata.type'
+          type: object
+          properties:
+            acronyms:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.search.acronym'
+              description: >-
+                Administrative answer in Microsoft Search results to define
+                common acronyms in an organization.
+              x-ms-navigationProperty: true
+            bookmarks:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.search.bookmark'
+              description: >-
+                Administrative answer in Microsoft Search results for common
+                search queries in an organization.
+              x-ms-navigationProperty: true
+            qnas:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.search.qna'
+              description: >-
+                Administrative answer in Microsoft Search results that provide
+                answers for specific search keywords in an organization.
+              x-ms-navigationProperty: true
+            '@odata.type':
+              type: string
+      x-ms-discriminator-value: '#microsoft.graph.searchEntity'
+    microsoft.graph.search.acronym:
+      allOf:
+        - $ref: '#/components/schemas/microsoft.graph.search.searchAnswer'
+        - title: acronym
+          required:
+            - '@odata.type'
+          type: object
+          properties:
+            standsFor:
+              type: string
+              description: What the acronym stands for.
+              nullable: true
+            state:
+              $ref: '#/components/schemas/microsoft.graph.search.answerState'
+            '@odata.type':
+              type: string
+      x-ms-discriminator-value: '#microsoft.graph.search.acronym'
+    microsoft.graph.search.bookmark:
+      allOf:
+        - $ref: '#/components/schemas/microsoft.graph.search.searchAnswer'
+        - title: bookmark
+          required:
+            - '@odata.type'
+          type: object
+          properties:
+            availabilityEndDateTime:
+              pattern: >-
+                ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+              type: string
+              description: >-
+                Date and time when the bookmark stops appearing as a search
+                result. Set as null for always available. The timestamp type
+                represents date and time information using ISO 8601 format and
+                is always in UTC. For example, midnight UTC on Jan 1, 2014 is
+                2014-01-01T00:00:00Z.
+              format: date-time
+              nullable: true
+            availabilityStartDateTime:
+              pattern: >-
+                ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+              type: string
+              description: >-
+                Date and time when the bookmark starts to appear as a search
+                result. Set as null for always available. The timestamp type
+                represents date and time information using ISO 8601 format and
+                is always in UTC. For example, midnight UTC on Jan 1, 2014 is
+                2014-01-01T00:00:00Z.
+              format: date-time
+              nullable: true
+            categories:
+              type: array
+              items:
+                type: string
+                nullable: true
+              description: >-
+                Categories commonly used to describe this bookmark. For example,
+                IT and HR.
+            groupIds:
+              type: array
+              items:
+                type: string
+                nullable: true
+              description: The list of security groups that are able to view this bookmark.
+            isSuggested:
+              type: boolean
+              description: >-
+                True if this bookmark was suggested to the admin, by a user, or
+                was mined and suggested by Microsoft. Read-only.
+              nullable: true
+            keywords:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.search.answerKeyword'
+                - type: object
+                  nullable: true
+              description: Keywords that trigger this bookmark to appear in search results.
+            languageTags:
+              type: array
+              items:
+                type: string
+                nullable: true
+              description: >-
+                A list of geographically specific language names in which this
+                bookmark can be viewed. Each language tag value follows the
+                pattern {language}-{region}. For example, en-us is English as
+                used in the United States. For the list of possible values, see
+                Supported language tags.
+            platforms:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.devicePlatformType'
+              description: >-
+                List of devices and operating systems that are able to view this
+                bookmark. The possible values are: android, androidForWork, ios,
+                macOS, windowsPhone81, windowsPhone81AndLater,
+                windows10AndLater, androidWorkProfile, unknown, androidASOP,
+                androidMobileApplicationManagement,
+                iOSMobileApplicationManagement, unknownFutureValue.
+            powerAppIds:
+              type: array
+              items:
+                type: string
+                nullable: true
+              description: >-
+                List of Power Apps associated with this bookmark. If users add
+                existing Power Apps to a bookmark, they can complete tasks
+                directly on the search results page, such as entering vacation
+                time or reporting expenses.
+            state:
+              $ref: '#/components/schemas/microsoft.graph.search.answerState'
+            targetedVariations:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.search.answerVariant'
+              description: >-
+                Variations of a bookmark for different countries/regions or
+                devices. Use when you need to show different content to users
+                based on their device, country/region, or both. The date and
+                group settings apply to all variations.
+            '@odata.type':
+              type: string
+      x-ms-discriminator-value: '#microsoft.graph.search.bookmark'
+    microsoft.graph.searchRequest:
+      title: searchRequest
+      required:
+        - '@odata.type'
+      type: object
+      properties:
+        aggregationFilters:
+          type: array
+          items:
+            type: string
+            nullable: true
+          description: >-
+            Contains one or more filters to obtain search results aggregated and
+            filtered to a specific value of a field. Optional.Build this filter
+            based on a prior search that aggregates by the same field. From the
+            response of the prior search, identify the searchBucket that filters
+            results to the specific value of the field, use the string in its
+            aggregationFilterToken property, and build an aggregation filter
+            string in the format '{field}:/'{aggregationFilterToken}/''. If
+            multiple values for the same field need to be provided, use the
+            strings in its aggregationFilterToken property and build an
+            aggregation filter string in the format
+            '{field}:or(/'{aggregationFilterToken1}/',/'{aggregationFilterToken2}/')'.
+            For example, searching and aggregating drive items by file type
+            returns a searchBucket for the file type docx in the response. You
+            can conveniently use the aggregationFilterToken returned for this
+            searchBucket in a subsequent search query and filter matches down to
+            drive items of the docx file type. Example 1 and example 2 show the
+            actual requests and responses.
+        aggregations:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.aggregationOption'
+          description: >-
+            Specifies aggregations (also known as refiners) to be returned
+            alongside search results. Optional.
+        collapseProperties:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.collapseProperty'
+          description: >-
+            Contains the ordered collection of fields and limit to collapse
+            results. Optional.
+        contentSources:
+          type: array
+          items:
+            type: string
+            nullable: true
+          description: Contains the connection to be targeted.
+        enableTopResults:
+          type: boolean
+          description: >-
+            This triggers hybrid sort for messages : the first 3 messages are
+            the most relevant. This property is only applicable to
+            entityType=message. Optional.
+          nullable: true
+        entityTypes:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/microsoft.graph.entityType'
+              - type: object
+                nullable: true
+          description: >-
+            One or more types of resources expected in the response. The
+            possible values are: event, message, driveItem, externalItem, site,
+            list, listItem, drive, chatMessage, person, acronym, bookmark.  Use
+            the Prefer: include-unknown-enum-members request header to get the
+            following members in this evolvable enum: chatMessage, person,
+            acronym, bookmark. See known limitations for those combinations of
+            two or more entity types that are supported in the same search
+            request. Required.
+        fields:
+          type: array
+          items:
+            type: string
+            nullable: true
+          description: >-
+            Contains the fields to be returned for each resource object
+            specified in entityTypes, allowing customization of the fields
+            returned by default; otherwise, including additional fields such as
+            custom managed properties from SharePoint and OneDrive, or custom
+            fields in externalItem from the content that Microsoft 365 Copilot
+            connectors bring in. The fields property can use the semantic labels
+            applied to properties. For example, if a property is labeled as
+            title, you can retrieve it using the following syntax: label_title.
+            Optional.
+        from:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: >-
+            Specifies the offset for the search results. Offset 0 returns the
+            very first result. Optional.
+          format: int32
+        query:
+          $ref: '#/components/schemas/microsoft.graph.searchQuery'
+        queryAlterationOptions:
+          anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.searchAlterationOptions'
+            - type: object
+              nullable: true
+          description: >-
+            Query alteration options formatted in a JSON blob that contains two
+            optional flags related to spelling correction. Optional.
+        region:
+          type: string
+          description: >-
+            The geographic location for the search. Required for searches that
+            use application permissions. For details, see Get the region value.
+          nullable: true
+        resultTemplateOptions:
+          anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.resultTemplateOption'
+            - type: object
+              nullable: true
+          description: >-
+            Provides the search result template options to render search results
+            from connectors.
+        sharePointOneDriveOptions:
+          anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.sharePointOneDriveOptions'
+            - type: object
+              nullable: true
+          description: >-
+            Indicates the kind of contents to be searched when a search is
+            performed using application permissions. Optional.
+        size:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: >-
+            The size of the page to be retrieved. The maximum value is 500.
+            Optional.
+          format: int32
+        sortProperties:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.sortProperty'
+          description: >-
+            Contains the ordered collection of fields and direction to sort
+            results. There can be at most 5 sort properties in the collection.
+            Optional.
+        '@odata.type':
+          type: string
+    microsoft.graph.searchResponse:
+      title: searchResponse
+      required:
+        - '@odata.type'
+      type: object
+      properties:
+        hitsContainers:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.searchHitsContainer'
+          description: A collection of search results.
+        queryAlterationResponse:
+          anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.alterationResponse'
+            - type: object
+              nullable: true
+          description: >-
+            Provides information related to spelling corrections in the
+            alteration response.
+        resultTemplates:
+          anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.resultTemplateDictionary'
+            - type: object
+              nullable: true
+          description: >-
+            A dictionary of resultTemplateIds and associated values, which
+            include the name and JSON schema of the result templates.
+        searchTerms:
+          type: array
+          items:
+            type: string
+            nullable: true
+          description: Contains the search terms sent in the initial search query.
+        '@odata.type':
+          type: string
+    microsoft.graph.search.qna:
+      allOf:
+        - $ref: '#/components/schemas/microsoft.graph.search.searchAnswer'
+        - title: qna
+          required:
+            - '@odata.type'
+          type: object
+          properties:
+            availabilityEndDateTime:
+              pattern: >-
+                ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+              type: string
+              description: >-
+                Date and time when the QnA stops appearing as a search result.
+                Set as null for always available. The timestamp type represents
+                date and time information using ISO 8601 format and is always in
+                UTC. For example, midnight UTC on Jan 1, 2014 is
+                2014-01-01T00:00:00Z.
+              format: date-time
+              nullable: true
+            availabilityStartDateTime:
+              pattern: >-
+                ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+              type: string
+              description: >-
+                Date and time when the QnA starts to appear as a search result.
+                Set as null for always available. The timestamp type represents
+                date and time information using ISO 8601 format and is always in
+                UTC. For example, midnight UTC on Jan 1, 2014 is
+                2014-01-01T00:00:00Z.
+              format: date-time
+              nullable: true
+            groupIds:
+              type: array
+              items:
+                type: string
+                nullable: true
+              description: The list of security groups that are able to view this QnA.
+            isSuggested:
+              type: boolean
+              description: >-
+                True if a user or Microsoft suggested this QnA to the admin.
+                Read-only.
+              nullable: true
+            keywords:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.search.answerKeyword'
+                - type: object
+                  nullable: true
+              description: Keywords that trigger this QnA to appear in search results.
+            languageTags:
+              type: array
+              items:
+                type: string
+                nullable: true
+              description: >-
+                A list of geographically specific language names in which this
+                QnA can be viewed. Each language tag value follows the pattern
+                {language}-{region}. For example, en-us is English as used in
+                the United States. For the list of possible values, see
+                Supported language tags.
+            platforms:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.devicePlatformType'
+              description: >-
+                List of devices and operating systems that are able to view this
+                QnA. The possible values are: android, androidForWork, ios,
+                macOS, windowsPhone81, windowsPhone81AndLater,
+                windows10AndLater, androidWorkProfile, unknown, androidASOP,
+                androidMobileApplicationManagement,
+                iOSMobileApplicationManagement, unknownFutureValue.
+            state:
+              $ref: '#/components/schemas/microsoft.graph.search.answerState'
+            targetedVariations:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.search.answerVariant'
+              description: >-
+                Variations of a QnA for different countries/regions or devices.
+                Use when you need to show different content to users based on
+                their device, country/region, or both. The date and group
+                settings apply to all variations.
+            '@odata.type':
+              type: string
+      x-ms-discriminator-value: '#microsoft.graph.search.qna'
+    microsoft.graph.security.ediscoverySearch:
+      allOf:
+        - $ref: '#/components/schemas/microsoft.graph.security.search'
+        - title: ediscoverySearch
+          required:
+            - '@odata.type'
+          type: object
+          properties:
+            dataSourceScopes:
+              anyOf:
+                - $ref: >-
+                    #/components/schemas/microsoft.graph.security.dataSourceScopes
+                - type: object
+                  nullable: true
+              description: >-
+                When specified, the collection spans across a service for an
+                entire workload. The possible values are: none,
+                allTenantMailboxes, allTenantSites, allCaseCustodians,
+                allCaseNoncustodialDataSources.
+            additionalSources:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.security.dataSource'
+              description: Adds an additional source to the eDiscovery search.
+              x-ms-navigationProperty: true
+            addToReviewSetOperation:
+              anyOf:
+                - $ref: >-
+                    #/components/schemas/microsoft.graph.security.ediscoveryAddToReviewSetOperation
+                - type: object
+                  nullable: true
+              description: >-
+                Adds the results of the eDiscovery search to the specified
+                reviewSet.
+              x-ms-navigationProperty: true
+            custodianSources:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.security.dataSource'
+              description: Custodian sources that are included in the eDiscovery search.
+              x-ms-navigationProperty: true
+            lastEstimateStatisticsOperation:
+              anyOf:
+                - $ref: >-
+                    #/components/schemas/microsoft.graph.security.ediscoveryEstimateOperation
+                - type: object
+                  nullable: true
+              description: >-
+                The last estimate operation associated with the eDiscovery
+                search.
+              x-ms-navigationProperty: true
+            noncustodialSources:
+              type: array
+              items:
+                $ref: >-
+                  #/components/schemas/microsoft.graph.security.ediscoveryNoncustodialDataSource
+              description: >-
+                noncustodialDataSource sources that are included in the
+                eDiscovery search
+              x-ms-navigationProperty: true
+            '@odata.type':
+              type: string
+              default: '#microsoft.graph.security.ediscoverySearch'
+      x-ms-discriminator-value: '#microsoft.graph.security.ediscoverySearch'
+    microsoft.graph.security.dataSource:
+      allOf:
+        - $ref: '#/components/schemas/microsoft.graph.entity'
+        - title: dataSource
+          required:
+            - '@odata.type'
+          type: object
+          properties:
+            createdBy:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.identitySet'
+                - type: object
+                  nullable: true
+              description: The user who created the dataSource.
+            createdDateTime:
+              pattern: >-
+                ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+              type: string
+              description: The date and time the dataSource was created.
+              format: date-time
+              nullable: true
+            displayName:
+              type: string
+              description: >-
+                The display name of the dataSource and is the name of the
+                SharePoint site.
+              nullable: true
+            holdStatus:
+              anyOf:
+                - $ref: >-
+                    #/components/schemas/microsoft.graph.security.dataSourceHoldStatus
+                - type: object
+                  nullable: true
+              description: >-
+                The hold status of the dataSource.The possible values are:
+                notApplied, applied, applying, removing, partial
+            '@odata.type':
+              type: string
+          discriminator:
+            propertyName: '@odata.type'
+            mapping:
+              '#microsoft.graph.security.siteSource': '#/components/schemas/microsoft.graph.security.siteSource'
+              '#microsoft.graph.security.unifiedGroupSource': '#/components/schemas/microsoft.graph.security.unifiedGroupSource'
+              '#microsoft.graph.security.userSource': '#/components/schemas/microsoft.graph.security.userSource'
+    microsoft.graph.security.purgeType:
+      title: purgeType
+      enum:
+        - recoverable
+        - unknownFutureValue
+        - permanentlyDelete
+      type: string
+    microsoft.graph.security.purgeAreas:
+      title: purgeAreas
+      enum:
+        - mailboxes
+        - teamsMessages
+        - unknownFutureValue
+      type: string
+      x-ms-enum-flags:
+        isFlags: true
+    microsoft.graph.timePeriod:
+      title: timePeriod
+      required:
+        - '@odata.type'
+      type: object
+      properties:
+        endDateTime:
+          pattern: >-
+            ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The date time of the end of the time period.
+          format: date-time
+          nullable: true
+        startDateTime:
+          pattern: >-
+            ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The date time of the start of the time period.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.restorePointTags:
+      title: restorePointTags
+      enum:
+        - none
+        - fastRestore
+        - unknownFutureValue
+      type: string
+      x-ms-enum-flags:
+        isFlags: true
+    microsoft.graph.artifactQuery:
+      title: artifactQuery
+      required:
+        - '@odata.type'
+      type: object
+      properties:
+        artifactType:
+          anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.restorableArtifact'
+            - type: object
+              nullable: true
+          description: >-
+            The type of artifact to search. The possible values are: message,
+            unknownFutureValue.
+        queryExpression:
+          type: string
+          description: Specifies criteria to retrieve artifacts.
+          nullable: true
+        '@odata.type':
+          type: string
+  parameters:
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+  examples: {}
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.search.qnaCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.search.qnaCollectionResponse'

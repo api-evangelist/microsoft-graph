@@ -1,0 +1,309 @@
+openapi: 3.1.0
+info:
+  title: Subscribedskus
+  description: Needs a description.
+paths:
+  /subscribedSkus:
+    description: Provides operations to manage the collection of subscribedSku entities.
+    get:
+      tags:
+        - subscribedSkus.subscribedSku
+      summary: List subscribedSkus
+      description: >-
+        Get the list of commercial subscriptions that an organization has
+        acquired. For the mapping of license names as displayed on the Microsoft
+        Entra admin center or the Microsoft 365 admin center against their
+        Microsoft Graph skuId and skuPartNumber properties, see Product names
+        and service plan identifiers for licensing.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/subscribedsku-list?view=graph-rest-1.0
+      operationId: subscribedSkus.subscribedSku.ListSubscribedSku
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          $ref: >-
+            #/components/responses/microsoft.graph.subscribedSkuCollectionResponse
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    post:
+      tags:
+        - subscribedSkus.subscribedSku
+      summary: Add new entity to subscribedSkus
+      operationId: subscribedSkus.subscribedSku.CreateSubscribedSku
+      requestBody:
+        description: New entity
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.subscribedSku'
+        required: true
+      responses:
+        2XX:
+          description: Created entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.subscribedSku'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+  /subscribedSkus/{subscribedSku-id}:
+    description: Provides operations to manage the collection of subscribedSku entities.
+    get:
+      tags:
+        - subscribedSkus.subscribedSku
+      summary: Get subscribedSku
+      description: >-
+        Get a specific commercial subscription that an organization has
+        acquired.
+      externalDocs:
+        description: Find more info here
+        url: >-
+          https://learn.microsoft.com/graph/api/subscribedsku-get?view=graph-rest-1.0
+      operationId: subscribedSkus.subscribedSku.GetSubscribedSku
+      parameters:
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Retrieved entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.subscribedSku'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+        - subscribedSkus.subscribedSku
+      summary: Update entity in subscribedSkus
+      operationId: subscribedSkus.subscribedSku.UpdateSubscribedSku
+      requestBody:
+        description: New property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.subscribedSku'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.subscribedSku'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+        - subscribedSkus.subscribedSku
+      summary: Delete entity from subscribedSkus
+      operationId: subscribedSkus.subscribedSku.DeleteSubscribedSku
+      parameters:
+        - name: If-Match
+          in: header
+          description: ETag
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    parameters:
+      - name: subscribedSku-id
+        in: path
+        description: The unique identifier of subscribedSku
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: subscribedSku
+components:
+  schemas:
+    microsoft.graph.subscribedSku:
+      allOf:
+        - $ref: '#/components/schemas/microsoft.graph.entity'
+        - title: subscribedSku
+          required:
+            - '@odata.type'
+          type: object
+          properties:
+            accountId:
+              type: string
+              description: The unique ID of the account this SKU belongs to.
+              nullable: true
+            accountName:
+              type: string
+              description: The name of the account this SKU belongs to.
+              nullable: true
+            appliesTo:
+              type: string
+              description: >-
+                The target class for this SKU. Only SKUs with target class User
+                are assignable. The possible values are: User, Company.
+              nullable: true
+            capabilityStatus:
+              type: string
+              description: >-
+                Enabled indicates that the prepaidUnits property has at least
+                one unit that is enabled. LockedOut indicates that the customer
+                canceled their subscription. The possible values are: Enabled,
+                Warning, Suspended, Deleted, LockedOut.
+              nullable: true
+            consumedUnits:
+              maximum: 2147483647
+              minimum: -2147483648
+              type: number
+              description: The number of licenses that have been assigned.
+              format: int32
+              nullable: true
+            prepaidUnits:
+              anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.licenseUnitsDetail'
+                - type: object
+                  nullable: true
+              description: Information about the number and status of prepaid licenses.
+            servicePlans:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.servicePlanInfo'
+              description: >-
+                Information about the service plans that are available with the
+                SKU. Not nullable.
+            skuId:
+              pattern: >-
+                ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+              type: string
+              description: The unique identifier (GUID) for the service SKU.
+              format: uuid
+              nullable: true
+            skuPartNumber:
+              type: string
+              description: >-
+                The SKU part number; for example: AAD_PREMIUM or RMSBASIC. To
+                get a list of commercial subscriptions that an organization has
+                acquired, see List subscribedSkus.
+              nullable: true
+            subscriptionIds:
+              type: array
+              items:
+                type: string
+                nullable: true
+              description: A list of all subscription IDs associated with this SKU.
+            '@odata.type':
+              type: string
+      x-ms-discriminator-value: '#microsoft.graph.subscribedSku'
+  parameters:
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+  examples: {}
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
