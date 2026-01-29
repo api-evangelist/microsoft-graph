@@ -1,21 +1,43 @@
 openapi: 3.1.0
 info:
-  title: Agreements
-  description: Needs a description.
+  title: Microsoft Graph Agreements API
+  description: |
+    Microsoft Graph API for managing agreements in Microsoft Entra ID. 
+    This API enables organizations to create, manage, and track terms of use agreements, 
+    including agreement files, localizations, and user acceptances.
+  version: 1.0.0
+  contact:
+    name: Microsoft Graph API Support
+    url: https://developer.microsoft.com/graph
+servers:
+  - url: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph API v1.0 endpoint
+tags:
+  - name: Agreements
+    description: Operations for managing agreement entities including creating, reading, updating, and deleting agreements
+  - name: Agreement Acceptances
+    description: Operations for managing user acceptances of agreements
+  - name: Agreement Files
+    description: Operations for managing agreement file content and properties
+  - name: Agreement File Localizations
+    description: Operations for managing localized versions of agreement files
+  - name: Agreement File Versions
+    description: Operations for managing versions of agreement file localizations
 paths:
   /agreements:
     description: Provides operations to manage the collection of agreement entities.
     get:
       tags:
-        - agreements.agreement
-      summary: Get entities from agreements
-      operationId: agreements.agreement.ListAgreement
+        - Agreements
+      summary: List all agreements
+      description: Retrieve a list of all agreement entities in the organization. Supports OData query parameters for filtering, sorting, and pagination.
+      operationId: listAgreements
       parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
+        - $ref: '#/components/parameters/Top'
+        - $ref: '#/components/parameters/Skip'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Filter'
+        - $ref: '#/components/parameters/Count'
         - name: $orderby
           in: query
           description: Order items by property values
@@ -48,26 +70,34 @@ paths:
               type: string
       responses:
         2XX:
-          $ref: '#/components/responses/microsoft.graph.agreementCollectionResponse'
+          $ref: '#/components/responses/AgreementCollectionResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-pageable:
         nextLinkName: '@odata.nextLink'
         operationName: listMore
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     post:
       tags:
-        - agreements.agreement
-      summary: Add new entity to agreements
-      operationId: agreements.agreement.CreateAgreement
+        - Agreements
+      summary: Create a new agreement
+      description: Create a new agreement entity in the organization. The agreement can include terms of use content and acceptance requirements.
+      operationId: createAgreement
       requestBody:
-        description: New entity
+        description: The agreement entity to create
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.agreement'
+              $ref: '#/components/schemas/Agreement'
+            examples:
+              CreateAgreementRequest:
+                $ref: '#/components/examples/CreateAgreementRequest'
         required: true
       responses:
         2XX:
@@ -75,23 +105,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreement'
+                $ref: '#/components/schemas/Agreement'
+              examples:
+                CreateAgreementResponse:
+                  $ref: '#/components/examples/CreateAgreementResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
   /agreements/{agreement-id}:
-    description: Provides operations to manage the collection of agreement entities.
+    description: Provides operations to manage a specific agreement entity.
+    parameters:
+      - $ref: '#/components/parameters/AgreementId'
     get:
       tags:
-        - agreements.agreement
-      summary: Get entity from agreements by key
-      operationId: agreements.agreement.GetAgreement
+        - Agreements
+      summary: Get an agreement by ID
+      description: Retrieve a specific agreement entity by its unique identifier.
+      operationId: getAgreement
       parameters:
         - name: $select
           in: query
           description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
           style: form
           explode: false
           schema:
@@ -105,23 +155,34 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreement'
+                $ref: '#/components/schemas/Agreement'
+              examples:
+                GetAgreementResponse:
+                  $ref: '#/components/examples/GetAgreementResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     patch:
       tags:
-        - agreements.agreement
-      summary: Update entity in agreements
-      operationId: agreements.agreement.UpdateAgreement
+        - Agreements
+      summary: Update an agreement
+      description: Update the properties of a specific agreement entity.
+      operationId: updateAgreement
       requestBody:
-        description: New property values
+        description: New property values for the agreement
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.agreement'
+              $ref: '#/components/schemas/Agreement'
+            examples:
+              UpdateAgreementRequest:
+                $ref: '#/components/examples/UpdateAgreementRequest'
         required: true
       responses:
         2XX:
@@ -129,55 +190,59 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreement'
+                $ref: '#/components/schemas/Agreement'
+              examples:
+                UpdateAgreementResponse:
+                  $ref: '#/components/examples/UpdateAgreementResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     delete:
       tags:
-        - agreements.agreement
-      summary: Delete entity from agreements
-      operationId: agreements.agreement.DeleteAgreement
+        - Agreements
+      summary: Delete an agreement
+      description: Delete a specific agreement entity from the organization.
+      operationId: deleteAgreement
       parameters:
         - name: If-Match
           in: header
-          description: ETag
+          description: ETag for optimistic concurrency control
           schema:
             type: string
       responses:
         '204':
-          description: Success
+          description: Success - No content returned
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
   /agreements/{agreement-id}/acceptances:
-    description: >-
-      Provides operations to manage the acceptances property of the
-      microsoft.graph.agreement entity.
+    description: Provides operations to manage the acceptances property of an agreement entity.
+    parameters:
+      - $ref: '#/components/parameters/AgreementId'
     get:
       tags:
-        - agreements.agreementAcceptance
-      summary: Get acceptances from agreements
-      description: Read-only. Information about acceptances of this agreement.
-      operationId: agreements.ListAcceptances
+        - Agreement Acceptances
+      summary: List agreement acceptances
+      description: Retrieve a list of all user acceptances for a specific agreement. Read-only information about acceptances of this agreement.
+      operationId: listAgreementAcceptances
       parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
+        - $ref: '#/components/parameters/Top'
+        - $ref: '#/components/parameters/Skip'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Filter'
+        - $ref: '#/components/parameters/Count'
         - name: $orderby
           in: query
           description: Order items by property values
@@ -210,58 +275,65 @@ paths:
               type: string
       responses:
         2XX:
-          $ref: >-
-            #/components/responses/microsoft.graph.agreementAcceptanceCollectionResponse
+          $ref: '#/components/responses/AgreementAcceptanceCollectionResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-pageable:
         nextLinkName: '@odata.nextLink'
         operationName: listMore
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     post:
       tags:
-        - agreements.agreementAcceptance
-      summary: Create new navigation property to acceptances for agreements
-      operationId: agreements.CreateAcceptances
+        - Agreement Acceptances
+      summary: Create an agreement acceptance
+      description: Create a new acceptance record for a specific agreement.
+      operationId: createAgreementAcceptance
       requestBody:
-        description: New navigation property
+        description: New acceptance record to create
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementAcceptance'
+              $ref: '#/components/schemas/AgreementAcceptance'
+            examples:
+              CreateAgreementAcceptanceRequest:
+                $ref: '#/components/examples/CreateAgreementAcceptanceRequest'
         required: true
       responses:
         2XX:
-          description: Created navigation property.
+          description: Created navigation property
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementAcceptance'
+                $ref: '#/components/schemas/AgreementAcceptance'
+              examples:
+                CreateAgreementAcceptanceResponse:
+                  $ref: '#/components/examples/CreateAgreementAcceptanceResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
   /agreements/{agreement-id}/acceptances/{agreementAcceptance-id}:
-    description: >-
-      Provides operations to manage the acceptances property of the
-      microsoft.graph.agreement entity.
+    description: Provides operations to manage a specific acceptance of an agreement.
+    parameters:
+      - $ref: '#/components/parameters/AgreementId'
+      - $ref: '#/components/parameters/AgreementAcceptanceId'
     get:
       tags:
-        - agreements.agreementAcceptance
-      summary: Get acceptances from agreements
-      description: Read-only. Information about acceptances of this agreement.
-      operationId: agreements.GetAcceptances
+        - Agreement Acceptances
+      summary: Get an agreement acceptance by ID
+      description: Retrieve a specific acceptance record for an agreement.
+      operationId: getAgreementAcceptance
       parameters:
         - name: $select
           in: query
@@ -289,23 +361,34 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementAcceptance'
+                $ref: '#/components/schemas/AgreementAcceptance'
+              examples:
+                GetAgreementAcceptanceResponse:
+                  $ref: '#/components/examples/GetAgreementAcceptanceResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     patch:
       tags:
-        - agreements.agreementAcceptance
-      summary: Update the navigation property acceptances in agreements
-      operationId: agreements.UpdateAcceptances
+        - Agreement Acceptances
+      summary: Update an agreement acceptance
+      description: Update the properties of a specific agreement acceptance record.
+      operationId: updateAgreementAcceptance
       requestBody:
-        description: New navigation property values
+        description: New property values for the acceptance
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementAcceptance'
+              $ref: '#/components/schemas/AgreementAcceptance'
+            examples:
+              UpdateAgreementAcceptanceRequest:
+                $ref: '#/components/examples/UpdateAgreementAcceptanceRequest'
         required: true
       responses:
         2XX:
@@ -313,89 +396,78 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementAcceptance'
+                $ref: '#/components/schemas/AgreementAcceptance'
+              examples:
+                UpdateAgreementAcceptanceResponse:
+                  $ref: '#/components/examples/UpdateAgreementAcceptanceResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     delete:
       tags:
-        - agreements.agreementAcceptance
-      summary: Delete navigation property acceptances for agreements
-      operationId: agreements.DeleteAcceptances
+        - Agreement Acceptances
+      summary: Delete an agreement acceptance
+      description: Delete a specific acceptance record from an agreement.
+      operationId: deleteAgreementAcceptance
       parameters:
         - name: If-Match
           in: header
-          description: ETag
+          description: ETag for optimistic concurrency control
           schema:
             type: string
       responses:
         '204':
-          description: Success
+          description: Success - No content returned
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementAcceptance-id
-        in: path
-        description: The unique identifier of agreementAcceptance
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementAcceptance
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
   /agreements/{agreement-id}/acceptances/$count:
-    description: Provides operations to count the resources in the collection.
+    description: Get the count of agreement acceptances.
+    parameters:
+      - $ref: '#/components/parameters/AgreementId'
     get:
       tags:
-        - agreements.agreementAcceptance
-      summary: Get the number of the resource
-      operationId: agreements.acceptances.GetCount-9ff2
+        - Agreement Acceptances
+      summary: Count agreement acceptances
+      description: Get the total count of acceptance records for a specific agreement.
+      operationId: countAgreementAcceptances
       parameters:
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Filter'
       responses:
         2XX:
           $ref: '#/components/responses/ODataCountResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
+          $ref: '#/components/responses/ErrorResponse'
+      x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
   /agreements/{agreement-id}/file:
-    description: >-
-      Provides operations to manage the file property of the
-      microsoft.graph.agreement entity.
+    description: Provides operations to manage the file property of an agreement entity.
+    parameters:
+      - $ref: '#/components/parameters/AgreementId'
     get:
       tags:
-        - agreements.agreementFile
-      summary: Get agreementFile
-      description: >-
-        Retrieve the details of an agreement file, including the language and
-        version information. The default file can have multiple versions, each
-        with its own language, that can be retrieved by specifying the
-        Accept-Language header.
-      externalDocs:
-        description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/agreementfile-get?view=graph-rest-1.0
-      operationId: agreements.GetFile
+        - Agreement Files
+      summary: Get agreement file
+      description: Retrieve the default PDF file linked to an agreement.
+      operationId: getAgreementFile
       parameters:
         - name: $select
           in: query
@@ -423,23 +495,34 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFile'
+                $ref: '#/components/schemas/AgreementFile'
+              examples:
+                GetAgreementFileResponse:
+                  $ref: '#/components/examples/GetAgreementFileResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     patch:
       tags:
-        - agreements.agreementFile
-      summary: Update the navigation property file in agreements
-      operationId: agreements.UpdateFile
+        - Agreement Files
+      summary: Update agreement file
+      description: Update the properties of the default file for an agreement.
+      operationId: updateAgreementFile
       requestBody:
-        description: New navigation property values
+        description: New property values for the agreement file
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFile'
+              $ref: '#/components/schemas/AgreementFile'
+            examples:
+              UpdateAgreementFileRequest:
+                $ref: '#/components/examples/UpdateAgreementFileRequest'
         required: true
       responses:
         2XX:
@@ -447,59 +530,59 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFile'
+                $ref: '#/components/schemas/AgreementFile'
+              examples:
+                UpdateAgreementFileResponse:
+                  $ref: '#/components/examples/UpdateAgreementFileResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     delete:
       tags:
-        - agreements.agreementFile
-      summary: Delete navigation property file for agreements
-      operationId: agreements.DeleteFile
+        - Agreement Files
+      summary: Delete agreement file
+      description: Delete the default file associated with an agreement.
+      operationId: deleteAgreementFile
       parameters:
         - name: If-Match
           in: header
-          description: ETag
+          description: ETag for optimistic concurrency control
           schema:
             type: string
       responses:
         '204':
-          description: Success
+          description: Success - No content returned
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
   /agreements/{agreement-id}/file/localizations:
-    description: >-
-      Provides operations to manage the localizations property of the
-      microsoft.graph.agreementFile entity.
+    description: Provides operations to manage localized versions of the agreement file.
+    parameters:
+      - $ref: '#/components/parameters/AgreementId'
     get:
       tags:
-        - agreements.agreementFile
-      summary: List agreementFileLocalizations
-      description: Get a list of the default and localized agreement files.
-      externalDocs:
-        description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/agreementfile-list-localizations?view=graph-rest-1.0
-      operationId: agreements.file.ListLocalizations
+        - Agreement File Localizations
+      summary: List agreement file localizations
+      description: Retrieve a list of all localized versions of the terms of use agreement files attached to an agreement.
+      operationId: listAgreementFileLocalizations
       parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
+        - $ref: '#/components/parameters/Top'
+        - $ref: '#/components/parameters/Skip'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Filter'
+        - $ref: '#/components/parameters/Count'
         - name: $orderby
           in: query
           description: Order items by property values
@@ -532,60 +615,65 @@ paths:
               type: string
       responses:
         2XX:
-          $ref: >-
-            #/components/responses/microsoft.graph.agreementFileLocalizationCollectionResponse
+          $ref: '#/components/responses/AgreementFileLocalizationCollectionResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-pageable:
         nextLinkName: '@odata.nextLink'
         operationName: listMore
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     post:
       tags:
-        - agreements.agreementFile
-      summary: Create new navigation property to localizations for agreements
-      operationId: agreements.file.CreateLocalizations
+        - Agreement File Localizations
+      summary: Create agreement file localization
+      description: Create a new localized version of the terms of use agreement file.
+      operationId: createAgreementFileLocalization
       requestBody:
-        description: New navigation property
+        description: New localization to create
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
+              $ref: '#/components/schemas/AgreementFileLocalization'
+            examples:
+              CreateAgreementFileLocalizationRequest:
+                $ref: '#/components/examples/CreateAgreementFileLocalizationRequest'
         required: true
       responses:
         2XX:
-          description: Created navigation property.
+          description: Created navigation property
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
+                $ref: '#/components/schemas/AgreementFileLocalization'
+              examples:
+                CreateAgreementFileLocalizationResponse:
+                  $ref: '#/components/examples/CreateAgreementFileLocalizationResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
   /agreements/{agreement-id}/file/localizations/{agreementFileLocalization-id}:
-    description: >-
-      Provides operations to manage the localizations property of the
-      microsoft.graph.agreementFile entity.
+    description: Provides operations to manage a specific localized version of an agreement file.
+    parameters:
+      - $ref: '#/components/parameters/AgreementId'
+      - $ref: '#/components/parameters/AgreementFileLocalizationId'
     get:
       tags:
-        - agreements.agreementFile
-      summary: Get localizations from agreements
-      description: >-
-        The localized version of the terms of use agreement files attached to
-        the agreement.
-      operationId: agreements.file.GetLocalizations
+        - Agreement File Localizations
+      summary: Get agreement file localization
+      description: Retrieve a specific localized version of the agreement file.
+      operationId: getAgreementFileLocalization
       parameters:
         - name: $select
           in: query
@@ -613,23 +701,34 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
+                $ref: '#/components/schemas/AgreementFileLocalization'
+              examples:
+                GetAgreementFileLocalizationResponse:
+                  $ref: '#/components/examples/GetAgreementFileLocalizationResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     patch:
       tags:
-        - agreements.agreementFile
-      summary: Update the navigation property localizations in agreements
-      operationId: agreements.file.UpdateLocalizations
+        - Agreement File Localizations
+      summary: Update agreement file localization
+      description: Update the properties of a specific localized agreement file.
+      operationId: updateAgreementFileLocalization
       requestBody:
-        description: New navigation property values
+        description: New property values for the localization
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
+              $ref: '#/components/schemas/AgreementFileLocalization'
+            examples:
+              UpdateAgreementFileLocalizationRequest:
+                $ref: '#/components/examples/UpdateAgreementFileLocalizationRequest'
         required: true
       responses:
         2XX:
@@ -637,64 +736,60 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
+                $ref: '#/components/schemas/AgreementFileLocalization'
+              examples:
+                UpdateAgreementFileLocalizationResponse:
+                  $ref: '#/components/examples/UpdateAgreementFileLocalizationResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     delete:
       tags:
-        - agreements.agreementFile
-      summary: Delete navigation property localizations for agreements
-      operationId: agreements.file.DeleteLocalizations
+        - Agreement File Localizations
+      summary: Delete agreement file localization
+      description: Delete a specific localized version of the agreement file.
+      operationId: deleteAgreementFileLocalization
       parameters:
         - name: If-Match
           in: header
-          description: ETag
+          description: ETag for optimistic concurrency control
           schema:
             type: string
       responses:
         '204':
-          description: Success
+          description: Success - No content returned
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
   /agreements/{agreement-id}/file/localizations/{agreementFileLocalization-id}/versions:
-    description: >-
-      Provides operations to manage the versions property of the
-      microsoft.graph.agreementFileLocalization entity.
+    description: Provides operations to manage versions of a localized agreement file.
+    parameters:
+      - $ref: '#/components/parameters/AgreementId'
+      - $ref: '#/components/parameters/AgreementFileLocalizationId'
     get:
       tags:
-        - agreements.agreementFile
-      summary: Get versions from agreements
-      description: >-
-        Read-only. Customized versions of the terms of use agreement in the
-        Microsoft Entra tenant.
-      operationId: agreements.file.localizations.ListVersions
+        - Agreement File Versions
+      summary: List agreement file localization versions
+      description: Retrieve a list of all versions for a specific localized agreement file.
+      operationId: listAgreementFileLocalizationVersions
       parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
+        - $ref: '#/components/parameters/Top'
+        - $ref: '#/components/parameters/Skip'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Filter'
+        - $ref: '#/components/parameters/Count'
         - name: $orderby
           in: query
           description: Order items by property values
@@ -727,69 +822,66 @@ paths:
               type: string
       responses:
         2XX:
-          $ref: >-
-            #/components/responses/microsoft.graph.agreementFileVersionCollectionResponse
+          $ref: '#/components/responses/AgreementFileVersionCollectionResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-pageable:
         nextLinkName: '@odata.nextLink'
         operationName: listMore
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     post:
       tags:
-        - agreements.agreementFile
-      summary: Create new navigation property to versions for agreements
-      operationId: agreements.file.localizations.CreateVersions
+        - Agreement File Versions
+      summary: Create agreement file localization version
+      description: Create a new version for a localized agreement file.
+      operationId: createAgreementFileLocalizationVersion
       requestBody:
-        description: New navigation property
+        description: New version to create
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
+              $ref: '#/components/schemas/AgreementFileVersion'
+            examples:
+              CreateAgreementFileVersionRequest:
+                $ref: '#/components/examples/CreateAgreementFileVersionRequest'
         required: true
       responses:
         2XX:
-          description: Created navigation property.
+          description: Created navigation property
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
+                $ref: '#/components/schemas/AgreementFileVersion'
+              examples:
+                CreateAgreementFileVersionResponse:
+                  $ref: '#/components/examples/CreateAgreementFileVersionResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-    x-ms-docs-grouped-path:
-      - /agreements/{agreement-id}/files/{agreementFileLocalization-id}/versions
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
   /agreements/{agreement-id}/file/localizations/{agreementFileLocalization-id}/versions/{agreementFileVersion-id}:
-    description: >-
-      Provides operations to manage the versions property of the
-      microsoft.graph.agreementFileLocalization entity.
+    description: Provides operations to manage a specific version of a localized agreement file.
+    parameters:
+      - $ref: '#/components/parameters/AgreementId'
+      - $ref: '#/components/parameters/AgreementFileLocalizationId'
+      - $ref: '#/components/parameters/AgreementFileVersionId'
     get:
       tags:
-        - agreements.agreementFile
-      summary: Get versions from agreements
-      description: >-
-        Read-only. Customized versions of the terms of use agreement in the
-        Microsoft Entra tenant.
-      operationId: agreements.file.localizations.GetVersions
+        - Agreement File Versions
+      summary: Get agreement file localization version
+      description: Retrieve a specific version of a localized agreement file.
+      operationId: getAgreementFileLocalizationVersion
       parameters:
         - name: $select
           in: query
@@ -817,23 +909,34 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
+                $ref: '#/components/schemas/AgreementFileVersion'
+              examples:
+                GetAgreementFileVersionResponse:
+                  $ref: '#/components/examples/GetAgreementFileVersionResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     patch:
       tags:
-        - agreements.agreementFile
-      summary: Update the navigation property versions in agreements
-      operationId: agreements.file.localizations.UpdateVersions
+        - Agreement File Versions
+      summary: Update agreement file localization version
+      description: Update the properties of a specific version of a localized agreement file.
+      operationId: updateAgreementFileLocalizationVersion
       requestBody:
-        description: New navigation property values
+        description: New property values for the version
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
+              $ref: '#/components/schemas/AgreementFileVersion'
+            examples:
+              UpdateAgreementFileVersionRequest:
+                $ref: '#/components/examples/UpdateAgreementFileVersionRequest'
         required: true
       responses:
         2XX:
@@ -841,131 +944,59 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
+                $ref: '#/components/schemas/AgreementFileVersion'
+              examples:
+                UpdateAgreementFileVersionResponse:
+                  $ref: '#/components/examples/UpdateAgreementFileVersionResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     delete:
       tags:
-        - agreements.agreementFile
-      summary: Delete navigation property versions for agreements
-      operationId: agreements.file.localizations.DeleteVersions
+        - Agreement File Versions
+      summary: Delete agreement file localization version
+      description: Delete a specific version of a localized agreement file.
+      operationId: deleteAgreementFileLocalizationVersion
       parameters:
         - name: If-Match
           in: header
-          description: ETag
+          description: ETag for optimistic concurrency control
           schema:
             type: string
       responses:
         '204':
-          description: Success
+          description: Success - No content returned
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-      - name: agreementFileVersion-id
-        in: path
-        description: The unique identifier of agreementFileVersion
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileVersion
-    x-ms-docs-grouped-path:
-      - >-
-        /agreements/{agreement-id}/files/{agreementFileLocalization-id}/versions/{agreementFileVersion-id}
-  /agreements/{agreement-id}/file/localizations/{agreementFileLocalization-id}/versions/$count:
-    description: Provides operations to count the resources in the collection.
-    get:
-      tags:
-        - agreements.agreementFile
-      summary: Get the number of the resource
-      operationId: agreements.file.localizations.versions.GetCount-c405
-      parameters:
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-      responses:
-        2XX:
-          $ref: '#/components/responses/ODataCountResponse'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-  /agreements/{agreement-id}/file/localizations/$count:
-    description: Provides operations to count the resources in the collection.
-    get:
-      tags:
-        - agreements.agreementFile
-      summary: Get the number of the resource
-      operationId: agreements.file.localizations.GetCount-37c2
-      parameters:
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-      responses:
-        2XX:
-          $ref: '#/components/responses/ODataCountResponse'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
   /agreements/{agreement-id}/files:
-    description: >-
-      Provides operations to manage the files property of the
-      microsoft.graph.agreement entity.
+    description: Provides operations to manage PDFs linked to an agreement (deprecated, use file property instead).
+    parameters:
+      - $ref: '#/components/parameters/AgreementId'
     get:
       tags:
-        - agreements.agreementFileLocalization
-      summary: Get files from agreements
-      description: >-
-        PDFs linked to this agreement. This property is in the process of being
-        deprecated. Use the  file property instead. Supports $expand.
-      operationId: agreements.ListFiles
+        - Agreement File Localizations
+      summary: List agreement files
+      description: Retrieve PDFs linked to an agreement. This property is in the process of being deprecated. Use the file property instead.
+      operationId: listAgreementFiles
       parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
+        - $ref: '#/components/parameters/Top'
+        - $ref: '#/components/parameters/Skip'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Filter'
+        - $ref: '#/components/parameters/Count'
         - name: $orderby
           in: query
           description: Order items by property values
@@ -998,1961 +1029,129 @@ paths:
               type: string
       responses:
         2XX:
-          $ref: >-
-            #/components/responses/microsoft.graph.agreementFileLocalizationCollectionResponse
+          $ref: '#/components/responses/AgreementFileLocalizationCollectionResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-pageable:
         nextLinkName: '@odata.nextLink'
         operationName: listMore
       x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
     post:
       tags:
-        - agreements.agreementFileLocalization
-      summary: Create new navigation property to files for agreements
-      operationId: agreements.CreateFiles
+        - Agreement File Localizations
+      summary: Create agreement file
+      description: Create a new PDF file for an agreement. This property is in the process of being deprecated. Use the file property instead.
+      operationId: createAgreementFileItem
       requestBody:
-        description: New navigation property
+        description: New file to create
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
+              $ref: '#/components/schemas/AgreementFileLocalization'
+            examples:
+              CreateAgreementFileLocalizationRequest:
+                $ref: '#/components/examples/CreateAgreementFileLocalizationRequest'
         required: true
       responses:
         2XX:
-          description: Created navigation property.
+          description: Created navigation property
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
+                $ref: '#/components/schemas/AgreementFileLocalization'
+              examples:
+                CreateAgreementFileLocalizationResponse:
+                  $ref: '#/components/examples/CreateAgreementFileLocalizationResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-  /agreements/{agreement-id}/files/{agreementFileLocalization-id}:
-    description: >-
-      Provides operations to manage the files property of the
-      microsoft.graph.agreement entity.
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
+  /agreements/$count:
+    description: Get the count of agreements.
     get:
       tags:
-        - agreements.agreementFileLocalization
-      summary: Get files from agreements
-      description: >-
-        PDFs linked to this agreement. This property is in the process of being
-        deprecated. Use the  file property instead. Supports $expand.
-      operationId: agreements.GetFiles
+        - Agreements
+      summary: Count agreements
+      description: Get the total count of agreement entities in the organization.
+      operationId: countAgreements
       parameters:
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          description: Retrieved navigation property
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    patch:
-      tags:
-        - agreements.agreementFileLocalization
-      summary: Update the navigation property files in agreements
-      operationId: agreements.UpdateFiles
-      requestBody:
-        description: New navigation property values
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-        required: true
-      responses:
-        2XX:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    delete:
-      tags:
-        - agreements.agreementFileLocalization
-      summary: Delete navigation property files for agreements
-      operationId: agreements.DeleteFiles
-      parameters:
-        - name: If-Match
-          in: header
-          description: ETag
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Success
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-  /agreements/{agreement-id}/files/{agreementFileLocalization-id}/versions:
-    description: >-
-      Provides operations to manage the versions property of the
-      microsoft.graph.agreementFileLocalization entity.
-    get:
-      tags:
-        - agreements.agreementFileLocalization
-      summary: Get versions from agreements
-      description: >-
-        Read-only. Customized versions of the terms of use agreement in the
-        Microsoft Entra tenant.
-      operationId: agreements.files.ListVersions
-      parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
-        - name: $orderby
-          in: query
-          description: Order items by property values
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          $ref: >-
-            #/components/responses/microsoft.graph.agreementFileVersionCollectionResponse
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-pageable:
-        nextLinkName: '@odata.nextLink'
-        operationName: listMore
-      x-ms-docs-operation-type: operation
-    post:
-      tags:
-        - agreements.agreementFileLocalization
-      summary: Create new navigation property to versions for agreements
-      operationId: agreements.files.CreateVersions
-      requestBody:
-        description: New navigation property
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        required: true
-      responses:
-        2XX:
-          description: Created navigation property.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-    x-ms-docs-grouped-path:
-      - >-
-        /agreements/{agreement-id}/file/localizations/{agreementFileLocalization-id}/versions
-  /agreements/{agreement-id}/files/{agreementFileLocalization-id}/versions/{agreementFileVersion-id}:
-    description: >-
-      Provides operations to manage the versions property of the
-      microsoft.graph.agreementFileLocalization entity.
-    get:
-      tags:
-        - agreements.agreementFileLocalization
-      summary: Get versions from agreements
-      description: >-
-        Read-only. Customized versions of the terms of use agreement in the
-        Microsoft Entra tenant.
-      operationId: agreements.files.GetVersions
-      parameters:
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          description: Retrieved navigation property
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    patch:
-      tags:
-        - agreements.agreementFileLocalization
-      summary: Update the navigation property versions in agreements
-      operationId: agreements.files.UpdateVersions
-      requestBody:
-        description: New navigation property values
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        required: true
-      responses:
-        2XX:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    delete:
-      tags:
-        - agreements.agreementFileLocalization
-      summary: Delete navigation property versions for agreements
-      operationId: agreements.files.DeleteVersions
-      parameters:
-        - name: If-Match
-          in: header
-          description: ETag
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Success
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-      - name: agreementFileVersion-id
-        in: path
-        description: The unique identifier of agreementFileVersion
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileVersion
-    x-ms-docs-grouped-path:
-      - >-
-        /agreements/{agreement-id}/file/localizations/{agreementFileLocalization-id}/versions/{agreementFileVersion-id}
-  /agreements/{agreement-id}/files/{agreementFileLocalization-id}/versions/$count:
-    description: Provides operations to count the resources in the collection.
-    get:
-      tags:
-        - agreements.agreementFileLocalization
-      summary: Get the number of the resource
-      operationId: agreements.files.versions.GetCount-8216
-      parameters:
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Filter'
       responses:
         2XX:
           $ref: '#/components/responses/ODataCountResponse'
         4XX:
-          $ref: '#/components/responses/error'
+          $ref: '#/components/responses/ErrorResponse'
         5XX:
-          $ref: '#/components/responses/error'
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-  /agreements/{agreement-id}/files/$count:
-    description: Provides operations to count the resources in the collection.
-    get:
-      tags:
-        - agreements.agreementFileLocalization
-      summary: Get the number of the resource
-      operationId: agreements.files.GetCount-b229
-      parameters:
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-      responses:
-        2XX:
-          $ref: '#/components/responses/ODataCountResponse'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-  /identityGovernance/termsOfUse/agreements:
-    description: >-
-      Provides operations to manage the agreements property of the
-      microsoft.graph.termsOfUseContainer entity.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: List agreements
-      description: Retrieve a list of agreement objects.
-      externalDocs:
-        description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/termsofusecontainer-list-agreements?view=graph-rest-1.0
-      operationId: identityGovernance.termsOfUse.ListAgreements
-      parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
-        - name: $orderby
-          in: query
-          description: Order items by property values
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          $ref: '#/components/responses/microsoft.graph.agreementCollectionResponse'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-pageable:
-        nextLinkName: '@odata.nextLink'
-        operationName: listMore
+          $ref: '#/components/responses/ErrorResponse'
       x-ms-docs-operation-type: operation
-    post:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Create agreement
-      description: Create a new agreement object.
-      externalDocs:
-        description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/termsofusecontainer-post-agreements?view=graph-rest-1.0
-      operationId: identityGovernance.termsOfUse.CreateAgreements
-      requestBody:
-        description: New navigation property
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreement'
-        required: true
-      responses:
-        2XX:
-          description: Created navigation property.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreement'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-  /identityGovernance/termsOfUse/agreements/{agreement-id}:
-    description: >-
-      Provides operations to manage the agreements property of the
-      microsoft.graph.termsOfUseContainer entity.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get agreement
-      description: Retrieve the properties and relationships of an agreement object.
-      externalDocs:
-        description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/agreement-get?view=graph-rest-1.0
-      operationId: identityGovernance.termsOfUse.GetAgreements
-      parameters:
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          description: Retrieved navigation property
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreement'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    patch:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Update agreement
-      description: Update the properties of an agreement object.
-      externalDocs:
-        description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/agreement-update?view=graph-rest-1.0
-      operationId: identityGovernance.termsOfUse.UpdateAgreements
-      requestBody:
-        description: New navigation property values
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreement'
-        required: true
-      responses:
-        2XX:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreement'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    delete:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Delete agreement
-      description: Delete an agreement object.
-      externalDocs:
-        description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/agreement-delete?view=graph-rest-1.0
-      operationId: identityGovernance.termsOfUse.DeleteAgreements
-      parameters:
-        - name: If-Match
-          in: header
-          description: ETag
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Success
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/acceptances:
-    description: >-
-      Provides operations to manage the acceptances property of the
-      microsoft.graph.agreement entity.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: List acceptances
-      description: Get the details about the acceptance records for a specific agreement.
-      externalDocs:
-        description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/agreement-list-acceptances?view=graph-rest-1.0
-      operationId: identityGovernance.termsOfUse.agreements.ListAcceptances
-      parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
-        - name: $orderby
-          in: query
-          description: Order items by property values
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          $ref: >-
-            #/components/responses/microsoft.graph.agreementAcceptanceCollectionResponse
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-pageable:
-        nextLinkName: '@odata.nextLink'
-        operationName: listMore
-      x-ms-docs-operation-type: operation
-    post:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Create new navigation property to acceptances for identityGovernance
-      operationId: identityGovernance.termsOfUse.agreements.CreateAcceptances
-      requestBody:
-        description: New navigation property
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementAcceptance'
-        required: true
-      responses:
-        2XX:
-          description: Created navigation property.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementAcceptance'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/acceptances/{agreementAcceptance-id}:
-    description: >-
-      Provides operations to manage the acceptances property of the
-      microsoft.graph.agreement entity.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get acceptances from identityGovernance
-      description: Read-only. Information about acceptances of this agreement.
-      operationId: identityGovernance.termsOfUse.agreements.GetAcceptances
-      parameters:
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          description: Retrieved navigation property
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementAcceptance'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    patch:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Update the navigation property acceptances in identityGovernance
-      operationId: identityGovernance.termsOfUse.agreements.UpdateAcceptances
-      requestBody:
-        description: New navigation property values
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementAcceptance'
-        required: true
-      responses:
-        2XX:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementAcceptance'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    delete:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Delete navigation property acceptances for identityGovernance
-      operationId: identityGovernance.termsOfUse.agreements.DeleteAcceptances
-      parameters:
-        - name: If-Match
-          in: header
-          description: ETag
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Success
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementAcceptance-id
-        in: path
-        description: The unique identifier of agreementAcceptance
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementAcceptance
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/acceptances/$count:
-    description: Provides operations to count the resources in the collection.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get the number of the resource
-      operationId: identityGovernance.termsOfUse.agreements.acceptances.GetCount-7e12
-      parameters:
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-      responses:
-        2XX:
-          $ref: '#/components/responses/ODataCountResponse'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/file:
-    description: >-
-      Provides operations to manage the file property of the
-      microsoft.graph.agreement entity.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get agreementFile
-      description: >-
-        Retrieve the details of an agreement file, including the language and
-        version information. The default file can have multiple versions, each
-        with its own language, that can be retrieved by specifying the
-        Accept-Language header.
-      externalDocs:
-        description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/agreementfile-get?view=graph-rest-1.0
-      operationId: identityGovernance.termsOfUse.agreements.GetFile
-      parameters:
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          description: Retrieved navigation property
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFile'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    patch:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Update the navigation property file in identityGovernance
-      operationId: identityGovernance.termsOfUse.agreements.UpdateFile
-      requestBody:
-        description: New navigation property values
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFile'
-        required: true
-      responses:
-        2XX:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFile'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    delete:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Delete navigation property file for identityGovernance
-      operationId: identityGovernance.termsOfUse.agreements.DeleteFile
-      parameters:
-        - name: If-Match
-          in: header
-          description: ETag
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Success
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/file/localizations:
-    description: >-
-      Provides operations to manage the localizations property of the
-      microsoft.graph.agreementFile entity.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get localizations from identityGovernance
-      description: >-
-        The localized version of the terms of use agreement files attached to
-        the agreement.
-      operationId: identityGovernance.termsOfUse.agreements.file.ListLocalizations
-      parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
-        - name: $orderby
-          in: query
-          description: Order items by property values
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          $ref: >-
-            #/components/responses/microsoft.graph.agreementFileLocalizationCollectionResponse
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-pageable:
-        nextLinkName: '@odata.nextLink'
-        operationName: listMore
-      x-ms-docs-operation-type: operation
-    post:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Create new navigation property to localizations for identityGovernance
-      operationId: identityGovernance.termsOfUse.agreements.file.CreateLocalizations
-      requestBody:
-        description: New navigation property
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-        required: true
-      responses:
-        2XX:
-          description: Created navigation property.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/file/localizations/{agreementFileLocalization-id}:
-    description: >-
-      Provides operations to manage the localizations property of the
-      microsoft.graph.agreementFile entity.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get localizations from identityGovernance
-      description: >-
-        The localized version of the terms of use agreement files attached to
-        the agreement.
-      operationId: identityGovernance.termsOfUse.agreements.file.GetLocalizations
-      parameters:
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          description: Retrieved navigation property
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    patch:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Update the navigation property localizations in identityGovernance
-      operationId: identityGovernance.termsOfUse.agreements.file.UpdateLocalizations
-      requestBody:
-        description: New navigation property values
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-        required: true
-      responses:
-        2XX:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    delete:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Delete navigation property localizations for identityGovernance
-      operationId: identityGovernance.termsOfUse.agreements.file.DeleteLocalizations
-      parameters:
-        - name: If-Match
-          in: header
-          description: ETag
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Success
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/file/localizations/{agreementFileLocalization-id}/versions:
-    description: >-
-      Provides operations to manage the versions property of the
-      microsoft.graph.agreementFileLocalization entity.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get versions from identityGovernance
-      description: >-
-        Read-only. Customized versions of the terms of use agreement in the
-        Microsoft Entra tenant.
-      operationId: identityGovernance.termsOfUse.agreements.file.localizations.ListVersions
-      parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
-        - name: $orderby
-          in: query
-          description: Order items by property values
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          $ref: >-
-            #/components/responses/microsoft.graph.agreementFileVersionCollectionResponse
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-pageable:
-        nextLinkName: '@odata.nextLink'
-        operationName: listMore
-      x-ms-docs-operation-type: operation
-    post:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Create new navigation property to versions for identityGovernance
-      operationId: >-
-        identityGovernance.termsOfUse.agreements.file.localizations.CreateVersions
-      requestBody:
-        description: New navigation property
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        required: true
-      responses:
-        2XX:
-          description: Created navigation property.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-    x-ms-docs-grouped-path:
-      - >-
-        /identityGovernance/termsOfUse/agreements/{agreement-id}/files/{agreementFileLocalization-id}/versions
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/file/localizations/{agreementFileLocalization-id}/versions/{agreementFileVersion-id}:
-    description: >-
-      Provides operations to manage the versions property of the
-      microsoft.graph.agreementFileLocalization entity.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get versions from identityGovernance
-      description: >-
-        Read-only. Customized versions of the terms of use agreement in the
-        Microsoft Entra tenant.
-      operationId: identityGovernance.termsOfUse.agreements.file.localizations.GetVersions
-      parameters:
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          description: Retrieved navigation property
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    patch:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Update the navigation property versions in identityGovernance
-      operationId: >-
-        identityGovernance.termsOfUse.agreements.file.localizations.UpdateVersions
-      requestBody:
-        description: New navigation property values
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        required: true
-      responses:
-        2XX:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    delete:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Delete navigation property versions for identityGovernance
-      operationId: >-
-        identityGovernance.termsOfUse.agreements.file.localizations.DeleteVersions
-      parameters:
-        - name: If-Match
-          in: header
-          description: ETag
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Success
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-      - name: agreementFileVersion-id
-        in: path
-        description: The unique identifier of agreementFileVersion
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileVersion
-    x-ms-docs-grouped-path:
-      - >-
-        /identityGovernance/termsOfUse/agreements/{agreement-id}/files/{agreementFileLocalization-id}/versions/{agreementFileVersion-id}
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/file/localizations/{agreementFileLocalization-id}/versions/$count:
-    description: Provides operations to count the resources in the collection.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get the number of the resource
-      operationId: >-
-        identityGovernance.termsOfUse.agreements.file.localizations.versions.GetCount-47c0
-      parameters:
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-      responses:
-        2XX:
-          $ref: '#/components/responses/ODataCountResponse'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/file/localizations/$count:
-    description: Provides operations to count the resources in the collection.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get the number of the resource
-      operationId: >-
-        identityGovernance.termsOfUse.agreements.file.localizations.GetCount-d8c7
-      parameters:
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-      responses:
-        2XX:
-          $ref: '#/components/responses/ODataCountResponse'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/files:
-    description: >-
-      Provides operations to manage the files property of the
-      microsoft.graph.agreement entity.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get files from identityGovernance
-      description: >-
-        PDFs linked to this agreement. This property is in the process of being
-        deprecated. Use the  file property instead. Supports $expand.
-      operationId: identityGovernance.termsOfUse.agreements.ListFiles
-      parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
-        - name: $orderby
-          in: query
-          description: Order items by property values
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          $ref: >-
-            #/components/responses/microsoft.graph.agreementFileLocalizationCollectionResponse
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-pageable:
-        nextLinkName: '@odata.nextLink'
-        operationName: listMore
-      x-ms-docs-operation-type: operation
-    post:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Create agreementFileLocalization
-      description: Create a new localized agreement file.
-      externalDocs:
-        description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/agreement-post-files?view=graph-rest-1.0
-      operationId: identityGovernance.termsOfUse.agreements.CreateFiles
-      requestBody:
-        description: New navigation property
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-        required: true
-      responses:
-        2XX:
-          description: Created navigation property.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/files/{agreementFileLocalization-id}:
-    description: >-
-      Provides operations to manage the files property of the
-      microsoft.graph.agreement entity.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get files from identityGovernance
-      description: >-
-        PDFs linked to this agreement. This property is in the process of being
-        deprecated. Use the  file property instead. Supports $expand.
-      operationId: identityGovernance.termsOfUse.agreements.GetFiles
-      parameters:
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          description: Retrieved navigation property
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    patch:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Update the navigation property files in identityGovernance
-      operationId: identityGovernance.termsOfUse.agreements.UpdateFiles
-      requestBody:
-        description: New navigation property values
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-        required: true
-      responses:
-        2XX:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    delete:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Delete navigation property files for identityGovernance
-      operationId: identityGovernance.termsOfUse.agreements.DeleteFiles
-      parameters:
-        - name: If-Match
-          in: header
-          description: ETag
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Success
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/files/{agreementFileLocalization-id}/versions:
-    description: >-
-      Provides operations to manage the versions property of the
-      microsoft.graph.agreementFileLocalization entity.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get versions from identityGovernance
-      description: >-
-        Read-only. Customized versions of the terms of use agreement in the
-        Microsoft Entra tenant.
-      operationId: identityGovernance.termsOfUse.agreements.files.ListVersions
-      parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
-        - name: $orderby
-          in: query
-          description: Order items by property values
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          $ref: >-
-            #/components/responses/microsoft.graph.agreementFileVersionCollectionResponse
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-pageable:
-        nextLinkName: '@odata.nextLink'
-        operationName: listMore
-      x-ms-docs-operation-type: operation
-    post:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Create new navigation property to versions for identityGovernance
-      operationId: identityGovernance.termsOfUse.agreements.files.CreateVersions
-      requestBody:
-        description: New navigation property
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        required: true
-      responses:
-        2XX:
-          description: Created navigation property.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-    x-ms-docs-grouped-path:
-      - >-
-        /identityGovernance/termsOfUse/agreements/{agreement-id}/file/localizations/{agreementFileLocalization-id}/versions
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/files/{agreementFileLocalization-id}/versions/{agreementFileVersion-id}:
-    description: >-
-      Provides operations to manage the versions property of the
-      microsoft.graph.agreementFileLocalization entity.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get versions from identityGovernance
-      description: >-
-        Read-only. Customized versions of the terms of use agreement in the
-        Microsoft Entra tenant.
-      operationId: identityGovernance.termsOfUse.agreements.files.GetVersions
-      parameters:
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        2XX:
-          description: Retrieved navigation property
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    patch:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Update the navigation property versions in identityGovernance
-      operationId: identityGovernance.termsOfUse.agreements.files.UpdateVersions
-      requestBody:
-        description: New navigation property values
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        required: true
-      responses:
-        2XX:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    delete:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Delete navigation property versions for identityGovernance
-      operationId: identityGovernance.termsOfUse.agreements.files.DeleteVersions
-      parameters:
-        - name: If-Match
-          in: header
-          description: ETag
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Success
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-      - name: agreementFileVersion-id
-        in: path
-        description: The unique identifier of agreementFileVersion
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileVersion
-    x-ms-docs-grouped-path:
-      - >-
-        /identityGovernance/termsOfUse/agreements/{agreement-id}/file/localizations/{agreementFileLocalization-id}/versions/{agreementFileVersion-id}
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/files/{agreementFileLocalization-id}/versions/$count:
-    description: Provides operations to count the resources in the collection.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get the number of the resource
-      operationId: identityGovernance.termsOfUse.agreements.files.versions.GetCount-9b3e
-      parameters:
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-      responses:
-        2XX:
-          $ref: '#/components/responses/ODataCountResponse'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-      - name: agreementFileLocalization-id
-        in: path
-        description: The unique identifier of agreementFileLocalization
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreementFileLocalization
-  /identityGovernance/termsOfUse/agreements/{agreement-id}/files/$count:
-    description: Provides operations to count the resources in the collection.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get the number of the resource
-      operationId: identityGovernance.termsOfUse.agreements.files.GetCount-54ad
-      parameters:
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-      responses:
-        2XX:
-          $ref: '#/components/responses/ODataCountResponse'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-    parameters:
-      - name: agreement-id
-        in: path
-        description: The unique identifier of agreement
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: agreement
-  /identityGovernance/termsOfUse/agreements/$count:
-    description: Provides operations to count the resources in the collection.
-    get:
-      tags:
-        - identityGovernance.termsOfUseContainer
-      summary: Get the number of the resource
-      operationId: identityGovernance.termsOfUse.agreements.GetCount-7fcc
-      parameters:
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-      responses:
-        2XX:
-          $ref: '#/components/responses/ODataCountResponse'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
 components:
   schemas:
-    microsoft.graph.agreement:
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity. Read-only.
+        '@odata.type':
+          type: string
+    Agreement:
       allOf:
-        - $ref: '#/components/schemas/microsoft.graph.entity'
-        - title: agreement
+        - $ref: '#/components/schemas/Entity'
+        - title: Agreement
           required:
             - '@odata.type'
           type: object
           properties:
             displayName:
               type: string
-              description: >-
-                Display name of the agreement. The display name is used for
-                internal tracking of the agreement but isn't shown to end users
-                who view the agreement. Supports $filter (eq).
+              description: Display name of the agreement. Supports $filter (eq).
               nullable: true
             isPerDeviceAcceptanceRequired:
               type: boolean
-              description: >-
-                Indicates whether end users are required to accept this
-                agreement on every device that they access it from. The end user
-                is required to register their device in Microsoft Entra ID, if
-                they haven't already done so. Supports $filter (eq).
+              description: Indicates whether end users are required to accept this agreement on every device. Supports $filter (eq).
               nullable: true
             isViewingBeforeAcceptanceRequired:
               type: boolean
-              description: >-
-                Indicates whether the user has to expand the agreement before
-                accepting. Supports $filter (eq).
+              description: Indicates whether the user has to expand the agreement before accepting. Supports $filter (eq).
               nullable: true
             termsExpiration:
               anyOf:
-                - $ref: '#/components/schemas/microsoft.graph.termsExpiration'
+                - $ref: '#/components/schemas/TermsExpiration'
                 - type: object
                   nullable: true
-              description: >-
-                Expiration schedule and frequency of agreement for all users.
-                Supports $filter (eq).
+              description: Expiration schedule and frequency of agreement for all users. Supports $filter (eq).
             userReacceptRequiredFrequency:
               pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
               type: string
-              description: >-
-                The duration after which the user must reaccept the terms of
-                use. The value is represented in ISO 8601 format for durations.
-                Supports $filter (eq).
+              description: The duration after which the user must reaccept the terms of use. The value is represented in ISO 8601 format for durations. Supports $filter (eq).
               format: duration
               nullable: true
             acceptances:
               type: array
               items:
-                $ref: '#/components/schemas/microsoft.graph.agreementAcceptance'
+                $ref: '#/components/schemas/AgreementAcceptance'
               description: Read-only. Information about acceptances of this agreement.
               x-ms-navigationProperty: true
             file:
               anyOf:
-                - $ref: '#/components/schemas/microsoft.graph.agreementFile'
+                - $ref: '#/components/schemas/AgreementFile'
                 - type: object
                   nullable: true
               description: Default PDF linked to this agreement.
@@ -2960,19 +1159,16 @@ components:
             files:
               type: array
               items:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-              description: >-
-                PDFs linked to this agreement. This property is in the process
-                of being deprecated. Use the  file property instead. Supports
-                $expand.
+                $ref: '#/components/schemas/AgreementFileLocalization'
+              description: PDFs linked to this agreement. This property is in the process of being deprecated. Use the file property instead. Supports $expand.
               x-ms-navigationProperty: true
             '@odata.type':
               type: string
       x-ms-discriminator-value: '#microsoft.graph.agreement'
-    microsoft.graph.agreementAcceptance:
+    AgreementAcceptance:
       allOf:
-        - $ref: '#/components/schemas/microsoft.graph.entity'
-        - title: agreementAcceptance
+        - $ref: '#/components/schemas/Entity'
+        - title: AgreementAcceptance
           required:
             - '@odata.type'
           type: object
@@ -2991,9 +1187,7 @@ components:
               nullable: true
             deviceId:
               type: string
-              description: >-
-                The unique identifier of the device used for accepting the
-                agreement. Supports $filter (eq) and eq for null values.
+              description: The unique identifier of the device used for accepting the agreement. Supports $filter (eq) and eq for null values.
               nullable: true
             deviceOSType:
               type: string
@@ -3001,41 +1195,26 @@ components:
               nullable: true
             deviceOSVersion:
               type: string
-              description: >-
-                The operating system version of the device used to accept the
-                agreement.
+              description: The operating system version of the device used to accept the agreement.
               nullable: true
             expirationDateTime:
-              pattern: >-
-                ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+              pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
               type: string
-              description: >-
-                The expiration date time of the acceptance. The Timestamp type
-                represents date and time information using ISO 8601 format and
-                is always in UTC time. For example, midnight UTC on Jan 1, 2014
-                is 2014-01-01T00:00:00Z. Supports $filter (eq, ge, le) and eq
-                for null values.
+              description: The expiration date time of the acceptance. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time.
               format: date-time
               nullable: true
             recordedDateTime:
-              pattern: >-
-                ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+              pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
               type: string
-              description: >-
-                The Timestamp type represents date and time information using
-                ISO 8601 format and is always in UTC time. For example, midnight
-                UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+              description: The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time.
               format: date-time
               nullable: true
             state:
               anyOf:
-                - $ref: >-
-                    #/components/schemas/microsoft.graph.agreementAcceptanceState
+                - $ref: '#/components/schemas/AgreementAcceptanceState'
                 - type: object
                   nullable: true
-              description: >-
-                The state of the agreement acceptance. The possible values are:
-                accepted, declined. Supports $filter (eq).
+              description: The state of the agreement acceptance. The possible values are accepted, declined. Supports $filter (eq).
             userDisplayName:
               type: string
               description: Display name of the user when the acceptance was recorded.
@@ -3046,9 +1225,7 @@ components:
               nullable: true
             userId:
               type: string
-              description: >-
-                The identifier of the user who accepted the agreement. Supports
-                $filter (eq).
+              description: The identifier of the user who accepted the agreement. Supports $filter (eq).
               nullable: true
             userPrincipalName:
               type: string
@@ -3057,10 +1234,57 @@ components:
             '@odata.type':
               type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementAcceptance'
-    microsoft.graph.agreementFile:
+    AgreementAcceptanceState:
+      title: AgreementAcceptanceState
+      type: string
+      enum:
+        - accepted
+        - declined
+      description: The state of the agreement acceptance.
+    AgreementFileProperties:
       allOf:
-        - $ref: '#/components/schemas/microsoft.graph.agreementFileProperties'
-        - title: agreementFile
+        - $ref: '#/components/schemas/Entity'
+        - title: AgreementFileProperties
+          type: object
+          properties:
+            createdDateTime:
+              pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+              type: string
+              description: The date time representing when the file was created. Read-only.
+              format: date-time
+              nullable: true
+            displayName:
+              type: string
+              description: Localized display name of the policy file of an agreement.
+              nullable: true
+            fileData:
+              anyOf:
+                - $ref: '#/components/schemas/AgreementFileData'
+                - type: object
+                  nullable: true
+              description: Data that represents the terms of use PDF document.
+            fileName:
+              type: string
+              description: Name of the agreement file.
+              nullable: true
+            isDefault:
+              type: boolean
+              description: If none of the languages matches the client preference, indicates whether this is the default agreement file.
+              nullable: true
+            isMajorVersion:
+              type: boolean
+              description: Indicates whether the agreement file is a major version update.
+              nullable: true
+            language:
+              type: string
+              description: The language of the agreement file in the format languagecode2-country/regioncode2.
+              nullable: true
+            '@odata.type':
+              type: string
+    AgreementFile:
+      allOf:
+        - $ref: '#/components/schemas/AgreementFileProperties'
+        - title: AgreementFile
           required:
             - '@odata.type'
           type: object
@@ -3068,18 +1292,16 @@ components:
             localizations:
               type: array
               items:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-              description: >-
-                The localized version of the terms of use agreement files
-                attached to the agreement.
+                $ref: '#/components/schemas/AgreementFileLocalization'
+              description: The localized version of the terms of use agreement files attached to the agreement.
               x-ms-navigationProperty: true
             '@odata.type':
               type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementFile'
-    microsoft.graph.agreementFileLocalization:
+    AgreementFileLocalization:
       allOf:
-        - $ref: '#/components/schemas/microsoft.graph.agreementFileProperties'
-        - title: agreementFileLocalization
+        - $ref: '#/components/schemas/AgreementFileProperties'
+        - title: AgreementFileLocalization
           required:
             - '@odata.type'
           type: object
@@ -3087,18 +1309,16 @@ components:
             versions:
               type: array
               items:
-                $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-              description: >-
-                Read-only. Customized versions of the terms of use agreement in
-                the Microsoft Entra tenant.
+                $ref: '#/components/schemas/AgreementFileVersion'
+              description: Read-only. Customized versions of the terms of use agreement in the Microsoft Entra tenant.
               x-ms-navigationProperty: true
             '@odata.type':
               type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementFileLocalization'
-    microsoft.graph.agreementFileVersion:
+    AgreementFileVersion:
       allOf:
-        - $ref: '#/components/schemas/microsoft.graph.agreementFileProperties'
-        - title: agreementFileVersion
+        - $ref: '#/components/schemas/AgreementFileProperties'
+        - title: AgreementFileVersion
           required:
             - '@odata.type'
           type: object
@@ -3106,8 +1326,143 @@ components:
             '@odata.type':
               type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
+    AgreementFileData:
+      title: AgreementFileData
+      type: object
+      properties:
+        data:
+          type: string
+          description: Data that represents the terms of use PDF document. Read-only.
+          format: base64url
+          nullable: true
+        '@odata.type':
+          type: string
+    TermsExpiration:
+      title: TermsExpiration
+      type: object
+      properties:
+        frequency:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: Represents the frequency at which the terms will expire, after its first expiration as set in startDateTime. The value is represented in ISO 8601 format for durations.
+          format: duration
+          nullable: true
+        startDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The DateTime when the agreement is set to expire for all users. Read-only.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
+    AgreementCollectionResponse:
+      title: AgreementCollectionResponse
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agreement'
+        '@odata.nextLink':
+          type: string
+          nullable: true
+        '@odata.count':
+          type: integer
+          format: int32
+    AgreementAcceptanceCollectionResponse:
+      title: AgreementAcceptanceCollectionResponse
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementAcceptance'
+        '@odata.nextLink':
+          type: string
+          nullable: true
+        '@odata.count':
+          type: integer
+          format: int32
+    AgreementFileLocalizationCollectionResponse:
+      title: AgreementFileLocalizationCollectionResponse
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementFileLocalization'
+        '@odata.nextLink':
+          type: string
+          nullable: true
+        '@odata.count':
+          type: integer
+          format: int32
+    AgreementFileVersionCollectionResponse:
+      title: AgreementFileVersionCollectionResponse
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementFileVersion'
+        '@odata.nextLink':
+          type: string
+          nullable: true
+        '@odata.count':
+          type: integer
+          format: int32
+    ODataCountResponse:
+      type: integer
+      format: int32
+    ODataError:
+      title: ODataError
+      required:
+        - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    MainError:
+      title: MainError
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+    ErrorDetail:
+      title: ErrorDetail
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    InnerError:
+      title: InnerError
+      type: object
+      description: The structure of this object is service-specific
   parameters:
-    top:
+    Top:
       name: $top
       in: query
       description: Show only the first n items
@@ -3117,7 +1472,7 @@ components:
         minimum: 0
         type: integer
       example: 50
-    skip:
+    Skip:
       name: $skip
       in: query
       description: Skip the first n items
@@ -3126,7 +1481,7 @@ components:
       schema:
         minimum: 0
         type: integer
-    search:
+    Search:
       name: $search
       in: query
       description: Search items by search phrases
@@ -3134,7 +1489,7 @@ components:
       explode: false
       schema:
         type: string
-    filter:
+    Filter:
       name: $filter
       in: query
       description: Filter items by property values
@@ -3142,7 +1497,7 @@ components:
       explode: false
       schema:
         type: string
-    count:
+    Count:
       name: $count
       in: query
       description: Include count of items
@@ -3150,20 +1505,319 @@ components:
       explode: false
       schema:
         type: boolean
-  examples: {}
+    AgreementId:
+      name: agreement-id
+      in: path
+      description: The unique identifier of the agreement
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreement
+    AgreementAcceptanceId:
+      name: agreementAcceptance-id
+      in: path
+      description: The unique identifier of the agreement acceptance
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreementAcceptance
+    AgreementFileLocalizationId:
+      name: agreementFileLocalization-id
+      in: path
+      description: The unique identifier of the agreement file localization
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreementFileLocalization
+    AgreementFileVersionId:
+      name: agreementFileVersion-id
+      in: path
+      description: The unique identifier of the agreement file version
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreementFileVersion
+  examples:
+    CreateAgreementRequest:
+      summary: Example request to create an agreement
+      value:
+        displayName: Terms of Use Agreement
+        isPerDeviceAcceptanceRequired: false
+        isViewingBeforeAcceptanceRequired: true
+        userReacceptRequiredFrequency: P90D
+        '@odata.type': '#microsoft.graph.agreement'
+    CreateAgreementResponse:
+      summary: Example response for created agreement
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        displayName: Terms of Use Agreement
+        isPerDeviceAcceptanceRequired: false
+        isViewingBeforeAcceptanceRequired: true
+        userReacceptRequiredFrequency: P90D
+        '@odata.type': '#microsoft.graph.agreement'
+    GetAgreementResponse:
+      summary: Example response for getting an agreement
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        displayName: Terms of Use Agreement
+        isPerDeviceAcceptanceRequired: false
+        isViewingBeforeAcceptanceRequired: true
+        userReacceptRequiredFrequency: P90D
+        '@odata.type': '#microsoft.graph.agreement'
+    UpdateAgreementRequest:
+      summary: Example request to update an agreement
+      value:
+        displayName: Updated Terms of Use Agreement
+        isPerDeviceAcceptanceRequired: true
+        '@odata.type': '#microsoft.graph.agreement'
+    UpdateAgreementResponse:
+      summary: Example response for updated agreement
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        displayName: Updated Terms of Use Agreement
+        isPerDeviceAcceptanceRequired: true
+        isViewingBeforeAcceptanceRequired: true
+        userReacceptRequiredFrequency: P90D
+        '@odata.type': '#microsoft.graph.agreement'
+    CreateAgreementAcceptanceRequest:
+      summary: Example request to create an agreement acceptance
+      value:
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000003
+        userDisplayName: John Doe
+        userEmail: john.doe@example.com
+        userPrincipalName: john.doe@example.com
+        deviceDisplayName: John's Laptop
+        deviceId: 00000000-0000-0000-0000-000000000004
+        deviceOSType: Windows
+        deviceOSVersion: '10.0.19041'
+        recordedDateTime: '2024-01-15T10:30:00Z'
+        state: accepted
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    CreateAgreementAcceptanceResponse:
+      summary: Example response for created agreement acceptance
+      value:
+        id: 00000000-0000-0000-0000-000000000005
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000003
+        userDisplayName: John Doe
+        userEmail: john.doe@example.com
+        userPrincipalName: john.doe@example.com
+        deviceDisplayName: John's Laptop
+        deviceId: 00000000-0000-0000-0000-000000000004
+        deviceOSType: Windows
+        deviceOSVersion: '10.0.19041'
+        recordedDateTime: '2024-01-15T10:30:00Z'
+        expirationDateTime: '2024-04-15T10:30:00Z'
+        state: accepted
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    GetAgreementAcceptanceResponse:
+      summary: Example response for getting an agreement acceptance
+      value:
+        id: 00000000-0000-0000-0000-000000000005
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000003
+        userDisplayName: John Doe
+        userEmail: john.doe@example.com
+        userPrincipalName: john.doe@example.com
+        deviceDisplayName: John's Laptop
+        deviceId: 00000000-0000-0000-0000-000000000004
+        deviceOSType: Windows
+        deviceOSVersion: '10.0.19041'
+        recordedDateTime: '2024-01-15T10:30:00Z'
+        expirationDateTime: '2024-04-15T10:30:00Z'
+        state: accepted
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    UpdateAgreementAcceptanceRequest:
+      summary: Example request to update an agreement acceptance
+      value:
+        state: declined
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    UpdateAgreementAcceptanceResponse:
+      summary: Example response for updated agreement acceptance
+      value:
+        id: 00000000-0000-0000-0000-000000000005
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000003
+        userDisplayName: John Doe
+        userEmail: john.doe@example.com
+        userPrincipalName: john.doe@example.com
+        deviceDisplayName: John's Laptop
+        deviceId: 00000000-0000-0000-0000-000000000004
+        deviceOSType: Windows
+        deviceOSVersion: '10.0.19041'
+        recordedDateTime: '2024-01-15T10:30:00Z'
+        expirationDateTime: '2024-04-15T10:30:00Z'
+        state: declined
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    GetAgreementFileResponse:
+      summary: Example response for getting an agreement file
+      value:
+        id: 00000000-0000-0000-0000-000000000002
+        displayName: Terms of Use - English
+        fileName: terms-of-use.pdf
+        language: en-US
+        isDefault: true
+        isMajorVersion: true
+        createdDateTime: '2024-01-01T00:00:00Z'
+        '@odata.type': '#microsoft.graph.agreementFile'
+    UpdateAgreementFileRequest:
+      summary: Example request to update an agreement file
+      value:
+        displayName: Updated Terms of Use - English
+        isDefault: true
+        '@odata.type': '#microsoft.graph.agreementFile'
+    UpdateAgreementFileResponse:
+      summary: Example response for updated agreement file
+      value:
+        id: 00000000-0000-0000-0000-000000000002
+        displayName: Updated Terms of Use - English
+        fileName: terms-of-use.pdf
+        language: en-US
+        isDefault: true
+        isMajorVersion: true
+        createdDateTime: '2024-01-01T00:00:00Z'
+        '@odata.type': '#microsoft.graph.agreementFile'
+    CreateAgreementFileLocalizationRequest:
+      summary: Example request to create an agreement file localization
+      value:
+        displayName: Terms of Use - Spanish
+        fileName: terms-of-use-es.pdf
+        language: es-ES
+        isDefault: false
+        isMajorVersion: true
+        '@odata.type': '#microsoft.graph.agreementFileLocalization'
+    CreateAgreementFileLocalizationResponse:
+      summary: Example response for created agreement file localization
+      value:
+        id: 00000000-0000-0000-0000-000000000006
+        displayName: Terms of Use - Spanish
+        fileName: terms-of-use-es.pdf
+        language: es-ES
+        isDefault: false
+        isMajorVersion: true
+        createdDateTime: '2024-01-15T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileLocalization'
+    GetAgreementFileLocalizationResponse:
+      summary: Example response for getting an agreement file localization
+      value:
+        id: 00000000-0000-0000-0000-000000000006
+        displayName: Terms of Use - Spanish
+        fileName: terms-of-use-es.pdf
+        language: es-ES
+        isDefault: false
+        isMajorVersion: true
+        createdDateTime: '2024-01-15T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileLocalization'
+    UpdateAgreementFileLocalizationRequest:
+      summary: Example request to update an agreement file localization
+      value:
+        displayName: Updated Terms of Use - Spanish
+        isMajorVersion: false
+        '@odata.type': '#microsoft.graph.agreementFileLocalization'
+    UpdateAgreementFileLocalizationResponse:
+      summary: Example response for updated agreement file localization
+      value:
+        id: 00000000-0000-0000-0000-000000000006
+        displayName: Updated Terms of Use - Spanish
+        fileName: terms-of-use-es.pdf
+        language: es-ES
+        isDefault: false
+        isMajorVersion: false
+        createdDateTime: '2024-01-15T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileLocalization'
+    CreateAgreementFileVersionRequest:
+      summary: Example request to create an agreement file version
+      value:
+        displayName: Terms of Use - Spanish v2
+        fileName: terms-of-use-es-v2.pdf
+        language: es-ES
+        isMajorVersion: true
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
+    CreateAgreementFileVersionResponse:
+      summary: Example response for created agreement file version
+      value:
+        id: 00000000-0000-0000-0000-000000000007
+        displayName: Terms of Use - Spanish v2
+        fileName: terms-of-use-es-v2.pdf
+        language: es-ES
+        isMajorVersion: true
+        createdDateTime: '2024-02-01T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
+    GetAgreementFileVersionResponse:
+      summary: Example response for getting an agreement file version
+      value:
+        id: 00000000-0000-0000-0000-000000000007
+        displayName: Terms of Use - Spanish v2
+        fileName: terms-of-use-es-v2.pdf
+        language: es-ES
+        isMajorVersion: true
+        createdDateTime: '2024-02-01T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
+    UpdateAgreementFileVersionRequest:
+      summary: Example request to update an agreement file version
+      value:
+        displayName: Updated Terms of Use - Spanish v2
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
+    UpdateAgreementFileVersionResponse:
+      summary: Example response for updated agreement file version
+      value:
+        id: 00000000-0000-0000-0000-000000000007
+        displayName: Updated Terms of Use - Spanish v2
+        fileName: terms-of-use-es-v2.pdf
+        language: es-ES
+        isMajorVersion: true
+        createdDateTime: '2024-02-01T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
+    AgreementCollectionExample:
+      summary: Example collection of agreements
+      value:
+        value:
+          - id: 00000000-0000-0000-0000-000000000001
+            displayName: Terms of Use Agreement
+            isPerDeviceAcceptanceRequired: false
+            isViewingBeforeAcceptanceRequired: true
+            userReacceptRequiredFrequency: P90D
+            '@odata.type': '#microsoft.graph.agreement'
+        '@odata.count': 1
   responses:
-    microsoft.graph.agreementCollectionResponse:
-      description: Retrieved collection
+    AgreementCollectionResponse:
+      description: Retrieved collection of agreements
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.agreementCollectionResponse'
-    error:
-      description: error
+            $ref: '#/components/schemas/AgreementCollectionResponse'
+          examples:
+            AgreementCollectionExample:
+              $ref: '#/components/examples/AgreementCollectionExample'
+    AgreementAcceptanceCollectionResponse:
+      description: Retrieved collection of agreement acceptances
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+            $ref: '#/components/schemas/AgreementAcceptanceCollectionResponse'
+    AgreementFileLocalizationCollectionResponse:
+      description: Retrieved collection of agreement file localizations
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgreementFileLocalizationCollectionResponse'
+    AgreementFileVersionCollectionResponse:
+      description: Retrieved collection of agreement file versions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgreementFileVersionCollectionResponse'
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
     ODataCountResponse:
       description: The count of the resource
       content:

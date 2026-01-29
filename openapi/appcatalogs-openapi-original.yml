@@ -1,59 +1,82 @@
 openapi: 3.1.0
 info:
-  title: Appcatalogs
-  description: Needs a description.
+  title: Microsoft Graph App Catalogs API
+  description: The Microsoft Graph App Catalogs API provides operations to manage the app catalog in Microsoft Teams. This
+    includes listing, publishing, updating, and deleting Teams apps, as well as managing app definitions and associated bots.
+  version: 1.0.0
+  contact:
+    name: Microsoft Graph Support
+    url: https://developer.microsoft.com/graph
+  license:
+    name: Microsoft API License
+    url: https://docs.microsoft.com/legal/microsoft-apis/terms-of-use
+servers:
+- url: https://graph.microsoft.com/v1.0
+  description: Microsoft Graph v1.0 endpoint
 paths:
   /appCatalogs:
     description: Provides operations to manage the appCatalogs singleton.
     get:
       tags:
-        - appCatalogs.appCatalogs
+      - App Catalogs
       summary: Get appCatalogs
-      operationId: appCatalogs.appCatalogs.GetAppCatalogs
+      description: Performs GET operation on /appCatalogs
+      operationId: listAppCatalogs
       parameters:
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
       responses:
         2XX:
           description: Retrieved entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.appCatalogs'
+                $ref: '#/components/schemas/AppCatalogs'
+              examples:
+                AppCatalogsExample:
+                  $ref: '#/components/examples/AppCatalogsExample'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
       x-ms-docs-operation-type: operation
     patch:
       tags:
-        - appCatalogs.appCatalogs
+      - App Catalogs
       summary: Update appCatalogs
-      operationId: appCatalogs.appCatalogs.UpdateAppCatalogs
+      description: Performs PATCH operation on /appCatalogs
+      operationId: updateAppCatalogs
       requestBody:
         description: New property values
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.appCatalogs'
+              $ref: '#/components/schemas/AppCatalogs'
+            examples:
+              AppCatalogsRequestExample:
+                $ref: '#/components/examples/AppCatalogsRequestExample'
         required: true
       responses:
         2XX:
@@ -61,93 +84,104 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.appCatalogs'
+                $ref: '#/components/schemas/AppCatalogs'
+              examples:
+                AppCatalogsExample:
+                  $ref: '#/components/examples/AppCatalogsExample'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
       x-ms-docs-operation-type: operation
   /appCatalogs/teamsApps:
-    description: >-
-      Provides operations to manage the teamsApps property of the
-      microsoft.graph.appCatalogs entity.
+    description: Provides operations to manage the teamsApps property of the microsoft.graph.appCatalogs entity.
     get:
       tags:
-        - appCatalogs.teamsApp
+      - App Catalogs Teams Apps
       summary: List teamsApp
-      description: >-
-        List apps from the Microsoft Teams app catalog, including apps from the
-        Microsoft Teams store and apps from your organization's app catalog (the
-        tenant app catalog). To get apps from your organization's app catalog
-        only, specify organization as the distributionMethod in the request.
+      description: List apps from the Microsoft Teams app catalog, including apps from the Microsoft Teams store and apps
+        from your organization's app catalog (the tenant app catalog). To get apps from your organization's app catalog only,
+        specify organization as the distributionMethod in the request.
+      operationId: listAppCatalogsTeamsApps
       externalDocs:
         description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/appcatalogs-list-teamsapps?view=graph-rest-1.0
-      operationId: appCatalogs.ListTeamsApps
+        url: https://learn.microsoft.com/graph/api/appcatalogs-list-teamsapps?view=graph-rest-1.0
       parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
-        - name: $orderby
-          in: query
-          description: Order items by property values
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
+      - $ref: '#/components/parameters/Top'
+      - $ref: '#/components/parameters/Skip'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/Count'
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
       responses:
         2XX:
-          $ref: '#/components/responses/microsoft.graph.teamsAppCollectionResponse'
+          $ref: '#/components/responses/TeamsAppCollectionResponse'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
       x-ms-pageable:
         nextLinkName: '@odata.nextLink'
         operationName: listMore
       x-ms-docs-operation-type: operation
     post:
       tags:
-        - appCatalogs.teamsApp
+      - App Catalogs Teams Apps
       summary: Publish teamsApp
-      description: "Publish an app to the Microsoft Teams app catalog.\r\nSpecifically, this API publishes the app to your organization's catalog (the tenant app catalog);\r\nthe created resource has a distributionMethod property value of organization. The requiresReview property allows any user to submit an app for review by an administrator. Admins can approve or reject these apps via this API or the Microsoft Teams admin center."
+      description: "Publish an app to the Microsoft Teams app catalog.\r\nSpecifically, this API publishes the app to your\
+        \ organization's catalog (the tenant app catalog);\r\nthe created resource has a distributionMethod property value\
+        \ of organization. The requiresReview property allows any user to submit an app for review by an administrator. Admins\
+        \ can approve or reject these apps via this API or the Microsoft Teams admin center."
+      operationId: createAppCatalogsTeamsApps
       externalDocs:
         description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/teamsapp-publish?view=graph-rest-1.0
-      operationId: appCatalogs.CreateTeamsApps
+        url: https://learn.microsoft.com/graph/api/teamsapp-publish?view=graph-rest-1.0
       requestBody:
         description: New navigation property
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.teamsApp'
+              $ref: '#/components/schemas/TeamsApp'
+            examples:
+              TeamsAppRequestExample:
+                $ref: '#/components/examples/TeamsAppRequestExample'
         required: true
       responses:
         2XX:
@@ -155,65 +189,82 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.teamsApp'
+                $ref: '#/components/schemas/TeamsApp'
+              examples:
+                TeamsAppExample:
+                  $ref: '#/components/examples/TeamsAppExample'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
       x-ms-docs-operation-type: operation
   /appCatalogs/teamsApps/{teamsApp-id}:
-    description: >-
-      Provides operations to manage the teamsApps property of the
-      microsoft.graph.appCatalogs entity.
+    description: Provides operations to manage the teamsApps property of the microsoft.graph.appCatalogs entity.
     get:
       tags:
-        - appCatalogs.teamsApp
+      - App Catalogs Teams Apps
       summary: Get teamsApps from appCatalogs
-      operationId: appCatalogs.GetTeamsApps
+      description: Performs GET operation on /appCatalogs/teamsApps/{teamsApp-id}
+      operationId: getAppCatalogsTeamsApps
       parameters:
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
       responses:
         2XX:
           description: Retrieved navigation property
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.teamsApp'
+                $ref: '#/components/schemas/TeamsApp'
+              examples:
+                TeamsAppExample:
+                  $ref: '#/components/examples/TeamsAppExample'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
       x-ms-docs-operation-type: operation
     patch:
       tags:
-        - appCatalogs.teamsApp
-      summary: Update the navigation property teamsApps in appCatalogs
-      operationId: appCatalogs.UpdateTeamsApps
+      - App Catalogs Teams Apps
+      summary: Update Teams Apps
+      description: Performs PATCH operation on /appCatalogs/teamsApps/{teamsApp-id}
+      operationId: updateAppCatalogsTeamsApps
       requestBody:
         description: New navigation property values
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.teamsApp'
+              $ref: '#/components/schemas/TeamsApp'
+            examples:
+              TeamsAppRequestExample:
+                $ref: '#/components/examples/TeamsAppRequestExample'
         required: true
       responses:
         2XX:
@@ -221,32 +272,36 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.teamsApp'
+                $ref: '#/components/schemas/TeamsApp'
+              examples:
+                TeamsAppExample:
+                  $ref: '#/components/examples/TeamsAppExample'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
       x-ms-docs-operation-type: operation
     delete:
       tags:
-        - appCatalogs.teamsApp
+      - App Catalogs Teams Apps
       summary: Delete teamsApp
-      description: >-
-        Delete an app from an organization's app catalog (the tenant app
-        catalog). To delete an app, the distributionMethod property for the app
-        must be set to organization. You can also use this API to remove a
-        submitted app from the review process.
+      description: Delete an app from an organization's app catalog (the tenant app catalog). To delete an app, the distributionMethod
+        property for the app must be set to organization. You can also use this API to remove a submitted app from the review
+        process.
+      operationId: deleteAppCatalogsTeamsApps
       externalDocs:
         description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/teamsapp-delete?view=graph-rest-1.0
-      operationId: appCatalogs.DeleteTeamsApps
+        url: https://learn.microsoft.com/graph/api/teamsapp-delete?view=graph-rest-1.0
       parameters:
-        - name: If-Match
-          in: header
-          description: ETag
-          schema:
-            type: string
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
       responses:
         '204':
           description: Success
@@ -254,93 +309,98 @@ paths:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
       x-ms-docs-operation-type: operation
     parameters:
-      - name: teamsApp-id
-        in: path
-        description: The unique identifier of teamsApp
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: teamsApp
+    - name: teamsApp-id
+      in: path
+      description: The unique identifier of teamsApp
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: teamsApp
   /appCatalogs/teamsApps/{teamsApp-id}/appDefinitions:
-    description: >-
-      Provides operations to manage the appDefinitions property of the
-      microsoft.graph.teamsApp entity.
+    description: Provides operations to manage the appDefinitions property of the microsoft.graph.teamsApp entity.
     get:
       tags:
-        - appCatalogs.teamsApp
+      - App Catalogs Teams Apps
       summary: Get appDefinitions from appCatalogs
       description: The details for each version of the app.
-      operationId: appCatalogs.teamsApps.ListAppDefinitions
+      operationId: getAppCatalogsTeamsAppsAppDefinitions
       parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
-        - name: $orderby
-          in: query
-          description: Order items by property values
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
+      - $ref: '#/components/parameters/Top'
+      - $ref: '#/components/parameters/Skip'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/Count'
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
       responses:
         2XX:
-          $ref: >-
-            #/components/responses/microsoft.graph.teamsAppDefinitionCollectionResponse
+          $ref: '#/components/responses/TeamsAppDefinitionCollectionResponse'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
       x-ms-pageable:
         nextLinkName: '@odata.nextLink'
         operationName: listMore
       x-ms-docs-operation-type: operation
     post:
       tags:
-        - appCatalogs.teamsApp
+      - App Catalogs Teams Apps
       summary: Update teamsApp
-      description: >-
-        Update an app previously published to the Microsoft Teams app catalog.
-        To update an app, the distributionMethod property for the app must be
-        set to organization. This API specifically updates an app published to
-        your organization's app catalog (the tenant app catalog).
+      description: Update an app previously published to the Microsoft Teams app catalog. To update an app, the distributionMethod
+        property for the app must be set to organization. This API specifically updates an app published to your organization's
+        app catalog (the tenant app catalog).
+      operationId: createAppCatalogsTeamsAppsAppDefinitions
       externalDocs:
         description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/teamsapp-update?view=graph-rest-1.0
-      operationId: appCatalogs.teamsApps.CreateAppDefinitions
+        url: https://learn.microsoft.com/graph/api/teamsapp-update?view=graph-rest-1.0
       requestBody:
         description: New navigation property
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.teamsAppDefinition'
+              $ref: '#/components/schemas/TeamsAppDefinition'
+            examples:
+              TeamsAppDefinitionRequestExample:
+                $ref: '#/components/examples/TeamsAppDefinitionRequestExample'
         required: true
       responses:
         2XX:
@@ -348,79 +408,96 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.teamsAppDefinition'
+                $ref: '#/components/schemas/TeamsAppDefinition'
+              examples:
+                TeamsAppDefinitionExample:
+                  $ref: '#/components/examples/TeamsAppDefinitionExample'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
       x-ms-docs-operation-type: operation
     parameters:
-      - name: teamsApp-id
-        in: path
-        description: The unique identifier of teamsApp
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: teamsApp
+    - name: teamsApp-id
+      in: path
+      description: The unique identifier of teamsApp
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: teamsApp
   /appCatalogs/teamsApps/{teamsApp-id}/appDefinitions/{teamsAppDefinition-id}:
-    description: >-
-      Provides operations to manage the appDefinitions property of the
-      microsoft.graph.teamsApp entity.
+    description: Provides operations to manage the appDefinitions property of the microsoft.graph.teamsApp entity.
     get:
       tags:
-        - appCatalogs.teamsApp
+      - App Catalogs Teams Apps
       summary: Get appDefinitions from appCatalogs
       description: The details for each version of the app.
-      operationId: appCatalogs.teamsApps.GetAppDefinitions
+      operationId: getAppCatalogsTeamsAppsAppDefinitions1
       parameters:
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
       responses:
         2XX:
           description: Retrieved navigation property
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.teamsAppDefinition'
+                $ref: '#/components/schemas/TeamsAppDefinition'
+              examples:
+                TeamsAppDefinitionExample:
+                  $ref: '#/components/examples/TeamsAppDefinitionExample'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
       x-ms-docs-operation-type: operation
     patch:
       tags:
-        - appCatalogs.teamsApp
+      - App Catalogs Teams Apps
       summary: Publish teamsApp
-      description: "Publish an app to the Microsoft Teams app catalog.\r\nSpecifically, this API publishes the app to your organization's catalog (the tenant app catalog);\r\nthe created resource has a distributionMethod property value of organization. The requiresReview property allows any user to submit an app for review by an administrator. Admins can approve or reject these apps via this API or the Microsoft Teams admin center."
+      description: "Publish an app to the Microsoft Teams app catalog.\r\nSpecifically, this API publishes the app to your\
+        \ organization's catalog (the tenant app catalog);\r\nthe created resource has a distributionMethod property value\
+        \ of organization. The requiresReview property allows any user to submit an app for review by an administrator. Admins\
+        \ can approve or reject these apps via this API or the Microsoft Teams admin center."
+      operationId: updateAppCatalogsTeamsAppsAppDefinitions
       externalDocs:
         description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/teamsapp-publish?view=graph-rest-1.0
-      operationId: appCatalogs.teamsApps.UpdateAppDefinitions
+        url: https://learn.microsoft.com/graph/api/teamsapp-publish?view=graph-rest-1.0
       requestBody:
         description: New navigation property values
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.teamsAppDefinition'
+              $ref: '#/components/schemas/TeamsAppDefinition'
+            examples:
+              TeamsAppDefinitionRequestExample:
+                $ref: '#/components/examples/TeamsAppDefinitionRequestExample'
         required: true
       responses:
         2XX:
@@ -428,23 +505,31 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.teamsAppDefinition'
+                $ref: '#/components/schemas/TeamsAppDefinition'
+              examples:
+                TeamsAppDefinitionExample:
+                  $ref: '#/components/examples/TeamsAppDefinitionExample'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
       x-ms-docs-operation-type: operation
     delete:
       tags:
-        - appCatalogs.teamsApp
-      summary: Delete navigation property appDefinitions for appCatalogs
-      operationId: appCatalogs.teamsApps.DeleteAppDefinitions
+      - App Catalogs Teams Apps
+      summary: Delete App Definitions
+      description: Performs DELETE operation on /appCatalogs/teamsApps/{teamsApp-id}/appDefinitions/{teamsAppDefinition-id}
+      operationId: deleteAppCatalogsTeamsAppsAppDefinitions
       parameters:
-        - name: If-Match
-          in: header
-          description: ETag
-          schema:
-            type: string
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
       responses:
         '204':
           description: Success
@@ -452,80 +537,92 @@ paths:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
       x-ms-docs-operation-type: operation
     parameters:
-      - name: teamsApp-id
-        in: path
-        description: The unique identifier of teamsApp
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: teamsApp
-      - name: teamsAppDefinition-id
-        in: path
-        description: The unique identifier of teamsAppDefinition
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: teamsAppDefinition
+    - name: teamsApp-id
+      in: path
+      description: The unique identifier of teamsApp
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: teamsApp
+    - name: teamsAppDefinition-id
+      in: path
+      description: The unique identifier of teamsAppDefinition
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: teamsAppDefinition
   /appCatalogs/teamsApps/{teamsApp-id}/appDefinitions/{teamsAppDefinition-id}/bot:
-    description: >-
-      Provides operations to manage the bot property of the
-      microsoft.graph.teamsAppDefinition entity.
+    description: Provides operations to manage the bot property of the microsoft.graph.teamsAppDefinition entity.
     get:
       tags:
-        - appCatalogs.teamsApp
+      - App Catalogs Teams Apps
       summary: Get teamworkBot
       description: Get the bot associated with a specific definition of the  TeamsApp.
+      operationId: getAppCatalogsTeamsAppsAppDefinitionsBot
       externalDocs:
         description: Find more info here
-        url: >-
-          https://learn.microsoft.com/graph/api/teamworkbot-get?view=graph-rest-1.0
-      operationId: appCatalogs.teamsApps.appDefinitions.GetBot
+        url: https://learn.microsoft.com/graph/api/teamworkbot-get?view=graph-rest-1.0
       parameters:
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
       responses:
         2XX:
           description: Retrieved navigation property
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.teamworkBot'
+                $ref: '#/components/schemas/TeamworkBot'
+              examples:
+                TeamworkBotExample:
+                  $ref: '#/components/examples/TeamworkBotExample'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
       x-ms-docs-operation-type: operation
     patch:
       tags:
-        - appCatalogs.teamsApp
-      summary: Update the navigation property bot in appCatalogs
-      operationId: appCatalogs.teamsApps.appDefinitions.UpdateBot
+      - App Catalogs Teams Apps
+      summary: Update Bot
+      description: Performs PATCH operation on /appCatalogs/teamsApps/{teamsApp-id}/appDefinitions/{teamsAppDefinition-id}/bot
+      operationId: updateAppCatalogsTeamsAppsAppDefinitionsBot
       requestBody:
         description: New navigation property values
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.teamworkBot'
+              $ref: '#/components/schemas/TeamworkBot'
+            examples:
+              TeamworkBotRequestExample:
+                $ref: '#/components/examples/TeamworkBotRequestExample'
         required: true
       responses:
         2XX:
@@ -533,23 +630,31 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.teamworkBot'
+                $ref: '#/components/schemas/TeamworkBot'
+              examples:
+                TeamworkBotExample:
+                  $ref: '#/components/examples/TeamworkBotExample'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
       x-ms-docs-operation-type: operation
     delete:
       tags:
-        - appCatalogs.teamsApp
-      summary: Delete navigation property bot for appCatalogs
-      operationId: appCatalogs.teamsApps.appDefinitions.DeleteBot
+      - App Catalogs Teams Apps
+      summary: Delete Bot
+      description: Performs DELETE operation on /appCatalogs/teamsApps/{teamsApp-id}/appDefinitions/{teamsAppDefinition-id}/bot
+      operationId: deleteAppCatalogsTeamsAppsAppDefinitionsBot
       parameters:
-        - name: If-Match
-          in: header
-          description: ETag
-          schema:
-            type: string
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
       responses:
         '204':
           description: Success
@@ -557,32 +662,37 @@ paths:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
       x-ms-docs-operation-type: operation
     parameters:
-      - name: teamsApp-id
-        in: path
-        description: The unique identifier of teamsApp
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: teamsApp
-      - name: teamsAppDefinition-id
-        in: path
-        description: The unique identifier of teamsAppDefinition
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: teamsAppDefinition
+    - name: teamsApp-id
+      in: path
+      description: The unique identifier of teamsApp
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: teamsApp
+    - name: teamsAppDefinition-id
+      in: path
+      description: The unique identifier of teamsAppDefinition
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: teamsAppDefinition
   /appCatalogs/teamsApps/{teamsApp-id}/appDefinitions/$count:
     description: Provides operations to count the resources in the collection.
     get:
       tags:
-        - appCatalogs.teamsApp
+      - App Catalogs Teams Apps
       summary: Get the number of the resource
-      operationId: appCatalogs.teamsApps.appDefinitions.GetCount-ad4f
+      description: Performs GET operation on /appCatalogs/teamsApps/{teamsApp-id}/appDefinitions/$count
+      operationId: countAppCatalogsTeamsAppsAppDefinitions
       parameters:
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
       responses:
         2XX:
           $ref: '#/components/responses/ODataCountResponse'
@@ -590,24 +700,29 @@ paths:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
     parameters:
-      - name: teamsApp-id
-        in: path
-        description: The unique identifier of teamsApp
-        required: true
-        schema:
-          type: string
-        x-ms-docs-key-type: teamsApp
+    - name: teamsApp-id
+      in: path
+      description: The unique identifier of teamsApp
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: teamsApp
   /appCatalogs/teamsApps/$count:
     description: Provides operations to count the resources in the collection.
     get:
       tags:
-        - appCatalogs.teamsApp
+      - App Catalogs Teams Apps
       summary: Get the number of the resource
-      operationId: appCatalogs.teamsApps.GetCount-d4ad
+      description: Performs GET operation on /appCatalogs/teamsApps/$count
+      operationId: countAppCatalogsTeamsApps
       parameters:
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
       responses:
         2XX:
           $ref: '#/components/responses/ODataCountResponse'
@@ -615,140 +730,208 @@ paths:
           $ref: '#/components/responses/error'
         5XX:
           $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+tags:
+- name: App Catalogs
+  description: Operations for managing the Microsoft Teams app catalog
+- name: App Catalogs Teams Apps
+  description: Operations for managing the Microsoft Teams app catalog
 components:
   schemas:
-    microsoft.graph.appCatalogs:
+    AppCatalogs:
       allOf:
-        - $ref: '#/components/schemas/microsoft.graph.entity'
-        - title: appCatalogs
-          required:
-            - '@odata.type'
-          type: object
-          properties:
-            teamsApps:
-              type: array
-              items:
-                $ref: '#/components/schemas/microsoft.graph.teamsApp'
-              x-ms-navigationProperty: true
-            '@odata.type':
-              type: string
+      - $ref: '#/components/schemas/Entity'
+      - title: appCatalogs
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          teamsApps:
+            type: array
+            items:
+              $ref: '#/components/schemas/TeamsApp'
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
       x-ms-discriminator-value: '#microsoft.graph.appCatalogs'
-    microsoft.graph.teamsApp:
+    TeamsApp:
       allOf:
-        - $ref: '#/components/schemas/microsoft.graph.entity'
-        - title: teamsApp
-          required:
-            - '@odata.type'
-          type: object
-          properties:
-            displayName:
-              type: string
-              description: >-
-                The name of the catalog app provided by the app developer in the
-                Microsoft Teams zip app package.
+      - $ref: '#/components/schemas/Entity'
+      - title: teamsApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          displayName:
+            type: string
+            description: The name of the catalog app provided by the app developer in the Microsoft Teams zip app package.
+            nullable: true
+          distributionMethod:
+            anyOf:
+            - $ref: '#/components/schemas/TeamsAppDistributionMethod'
+            - type: object
               nullable: true
-            distributionMethod:
-              anyOf:
-                - $ref: >-
-                    #/components/schemas/microsoft.graph.teamsAppDistributionMethod
-                - type: object
-                  nullable: true
-              description: The method of distribution for the app. Read-only.
-            externalId:
-              type: string
-              description: >-
-                The ID of the catalog provided by the app developer in the
-                Microsoft Teams zip app package.
-              nullable: true
-            appDefinitions:
-              type: array
-              items:
-                $ref: '#/components/schemas/microsoft.graph.teamsAppDefinition'
-              description: The details for each version of the app.
-              x-ms-navigationProperty: true
-            '@odata.type':
-              type: string
+            description: The method of distribution for the app. Read-only.
+          externalId:
+            type: string
+            description: The ID of the catalog provided by the app developer in the Microsoft Teams zip app package.
+            nullable: true
+          appDefinitions:
+            type: array
+            items:
+              $ref: '#/components/schemas/TeamsAppDefinition'
+            description: The details for each version of the app.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
       x-ms-discriminator-value: '#microsoft.graph.teamsApp'
-    microsoft.graph.teamsAppDefinition:
+    TeamsAppDefinition:
       allOf:
-        - $ref: '#/components/schemas/microsoft.graph.entity'
-        - title: teamsAppDefinition
-          required:
-            - '@odata.type'
-          type: object
-          properties:
-            authorization:
-              anyOf:
-                - $ref: '#/components/schemas/microsoft.graph.teamsAppAuthorization'
-                - type: object
-                  nullable: true
-              description: Authorization requirements specified in the Teams app manifest.
-            createdBy:
-              anyOf:
-                - $ref: '#/components/schemas/microsoft.graph.identitySet'
-                - type: object
-                  nullable: true
-            description:
-              type: string
-              description: Verbose description of the application.
+      - $ref: '#/components/schemas/Entity'
+      - title: teamsAppDefinition
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          authorization:
+            anyOf:
+            - $ref: '#/components/schemas/TeamsAppAuthorization'
+            - type: object
               nullable: true
-            displayName:
-              type: string
-              description: The name of the app provided by the app developer.
+            description: Authorization requirements specified in the Teams app manifest.
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/IdentitySet'
+            - type: object
               nullable: true
-            lastModifiedDateTime:
-              pattern: >-
-                ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-              type: string
-              format: date-time
+          description:
+            type: string
+            description: Verbose description of the application.
+            nullable: true
+          displayName:
+            type: string
+            description: The name of the app provided by the app developer.
+            nullable: true
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            format: date-time
+            nullable: true
+          publishingState:
+            anyOf:
+            - $ref: '#/components/schemas/TeamsAppPublishingState'
+            - type: object
               nullable: true
-            publishingState:
-              anyOf:
-                - $ref: '#/components/schemas/microsoft.graph.teamsAppPublishingState'
-                - type: object
-                  nullable: true
-              description: >-
-                The published status of a specific version of a Teams app. The
-                possible values are:submitted—The specific version of the Teams
-                app was submitted and is under review.published—The request to
-                publish the specific version of the Teams app was approved by
-                the admin and the app is published.rejected—The admin rejected
-                the request to publish the specific version of the Teams app.
-            shortDescription:
-              type: string
-              description: Short description of the application.
+            description: The published status of a specific version of a Teams app. The possible values are:submitted—The
+              specific version of the Teams app was submitted and is under review.published—The request to publish the specific
+              version of the Teams app was approved by the admin and the app is published.rejected—The admin rejected the
+              request to publish the specific version of the Teams app.
+          shortDescription:
+            type: string
+            description: Short description of the application.
+            nullable: true
+          teamsAppId:
+            type: string
+            description: The ID from the Teams app manifest.
+            nullable: true
+          version:
+            type: string
+            description: The version number of the application.
+            nullable: true
+          bot:
+            anyOf:
+            - $ref: '#/components/schemas/TeamworkBot'
+            - type: object
               nullable: true
-            teamsAppId:
-              type: string
-              description: The ID from the Teams app manifest.
-              nullable: true
-            version:
-              type: string
-              description: The version number of the application.
-              nullable: true
-            bot:
-              anyOf:
-                - $ref: '#/components/schemas/microsoft.graph.teamworkBot'
-                - type: object
-                  nullable: true
-              description: The details of the bot specified in the Teams app manifest.
-              x-ms-navigationProperty: true
-            '@odata.type':
-              type: string
+            description: The details of the bot specified in the Teams app manifest.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
       x-ms-discriminator-value: '#microsoft.graph.teamsAppDefinition'
-    microsoft.graph.teamworkBot:
+    TeamworkBot:
       allOf:
-        - $ref: '#/components/schemas/microsoft.graph.entity'
-        - title: teamworkBot
-          required:
-            - '@odata.type'
-          type: object
-          properties:
-            '@odata.type':
-              type: string
+      - $ref: '#/components/schemas/Entity'
+      - title: teamworkBot
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
       x-ms-discriminator-value: '#microsoft.graph.teamworkBot'
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the entity.
+    ODataError:
+      title: ODataError
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    MainError:
+      title: MainError
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        target:
+          type: string
+          description: Target of the error
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+    ErrorDetail:
+      title: ErrorDetail
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    InnerError:
+      title: InnerError
+      type: object
+      properties:
+        request-id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        client-request-id:
+          type: string
+    ODataCountResponse:
+      title: ODataCountResponse
+      type: integer
+      format: int32
+      description: The count of entities
   parameters:
-    top:
+    Top:
       name: $top
       in: query
       description: Show only the first n items
@@ -758,7 +941,7 @@ components:
         minimum: 0
         type: integer
       example: 50
-    skip:
+    Skip:
       name: $skip
       in: query
       description: Skip the first n items
@@ -767,7 +950,7 @@ components:
       schema:
         minimum: 0
         type: integer
-    search:
+    Search:
       name: $search
       in: query
       description: Search items by search phrases
@@ -775,7 +958,7 @@ components:
       explode: false
       schema:
         type: string
-    filter:
+    Filter:
       name: $filter
       in: query
       description: Filter items by property values
@@ -783,7 +966,7 @@ components:
       explode: false
       schema:
         type: string
-    count:
+    Count:
       name: $count
       in: query
       description: Include count of items
@@ -791,23 +974,103 @@ components:
       explode: false
       schema:
         type: boolean
-  examples: {}
+  examples:
+    AppCatalogsExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        teamsApps:
+        - '@odata.type': '#microsoft.graph.teamsapp'
+        '@odata.type': '#microsoft.graph.appcatalogs'
+    AppCatalogsRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        teamsApps:
+        - '@odata.type': '#microsoft.graph.teamsapp'
+        '@odata.type': '#microsoft.graph.appcatalogs'
+    ODataCountResponseExample:
+      value: 42
+    ODataErrorExample:
+      value:
+        error:
+          code: BadRequest
+          message: The request is invalid.
+          target: /resource
+          details:
+          - code: InvalidParameter
+            message: Parameter value is invalid.
+            target: parameterName
+          innerError:
+            request-id: 00000000-0000-0000-0000-000000000001
+            date: '2024-01-15T10:30:00Z'
+            client-request-id: 00000000-0000-0000-0000-000000000002
+    TeamsAppDefinitionExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        authorization: {}
+        createdBy: {}
+        description: This is an example description.
+        displayName: Example Display Name
+        lastModifiedDateTime: '2024-01-15T10:30:00Z'
+        publishingState: {}
+        '@odata.type': '#microsoft.graph.teamsappdefinition'
+    TeamsAppDefinitionRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        authorization: {}
+        createdBy: {}
+        description: This is an example description.
+        displayName: Example Display Name
+        lastModifiedDateTime: '2024-01-15T10:30:00Z'
+        publishingState: {}
+        '@odata.type': '#microsoft.graph.teamsappdefinition'
+    TeamsAppExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        displayName: Example Display Name
+        distributionMethod: {}
+        externalId: 00000000-0000-0000-0000-000000000001
+        appDefinitions:
+        - '@odata.type': '#microsoft.graph.teamsappdefinition'
+        '@odata.type': '#microsoft.graph.teamsapp'
+    TeamsAppRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        displayName: Example Display Name
+        distributionMethod: {}
+        externalId: 00000000-0000-0000-0000-000000000001
+        appDefinitions:
+        - '@odata.type': '#microsoft.graph.teamsappdefinition'
+        '@odata.type': '#microsoft.graph.teamsapp'
+    TeamworkBotExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        '@odata.type': '#microsoft.graph.teamworkbot'
+    TeamworkBotRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        '@odata.type': '#microsoft.graph.teamworkbot'
   responses:
     error:
       description: error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.teamsAppCollectionResponse:
+            $ref: '#/components/schemas/ODataError'
+          examples:
+            ODataErrorExample:
+              $ref: '#/components/examples/ODataErrorExample'
+    TeamsAppCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.teamsAppCollectionResponse'
+            $ref: '#/components/schemas/TeamsAppCollectionResponse'
     ODataCountResponse:
       description: The count of the resource
       content:
         text/plain:
           schema:
             $ref: '#/components/schemas/ODataCountResponse'
+          examples:
+            ODataCountResponseExample:
+              $ref: '#/components/examples/ODataCountResponseExample'
