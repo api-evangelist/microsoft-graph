@@ -1,0 +1,357 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.api.gov/microsoft-graph/user",
+  "title": "Microsoft Graph User",
+  "description": "Represents a Microsoft Entra ID user account. Users are the core identity objects in Microsoft Graph and serve as the principal entity for accessing Microsoft 365 services including Outlook mail, calendar, OneDrive files, Teams, and more. Each user has a unique identifier, profile information, authentication credentials, and relationships to groups, roles, and organizational resources.",
+  "type": "object",
+  "required": [
+    "displayName",
+    "mailNickname",
+    "userPrincipalName",
+    "accountEnabled"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the user. Assigned by Microsoft Entra ID upon creation. Read-only.",
+      "readOnly": true,
+      "examples": [
+        "87d349ed-44d7-43e1-9a83-5f2406dee5bd"
+      ]
+    },
+    "displayName": {
+      "type": "string",
+      "description": "The name displayed in the address book for the user. This value is usually the combination of the user's first name, middle initial, and last name.",
+      "maxLength": 256,
+      "examples": [
+        "Adele Vance"
+      ]
+    },
+    "givenName": {
+      "type": ["string", "null"],
+      "description": "The given name (first name) of the user.",
+      "maxLength": 64,
+      "examples": [
+        "Adele"
+      ]
+    },
+    "surname": {
+      "type": ["string", "null"],
+      "description": "The user's surname (family name or last name).",
+      "maxLength": 64,
+      "examples": [
+        "Vance"
+      ]
+    },
+    "mail": {
+      "type": ["string", "null"],
+      "description": "The SMTP address for the user. Read-only for cloud-only users; writable for on-premises synced users.",
+      "format": "email",
+      "examples": [
+        "adelev@contoso.com"
+      ]
+    },
+    "userPrincipalName": {
+      "type": "string",
+      "description": "The user principal name (UPN) of the user. The UPN is an Internet-style login name for the user based on the Internet standard RFC 822.",
+      "examples": [
+        "adelev@contoso.com"
+      ]
+    },
+    "mailNickname": {
+      "type": "string",
+      "description": "The mail alias for the user. This property must be specified when a user is created.",
+      "maxLength": 64,
+      "examples": [
+        "adelev"
+      ]
+    },
+    "accountEnabled": {
+      "type": "boolean",
+      "description": "True if the account is enabled; otherwise, false. This property is required when a user is created."
+    },
+    "jobTitle": {
+      "type": ["string", "null"],
+      "description": "The user's job title.",
+      "maxLength": 128,
+      "examples": [
+        "Retail Manager"
+      ]
+    },
+    "department": {
+      "type": ["string", "null"],
+      "description": "The name of the department in which the user works.",
+      "maxLength": 64,
+      "examples": [
+        "Retail"
+      ]
+    },
+    "officeLocation": {
+      "type": ["string", "null"],
+      "description": "The office location in the user's place of business.",
+      "maxLength": 128
+    },
+    "companyName": {
+      "type": ["string", "null"],
+      "description": "The company name associated with the user.",
+      "maxLength": 64
+    },
+    "mobilePhone": {
+      "type": ["string", "null"],
+      "description": "The primary cellular telephone number for the user.",
+      "examples": [
+        "+1 425 555 0109"
+      ]
+    },
+    "businessPhones": {
+      "type": "array",
+      "description": "The telephone numbers for the user. Only one number can be set for this property.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "streetAddress": {
+      "type": ["string", "null"],
+      "description": "The street address of the user's place of business.",
+      "maxLength": 1024
+    },
+    "city": {
+      "type": ["string", "null"],
+      "description": "The city in which the user is located.",
+      "maxLength": 128
+    },
+    "state": {
+      "type": ["string", "null"],
+      "description": "The state or province in the user's address.",
+      "maxLength": 128
+    },
+    "postalCode": {
+      "type": ["string", "null"],
+      "description": "The postal code for the user's postal address.",
+      "maxLength": 40
+    },
+    "country": {
+      "type": ["string", "null"],
+      "description": "The country or region in which the user is located; for example, US or UK.",
+      "maxLength": 128
+    },
+    "usageLocation": {
+      "type": ["string", "null"],
+      "description": "A two-letter country code (ISO standard 3166) required for users assigned licenses due to legal requirements for checking availability of services in countries.",
+      "pattern": "^[A-Z]{2}$",
+      "examples": [
+        "US"
+      ]
+    },
+    "preferredLanguage": {
+      "type": ["string", "null"],
+      "description": "The preferred language for the user, in ISO 639-1 code format.",
+      "examples": [
+        "en-US"
+      ]
+    },
+    "userType": {
+      "type": ["string", "null"],
+      "description": "A string value that can be used to classify user types in your directory, such as Member and Guest.",
+      "enum": ["Member", "Guest", null]
+    },
+    "employeeId": {
+      "type": ["string", "null"],
+      "description": "The employee identifier assigned to the user by the organization.",
+      "maxLength": 16
+    },
+    "employeeType": {
+      "type": ["string", "null"],
+      "description": "Captures enterprise worker type, such as Employee, Contractor, Consultant, or Vendor."
+    },
+    "employeeHireDate": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "The date and time when the user was hired or will start work in case of a future hire."
+    },
+    "createdDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time the user was created. Read-only.",
+      "readOnly": true
+    },
+    "lastPasswordChangeDateTime": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "The time when this user last changed their password. Read-only.",
+      "readOnly": true
+    },
+    "signInActivity": {
+      "$ref": "#/$defs/SignInActivity"
+    },
+    "assignedLicenses": {
+      "type": "array",
+      "description": "The licenses that are assigned to the user, including inherited group-based licenses.",
+      "items": {
+        "$ref": "#/$defs/AssignedLicense"
+      }
+    },
+    "assignedPlans": {
+      "type": "array",
+      "description": "The plans that are assigned to the user.",
+      "items": {
+        "$ref": "#/$defs/AssignedPlan"
+      }
+    },
+    "provisionedPlans": {
+      "type": "array",
+      "description": "The plans that are provisioned for the user. Read-only.",
+      "readOnly": true,
+      "items": {
+        "$ref": "#/$defs/ProvisionedPlan"
+      }
+    },
+    "identities": {
+      "type": "array",
+      "description": "Represents the identities that can be used to sign in to this user account, including the standard identity (sign-in with UPN) and social or local account identities.",
+      "items": {
+        "$ref": "#/$defs/ObjectIdentity"
+      }
+    },
+    "onPremisesSyncEnabled": {
+      "type": ["boolean", "null"],
+      "description": "True if this user object is currently being synced from an on-premises Active Directory; otherwise false or null. Read-only.",
+      "readOnly": true
+    },
+    "onPremisesImmutableId": {
+      "type": ["string", "null"],
+      "description": "This property is used to associate an on-premises Active Directory user account to their Azure AD user object."
+    },
+    "onPremisesLastSyncDateTime": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "The last time at which the object was synced with the on-premises directory. Read-only.",
+      "readOnly": true
+    },
+    "proxyAddresses": {
+      "type": "array",
+      "description": "Email addresses associated with the user. For example: ['SMTP:bob@contoso.com', 'smtp:bob@sales.contoso.com'].",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deletedDateTime": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "The date and time the user was deleted. Read-only.",
+      "readOnly": true
+    }
+  },
+  "$defs": {
+    "SignInActivity": {
+      "type": "object",
+      "description": "Provides the last interactive and non-interactive sign-in date and time and the corresponding request ID for the user.",
+      "properties": {
+        "lastSignInDateTime": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "The last interactive sign-in date and time for a specific user."
+        },
+        "lastSignInRequestId": {
+          "type": ["string", "null"],
+          "description": "Request identifier of the last interactive sign-in performed by this user."
+        },
+        "lastNonInteractiveSignInDateTime": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "The last non-interactive sign-in date for a specific user."
+        },
+        "lastNonInteractiveSignInRequestId": {
+          "type": ["string", "null"],
+          "description": "Request identifier of the last non-interactive sign-in performed by this user."
+        }
+      }
+    },
+    "AssignedLicense": {
+      "type": "object",
+      "description": "Represents a license assigned to a user, identifying the SKU and any disabled service plans.",
+      "properties": {
+        "disabledPlans": {
+          "type": "array",
+          "description": "A collection of the unique identifiers for plans that have been disabled.",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "skuId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "The unique identifier for the SKU."
+        }
+      }
+    },
+    "AssignedPlan": {
+      "type": "object",
+      "description": "Represents a plan assigned to a user.",
+      "properties": {
+        "assignedDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time at which the plan was assigned."
+        },
+        "capabilityStatus": {
+          "type": "string",
+          "description": "Condition of the capability assignment, such as Enabled, Warning, Suspended, Deleted, LockedOut.",
+          "enum": [
+            "Enabled",
+            "Warning",
+            "Suspended",
+            "Deleted",
+            "LockedOut"
+          ]
+        },
+        "service": {
+          "type": "string",
+          "description": "The name of the service; for example, exchange."
+        },
+        "servicePlanId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "A GUID that identifies the service plan."
+        }
+      }
+    },
+    "ProvisionedPlan": {
+      "type": "object",
+      "description": "Represents a service plan that has been provisioned for the user.",
+      "properties": {
+        "capabilityStatus": {
+          "type": "string",
+          "description": "The provisioning status, such as Enabled."
+        },
+        "provisioningStatus": {
+          "type": "string",
+          "description": "The provisioning status, such as Success."
+        },
+        "service": {
+          "type": "string",
+          "description": "The name of the service; for example, SharePoint, Exchange."
+        }
+      }
+    },
+    "ObjectIdentity": {
+      "type": "object",
+      "description": "Represents an identity used to sign in to a user account.",
+      "properties": {
+        "signInType": {
+          "type": "string",
+          "description": "Specifies the user sign-in type, such as emailAddress, userName, or federated."
+        },
+        "issuer": {
+          "type": "string",
+          "description": "Specifies the issuer of the identity, for example contoso.onmicrosoft.com."
+        },
+        "issuerAssignedId": {
+          "type": "string",
+          "description": "Specifies the unique identifier assigned to the user by the issuer."
+        }
+      }
+    }
+  }
+}

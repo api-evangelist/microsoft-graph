@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.api.gov/microsoft-graph/group",
+  "title": "Microsoft Graph Group",
+  "description": "Represents a Microsoft Entra ID group, which can be a Microsoft 365 group, a security group, a mail-enabled security group, or a distribution group. Groups are used to manage collections of users and other directory objects for access control, collaboration, and resource sharing across Microsoft 365 services including Teams, SharePoint, Outlook, Planner, and OneDrive.",
+  "type": "object",
+  "required": [
+    "displayName",
+    "mailEnabled",
+    "mailNickname",
+    "securityEnabled"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the group. Inherited from directoryObject. Read-only.",
+      "readOnly": true,
+      "examples": [
+        "45b7d2e7-b882-4a80-ba97-10b7a63b8fa4"
+      ]
+    },
+    "displayName": {
+      "type": "string",
+      "description": "The name to display in the address book for the group. Required during creation and cannot be cleared during updates.",
+      "maxLength": 256,
+      "examples": [
+        "All Company"
+      ]
+    },
+    "description": {
+      "type": ["string", "null"],
+      "description": "An optional description for the group.",
+      "maxLength": 1024
+    },
+    "mail": {
+      "type": ["string", "null"],
+      "description": "The SMTP address for the group, for example 'serviceadmins@contoso.com'. Read-only.",
+      "format": "email",
+      "readOnly": true
+    },
+    "mailEnabled": {
+      "type": "boolean",
+      "description": "Specifies whether the group is mail-enabled. Required during creation."
+    },
+    "mailNickname": {
+      "type": "string",
+      "description": "The mail alias for the group, unique for Microsoft 365 groups in the organization. Required during creation.",
+      "maxLength": 64,
+      "pattern": "^[^@\\s]+$",
+      "examples": [
+        "allcompany"
+      ]
+    },
+    "securityEnabled": {
+      "type": "boolean",
+      "description": "Specifies whether the group is a security group. Required during creation."
+    },
+    "groupTypes": {
+      "type": "array",
+      "description": "Specifies the group type and its membership. If the collection contains 'Unified', the group is a Microsoft 365 group. If it contains 'DynamicMembership', the group has dynamic membership.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Unified",
+          "DynamicMembership"
+        ]
+      },
+      "examples": [
+        ["Unified"]
+      ]
+    },
+    "visibility": {
+      "type": ["string", "null"],
+      "description": "Specifies the visibility of a Microsoft 365 group. If visibility is not specified during group creation, the group is created as Public by default.",
+      "enum": ["Public", "Private", "HiddenMembership", null]
+    },
+    "classification": {
+      "type": ["string", "null"],
+      "description": "Describes a classification for the group (such as low, medium, or high business impact)."
+    },
+    "createdDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of when the group was created. Read-only.",
+      "readOnly": true
+    },
+    "renewedDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of when the group was last renewed. This cannot be modified directly and is only updated via the renew service action. Read-only.",
+      "readOnly": true
+    },
+    "expirationDateTime": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Timestamp of when the group is set to expire. Read-only.",
+      "readOnly": true
+    },
+    "isAssignableToRole": {
+      "type": ["boolean", "null"],
+      "description": "Indicates whether this group can be assigned to a Microsoft Entra role. This property can only be set when creating the group and is immutable."
+    },
+    "membershipRule": {
+      "type": ["string", "null"],
+      "description": "The rule that determines members for this group if the group is a dynamic group."
+    },
+    "membershipRuleProcessingState": {
+      "type": ["string", "null"],
+      "description": "Indicates whether the dynamic membership processing is on or paused.",
+      "enum": ["On", "Paused", null]
+    },
+    "preferredDataLocation": {
+      "type": ["string", "null"],
+      "description": "The preferred data location for the Microsoft 365 group."
+    },
+    "preferredLanguage": {
+      "type": ["string", "null"],
+      "description": "The preferred language for a Microsoft 365 group."
+    },
+    "proxyAddresses": {
+      "type": "array",
+      "description": "Email addresses for the group that direct to the same group mailbox. For example: ['SMTP:bob@contoso.com', 'smtp:bob@sales.contoso.com']. Read-only.",
+      "readOnly": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "theme": {
+      "type": ["string", "null"],
+      "description": "Specifies a Microsoft 365 group's color theme.",
+      "enum": [
+        "Teal", "Purple", "Green", "Blue", "Pink",
+        "Orange", "Red", null
+      ]
+    },
+    "resourceProvisioningOptions": {
+      "type": "array",
+      "description": "Specifies the group resources that are provisioned as part of Microsoft 365 group creation.",
+      "items": {
+        "type": "string"
+      },
+      "examples": [
+        ["Team"]
+      ]
+    },
+    "onPremisesSyncEnabled": {
+      "type": ["boolean", "null"],
+      "description": "True if this group is synced from an on-premises directory; false if this group was originally synced from an on-premises directory but is no longer synced. Read-only.",
+      "readOnly": true
+    },
+    "onPremisesLastSyncDateTime": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "The last time at which the group was synced with the on-premises directory. Read-only.",
+      "readOnly": true
+    },
+    "deletedDateTime": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "The date and time the group was soft-deleted. Read-only.",
+      "readOnly": true
+    }
+  }
+}

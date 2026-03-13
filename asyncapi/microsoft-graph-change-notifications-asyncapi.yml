@@ -1,0 +1,356 @@
+asyncapi: 2.6.0
+info:
+  title: Microsoft Graph Change Notifications
+  description: >-
+    Microsoft Graph change notifications enable applications to receive
+    real-time notifications when data changes occur in Microsoft Graph
+    resources. Applications create subscriptions specifying which resources
+    to monitor and a webhook endpoint to receive notifications. When a
+    change occurs (create, update, or delete), Microsoft Graph sends a
+    POST request to the specified notification URL containing one or more
+    changeNotification objects wrapped in a changeNotificationCollection.
+    Supported resources include Outlook messages, events, and contacts;
+    Teams chats, channels, and messages; OneDrive and SharePoint items;
+    directory objects such as users and groups; security alerts; and
+    presence information. Notifications can optionally include encrypted
+    resource data for rich notification scenarios. Lifecycle notifications
+    inform apps about subscription expiration, removal, and
+    reauthorization requirements.
+  version: '1.0'
+  contact:
+    name: Microsoft Graph Support
+    url: https://developer.microsoft.com/en-us/graph/support
+  license:
+    name: Microsoft APIs Terms of Use
+    url: https://learn.microsoft.com/en-us/legal/microsoft-apis/terms-of-use
+  externalDocs:
+    description: Microsoft Graph Change Notifications Documentation
+    url: https://learn.microsoft.com/en-us/graph/change-notifications-overview
+servers:
+  production:
+    url: 'https://graph.microsoft.com/v1.0'
+    protocol: https
+    description: >-
+      Microsoft Graph v1.0 production endpoint. Applications create
+      subscriptions via the REST API, and Microsoft Graph delivers
+      change notifications to the application's webhook endpoint.
+    security:
+      - oauth2: []
+channels:
+  /webhook:
+    description: >-
+      The webhook endpoint hosted by the subscribing application.
+      Microsoft Graph sends HTTP POST requests to this URL when changes
+      occur in subscribed resources. The endpoint must support HTTPS,
+      respond to validation requests during subscription creation, and
+      return HTTP 202 Accepted for notification deliveries.
+    publish:
+      operationId: receiveChangeNotifications
+      summary: Receive change notifications from Microsoft Graph
+      description: >-
+        Microsoft Graph delivers change notification payloads to the
+        subscriber's webhook endpoint as HTTP POST requests. Each
+        payload is a changeNotificationCollection containing one or
+        more changeNotification objects. The subscriber must respond
+        with HTTP 202 Accepted within 3 seconds to acknowledge receipt.
+        Notifications may include basic resource references or encrypted
+        resource data depending on the subscription configuration.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/ChangeNotificationCollection'
+          - $ref: '#/components/messages/ValidationRequest'
+  /lifecycleNotifications:
+    description: >-
+      The lifecycle notification endpoint hosted by the subscribing
+      application, specified via the lifecycleNotificationUrl property
+      when creating a subscription. Microsoft Graph sends lifecycle
+      events to inform the application about subscription state changes
+      including missed notifications, subscription removal, and
+      reauthorization requirements.
+    publish:
+      operationId: receiveLifecycleNotifications
+      summary: Receive lifecycle notifications for subscription management
+      description: >-
+        Microsoft Graph sends lifecycle notifications when a subscription
+        encounters issues that require the application's attention. These
+        include missed notifications (when delivery failed), subscription
+        removal (when the subscription was removed by the service), and
+        reauthorization required (when the app's access token needs
+        renewal). Applications must handle these events to maintain
+        reliable notification delivery.
+      message:
+        $ref: '#/components/messages/LifecycleNotification'
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: >-
+        OAuth 2.0 authorization using Microsoft identity platform.
+        Applications must register in Microsoft Entra ID and obtain
+        tokens with appropriate permissions to create subscriptions
+        and receive change notifications.
+      flows:
+        clientCredentials:
+          authorizationUrl: https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/authorize
+          tokenUrl: https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/token
+          scopes:
+            https://graph.microsoft.com/.default: Access Microsoft Graph resources
+  messages:
+    ChangeNotificationCollection:
+      name: changeNotificationCollection
+      title: Change Notification Collection
+      summary: >-
+        A collection of one or more change notifications delivered to the
+        subscriber's webhook endpoint when subscribed resources change.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ChangeNotificationCollection'
+    ValidationRequest:
+      name: validationRequest
+      title: Webhook Validation Request
+      summary: >-
+        A validation request sent by Microsoft Graph when a subscription
+        is created or renewed. The endpoint must respond with the
+        validationToken value in the response body as plain text within
+        10 seconds.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ValidationRequest'
+    LifecycleNotification:
+      name: lifecycleNotification
+      title: Lifecycle Notification
+      summary: >-
+        A lifecycle notification informing the application about
+        subscription state changes that require attention, such as
+        missed notifications, subscription removal, or the need for
+        reauthorization.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/LifecycleNotificationPayload'
+  schemas:
+    ChangeNotificationCollection:
+      type: object
+      description: >-
+        A collection of change notifications sent as a single POST
+        request to the subscriber's webhook endpoint. May contain
+        notifications from multiple subscriptions.
+      properties:
+        value:
+          type: array
+          description: >-
+            The set of change notifications being delivered in this
+            payload.
+          items:
+            $ref: '#/components/schemas/ChangeNotification'
+      required:
+        - value
+    ChangeNotification:
+      type: object
+      description: >-
+        Represents a single change notification for a subscribed
+        resource. Contains information about what changed, which
+        subscription triggered the notification, and optionally
+        the changed resource data.
+      properties:
+        id:
+          type: string
+          description: >-
+            Unique identifier for this notification.
+        subscriptionId:
+          type: string
+          format: uuid
+          description: >-
+            The unique identifier of the subscription that generated
+            this notification.
+        subscriptionExpirationDateTime:
+          type: string
+          format: date-time
+          description: >-
+            The expiration date and time of the subscription that
+            generated this notification.
+        clientState:
+          type: string
+          maxLength: 255
+          description: >-
+            The value of the clientState property sent in the
+            subscription request, used to verify the authenticity
+            of the notification.
+        changeType:
+          type: string
+          description: >-
+            The type of change that triggered the notification.
+          enum:
+            - created
+            - updated
+            - deleted
+        resource:
+          type: string
+          description: >-
+            The URI of the resource that changed, relative to
+            https://graph.microsoft.com.
+        resourceData:
+          $ref: '#/components/schemas/ResourceData'
+        encryptedContent:
+          $ref: '#/components/schemas/ChangeNotificationEncryptedContent'
+        tenantId:
+          type: string
+          format: uuid
+          description: >-
+            The unique identifier of the Microsoft Entra tenant
+            from which the change notification originated.
+      required:
+        - subscriptionId
+        - subscriptionExpirationDateTime
+        - changeType
+        - resource
+        - tenantId
+    ResourceData:
+      type: object
+      description: >-
+        Basic information about the resource that triggered the
+        change notification, including the resource type and identifier.
+      properties:
+        '@odata.type':
+          type: string
+          description: >-
+            The OData entity type of the resource, such as
+            #microsoft.graph.message or #microsoft.graph.chatMessage.
+        '@odata.id':
+          type: string
+          description: >-
+            The OData identifier for the resource instance.
+        '@odata.etag':
+          type: string
+          description: >-
+            The HTTP entity tag that represents the version of the
+            resource.
+        id:
+          type: string
+          description: >-
+            The identifier of the resource that triggered the
+            notification.
+    ChangeNotificationEncryptedContent:
+      type: object
+      description: >-
+        Encrypted resource data attached to a change notification when
+        the subscription was configured with includeResourceData set to
+        true and an encryption certificate. The data is encrypted using
+        the public key from the certificate provided during subscription
+        creation.
+      properties:
+        data:
+          type: string
+          description: >-
+            Base64-encoded encrypted data that, when decrypted, produces
+            a JSON string conforming to the resource type indicated by
+            dataType.
+        dataSignature:
+          type: string
+          description: >-
+            Base64-encoded HMAC-SHA256 hash of the data for validation
+            purposes.
+        dataKey:
+          type: string
+          description: >-
+            Base64-encoded symmetric key generated by Microsoft Graph
+            to encrypt the data value and to generate the data signature.
+            This key is encrypted with the certificate public key
+            provided during subscription creation.
+        encryptionCertificateId:
+          type: string
+          description: >-
+            The ID of the certificate used to encrypt the dataKey.
+        encryptionCertificateThumbprint:
+          type: string
+          description: >-
+            Base64-encoded thumbprint of the certificate used to
+            encrypt the dataKey.
+      required:
+        - data
+        - dataSignature
+        - dataKey
+        - encryptionCertificateId
+        - encryptionCertificateThumbprint
+    ValidationRequest:
+      type: object
+      description: >-
+        Sent as a query parameter during subscription creation to
+        validate the webhook endpoint. The endpoint must echo back
+        the validationToken value as plain text in the response body.
+      properties:
+        validationToken:
+          type: string
+          description: >-
+            A token string that the webhook endpoint must return in
+            the response body as plain text to prove ownership of
+            the notification URL.
+      required:
+        - validationToken
+    LifecycleNotificationPayload:
+      type: object
+      description: >-
+        A lifecycle notification payload informing the application
+        about subscription management events. The lifecycleEvent
+        property indicates the type of event, and the notification
+        includes subscription identifiers for correlation.
+      properties:
+        value:
+          type: array
+          description: >-
+            The set of lifecycle notifications in this payload.
+          items:
+            $ref: '#/components/schemas/LifecycleNotificationItem'
+      required:
+        - value
+    LifecycleNotificationItem:
+      type: object
+      description: >-
+        A single lifecycle notification item indicating a subscription
+        state change that requires the application's attention.
+      properties:
+        id:
+          type: string
+          description: >-
+            Unique identifier for this lifecycle notification.
+        subscriptionId:
+          type: string
+          format: uuid
+          description: >-
+            The unique identifier of the affected subscription.
+        subscriptionExpirationDateTime:
+          type: string
+          format: date-time
+          description: >-
+            The expiration date and time of the affected subscription.
+        clientState:
+          type: string
+          maxLength: 128
+          description: >-
+            The clientState value from the subscription, for
+            verification purposes.
+        tenantId:
+          type: string
+          format: uuid
+          description: >-
+            The unique identifier of the originating Microsoft Entra
+            tenant.
+        lifecycleEvent:
+          type: string
+          description: >-
+            The type of lifecycle event. Applications must handle
+            each type to maintain reliable notification delivery.
+          enum:
+            - missed
+            - subscriptionRemoved
+            - reauthorizationRequired
+        resource:
+          type: string
+          description: >-
+            The URI of the resource associated with the subscription,
+            relative to https://graph.microsoft.com.
+        resourceData:
+          $ref: '#/components/schemas/ResourceData'
+      required:
+        - subscriptionId
+        - lifecycleEvent
+        - tenantId

@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.api.gov/microsoft-graph/directory-object",
+  "title": "Microsoft Graph Directory Object",
+  "description": "Represents the base type for Microsoft Entra ID directory objects. Every identity-related object in Microsoft Entra ID, including users, groups, devices, service principals, applications, organizational contacts, and directory roles, inherits from directoryObject. It provides a common set of properties and navigation relationships that all directory entities share, enabling uniform operations such as listing, getting, checking membership, and querying deletions across diverse object types.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the directory object. A GUID assigned by Microsoft Entra ID. Read-only.",
+      "readOnly": true,
+      "examples": [
+        "87d349ed-44d7-43e1-9a83-5f2406dee5bd"
+      ]
+    },
+    "@odata.type": {
+      "type": "string",
+      "description": "The OData entity type of the directory object, indicating whether it is a user, group, device, service principal, application, or other entity type.",
+      "examples": [
+        "#microsoft.graph.user",
+        "#microsoft.graph.group",
+        "#microsoft.graph.device",
+        "#microsoft.graph.servicePrincipal",
+        "#microsoft.graph.application",
+        "#microsoft.graph.orgContact",
+        "#microsoft.graph.directoryRole"
+      ]
+    },
+    "deletedDateTime": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Date and time when this object was deleted. Always null when the object has not been deleted. Read-only.",
+      "readOnly": true
+    }
+  },
+  "$defs": {
+    "DirectoryObjectCollection": {
+      "type": "object",
+      "description": "A collection of directory objects returned from a list operation, with optional OData pagination.",
+      "properties": {
+        "@odata.context": {
+          "type": "string",
+          "description": "The OData context URL for the collection."
+        },
+        "@odata.nextLink": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to retrieve the next page of results, if the results are paged."
+        },
+        "@odata.count": {
+          "type": "integer",
+          "description": "The total count of objects matching the request, if requested with $count=true.",
+          "minimum": 0
+        },
+        "value": {
+          "type": "array",
+          "description": "The list of directory objects in this page of results.",
+          "items": {
+            "$ref": "#"
+          }
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "CheckMemberGroupsRequest": {
+      "type": "object",
+      "description": "Request body for the checkMemberGroups action, which checks for membership in a specified list of group IDs.",
+      "required": [
+        "groupIds"
+      ],
+      "properties": {
+        "groupIds": {
+          "type": "array",
+          "description": "A collection of group IDs to check membership against.",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "maxItems": 20
+        }
+      }
+    },
+    "GetMemberObjectsRequest": {
+      "type": "object",
+      "description": "Request body for the getMemberObjects action, which returns all the IDs of the groups, administrative units, and directory roles that the object is a member of.",
+      "required": [
+        "securityEnabledOnly"
+      ],
+      "properties": {
+        "securityEnabledOnly": {
+          "type": "boolean",
+          "description": "True to specify that only security groups that the entity is a member of should be returned; false to specify that all groups and directory roles should be returned."
+        }
+      }
+    },
+    "GetByIdsRequest": {
+      "type": "object",
+      "description": "Request body for the getByIds action, which returns the directory objects specified in a list of IDs. Supports returning up to 1000 objects per request.",
+      "required": [
+        "ids"
+      ],
+      "properties": {
+        "ids": {
+          "type": "array",
+          "description": "A collection of IDs for which to return objects.",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "maxItems": 1000
+        },
+        "types": {
+          "type": "array",
+          "description": "A collection of resource types that specifies the set of resource collections to search. If not specified, the default is directoryObject, which contains all of the resource types defined in the directory.",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            ["user", "group"]
+          ]
+        }
+      }
+    }
+  }
+}

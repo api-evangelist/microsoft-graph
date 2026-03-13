@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.api.gov/microsoft-graph/change-notification",
+  "title": "Microsoft Graph Change Notification",
+  "description": "Represents the change notification payload sent by Microsoft Graph to a subscriber's webhook endpoint when a subscribed resource changes. The payload is a changeNotificationCollection containing one or more changeNotification objects. Each notification identifies which subscription triggered it, what resource changed, and the type of change (created, updated, or deleted). Notifications may optionally include encrypted resource data when the subscription was configured with includeResourceData set to true.",
+  "type": "object",
+  "required": [
+    "value"
+  ],
+  "properties": {
+    "value": {
+      "type": "array",
+      "description": "The set of change notifications being delivered in this payload. May contain notifications from multiple subscriptions.",
+      "items": {
+        "$ref": "#/$defs/ChangeNotification"
+      },
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "ChangeNotification": {
+      "type": "object",
+      "description": "A single change notification indicating that a subscribed resource has been created, updated, or deleted.",
+      "required": [
+        "subscriptionId",
+        "subscriptionExpirationDateTime",
+        "changeType",
+        "resource",
+        "tenantId"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for this notification."
+        },
+        "subscriptionId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "The unique identifier of the subscription that generated this notification."
+        },
+        "subscriptionExpirationDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The expiration date and time of the subscription that generated this notification."
+        },
+        "clientState": {
+          "type": ["string", "null"],
+          "description": "The value of the clientState property sent in the subscription request. Used to verify notification authenticity.",
+          "maxLength": 255
+        },
+        "changeType": {
+          "type": "string",
+          "description": "The type of change that triggered the notification.",
+          "enum": [
+            "created",
+            "updated",
+            "deleted"
+          ]
+        },
+        "resource": {
+          "type": "string",
+          "description": "The URI of the resource that changed, relative to https://graph.microsoft.com.",
+          "examples": [
+            "users/87d349ed-44d7-43e1-9a83-5f2406dee5bd",
+            "me/messages/AAMkAGI1AABSRIM1AAA="
+          ]
+        },
+        "resourceData": {
+          "$ref": "#/$defs/ResourceData"
+        },
+        "encryptedContent": {
+          "$ref": "#/$defs/ChangeNotificationEncryptedContent"
+        },
+        "tenantId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "The unique identifier of the Microsoft Entra tenant from which the change notification originated."
+        }
+      }
+    },
+    "ResourceData": {
+      "type": "object",
+      "description": "Basic information about the resource that triggered the change notification, including the OData type and identifier.",
+      "properties": {
+        "@odata.type": {
+          "type": "string",
+          "description": "The OData entity type of the resource.",
+          "examples": [
+            "#microsoft.graph.message",
+            "#microsoft.graph.user",
+            "#microsoft.graph.chatMessage"
+          ]
+        },
+        "@odata.id": {
+          "type": "string",
+          "description": "The OData identifier for the resource instance."
+        },
+        "@odata.etag": {
+          "type": "string",
+          "description": "The HTTP entity tag representing the version of the resource."
+        },
+        "id": {
+          "type": "string",
+          "description": "The identifier of the resource that triggered the notification."
+        }
+      }
+    },
+    "ChangeNotificationEncryptedContent": {
+      "type": "object",
+      "description": "Encrypted resource data attached to a change notification when the subscription was configured with includeResourceData and an encryption certificate.",
+      "required": [
+        "data",
+        "dataSignature",
+        "dataKey",
+        "encryptionCertificateId",
+        "encryptionCertificateThumbprint"
+      ],
+      "properties": {
+        "data": {
+          "type": "string",
+          "description": "Base64-encoded encrypted data that, when decrypted, produces a JSON string conforming to the resource type indicated by dataType."
+        },
+        "dataSignature": {
+          "type": "string",
+          "description": "Base64-encoded HMAC-SHA256 hash of the data for validation."
+        },
+        "dataKey": {
+          "type": "string",
+          "description": "Base64-encoded symmetric key generated by Microsoft Graph to encrypt the data value. This key is encrypted with the certificate public key provided during subscription creation."
+        },
+        "encryptionCertificateId": {
+          "type": "string",
+          "description": "The ID of the certificate used to encrypt the dataKey."
+        },
+        "encryptionCertificateThumbprint": {
+          "type": "string",
+          "description": "Base64-encoded thumbprint of the certificate used to encrypt the dataKey."
+        }
+      }
+    }
+  }
+}
