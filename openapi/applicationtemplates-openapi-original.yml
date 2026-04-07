@@ -1,9 +1,7 @@
 openapi: 3.1.0
 info:
   title: Microsoft Graph Application Templates API
-  description: The Microsoft Graph Application Templates API provides operations to list and instantiate application templates
-    from the Microsoft Entra application gallery. This enables programmatic provisioning of pre-configured enterprise applications
-    with single sign-on (SSO) support.
+  description: The Microsoft Graph Application Templates API provides operations to list and instantiate application templates from the Microsoft Entra application gallery. This enables programmatic provisioning of pre-configured enterprise applications with single sign-on (SSO) support.
   version: 1.0.0
   contact:
     name: Microsoft Graph Support
@@ -12,56 +10,56 @@ info:
     name: Microsoft API License
     url: https://docs.microsoft.com/legal/microsoft-apis/terms-of-use
 servers:
-- url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph v1.0 endpoint
+  - url: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph v1.0 endpoint
 paths:
   /applicationTemplates:
     description: Provides operations to manage the collection of applicationTemplate entities.
     get:
       tags:
-      - Application Templates
-      summary: List applicationTemplates
+        - Application Templates
+      summary: Microsoft Graph List applicationTemplates
       description: Retrieve a list of applicationTemplate objects from the Microsoft Entra application gallery.
       operationId: listApplicationTemplates
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/applicationtemplate-list?view=graph-rest-1.0
       parameters:
-      - $ref: '#/components/parameters/Top'
-      - $ref: '#/components/parameters/Skip'
-      - $ref: '#/components/parameters/Search'
-      - $ref: '#/components/parameters/Filter'
-      - $ref: '#/components/parameters/Count'
-      - name: $orderby
-        in: query
-        description: Order items by property values
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      - name: $select
-        in: query
-        description: Select properties to be returned
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      - name: $expand
-        in: query
-        description: Expand related entities
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
+        - $ref: '#/components/parameters/Top'
+        - $ref: '#/components/parameters/Skip'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Filter'
+        - $ref: '#/components/parameters/Count'
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
       responses:
         2XX:
           $ref: '#/components/responses/ApplicationTemplateCollectionResponse'
@@ -81,34 +79,34 @@ paths:
     description: Provides operations to manage the collection of applicationTemplate entities.
     get:
       tags:
-      - Application Templates
-      summary: Get applicationTemplate
+        - Application Templates
+      summary: Microsoft Graph Get applicationTemplate
       description: Retrieve the properties of an applicationTemplate object.
       operationId: getApplicationTemplates
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/applicationtemplate-get?view=graph-rest-1.0
       parameters:
-      - name: $select
-        in: query
-        description: Select properties to be returned
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      - name: $expand
-        in: query
-        description: Expand related entities
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
       responses:
         2XX:
           description: Retrieved entity
@@ -129,22 +127,20 @@ paths:
         dispatcherRules: 2XX
       x-ms-docs-operation-type: operation
     parameters:
-    - name: applicationTemplate-id
-      in: path
-      description: The unique identifier of applicationTemplate
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: applicationTemplate
+      - name: applicationTemplate-id
+        in: path
+        description: The unique identifier of applicationTemplate
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: applicationTemplate
   /applicationTemplates/{applicationTemplate-id}/instantiate:
     description: Provides operations to call the instantiate method.
     post:
       tags:
-      - Application Templates Instantiate
-      summary: Create Instantiate
-      description: Add an instance of an application from the Microsoft Entra application gallery into your directory. For
-        non-gallery apps, use an application template with one of the following IDs to configure different single sign-on
-        (SSO) modes like SAML SSO and password-based SSO.
+        - Application Templates Instantiate
+      summary: Microsoft Graph Create Instantiate
+      description: Add an instance of an application from the Microsoft Entra application gallery into your directory. For non-gallery apps, use an application template with one of the following IDs to configure different single sign-on (SSO) modes like SAML SSO and password-based SSO.
       operationId: instantiateApplicationTemplates
       externalDocs:
         description: Find more info here
@@ -173,9 +169,9 @@ paths:
             application/json:
               schema:
                 anyOf:
-                - $ref: '#/components/schemas/ApplicationServicePrincipal'
-                - type: object
-                  nullable: true
+                  - $ref: '#/components/schemas/ApplicationServicePrincipal'
+                  - type: object
+                    nullable: true
         4XX:
           $ref: '#/components/responses/error'
         5XX:
@@ -186,24 +182,24 @@ paths:
         dispatcherRules: 2XX
       x-ms-docs-operation-type: action
     parameters:
-    - name: applicationTemplate-id
-      in: path
-      description: The unique identifier of applicationTemplate
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: applicationTemplate
+      - name: applicationTemplate-id
+        in: path
+        description: The unique identifier of applicationTemplate
+        required: true
+        schema:
+          type: string
+        x-ms-docs-key-type: applicationTemplate
   /applicationTemplates/$count:
     description: Provides operations to count the resources in the collection.
     get:
       tags:
-      - Application Templates
-      summary: Get the number of the resource
+        - Application Templates
+      summary: Microsoft Graph Get the number of the resource
       description: Performs GET operation on /applicationTemplates/$count
       operationId: countApplicationTemplates
       parameters:
-      - $ref: '#/components/parameters/Search'
-      - $ref: '#/components/parameters/Filter'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Filter'
       responses:
         2XX:
           $ref: '#/components/responses/ODataCountResponse'
@@ -216,64 +212,60 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: 2XX
 tags:
-- name: Application Templates
-  description: Operations for browsing and instantiating application templates
-- name: Application Templates Instantiate
-  description: Operations for browsing and instantiating application templates
+  - name: Application Templates
+    description: Operations for browsing and instantiating application templates
+  - name: Application Templates Instantiate
+    description: Operations for browsing and instantiating application templates
 components:
   schemas:
     ApplicationTemplate:
       allOf:
-      - $ref: '#/components/schemas/Entity'
-      - title: applicationTemplate
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          categories:
-            type: array
-            items:
+        - $ref: '#/components/schemas/Entity'
+        - title: applicationTemplate
+          required:
+            - '@odata.type'
+          type: object
+          properties:
+            categories:
+              type: array
+              items:
+                type: string
+                nullable: true
+              description: 'The list of categories for the application. Supported values can be: Collaboration, Business Management, Consumer, Content management, CRM, Data services, Developer services, E-commerce, Education, ERP, Finance, Health, Human resources, IT infrastructure, Mail, Management, Marketing, Media, Productivity, Project management, Telecommunications, Tools, Travel, and Web design & hosting.  Supports $filter (contains).'
+            description:
               type: string
+              description: A description of the application.
               nullable: true
-            description: 'The list of categories for the application. Supported values can be: Collaboration, Business Management,
-              Consumer, Content management, CRM, Data services, Developer services, E-commerce, Education, ERP, Finance, Health,
-              Human resources, IT infrastructure, Mail, Management, Marketing, Media, Productivity, Project management, Telecommunications,
-              Tools, Travel, and Web design & hosting.  Supports $filter (contains).'
-          description:
-            type: string
-            description: A description of the application.
-            nullable: true
-          displayName:
-            type: string
-            description: The name of the application. Supports $filter (contains).
-            nullable: true
-          homePageUrl:
-            type: string
-            description: The home page URL of the application.
-            nullable: true
-          logoUrl:
-            type: string
-            description: The URL to get the logo for this application.
-            nullable: true
-          publisher:
-            type: string
-            description: The name of the publisher for this application.
-            nullable: true
-          supportedProvisioningTypes:
-            type: array
-            items:
+            displayName:
               type: string
+              description: The name of the application. Supports $filter (contains).
               nullable: true
-            description: The list of provisioning modes supported by this application. The only valid value is sync.
-          supportedSingleSignOnModes:
-            type: array
-            items:
+            homePageUrl:
               type: string
+              description: The home page URL of the application.
               nullable: true
-            description: The list of single sign-on modes supported by this application. The supported values are oidc, password,
-              saml, and notSupported.
-          '@odata.type':
-            type: string
+            logoUrl:
+              type: string
+              description: The URL to get the logo for this application.
+              nullable: true
+            publisher:
+              type: string
+              description: The name of the publisher for this application.
+              nullable: true
+            supportedProvisioningTypes:
+              type: array
+              items:
+                type: string
+                nullable: true
+              description: The list of provisioning modes supported by this application. The only valid value is sync.
+            supportedSingleSignOnModes:
+              type: array
+              items:
+                type: string
+                nullable: true
+              description: The list of single sign-on modes supported by this application. The supported values are oidc, password, saml, and notSupported.
+            '@odata.type':
+              type: string
       x-ms-discriminator-value: '#microsoft.graph.applicationTemplate'
     Entity:
       title: Entity
@@ -286,7 +278,7 @@ components:
       title: ODataError
       type: object
       required:
-      - error
+        - error
       properties:
         error:
           $ref: '#/components/schemas/MainError'
@@ -294,8 +286,8 @@ components:
       title: MainError
       type: object
       required:
-      - code
-      - message
+        - code
+        - message
       properties:
         code:
           type: string
@@ -317,8 +309,8 @@ components:
       title: ErrorDetail
       type: object
       required:
-      - code
-      - message
+        - code
+        - message
       properties:
         code:
           type: string
@@ -392,7 +384,7 @@ components:
       value:
         id: 00000000-0000-0000-0000-000000000001
         categories:
-        - string-value
+          - string-value
         description: This is an example description.
         displayName: Example Display Name
         homePageUrl: https://example.com/resource
@@ -408,9 +400,9 @@ components:
           message: The request is invalid.
           target: /resource
           details:
-          - code: InvalidParameter
-            message: Parameter value is invalid.
-            target: parameterName
+            - code: InvalidParameter
+              message: Parameter value is invalid.
+              target: parameterName
           innerError:
             request-id: 00000000-0000-0000-0000-000000000001
             date: '2024-01-15T10:30:00Z'
