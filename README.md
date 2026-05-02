@@ -16,7 +16,7 @@ Microsoft Graph is the gateway to data and intelligence in Microsoft 365. It pro
 ## Timestamps
 
 - **Created:** 2025-08-20 
-- **Modified:** 2025-12-28 
+- **Modified:** 2026-04-28 
 
 ## APIs
 
