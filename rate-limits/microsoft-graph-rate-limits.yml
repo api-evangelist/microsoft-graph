@@ -4,540 +4,134 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Microsoft Graph
 providerId: microsoft-graph
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: true
 tags:
-  - Azure AD
-  - Collaboration
-  - Contacts
-  - Documents
-  - Email
-  - Graph
+  - Rate Limiting
+  - Microsoft Graph
+  - Microsoft 365
   - Identity
   - Microsoft
-  - Office 365
-  - Presentations
-  - Productivity
-  - Spreadsheets
-  - T1
-  - Tasks
-  - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Microsoft Graph API surface. Captures per-tier
-  quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to
-  be replaced with published provider limits.
+description: Microsoft Graph applies per-service throttling on top of a global per-app ceiling of 130,000
+  requests per 10 seconds. Each service (mail, calendar, files, identity, Teams, Excel, education, reports)
+  has its own per-app-per-tenant and per-app-across-all-tenants quotas. Identity & directory uses a ResourceUnit
+  token-bucket model with size-tiered quotas (Small / Medium / Large tenant). Returns 429 with Retry-After.
+sources:
+  - https://learn.microsoft.com/en-us/graph/throttling
+  - https://learn.microsoft.com/en-us/graph/throttling-limits
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
   retryAfter: Retry-After
-  policy: RateLimit-Policy
+  requestId: request-id
+  throttleScope: x-ms-throttle-scope
+  throttleLimit: x-ms-throttle-limit-percentage
+  throttlePriority: x-ms-throttle-priority
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
   serviceUnavailable: 503
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
+  - name: Global ceiling per application across all tenants
+    scope: application
+    metric: requests_per_10_seconds
+    limit: 130000
+    timeFrame: second
+  - name: Identity & Access (read) — small tenant (<50 users)
+    scope: app/tenant
+    metric: resource_units_per_10_seconds
+    limit: 3500
+    timeFrame: second
+  - name: Identity & Access (read) — medium tenant (50–500 users)
+    scope: app/tenant
+    metric: resource_units_per_10_seconds
+    limit: 5000
+    timeFrame: second
+  - name: Identity & Access (read) — large tenant (>500 users)
+    scope: app/tenant
+    metric: resource_units_per_10_seconds
+    limit: 8000
+    timeFrame: second
+  - name: Identity & Access (write) per app/tenant
+    scope: app/tenant
+    metric: requests_per_2m30s
+    limit: 3000
+    timeFrame: second
+  - name: Identity & Access (read) per app across tenants
+    scope: application
+    metric: resource_units_per_20_seconds
+    limit: 150000
+    timeFrame: second
+  - name: Identity & Access (write) per app across tenants
+    scope: application
+    metric: requests_per_5_minutes
+    limit: 35000
     timeFrame: minute
-    applies:
-      - Microsoft Graph Admin
-      - Microsoft Graph Agreement Acceptances
-      - Microsoft Graph Agreements
-      - Microsoft Graph Applicaiton Catalogs
-      - Microsoft Graph Applications
-      - Microsoft Graph Application Templates
-      - Microsoft Graph Audit Logs
-      - Microsoft Graph Authentication Method Configurations
-      - Microsoft Graph Authentication Methods Policies
-      - Microsoft Graph Certificate Based Authorization Configuration
-      - Microsoft Graph Chats
-      - Microsoft Graph Communications
-      - Microsoft Graph Compliance
-      - Microsoft Graph Connections
-      - Microsoft Graph Contacts
-      - Microsoft Graph Contracts
-      - Microsoft Graph Copilot
-      - Microsoft Graph Data Policy Operations
-      - Microsoft Graph Device Application Management
-      - Microsoft Graph Device Management
-      - Microsoft Graph Devices
-      - Microsoft Graph Directory
-      - Microsoft Graph Directory Objects
-      - Microsoft Graph Directory Roles
-      - Microsoft Graph Directory Role Templates
-      - Microsoft Graph Domain DNS Records
-      - Microsoft Graph Domains
-      - Microsoft Graph Drives
-      - Microsoft Graph Education
-      - Microsoft Graph Employee Experience
-      - Microsoft Graph External
-      - Microsoft Graph Filter Operators
-      - Microsoft Graph Functions
-      - Microsoft Graph Group Lifecycle Policies
-      - Microsoft Graph Groups
-      - Microsoft Graph Group Settings
-      - Microsoft Graph Group Setting Templates
-      - Microsoft Graph Identity
-      - Microsoft Graph Identity Governance
-      - Microsoft Graph Identity Protection
-      - Microsoft Graph Identity Providers
-      - Microsoft Graph Information Protection
-      - Microsoft Graph Invitations
-      - Microsoft Graph Me
-      - Microsoft Graph Oauth2 Permission Grants
-      - Microsoft Graph Organizations
-      - Microsoft Graph Permission Grants
-      - Microsoft Graph Places
-      - Microsoft Graph Planner
-      - Microsoft Graph Policies
-      - Microsoft Graph Print
-      - Microsoft Graph Privacy
-      - Microsoft Graph Reports
-      - Microsoft Graph Role Management
-      - Microsoft Graph Schema Extensions
-      - Microsoft Graph Scoped Role Memberships
-      - Microsoft Graph Search
-      - Microsoft Graph Security
-      - Microsoft Graph Service Principals
-      - Microsoft Graph Shares
-      - Microsoft Graph Sites
-      - Microsoft Graph Solutions
-      - Microsoft Graph Storage
-      - Microsoft Graph Subscribed SKUs
-      - Microsoft Graph Subscriptions
-      - Microsoft Graph Teams
-      - Microsoft Graph Teams Templates
-      - Microsoft Graph Teamwork
-      - Microsoft Graph Tenant Relationships
-      - Microsoft Graph Users
-      - Token
-      - Workspaces
-      - Sites
-      - Collections
-      - Pages
-      - Assets
-      - Asset Folders
-      - Webhooks
-      - Forms
-      - Form Submissions
-      - Token
-      - Workspaces
-      - Sites
-      - Collections
-      - Pages
-      - Assets
-      - Asset Folders
-      - Webhooks
-      - Forms
-      - Form Submissions
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Microsoft Graph Admin
-      - Microsoft Graph Agreement Acceptances
-      - Microsoft Graph Agreements
-      - Microsoft Graph Applicaiton Catalogs
-      - Microsoft Graph Applications
-      - Microsoft Graph Application Templates
-      - Microsoft Graph Audit Logs
-      - Microsoft Graph Authentication Method Configurations
-      - Microsoft Graph Authentication Methods Policies
-      - Microsoft Graph Certificate Based Authorization Configuration
-      - Microsoft Graph Chats
-      - Microsoft Graph Communications
-      - Microsoft Graph Compliance
-      - Microsoft Graph Connections
-      - Microsoft Graph Contacts
-      - Microsoft Graph Contracts
-      - Microsoft Graph Copilot
-      - Microsoft Graph Data Policy Operations
-      - Microsoft Graph Device Application Management
-      - Microsoft Graph Device Management
-      - Microsoft Graph Devices
-      - Microsoft Graph Directory
-      - Microsoft Graph Directory Objects
-      - Microsoft Graph Directory Roles
-      - Microsoft Graph Directory Role Templates
-      - Microsoft Graph Domain DNS Records
-      - Microsoft Graph Domains
-      - Microsoft Graph Drives
-      - Microsoft Graph Education
-      - Microsoft Graph Employee Experience
-      - Microsoft Graph External
-      - Microsoft Graph Filter Operators
-      - Microsoft Graph Functions
-      - Microsoft Graph Group Lifecycle Policies
-      - Microsoft Graph Groups
-      - Microsoft Graph Group Settings
-      - Microsoft Graph Group Setting Templates
-      - Microsoft Graph Identity
-      - Microsoft Graph Identity Governance
-      - Microsoft Graph Identity Protection
-      - Microsoft Graph Identity Providers
-      - Microsoft Graph Information Protection
-      - Microsoft Graph Invitations
-      - Microsoft Graph Me
-      - Microsoft Graph Oauth2 Permission Grants
-      - Microsoft Graph Organizations
-      - Microsoft Graph Permission Grants
-      - Microsoft Graph Places
-      - Microsoft Graph Planner
-      - Microsoft Graph Policies
-      - Microsoft Graph Print
-      - Microsoft Graph Privacy
-      - Microsoft Graph Reports
-      - Microsoft Graph Role Management
-      - Microsoft Graph Schema Extensions
-      - Microsoft Graph Scoped Role Memberships
-      - Microsoft Graph Search
-      - Microsoft Graph Security
-      - Microsoft Graph Service Principals
-      - Microsoft Graph Shares
-      - Microsoft Graph Sites
-      - Microsoft Graph Solutions
-      - Microsoft Graph Storage
-      - Microsoft Graph Subscribed SKUs
-      - Microsoft Graph Subscriptions
-      - Microsoft Graph Teams
-      - Microsoft Graph Teams Templates
-      - Microsoft Graph Teamwork
-      - Microsoft Graph Tenant Relationships
-      - Microsoft Graph Users
-      - Token
-      - Workspaces
-      - Sites
-      - Collections
-      - Pages
-      - Assets
-      - Asset Folders
-      - Webhooks
-      - Forms
-      - Form Submissions
-      - Token
-      - Workspaces
-      - Sites
-      - Collections
-      - Pages
-      - Assets
-      - Asset Folders
-      - Webhooks
-      - Forms
-      - Form Submissions
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
+  - name: Excel workbook — any request per app/tenant
+    scope: app/tenant
+    metric: requests_per_10_seconds
+    limit: 1500
+    timeFrame: second
+  - name: Excel workbook — any request per app across tenants
+    scope: application
+    metric: requests_per_10_seconds
+    limit: 5000
+    timeFrame: second
+  - name: Teams Calls per app/tenant
+    scope: app/tenant
+    metric: requests_per_15_seconds
+    limit: 50000
+    timeFrame: second
+  - name: Teams Presence per app/tenant
+    scope: app/tenant
+    metric: requests_per_30_seconds
+    limit: 10000
+    timeFrame: second
+  - name: Teams Call Records per app/tenant
+    scope: app/tenant
+    metric: requests_per_20_seconds
+    limit: 1500
+    timeFrame: second
+  - name: Teams Call Records per application across tenants
+    scope: application
+    metric: requests_per_20_seconds
+    limit: 15000
+    timeFrame: second
+  - name: Identity & Access Reports — any request per app/tenant
+    scope: app/tenant
+    metric: requests_per_10_seconds
+    limit: 5
+    timeFrame: second
+  - name: Education service per app/tenant
+    scope: app/tenant
+    metric: requests_per_10_seconds
+    limit: 35000
+    timeFrame: second
+  - name: Exchange Message Trace
+    scope: tenant
+    metric: requests_per_5_minutes
     limit: 100
-    burst: 200
     timeFrame: minute
-    applies:
-      - Microsoft Graph Admin
-      - Microsoft Graph Agreement Acceptances
-      - Microsoft Graph Agreements
-      - Microsoft Graph Applicaiton Catalogs
-      - Microsoft Graph Applications
-      - Microsoft Graph Application Templates
-      - Microsoft Graph Audit Logs
-      - Microsoft Graph Authentication Method Configurations
-      - Microsoft Graph Authentication Methods Policies
-      - Microsoft Graph Certificate Based Authorization Configuration
-      - Microsoft Graph Chats
-      - Microsoft Graph Communications
-      - Microsoft Graph Compliance
-      - Microsoft Graph Connections
-      - Microsoft Graph Contacts
-      - Microsoft Graph Contracts
-      - Microsoft Graph Copilot
-      - Microsoft Graph Data Policy Operations
-      - Microsoft Graph Device Application Management
-      - Microsoft Graph Device Management
-      - Microsoft Graph Devices
-      - Microsoft Graph Directory
-      - Microsoft Graph Directory Objects
-      - Microsoft Graph Directory Roles
-      - Microsoft Graph Directory Role Templates
-      - Microsoft Graph Domain DNS Records
-      - Microsoft Graph Domains
-      - Microsoft Graph Drives
-      - Microsoft Graph Education
-      - Microsoft Graph Employee Experience
-      - Microsoft Graph External
-      - Microsoft Graph Filter Operators
-      - Microsoft Graph Functions
-      - Microsoft Graph Group Lifecycle Policies
-      - Microsoft Graph Groups
-      - Microsoft Graph Group Settings
-      - Microsoft Graph Group Setting Templates
-      - Microsoft Graph Identity
-      - Microsoft Graph Identity Governance
-      - Microsoft Graph Identity Protection
-      - Microsoft Graph Identity Providers
-      - Microsoft Graph Information Protection
-      - Microsoft Graph Invitations
-      - Microsoft Graph Me
-      - Microsoft Graph Oauth2 Permission Grants
-      - Microsoft Graph Organizations
-      - Microsoft Graph Permission Grants
-      - Microsoft Graph Places
-      - Microsoft Graph Planner
-      - Microsoft Graph Policies
-      - Microsoft Graph Print
-      - Microsoft Graph Privacy
-      - Microsoft Graph Reports
-      - Microsoft Graph Role Management
-      - Microsoft Graph Schema Extensions
-      - Microsoft Graph Scoped Role Memberships
-      - Microsoft Graph Search
-      - Microsoft Graph Security
-      - Microsoft Graph Service Principals
-      - Microsoft Graph Shares
-      - Microsoft Graph Sites
-      - Microsoft Graph Solutions
-      - Microsoft Graph Storage
-      - Microsoft Graph Subscribed SKUs
-      - Microsoft Graph Subscriptions
-      - Microsoft Graph Teams
-      - Microsoft Graph Teams Templates
-      - Microsoft Graph Teamwork
-      - Microsoft Graph Tenant Relationships
-      - Microsoft Graph Users
-      - Token
-      - Workspaces
-      - Sites
-      - Collections
-      - Pages
-      - Assets
-      - Asset Folders
-      - Webhooks
-      - Forms
-      - Form Submissions
-      - Token
-      - Workspaces
-      - Sites
-      - Collections
-      - Pages
-      - Assets
-      - Asset Folders
-      - Webhooks
-      - Forms
-      - Form Submissions
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Microsoft Graph Admin
-      - Microsoft Graph Agreement Acceptances
-      - Microsoft Graph Agreements
-      - Microsoft Graph Applicaiton Catalogs
-      - Microsoft Graph Applications
-      - Microsoft Graph Application Templates
-      - Microsoft Graph Audit Logs
-      - Microsoft Graph Authentication Method Configurations
-      - Microsoft Graph Authentication Methods Policies
-      - Microsoft Graph Certificate Based Authorization Configuration
-      - Microsoft Graph Chats
-      - Microsoft Graph Communications
-      - Microsoft Graph Compliance
-      - Microsoft Graph Connections
-      - Microsoft Graph Contacts
-      - Microsoft Graph Contracts
-      - Microsoft Graph Copilot
-      - Microsoft Graph Data Policy Operations
-      - Microsoft Graph Device Application Management
-      - Microsoft Graph Device Management
-      - Microsoft Graph Devices
-      - Microsoft Graph Directory
-      - Microsoft Graph Directory Objects
-      - Microsoft Graph Directory Roles
-      - Microsoft Graph Directory Role Templates
-      - Microsoft Graph Domain DNS Records
-      - Microsoft Graph Domains
-      - Microsoft Graph Drives
-      - Microsoft Graph Education
-      - Microsoft Graph Employee Experience
-      - Microsoft Graph External
-      - Microsoft Graph Filter Operators
-      - Microsoft Graph Functions
-      - Microsoft Graph Group Lifecycle Policies
-      - Microsoft Graph Groups
-      - Microsoft Graph Group Settings
-      - Microsoft Graph Group Setting Templates
-      - Microsoft Graph Identity
-      - Microsoft Graph Identity Governance
-      - Microsoft Graph Identity Protection
-      - Microsoft Graph Identity Providers
-      - Microsoft Graph Information Protection
-      - Microsoft Graph Invitations
-      - Microsoft Graph Me
-      - Microsoft Graph Oauth2 Permission Grants
-      - Microsoft Graph Organizations
-      - Microsoft Graph Permission Grants
-      - Microsoft Graph Places
-      - Microsoft Graph Planner
-      - Microsoft Graph Policies
-      - Microsoft Graph Print
-      - Microsoft Graph Privacy
-      - Microsoft Graph Reports
-      - Microsoft Graph Role Management
-      - Microsoft Graph Schema Extensions
-      - Microsoft Graph Scoped Role Memberships
-      - Microsoft Graph Search
-      - Microsoft Graph Security
-      - Microsoft Graph Service Principals
-      - Microsoft Graph Shares
-      - Microsoft Graph Sites
-      - Microsoft Graph Solutions
-      - Microsoft Graph Storage
-      - Microsoft Graph Subscribed SKUs
-      - Microsoft Graph Subscriptions
-      - Microsoft Graph Teams
-      - Microsoft Graph Teams Templates
-      - Microsoft Graph Teamwork
-      - Microsoft Graph Tenant Relationships
-      - Microsoft Graph Users
-      - Token
-      - Workspaces
-      - Sites
-      - Collections
-      - Pages
-      - Assets
-      - Asset Folders
-      - Webhooks
-      - Forms
-      - Form Submissions
-      - Token
-      - Workspaces
-      - Sites
-      - Collections
-      - Pages
-      - Assets
-      - Asset Folders
-      - Webhooks
-      - Forms
-      - Form Submissions
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Microsoft Graph Admin
-      - Microsoft Graph Agreement Acceptances
-      - Microsoft Graph Agreements
-      - Microsoft Graph Applicaiton Catalogs
-      - Microsoft Graph Applications
-      - Microsoft Graph Application Templates
-      - Microsoft Graph Audit Logs
-      - Microsoft Graph Authentication Method Configurations
-      - Microsoft Graph Authentication Methods Policies
-      - Microsoft Graph Certificate Based Authorization Configuration
-      - Microsoft Graph Chats
-      - Microsoft Graph Communications
-      - Microsoft Graph Compliance
-      - Microsoft Graph Connections
-      - Microsoft Graph Contacts
-      - Microsoft Graph Contracts
-      - Microsoft Graph Copilot
-      - Microsoft Graph Data Policy Operations
-      - Microsoft Graph Device Application Management
-      - Microsoft Graph Device Management
-      - Microsoft Graph Devices
-      - Microsoft Graph Directory
-      - Microsoft Graph Directory Objects
-      - Microsoft Graph Directory Roles
-      - Microsoft Graph Directory Role Templates
-      - Microsoft Graph Domain DNS Records
-      - Microsoft Graph Domains
-      - Microsoft Graph Drives
-      - Microsoft Graph Education
-      - Microsoft Graph Employee Experience
-      - Microsoft Graph External
-      - Microsoft Graph Filter Operators
-      - Microsoft Graph Functions
-      - Microsoft Graph Group Lifecycle Policies
-      - Microsoft Graph Groups
-      - Microsoft Graph Group Settings
-      - Microsoft Graph Group Setting Templates
-      - Microsoft Graph Identity
-      - Microsoft Graph Identity Governance
-      - Microsoft Graph Identity Protection
-      - Microsoft Graph Identity Providers
-      - Microsoft Graph Information Protection
-      - Microsoft Graph Invitations
-      - Microsoft Graph Me
-      - Microsoft Graph Oauth2 Permission Grants
-      - Microsoft Graph Organizations
-      - Microsoft Graph Permission Grants
-      - Microsoft Graph Places
-      - Microsoft Graph Planner
-      - Microsoft Graph Policies
-      - Microsoft Graph Print
-      - Microsoft Graph Privacy
-      - Microsoft Graph Reports
-      - Microsoft Graph Role Management
-      - Microsoft Graph Schema Extensions
-      - Microsoft Graph Scoped Role Memberships
-      - Microsoft Graph Search
-      - Microsoft Graph Security
-      - Microsoft Graph Service Principals
-      - Microsoft Graph Shares
-      - Microsoft Graph Sites
-      - Microsoft Graph Solutions
-      - Microsoft Graph Storage
-      - Microsoft Graph Subscribed SKUs
-      - Microsoft Graph Subscriptions
-      - Microsoft Graph Teams
-      - Microsoft Graph Teams Templates
-      - Microsoft Graph Teamwork
-      - Microsoft Graph Tenant Relationships
-      - Microsoft Graph Users
-      - Token
-      - Workspaces
-      - Sites
-      - Collections
-      - Pages
-      - Assets
-      - Asset Folders
-      - Webhooks
-      - Forms
-      - Form Submissions
-      - Token
-      - Workspaces
-      - Sites
-      - Collections
-      - Pages
-      - Assets
-      - Asset Folders
-      - Webhooks
-      - Forms
-      - Form Submissions
+  - name: Outlook (mail / calendar / contacts)
+    scope: app/mailbox
+    metric: varies
+    limit: per-mailbox throttling — see Outlook docs; fall back to Retry-After
+  - name: Files (OneDrive / SharePoint)
+    scope: app/tenant
+    metric: varies
+    limit: see SharePoint Online throttling guidance
 policies:
+  - name: ResourceUnit cost model
+    description: Identity / directory requests are charged base ResourceUnits (most are 1 RU; some paths
+      cost 2–5 RU). Plan capacity in ResourceUnits, not raw requests.
   - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+    description: Honour Retry-After on 429 / 503; the SDK handlers do this by default.
+  - name: Use change tracking
+    description: Prefer delta queries and change notifications (subscriptions) over polling.
+  - name: Use $batch
+    description: Combine up to 20 requests in a single $batch envelope; each is throttled individually.
+  - name: Microsoft Graph Data Connect for bulk
+    description: For tenant-wide bulk extraction, use Data Connect to bypass REST throttling.
+  - name: Request priority
+    description: Set x-ms-throttle-priority (high / normal / low) to influence which traffic is shed first
+      under contention.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
