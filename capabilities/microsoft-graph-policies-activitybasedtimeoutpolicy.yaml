@@ -1,0 +1,405 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — policies.activityBasedTimeoutPolicy
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — policies.activityBasedTimeoutPolicy. 9 operations.
+    Lead operation: Microsoft Graph List activityBasedTimeoutPolicies. Self-contained Naftiko capability covering one Microsoft
+    Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - policies.activityBasedTimeoutPolicy
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-policies-activitybasedtimeoutpolicy
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — policies.activityBasedTimeoutPolicy business
+      capability. Self-contained, no shared references.
+    resources:
+    - name: policies-activityBasedTimeoutPolicies
+      path: /policies/activityBasedTimeoutPolicies
+      operations:
+      - name: policieslistactivitybasedtimeoutpolicies
+        method: GET
+        description: Microsoft Graph List activityBasedTimeoutPolicies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: policiescreateactivitybasedtimeoutpolicies
+        method: POST
+        description: Microsoft Graph Create activityBasedTimeoutPolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: policies-activityBasedTimeoutPolicies-$count
+      path: /policies/activityBasedTimeoutPolicies/$count
+      operations:
+      - name: policiesactivitybasedtimeoutpoliciesgetcount1f03
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: policies-activityBasedTimeoutPolicies-activityBasedTimeoutPolicy-id
+      path: /policies/activityBasedTimeoutPolicies/{activityBasedTimeoutPolicy-id}
+      operations:
+      - name: policiesgetactivitybasedtimeoutpolicies
+        method: GET
+        description: Microsoft Graph Get activityBasedTimeoutPolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: policiesupdateactivitybasedtimeoutpolicies
+        method: PATCH
+        description: Microsoft Graph Update activitybasedtimeoutpolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: policiesdeleteactivitybasedtimeoutpolicies
+        method: DELETE
+        description: Microsoft Graph Delete activityBasedTimeoutPolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: policies-activityBasedTimeoutPolicies-activityBasedTimeoutPolicy-id-appliesTo
+      path: /policies/activityBasedTimeoutPolicies/{activityBasedTimeoutPolicy-id}/appliesTo
+      operations:
+      - name: policiesactivitybasedtimeoutpolicieslistappliesto
+        method: GET
+        description: Microsoft Graph Get appliesTo from policies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: policies-activityBasedTimeoutPolicies-activityBasedTimeoutPolicy-id-appliesTo-$c
+      path: /policies/activityBasedTimeoutPolicies/{activityBasedTimeoutPolicy-id}/appliesTo/$count
+      operations:
+      - name: policiesactivitybasedtimeoutpoliciesappliestogetcountf5ce
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: policies-activityBasedTimeoutPolicies-activityBasedTimeoutPolicy-id-appliesTo-di
+      path: /policies/activityBasedTimeoutPolicies/{activityBasedTimeoutPolicy-id}/appliesTo/{directoryObject-id}
+      operations:
+      - name: policiesactivitybasedtimeoutpoliciesgetappliesto
+        method: GET
+        description: Microsoft Graph Get appliesTo from policies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-policies-activitybasedtimeoutpolicy-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — policies.activityBasedTimeoutPolicy.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/policies/activitybasedtimeoutpolicies
+      name: policies-activitybasedtimeoutpolicies
+      description: REST surface for policies-activityBasedTimeoutPolicies.
+      operations:
+      - method: GET
+        name: policieslistactivitybasedtimeoutpolicies
+        description: Microsoft Graph List activityBasedTimeoutPolicies
+        call: microsoft-graph-policies-activitybasedtimeoutpolicy.policieslistactivitybasedtimeoutpolicies
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: policiescreateactivitybasedtimeoutpolicies
+        description: Microsoft Graph Create activityBasedTimeoutPolicy
+        call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiescreateactivitybasedtimeoutpolicies
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/policies/activitybasedtimeoutpolicies/count
+      name: policies-activitybasedtimeoutpolicies-count
+      description: REST surface for policies-activityBasedTimeoutPolicies-$count.
+      operations:
+      - method: GET
+        name: policiesactivitybasedtimeoutpoliciesgetcount1f03
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesactivitybasedtimeoutpoliciesgetcount1f03
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/policies/activitybasedtimeoutpolicies/{activitybasedtimeoutpolicy-id}
+      name: policies-activitybasedtimeoutpolicies-activitybasedtimeoutpolicy-id
+      description: REST surface for policies-activityBasedTimeoutPolicies-activityBasedTimeoutPolicy-id.
+      operations:
+      - method: GET
+        name: policiesgetactivitybasedtimeoutpolicies
+        description: Microsoft Graph Get activityBasedTimeoutPolicy
+        call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesgetactivitybasedtimeoutpolicies
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: policiesupdateactivitybasedtimeoutpolicies
+        description: Microsoft Graph Update activitybasedtimeoutpolicy
+        call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesupdateactivitybasedtimeoutpolicies
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: policiesdeleteactivitybasedtimeoutpolicies
+        description: Microsoft Graph Delete activityBasedTimeoutPolicy
+        call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesdeleteactivitybasedtimeoutpolicies
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/policies/activitybasedtimeoutpolicies/{activitybasedtimeoutpolicy-id}/appliesto
+      name: policies-activitybasedtimeoutpolicies-activitybasedtimeoutpolicy-id-appliesto
+      description: REST surface for policies-activityBasedTimeoutPolicies-activityBasedTimeoutPolicy-id-appliesTo.
+      operations:
+      - method: GET
+        name: policiesactivitybasedtimeoutpolicieslistappliesto
+        description: Microsoft Graph Get appliesTo from policies
+        call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesactivitybasedtimeoutpolicieslistappliesto
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/policies/activitybasedtimeoutpolicies/{activitybasedtimeoutpolicy-id}/appliesto/count
+      name: policies-activitybasedtimeoutpolicies-activitybasedtimeoutpolicy-id-appliesto-c
+      description: REST surface for policies-activityBasedTimeoutPolicies-activityBasedTimeoutPolicy-id-appliesTo-$c.
+      operations:
+      - method: GET
+        name: policiesactivitybasedtimeoutpoliciesappliestogetcountf5ce
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesactivitybasedtimeoutpoliciesappliestogetcountf5ce
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/policies/activitybasedtimeoutpolicies/{activitybasedtimeoutpolicy-id}/appliesto/{directoryobject-id}
+      name: policies-activitybasedtimeoutpolicies-activitybasedtimeoutpolicy-id-appliesto-di
+      description: REST surface for policies-activityBasedTimeoutPolicies-activityBasedTimeoutPolicy-id-appliesTo-di.
+      operations:
+      - method: GET
+        name: policiesactivitybasedtimeoutpoliciesgetappliesto
+        description: Microsoft Graph Get appliesTo from policies
+        call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesactivitybasedtimeoutpoliciesgetappliesto
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-policies-activitybasedtimeoutpolicy-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — policies.activityBasedTimeoutPolicy.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-activitybasedtimeoutpolicies
+      description: Microsoft Graph List activityBasedTimeoutPolicies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-policies-activitybasedtimeoutpolicy.policieslistactivitybasedtimeoutpolicies
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-activitybasedtimeoutpolicy
+      description: Microsoft Graph Create activityBasedTimeoutPolicy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiescreateactivitybasedtimeoutpolicies
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesactivitybasedtimeoutpoliciesgetcount1f03
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-activitybasedtimeoutpolicy
+      description: Microsoft Graph Get activityBasedTimeoutPolicy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesgetactivitybasedtimeoutpolicies
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-activitybasedtimeoutpolicy
+      description: Microsoft Graph Update activitybasedtimeoutpolicy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesupdateactivitybasedtimeoutpolicies
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-activitybasedtimeoutpolicy
+      description: Microsoft Graph Delete activityBasedTimeoutPolicy
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesdeleteactivitybasedtimeoutpolicies
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-appliesto-policies
+      description: Microsoft Graph Get appliesTo from policies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesactivitybasedtimeoutpolicieslistappliesto
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource-2
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesactivitybasedtimeoutpoliciesappliestogetcountf5ce
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-appliesto-policies-2
+      description: Microsoft Graph Get appliesTo from policies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-policies-activitybasedtimeoutpolicy.policiesactivitybasedtimeoutpoliciesgetappliesto
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

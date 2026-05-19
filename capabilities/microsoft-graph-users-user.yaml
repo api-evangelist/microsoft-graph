@@ -1,0 +1,403 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — Users.user
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — Users.user. 9 operations. Lead operation: Microsoft
+    Graph List users. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Users.user
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-users-user
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — Users.user business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: users
+      path: /users
+      operations:
+      - name: usersuserlistuser
+        method: GET
+        description: Microsoft Graph List users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConsistencyLevel
+          in: header
+          type: string
+          description: 'Indicates the requested consistency level. Documentation URL: https://docs.microsoft.com/graph/aad-advanced-queries'
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: usersusercreateuser
+        method: POST
+        description: Microsoft Graph Create User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: users(userPrincipalName='{userPrincipalName}')
+      path: /users(userPrincipalName='{userPrincipalName}')
+      operations:
+      - name: usersusergetuserbyuserprincipalname
+        method: GET
+        description: Microsoft Graph Get a user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: usersuserupdateuserbyuserprincipalname
+        method: PATCH
+        description: Microsoft Graph Update user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: usersuserdeleteuserbyuserprincipalname
+        method: DELETE
+        description: Microsoft Graph Delete a user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: users-$count
+      path: /users/$count
+      operations:
+      - name: usersgetcountee47
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConsistencyLevel
+          in: header
+          type: string
+          description: 'Indicates the requested consistency level. Documentation URL: https://docs.microsoft.com/graph/aad-advanced-queries'
+    - name: users-user-id
+      path: /users/{user-id}
+      operations:
+      - name: usersusergetuser
+        method: GET
+        description: Microsoft Graph Get a user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: usersuserupdateuser
+        method: PATCH
+        description: Microsoft Graph Update user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: usersuserdeleteuser
+        method: DELETE
+        description: Microsoft Graph Delete a user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-users-user-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — Users.user. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/users
+      name: users
+      description: REST surface for users.
+      operations:
+      - method: GET
+        name: usersuserlistuser
+        description: Microsoft Graph List users
+        call: microsoft-graph-users-user.usersuserlistuser
+        with:
+          ConsistencyLevel: rest.ConsistencyLevel
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: usersusercreateuser
+        description: Microsoft Graph Create User
+        call: microsoft-graph-users-user.usersusercreateuser
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users-userprincipalname-userprincipalname
+      name: users-userprincipalname-userprincipalname
+      description: REST surface for users(userPrincipalName='{userPrincipalName}').
+      operations:
+      - method: GET
+        name: usersusergetuserbyuserprincipalname
+        description: Microsoft Graph Get a user
+        call: microsoft-graph-users-user.usersusergetuserbyuserprincipalname
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: usersuserupdateuserbyuserprincipalname
+        description: Microsoft Graph Update user
+        call: microsoft-graph-users-user.usersuserupdateuserbyuserprincipalname
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: usersuserdeleteuserbyuserprincipalname
+        description: Microsoft Graph Delete a user
+        call: microsoft-graph-users-user.usersuserdeleteuserbyuserprincipalname
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/count
+      name: users-count
+      description: REST surface for users-$count.
+      operations:
+      - method: GET
+        name: usersgetcountee47
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-users-user.usersgetcountee47
+        with:
+          ConsistencyLevel: rest.ConsistencyLevel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}
+      name: users-user-id
+      description: REST surface for users-user-id.
+      operations:
+      - method: GET
+        name: usersusergetuser
+        description: Microsoft Graph Get a user
+        call: microsoft-graph-users-user.usersusergetuser
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: usersuserupdateuser
+        description: Microsoft Graph Update user
+        call: microsoft-graph-users-user.usersuserupdateuser
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: usersuserdeleteuser
+        description: Microsoft Graph Delete a user
+        call: microsoft-graph-users-user.usersuserdeleteuser
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-users-user-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — Users.user. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-users
+      description: Microsoft Graph List users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-user.usersuserlistuser
+      with:
+        ConsistencyLevel: tools.ConsistencyLevel
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-user
+      description: Microsoft Graph Create User
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-users-user.usersusercreateuser
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-user
+      description: Microsoft Graph Get a user
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-user.usersusergetuserbyuserprincipalname
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-user
+      description: Microsoft Graph Update user
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-user.usersuserupdateuserbyuserprincipalname
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-user
+      description: Microsoft Graph Delete a user
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-users-user.usersuserdeleteuserbyuserprincipalname
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-user.usersgetcountee47
+      with:
+        ConsistencyLevel: tools.ConsistencyLevel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-user-2
+      description: Microsoft Graph Get a user
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-user.usersusergetuser
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-user-2
+      description: Microsoft Graph Update user
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-user.usersuserupdateuser
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-user-2
+      description: Microsoft Graph Delete a user
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-users-user.usersuserdeleteuser
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

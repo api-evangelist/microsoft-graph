@@ -1,0 +1,118 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Informationprotection — informationProtection.informationProtection
+  description: 'Microsoft Graph Informationprotection — informationProtection.informationProtection. 2 operations. Lead operation:
+    Microsoft Graph Get informationProtection. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - informationProtection.informationProtection
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: informationprotection-informationprotection-informationprotection
+    baseUri: ''
+    description: Microsoft Graph Informationprotection — informationProtection.informationProtection business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: informationProtection
+      path: /informationProtection
+      operations:
+      - name: informationprotectioninformationprotectiongetinformationprotection
+        method: GET
+        description: Microsoft Graph Get informationProtection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: informationprotectioninformationprotectionupdateinformationprotection
+        method: PATCH
+        description: Microsoft Graph Update informationProtection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: informationprotection-informationprotection-informationprotection-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Informationprotection — informationProtection.informationProtection. One
+      Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/informationprotection
+      name: informationprotection
+      description: REST surface for informationProtection.
+      operations:
+      - method: GET
+        name: informationprotectioninformationprotectiongetinformationprotection
+        description: Microsoft Graph Get informationProtection
+        call: informationprotection-informationprotection-informationprotection.informationprotectioninformationprotectiongetinformationprotection
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: informationprotectioninformationprotectionupdateinformationprotection
+        description: Microsoft Graph Update informationProtection
+        call: informationprotection-informationprotection-informationprotection.informationprotectioninformationprotectionupdateinformationprotection
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: informationprotection-informationprotection-informationprotection-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Informationprotection — informationProtection.informationProtection. One
+      tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-informationprotection
+      description: Microsoft Graph Get informationProtection
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: informationprotection-informationprotection-informationprotection.informationprotectioninformationprotectiongetinformationprotection
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-informationprotection
+      description: Microsoft Graph Update informationProtection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: informationprotection-informationprotection-informationprotection.informationprotectioninformationprotectionupdateinformationprotection
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

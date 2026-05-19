@@ -1,0 +1,90 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Directoryroletemplates — directoryRoleTemplates.directoryRoleTemplate.Functions
+  description: 'Microsoft Graph Directoryroletemplates — directoryRoleTemplates.directoryRoleTemplate.Functions. 1 operations.
+    Lead operation: Microsoft Graph Invoke function delta. Self-contained Naftiko capability covering one Microsoft Graph
+    business surface.'
+  tags:
+  - Microsoft Graph
+  - directoryRoleTemplates.directoryRoleTemplate.Functions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: directoryroletemplates-directoryroletemplates-directoryroletemplate-functions
+    baseUri: ''
+    description: Microsoft Graph Directoryroletemplates — directoryRoleTemplates.directoryRoleTemplate.Functions business
+      capability. Self-contained, no shared references.
+    resources:
+    - name: directoryRoleTemplates-delta()
+      path: /directoryRoleTemplates/delta()
+      operations:
+      - name: directoryroletemplatesdelta
+        method: GET
+        description: Microsoft Graph Invoke function delta
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: directoryroletemplates-directoryroletemplates-directoryroletemplate-functions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Directoryroletemplates — directoryRoleTemplates.directoryRoleTemplate.Functions.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/directoryroletemplates/delta
+      name: directoryroletemplates-delta
+      description: REST surface for directoryRoleTemplates-delta().
+      operations:
+      - method: GET
+        name: directoryroletemplatesdelta
+        description: Microsoft Graph Invoke function delta
+        call: directoryroletemplates-directoryroletemplates-directoryroletemplate-functions.directoryroletemplatesdelta
+        with:
+          $select: rest.$select
+          $orderby: rest.$orderby
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: directoryroletemplates-directoryroletemplates-directoryroletemplate-functions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Directoryroletemplates — directoryRoleTemplates.directoryRoleTemplate.Functions.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-function-delta
+      description: Microsoft Graph Invoke function delta
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: directoryroletemplates-directoryroletemplates-directoryroletemplate-functions.directoryroletemplatesdelta
+      with:
+        $select: tools.$select
+        $orderby: tools.$orderby
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

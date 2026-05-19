@@ -1,0 +1,389 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — users.cloudClipboardRoot
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — users.cloudClipboardRoot. 9 operations. Lead
+    operation: Microsoft Graph Get cloudClipboard from users. Self-contained Naftiko capability covering one Microsoft Graph
+    business surface.'
+  tags:
+  - Microsoft Graph
+  - users.cloudClipboardRoot
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-users-cloudclipboardroot
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — users.cloudClipboardRoot business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: users-user-id-cloudClipboard
+      path: /users/{user-id}/cloudClipboard
+      operations:
+      - name: usersgetcloudclipboard
+        method: GET
+        description: Microsoft Graph Get cloudClipboard from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: usersupdatecloudclipboard
+        method: PATCH
+        description: Microsoft Graph Update the navigation property cloudClipboard in users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: usersdeletecloudclipboard
+        method: DELETE
+        description: Microsoft Graph Delete navigation property cloudClipboard for users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: users-user-id-cloudClipboard-items
+      path: /users/{user-id}/cloudClipboard/items
+      operations:
+      - name: userscloudclipboardlistitems
+        method: GET
+        description: Microsoft Graph Get items from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: userscloudclipboardcreateitems
+        method: POST
+        description: Microsoft Graph Create new navigation property to items for users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: users-user-id-cloudClipboard-items-$count
+      path: /users/{user-id}/cloudClipboard/items/$count
+      operations:
+      - name: userscloudclipboarditemsgetcount1146
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-user-id-cloudClipboard-items-cloudClipboardItem-id
+      path: /users/{user-id}/cloudClipboard/items/{cloudClipboardItem-id}
+      operations:
+      - name: userscloudclipboardgetitems
+        method: GET
+        description: Microsoft Graph Get items from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: userscloudclipboardupdateitems
+        method: PATCH
+        description: Microsoft Graph Update the navigation property items in users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: userscloudclipboarddeleteitems
+        method: DELETE
+        description: Microsoft Graph Delete navigation property items for users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-users-cloudclipboardroot-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — users.cloudClipboardRoot.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/users/{user-id}/cloudclipboard
+      name: users-user-id-cloudclipboard
+      description: REST surface for users-user-id-cloudClipboard.
+      operations:
+      - method: GET
+        name: usersgetcloudclipboard
+        description: Microsoft Graph Get cloudClipboard from users
+        call: microsoft-graph-users-cloudclipboardroot.usersgetcloudclipboard
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: usersupdatecloudclipboard
+        description: Microsoft Graph Update the navigation property cloudClipboard in users
+        call: microsoft-graph-users-cloudclipboardroot.usersupdatecloudclipboard
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: usersdeletecloudclipboard
+        description: Microsoft Graph Delete navigation property cloudClipboard for users
+        call: microsoft-graph-users-cloudclipboardroot.usersdeletecloudclipboard
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/cloudclipboard/items
+      name: users-user-id-cloudclipboard-items
+      description: REST surface for users-user-id-cloudClipboard-items.
+      operations:
+      - method: GET
+        name: userscloudclipboardlistitems
+        description: Microsoft Graph Get items from users
+        call: microsoft-graph-users-cloudclipboardroot.userscloudclipboardlistitems
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: userscloudclipboardcreateitems
+        description: Microsoft Graph Create new navigation property to items for users
+        call: microsoft-graph-users-cloudclipboardroot.userscloudclipboardcreateitems
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/cloudclipboard/items/count
+      name: users-user-id-cloudclipboard-items-count
+      description: REST surface for users-user-id-cloudClipboard-items-$count.
+      operations:
+      - method: GET
+        name: userscloudclipboarditemsgetcount1146
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-users-cloudclipboardroot.userscloudclipboarditemsgetcount1146
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/cloudclipboard/items/{cloudclipboarditem-id}
+      name: users-user-id-cloudclipboard-items-cloudclipboarditem-id
+      description: REST surface for users-user-id-cloudClipboard-items-cloudClipboardItem-id.
+      operations:
+      - method: GET
+        name: userscloudclipboardgetitems
+        description: Microsoft Graph Get items from users
+        call: microsoft-graph-users-cloudclipboardroot.userscloudclipboardgetitems
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: userscloudclipboardupdateitems
+        description: Microsoft Graph Update the navigation property items in users
+        call: microsoft-graph-users-cloudclipboardroot.userscloudclipboardupdateitems
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: userscloudclipboarddeleteitems
+        description: Microsoft Graph Delete navigation property items for users
+        call: microsoft-graph-users-cloudclipboardroot.userscloudclipboarddeleteitems
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-users-cloudclipboardroot-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — users.cloudClipboardRoot. One
+      tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-cloudclipboard-users
+      description: Microsoft Graph Get cloudClipboard from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-cloudclipboardroot.usersgetcloudclipboard
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property cloudClipboard in users
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-cloudclipboardroot.usersupdatecloudclipboard
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property cloudClipboard for users
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-users-cloudclipboardroot.usersdeletecloudclipboard
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-items-users
+      description: Microsoft Graph Get items from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-cloudclipboardroot.userscloudclipboardlistitems
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to items for users
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-users-cloudclipboardroot.userscloudclipboardcreateitems
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-cloudclipboardroot.userscloudclipboarditemsgetcount1146
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-items-users-2
+      description: Microsoft Graph Get items from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-cloudclipboardroot.userscloudclipboardgetitems
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property-2
+      description: Microsoft Graph Update the navigation property items in users
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-cloudclipboardroot.userscloudclipboardupdateitems
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property-2
+      description: Microsoft Graph Delete navigation property items for users
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-users-cloudclipboardroot.userscloudclipboarddeleteitems
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

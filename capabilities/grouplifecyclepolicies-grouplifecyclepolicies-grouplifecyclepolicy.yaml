@@ -1,0 +1,272 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Grouplifecyclepolicies — groupLifecyclePolicies.groupLifecyclePolicy
+  description: 'Microsoft Graph Grouplifecyclepolicies — groupLifecyclePolicies.groupLifecyclePolicy. 6 operations. Lead operation:
+    Microsoft Graph List groupLifecyclePolicies. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - groupLifecyclePolicies.groupLifecyclePolicy
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy
+    baseUri: ''
+    description: Microsoft Graph Grouplifecyclepolicies — groupLifecyclePolicies.groupLifecyclePolicy business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: groupLifecyclePolicies
+      path: /groupLifecyclePolicies
+      operations:
+      - name: grouplifecyclepoliciesgrouplifecyclepolicylistgrouplifecyclepolicy
+        method: GET
+        description: Microsoft Graph List groupLifecyclePolicies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: grouplifecyclepoliciesgrouplifecyclepolicycreategrouplifecyclepolicy
+        method: POST
+        description: Microsoft Graph Create groupLifecyclePolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: groupLifecyclePolicies-$count
+      path: /groupLifecyclePolicies/$count
+      operations:
+      - name: grouplifecyclepoliciesgetcountca62
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: groupLifecyclePolicies-groupLifecyclePolicy-id
+      path: /groupLifecyclePolicies/{groupLifecyclePolicy-id}
+      operations:
+      - name: grouplifecyclepoliciesgrouplifecyclepolicygetgrouplifecyclepolicy
+        method: GET
+        description: Microsoft Graph Get groupLifecyclePolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: grouplifecyclepoliciesgrouplifecyclepolicyupdategrouplifecyclepolicy
+        method: PATCH
+        description: Microsoft Graph Update groupLifecyclePolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: grouplifecyclepoliciesgrouplifecyclepolicydeletegrouplifecyclepolicy
+        method: DELETE
+        description: Microsoft Graph Delete groupLifecyclePolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Grouplifecyclepolicies — groupLifecyclePolicies.groupLifecyclePolicy. One
+      Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/grouplifecyclepolicies
+      name: grouplifecyclepolicies
+      description: REST surface for groupLifecyclePolicies.
+      operations:
+      - method: GET
+        name: grouplifecyclepoliciesgrouplifecyclepolicylistgrouplifecyclepolicy
+        description: Microsoft Graph List groupLifecyclePolicies
+        call: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy.grouplifecyclepoliciesgrouplifecyclepolicylistgrouplifecyclepolicy
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: grouplifecyclepoliciesgrouplifecyclepolicycreategrouplifecyclepolicy
+        description: Microsoft Graph Create groupLifecyclePolicy
+        call: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy.grouplifecyclepoliciesgrouplifecyclepolicycreategrouplifecyclepolicy
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/grouplifecyclepolicies/count
+      name: grouplifecyclepolicies-count
+      description: REST surface for groupLifecyclePolicies-$count.
+      operations:
+      - method: GET
+        name: grouplifecyclepoliciesgetcountca62
+        description: Microsoft Graph Get the number of the resource
+        call: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy.grouplifecyclepoliciesgetcountca62
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/grouplifecyclepolicies/{grouplifecyclepolicy-id}
+      name: grouplifecyclepolicies-grouplifecyclepolicy-id
+      description: REST surface for groupLifecyclePolicies-groupLifecyclePolicy-id.
+      operations:
+      - method: GET
+        name: grouplifecyclepoliciesgrouplifecyclepolicygetgrouplifecyclepolicy
+        description: Microsoft Graph Get groupLifecyclePolicy
+        call: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy.grouplifecyclepoliciesgrouplifecyclepolicygetgrouplifecyclepolicy
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: grouplifecyclepoliciesgrouplifecyclepolicyupdategrouplifecyclepolicy
+        description: Microsoft Graph Update groupLifecyclePolicy
+        call: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy.grouplifecyclepoliciesgrouplifecyclepolicyupdategrouplifecyclepolicy
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: grouplifecyclepoliciesgrouplifecyclepolicydeletegrouplifecyclepolicy
+        description: Microsoft Graph Delete groupLifecyclePolicy
+        call: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy.grouplifecyclepoliciesgrouplifecyclepolicydeletegrouplifecyclepolicy
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Grouplifecyclepolicies — groupLifecyclePolicies.groupLifecyclePolicy. One
+      tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-grouplifecyclepolicies
+      description: Microsoft Graph List groupLifecyclePolicies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy.grouplifecyclepoliciesgrouplifecyclepolicylistgrouplifecyclepolicy
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-grouplifecyclepolicy
+      description: Microsoft Graph Create groupLifecyclePolicy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy.grouplifecyclepoliciesgrouplifecyclepolicycreategrouplifecyclepolicy
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy.grouplifecyclepoliciesgetcountca62
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-grouplifecyclepolicy
+      description: Microsoft Graph Get groupLifecyclePolicy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy.grouplifecyclepoliciesgrouplifecyclepolicygetgrouplifecyclepolicy
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-grouplifecyclepolicy
+      description: Microsoft Graph Update groupLifecyclePolicy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy.grouplifecyclepoliciesgrouplifecyclepolicyupdategrouplifecyclepolicy
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-grouplifecyclepolicy
+      description: Microsoft Graph Delete groupLifecyclePolicy
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: grouplifecyclepolicies-grouplifecyclepolicies-grouplifecyclepolicy.grouplifecyclepoliciesgrouplifecyclepolicydeletegrouplifecyclepolicy
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

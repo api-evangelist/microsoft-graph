@@ -1,0 +1,215 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — Users.drive
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — Users.drive. 4 operations. Lead operation: Microsoft
+    Graph Get drive from users. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Users.drive
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-users-drive
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — Users.drive business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: users-user-id-drive
+      path: /users/{user-id}/drive
+      operations:
+      - name: usersgetdrive
+        method: GET
+        description: Microsoft Graph Get drive from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: users-user-id-drives
+      path: /users/{user-id}/drives
+      operations:
+      - name: userslistdrives
+        method: GET
+        description: Microsoft Graph Get drives from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: users-user-id-drives-$count
+      path: /users/{user-id}/drives/$count
+      operations:
+      - name: usersdrivesgetcount7cd7
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-user-id-drives-drive-id
+      path: /users/{user-id}/drives/{drive-id}
+      operations:
+      - name: usersgetdrives
+        method: GET
+        description: Microsoft Graph Get drives from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-users-drive-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — Users.drive. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/users/{user-id}/drive
+      name: users-user-id-drive
+      description: REST surface for users-user-id-drive.
+      operations:
+      - method: GET
+        name: usersgetdrive
+        description: Microsoft Graph Get drive from users
+        call: microsoft-graph-users-drive.usersgetdrive
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/drives
+      name: users-user-id-drives
+      description: REST surface for users-user-id-drives.
+      operations:
+      - method: GET
+        name: userslistdrives
+        description: Microsoft Graph Get drives from users
+        call: microsoft-graph-users-drive.userslistdrives
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/drives/count
+      name: users-user-id-drives-count
+      description: REST surface for users-user-id-drives-$count.
+      operations:
+      - method: GET
+        name: usersdrivesgetcount7cd7
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-users-drive.usersdrivesgetcount7cd7
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/drives/{drive-id}
+      name: users-user-id-drives-drive-id
+      description: REST surface for users-user-id-drives-drive-id.
+      operations:
+      - method: GET
+        name: usersgetdrives
+        description: Microsoft Graph Get drives from users
+        call: microsoft-graph-users-drive.usersgetdrives
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-users-drive-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — Users.drive. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-drive-users
+      description: Microsoft Graph Get drive from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-drive.usersgetdrive
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-drives-users
+      description: Microsoft Graph Get drives from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-drive.userslistdrives
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-drive.usersdrivesgetcount7cd7
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-drives-users-2
+      description: Microsoft Graph Get drives from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-drive.usersgetdrives
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

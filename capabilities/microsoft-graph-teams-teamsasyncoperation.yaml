@@ -1,0 +1,273 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — teams.teamsAsyncOperation
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — teams.teamsAsyncOperation. 6 operations. Lead
+    operation: Microsoft Graph Get operations from teams. Self-contained Naftiko capability covering one Microsoft Graph business
+    surface.'
+  tags:
+  - Microsoft Graph
+  - teams.teamsAsyncOperation
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-teams-teamsasyncoperation
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — teams.teamsAsyncOperation business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: teams-team-id-operations
+      path: /teams/{team-id}/operations
+      operations:
+      - name: teamslistoperations
+        method: GET
+        description: Microsoft Graph Get operations from teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: teamscreateoperations
+        method: POST
+        description: Microsoft Graph Create new navigation property to operations for teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team-id-operations-$count
+      path: /teams/{team-id}/operations/$count
+      operations:
+      - name: teamsoperationsgetcount66af
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: teams-team-id-operations-teamsAsyncOperation-id
+      path: /teams/{team-id}/operations/{teamsAsyncOperation-id}
+      operations:
+      - name: teamsgetoperations
+        method: GET
+        description: Microsoft Graph Get operations from teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: teamsupdateoperations
+        method: PATCH
+        description: Microsoft Graph Update the navigation property operations in teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: teamsdeleteoperations
+        method: DELETE
+        description: Microsoft Graph Delete navigation property operations for teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-teams-teamsasyncoperation-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — teams.teamsAsyncOperation.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/teams/{team-id}/operations
+      name: teams-team-id-operations
+      description: REST surface for teams-team-id-operations.
+      operations:
+      - method: GET
+        name: teamslistoperations
+        description: Microsoft Graph Get operations from teams
+        call: microsoft-graph-teams-teamsasyncoperation.teamslistoperations
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: teamscreateoperations
+        description: Microsoft Graph Create new navigation property to operations for teams
+        call: microsoft-graph-teams-teamsasyncoperation.teamscreateoperations
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/operations/count
+      name: teams-team-id-operations-count
+      description: REST surface for teams-team-id-operations-$count.
+      operations:
+      - method: GET
+        name: teamsoperationsgetcount66af
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-teams-teamsasyncoperation.teamsoperationsgetcount66af
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/operations/{teamsasyncoperation-id}
+      name: teams-team-id-operations-teamsasyncoperation-id
+      description: REST surface for teams-team-id-operations-teamsAsyncOperation-id.
+      operations:
+      - method: GET
+        name: teamsgetoperations
+        description: Microsoft Graph Get operations from teams
+        call: microsoft-graph-teams-teamsasyncoperation.teamsgetoperations
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: teamsupdateoperations
+        description: Microsoft Graph Update the navigation property operations in teams
+        call: microsoft-graph-teams-teamsasyncoperation.teamsupdateoperations
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: teamsdeleteoperations
+        description: Microsoft Graph Delete navigation property operations for teams
+        call: microsoft-graph-teams-teamsasyncoperation.teamsdeleteoperations
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-teams-teamsasyncoperation-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — teams.teamsAsyncOperation.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-operations-teams
+      description: Microsoft Graph Get operations from teams
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-teamsasyncoperation.teamslistoperations
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to operations for teams
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-teams-teamsasyncoperation.teamscreateoperations
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-teamsasyncoperation.teamsoperationsgetcount66af
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-operations-teams-2
+      description: Microsoft Graph Get operations from teams
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-teamsasyncoperation.teamsgetoperations
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property operations in teams
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-teamsasyncoperation.teamsupdateoperations
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property operations for teams
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-teams-teamsasyncoperation.teamsdeleteoperations
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

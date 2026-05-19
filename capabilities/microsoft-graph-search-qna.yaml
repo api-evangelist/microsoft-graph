@@ -1,0 +1,272 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — Search.qna
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — Search.qna. 6 operations. Lead operation: Microsoft
+    Graph List qnas. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Search.qna
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-search-qna
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — Search.qna business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: search-qnas
+      path: /search/qnas
+      operations:
+      - name: searchlistqnas
+        method: GET
+        description: Microsoft Graph List qnas
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: searchcreateqnas
+        method: POST
+        description: Microsoft Graph Create qna
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: search-qnas-$count
+      path: /search/qnas/$count
+      operations:
+      - name: searchqnasgetcountef94
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search-qnas-qna-id
+      path: /search/qnas/{qna-id}
+      operations:
+      - name: searchgetqnas
+        method: GET
+        description: Microsoft Graph Get qna
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: searchupdateqnas
+        method: PATCH
+        description: Microsoft Graph Update qna
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: searchdeleteqnas
+        method: DELETE
+        description: Microsoft Graph Delete qna
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-search-qna-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — Search.qna. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/search/qnas
+      name: search-qnas
+      description: REST surface for search-qnas.
+      operations:
+      - method: GET
+        name: searchlistqnas
+        description: Microsoft Graph List qnas
+        call: microsoft-graph-search-qna.searchlistqnas
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: searchcreateqnas
+        description: Microsoft Graph Create qna
+        call: microsoft-graph-search-qna.searchcreateqnas
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/search/qnas/count
+      name: search-qnas-count
+      description: REST surface for search-qnas-$count.
+      operations:
+      - method: GET
+        name: searchqnasgetcountef94
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-search-qna.searchqnasgetcountef94
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/search/qnas/{qna-id}
+      name: search-qnas-qna-id
+      description: REST surface for search-qnas-qna-id.
+      operations:
+      - method: GET
+        name: searchgetqnas
+        description: Microsoft Graph Get qna
+        call: microsoft-graph-search-qna.searchgetqnas
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: searchupdateqnas
+        description: Microsoft Graph Update qna
+        call: microsoft-graph-search-qna.searchupdateqnas
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: searchdeleteqnas
+        description: Microsoft Graph Delete qna
+        call: microsoft-graph-search-qna.searchdeleteqnas
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-search-qna-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — Search.qna. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-qnas
+      description: Microsoft Graph List qnas
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-search-qna.searchlistqnas
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-qna
+      description: Microsoft Graph Create qna
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-search-qna.searchcreateqnas
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-search-qna.searchqnasgetcountef94
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-qna
+      description: Microsoft Graph Get qna
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-search-qna.searchgetqnas
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-qna
+      description: Microsoft Graph Update qna
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-search-qna.searchupdateqnas
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-qna
+      description: Microsoft Graph Delete qna
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-search-qna.searchdeleteqnas
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

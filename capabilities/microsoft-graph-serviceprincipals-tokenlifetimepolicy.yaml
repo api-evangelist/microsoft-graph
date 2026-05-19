@@ -1,0 +1,280 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.tokenLifetimePolicy
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.tokenLifetimePolicy. 6 operations.
+    Lead operation: Microsoft Graph List assigned tokenLifetimePolicies. Self-contained Naftiko capability covering one Microsoft
+    Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - servicePrincipals.tokenLifetimePolicy
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-serviceprincipals-tokenlifetimepolicy
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.tokenLifetimePolicy business
+      capability. Self-contained, no shared references.
+    resources:
+    - name: servicePrincipals-servicePrincipal-id-tokenLifetimePolicies
+      path: /servicePrincipals/{servicePrincipal-id}/tokenLifetimePolicies
+      operations:
+      - name: serviceprincipalslisttokenlifetimepolicies
+        method: GET
+        description: Microsoft Graph List assigned tokenLifetimePolicies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: servicePrincipals-servicePrincipal-id-tokenLifetimePolicies-$count
+      path: /servicePrincipals/{servicePrincipal-id}/tokenLifetimePolicies/$count
+      operations:
+      - name: serviceprincipalstokenlifetimepoliciesgetcount4121
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: servicePrincipals-servicePrincipal-id-tokenLifetimePolicies-$ref
+      path: /servicePrincipals/{servicePrincipal-id}/tokenLifetimePolicies/$ref
+      operations:
+      - name: serviceprincipalslistreftokenlifetimepolicies
+        method: GET
+        description: Microsoft Graph List assigned tokenLifetimePolicies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+      - name: serviceprincipalscreatereftokenlifetimepolicies
+        method: POST
+        description: Microsoft Graph Add tokenLifetimePolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: serviceprincipalsdeletereftokenlifetimepolicies
+        method: DELETE
+        description: Microsoft Graph Remove tokenLifetimePolicies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+        - name: '@id'
+          in: query
+          type: string
+          description: The delete Uri
+          required: true
+    - name: servicePrincipals-servicePrincipal-id-tokenLifetimePolicies-tokenLifetimePolicy-
+      path: /servicePrincipals/{servicePrincipal-id}/tokenLifetimePolicies/{tokenLifetimePolicy-id}/$ref
+      operations:
+      - name: serviceprincipalstokenlifetimepoliciesdeletereftokenlifetimepolicy
+        method: DELETE
+        description: Microsoft Graph Remove tokenLifetimePolicies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-serviceprincipals-tokenlifetimepolicy-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.tokenLifetimePolicy.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/tokenlifetimepolicies
+      name: serviceprincipals-serviceprincipal-id-tokenlifetimepolicies
+      description: REST surface for servicePrincipals-servicePrincipal-id-tokenLifetimePolicies.
+      operations:
+      - method: GET
+        name: serviceprincipalslisttokenlifetimepolicies
+        description: Microsoft Graph List assigned tokenLifetimePolicies
+        call: microsoft-graph-serviceprincipals-tokenlifetimepolicy.serviceprincipalslisttokenlifetimepolicies
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/tokenlifetimepolicies/count
+      name: serviceprincipals-serviceprincipal-id-tokenlifetimepolicies-count
+      description: REST surface for servicePrincipals-servicePrincipal-id-tokenLifetimePolicies-$count.
+      operations:
+      - method: GET
+        name: serviceprincipalstokenlifetimepoliciesgetcount4121
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-serviceprincipals-tokenlifetimepolicy.serviceprincipalstokenlifetimepoliciesgetcount4121
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/tokenlifetimepolicies/ref
+      name: serviceprincipals-serviceprincipal-id-tokenlifetimepolicies-ref
+      description: REST surface for servicePrincipals-servicePrincipal-id-tokenLifetimePolicies-$ref.
+      operations:
+      - method: GET
+        name: serviceprincipalslistreftokenlifetimepolicies
+        description: Microsoft Graph List assigned tokenLifetimePolicies
+        call: microsoft-graph-serviceprincipals-tokenlifetimepolicy.serviceprincipalslistreftokenlifetimepolicies
+        with:
+          $orderby: rest.$orderby
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: serviceprincipalscreatereftokenlifetimepolicies
+        description: Microsoft Graph Add tokenLifetimePolicy
+        call: microsoft-graph-serviceprincipals-tokenlifetimepolicy.serviceprincipalscreatereftokenlifetimepolicies
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: serviceprincipalsdeletereftokenlifetimepolicies
+        description: Microsoft Graph Remove tokenLifetimePolicies
+        call: microsoft-graph-serviceprincipals-tokenlifetimepolicy.serviceprincipalsdeletereftokenlifetimepolicies
+        with:
+          If-Match: rest.If-Match
+          '@id': rest.@id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/tokenlifetimepolicies/{tokenlifetimepolicy-id}/ref
+      name: serviceprincipals-serviceprincipal-id-tokenlifetimepolicies-tokenlifetimepolicy
+      description: REST surface for servicePrincipals-servicePrincipal-id-tokenLifetimePolicies-tokenLifetimePolicy-.
+      operations:
+      - method: DELETE
+        name: serviceprincipalstokenlifetimepoliciesdeletereftokenlifetimepolicy
+        description: Microsoft Graph Remove tokenLifetimePolicies
+        call: microsoft-graph-serviceprincipals-tokenlifetimepolicy.serviceprincipalstokenlifetimepoliciesdeletereftokenlifetimepolicy
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-serviceprincipals-tokenlifetimepolicy-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.tokenLifetimePolicy.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-assigned-tokenlifetimepolicies
+      description: Microsoft Graph List assigned tokenLifetimePolicies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-tokenlifetimepolicy.serviceprincipalslisttokenlifetimepolicies
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-tokenlifetimepolicy.serviceprincipalstokenlifetimepoliciesgetcount4121
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-list-assigned-tokenlifetimepolicies-2
+      description: Microsoft Graph List assigned tokenLifetimePolicies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-tokenlifetimepolicy.serviceprincipalslistreftokenlifetimepolicies
+      with:
+        $orderby: tools.$orderby
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-add-tokenlifetimepolicy
+      description: Microsoft Graph Add tokenLifetimePolicy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-serviceprincipals-tokenlifetimepolicy.serviceprincipalscreatereftokenlifetimepolicies
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-remove-tokenlifetimepolicies
+      description: Microsoft Graph Remove tokenLifetimePolicies
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-tokenlifetimepolicy.serviceprincipalsdeletereftokenlifetimepolicies
+      with:
+        If-Match: tools.If-Match
+        '@id': tools.@id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-remove-tokenlifetimepolicies-2
+      description: Microsoft Graph Remove tokenLifetimePolicies
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-tokenlifetimepolicy.serviceprincipalstokenlifetimepoliciesdeletereftokenlifetimepolicy
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

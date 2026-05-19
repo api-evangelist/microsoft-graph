@@ -1,0 +1,355 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — users.inferenceClassification
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — users.inferenceClassification. 8 operations.
+    Lead operation: Microsoft Graph Get inferenceClassification from users. Self-contained Naftiko capability covering one
+    Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - users.inferenceClassification
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-users-inferenceclassification
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — users.inferenceClassification business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: users-user-id-inferenceClassification
+      path: /users/{user-id}/inferenceClassification
+      operations:
+      - name: usersgetinferenceclassification
+        method: GET
+        description: Microsoft Graph Get inferenceClassification from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: usersupdateinferenceclassification
+        method: PATCH
+        description: Microsoft Graph Update the navigation property inferenceClassification in users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: users-user-id-inferenceClassification-overrides
+      path: /users/{user-id}/inferenceClassification/overrides
+      operations:
+      - name: usersinferenceclassificationlistoverrides
+        method: GET
+        description: Microsoft Graph Get overrides from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: usersinferenceclassificationcreateoverrides
+        method: POST
+        description: Microsoft Graph Create new navigation property to overrides for users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: users-user-id-inferenceClassification-overrides-$count
+      path: /users/{user-id}/inferenceClassification/overrides/$count
+      operations:
+      - name: usersinferenceclassificationoverridesgetcountf355
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-user-id-inferenceClassification-overrides-inferenceClassificationOverride-
+      path: /users/{user-id}/inferenceClassification/overrides/{inferenceClassificationOverride-id}
+      operations:
+      - name: usersinferenceclassificationgetoverrides
+        method: GET
+        description: Microsoft Graph Get overrides from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: usersinferenceclassificationupdateoverrides
+        method: PATCH
+        description: Microsoft Graph Update the navigation property overrides in users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: usersinferenceclassificationdeleteoverrides
+        method: DELETE
+        description: Microsoft Graph Delete navigation property overrides for users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-users-inferenceclassification-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — users.inferenceClassification.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/users/{user-id}/inferenceclassification
+      name: users-user-id-inferenceclassification
+      description: REST surface for users-user-id-inferenceClassification.
+      operations:
+      - method: GET
+        name: usersgetinferenceclassification
+        description: Microsoft Graph Get inferenceClassification from users
+        call: microsoft-graph-users-inferenceclassification.usersgetinferenceclassification
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: usersupdateinferenceclassification
+        description: Microsoft Graph Update the navigation property inferenceClassification in users
+        call: microsoft-graph-users-inferenceclassification.usersupdateinferenceclassification
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/inferenceclassification/overrides
+      name: users-user-id-inferenceclassification-overrides
+      description: REST surface for users-user-id-inferenceClassification-overrides.
+      operations:
+      - method: GET
+        name: usersinferenceclassificationlistoverrides
+        description: Microsoft Graph Get overrides from users
+        call: microsoft-graph-users-inferenceclassification.usersinferenceclassificationlistoverrides
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: usersinferenceclassificationcreateoverrides
+        description: Microsoft Graph Create new navigation property to overrides for users
+        call: microsoft-graph-users-inferenceclassification.usersinferenceclassificationcreateoverrides
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/inferenceclassification/overrides/count
+      name: users-user-id-inferenceclassification-overrides-count
+      description: REST surface for users-user-id-inferenceClassification-overrides-$count.
+      operations:
+      - method: GET
+        name: usersinferenceclassificationoverridesgetcountf355
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-users-inferenceclassification.usersinferenceclassificationoverridesgetcountf355
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/inferenceclassification/overrides/{inferenceclassificationoverride-id}
+      name: users-user-id-inferenceclassification-overrides-inferenceclassificationoverride
+      description: REST surface for users-user-id-inferenceClassification-overrides-inferenceClassificationOverride-.
+      operations:
+      - method: GET
+        name: usersinferenceclassificationgetoverrides
+        description: Microsoft Graph Get overrides from users
+        call: microsoft-graph-users-inferenceclassification.usersinferenceclassificationgetoverrides
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: usersinferenceclassificationupdateoverrides
+        description: Microsoft Graph Update the navigation property overrides in users
+        call: microsoft-graph-users-inferenceclassification.usersinferenceclassificationupdateoverrides
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: usersinferenceclassificationdeleteoverrides
+        description: Microsoft Graph Delete navigation property overrides for users
+        call: microsoft-graph-users-inferenceclassification.usersinferenceclassificationdeleteoverrides
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-users-inferenceclassification-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — users.inferenceClassification.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-inferenceclassification-users
+      description: Microsoft Graph Get inferenceClassification from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-inferenceclassification.usersgetinferenceclassification
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property inferenceClassification in users
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-inferenceclassification.usersupdateinferenceclassification
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-overrides-users
+      description: Microsoft Graph Get overrides from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-inferenceclassification.usersinferenceclassificationlistoverrides
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to overrides for users
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-users-inferenceclassification.usersinferenceclassificationcreateoverrides
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-inferenceclassification.usersinferenceclassificationoverridesgetcountf355
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-overrides-users-2
+      description: Microsoft Graph Get overrides from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-inferenceclassification.usersinferenceclassificationgetoverrides
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property-2
+      description: Microsoft Graph Update the navigation property overrides in users
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-inferenceclassification.usersinferenceclassificationupdateoverrides
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property overrides for users
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-users-inferenceclassification.usersinferenceclassificationdeleteoverrides
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

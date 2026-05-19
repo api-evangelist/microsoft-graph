@@ -1,0 +1,117 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph External — External.external
+  description: 'Microsoft Graph External — External.external. 2 operations. Lead operation: Microsoft Graph Get external.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - External.external
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: external-external-external
+    baseUri: ''
+    description: Microsoft Graph External — External.external business capability. Self-contained, no shared references.
+    resources:
+    - name: external
+      path: /external
+      operations:
+      - name: externalexternalgetexternal
+        method: GET
+        description: Microsoft Graph Get external
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: externalexternalupdateexternal
+        method: PATCH
+        description: Microsoft Graph Update external
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: external-external-external-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph External — External.external. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/external
+      name: external
+      description: REST surface for external.
+      operations:
+      - method: GET
+        name: externalexternalgetexternal
+        description: Microsoft Graph Get external
+        call: external-external-external.externalexternalgetexternal
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: externalexternalupdateexternal
+        description: Microsoft Graph Update external
+        call: external-external-external.externalexternalupdateexternal
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: external-external-external-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph External — External.external. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-external
+      description: Microsoft Graph Get external
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: external-external-external.externalexternalgetexternal
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-external
+      description: Microsoft Graph Update external
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: external-external-external.externalexternalupdateexternal
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

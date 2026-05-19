@@ -1,0 +1,167 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Drives — Groups.drive
+  description: 'Microsoft Graph Drives — Groups.drive. 3 operations. Lead operation: Microsoft Graph Get drives from groups.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Groups.drive
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: drives-groups-drive
+    baseUri: ''
+    description: Microsoft Graph Drives — Groups.drive business capability. Self-contained, no shared references.
+    resources:
+    - name: groups-group-id-drives
+      path: /groups/{group-id}/drives
+      operations:
+      - name: groupslistdrives
+        method: GET
+        description: Microsoft Graph Get drives from groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: groups-group-id-drives-$count
+      path: /groups/{group-id}/drives/$count
+      operations:
+      - name: groupsdrivesgetcount9ca4
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: groups-group-id-drives-drive-id
+      path: /groups/{group-id}/drives/{drive-id}
+      operations:
+      - name: groupsgetdrives
+        method: GET
+        description: Microsoft Graph Get drives from groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: drives-groups-drive-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Drives — Groups.drive. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/groups/{group-id}/drives
+      name: groups-group-id-drives
+      description: REST surface for groups-group-id-drives.
+      operations:
+      - method: GET
+        name: groupslistdrives
+        description: Microsoft Graph Get drives from groups
+        call: drives-groups-drive.groupslistdrives
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/drives/count
+      name: groups-group-id-drives-count
+      description: REST surface for groups-group-id-drives-$count.
+      operations:
+      - method: GET
+        name: groupsdrivesgetcount9ca4
+        description: Microsoft Graph Get the number of the resource
+        call: drives-groups-drive.groupsdrivesgetcount9ca4
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/drives/{drive-id}
+      name: groups-group-id-drives-drive-id
+      description: REST surface for groups-group-id-drives-drive-id.
+      operations:
+      - method: GET
+        name: groupsgetdrives
+        description: Microsoft Graph Get drives from groups
+        call: drives-groups-drive.groupsgetdrives
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: drives-groups-drive-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Drives — Groups.drive. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-drives-groups
+      description: Microsoft Graph Get drives from groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: drives-groups-drive.groupslistdrives
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: drives-groups-drive.groupsdrivesgetcount9ca4
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-drives-groups-2
+      description: Microsoft Graph Get drives from groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: drives-groups-drive.groupsgetdrives
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,133 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — deviceManagement.deviceManagement.Functions
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — deviceManagement.deviceManagement.Functions.
+    3 operations. Lead operation: Microsoft Graph Invoke function getEffectivePermissions. Self-contained Naftiko capability
+    covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - deviceManagement.deviceManagement.Functions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-devicemanagement-devicemanagement-functions
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — deviceManagement.deviceManagement.Functions
+      business capability. Self-contained, no shared references.
+    resources:
+    - name: deviceManagement-getEffectivePermissions(scope='{scope}')
+      path: /deviceManagement/getEffectivePermissions(scope='{scope}')
+      operations:
+      - name: devicemanagementgeteffectivepermissions
+        method: GET
+        description: Microsoft Graph Invoke function getEffectivePermissions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deviceManagement-userExperienceAnalyticsSummarizeWorkFromAnywhereDevices()
+      path: /deviceManagement/userExperienceAnalyticsSummarizeWorkFromAnywhereDevices()
+      operations:
+      - name: devicemanagementuserexperienceanalyticssummarizeworkfromanywheredevices
+        method: GET
+        description: Microsoft Graph Invoke function userExperienceAnalyticsSummarizeWorkFromAnywhereDevices
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deviceManagement-verifyWindowsEnrollmentAutoDiscovery(domainName='{domainName}')
+      path: /deviceManagement/verifyWindowsEnrollmentAutoDiscovery(domainName='{domainName}')
+      operations:
+      - name: devicemanagementverifywindowsenrollmentautodiscovery
+        method: GET
+        description: Microsoft Graph Invoke function verifyWindowsEnrollmentAutoDiscovery
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-devicemanagement-devicemanagement-functions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — deviceManagement.deviceManagement.Functions.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/devicemanagement/geteffectivepermissions-scope-scope
+      name: devicemanagement-geteffectivepermissions-scope-scope
+      description: REST surface for deviceManagement-getEffectivePermissions(scope='{scope}').
+      operations:
+      - method: GET
+        name: devicemanagementgeteffectivepermissions
+        description: Microsoft Graph Invoke function getEffectivePermissions
+        call: microsoft-graph-devicemanagement-devicemanagement-functions.devicemanagementgeteffectivepermissions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devicemanagement/userexperienceanalyticssummarizeworkfromanywheredevices
+      name: devicemanagement-userexperienceanalyticssummarizeworkfromanywheredevices
+      description: REST surface for deviceManagement-userExperienceAnalyticsSummarizeWorkFromAnywhereDevices().
+      operations:
+      - method: GET
+        name: devicemanagementuserexperienceanalyticssummarizeworkfromanywheredevices
+        description: Microsoft Graph Invoke function userExperienceAnalyticsSummarizeWorkFromAnywhereDevices
+        call: microsoft-graph-devicemanagement-devicemanagement-functions.devicemanagementuserexperienceanalyticssummarizeworkfromanywheredevices
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devicemanagement/verifywindowsenrollmentautodiscovery-domainname-domainname
+      name: devicemanagement-verifywindowsenrollmentautodiscovery-domainname-domainname
+      description: REST surface for deviceManagement-verifyWindowsEnrollmentAutoDiscovery(domainName='{domainName}').
+      operations:
+      - method: GET
+        name: devicemanagementverifywindowsenrollmentautodiscovery
+        description: Microsoft Graph Invoke function verifyWindowsEnrollmentAutoDiscovery
+        call: microsoft-graph-devicemanagement-devicemanagement-functions.devicemanagementverifywindowsenrollmentautodiscovery
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-devicemanagement-devicemanagement-functions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — deviceManagement.deviceManagement.Functions.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-function-geteffectivepermissions
+      description: Microsoft Graph Invoke function getEffectivePermissions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-devicemanagement-devicemanagement-functions.devicemanagementgeteffectivepermissions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-userexperienceanalyticssummarizeworkfromanywhere
+      description: Microsoft Graph Invoke function userExperienceAnalyticsSummarizeWorkFromAnywhereDevices
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-devicemanagement-devicemanagement-functions.devicemanagementuserexperienceanalyticssummarizeworkfromanywheredevices
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-verifywindowsenrollmentautodiscovery
+      description: Microsoft Graph Invoke function verifyWindowsEnrollmentAutoDiscovery
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-devicemanagement-devicemanagement-functions.devicemanagementverifywindowsenrollmentautodiscovery
+      outputParameters:
+      - type: object
+        mapping: $.

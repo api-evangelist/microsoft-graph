@@ -1,0 +1,415 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — users.outlookUser
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — users.outlookUser. 10 operations. Lead operation:
+    Microsoft Graph Get outlook from users. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - users.outlookUser
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-users-outlookuser
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — users.outlookUser business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: users-user-id-outlook
+      path: /users/{user-id}/outlook
+      operations:
+      - name: usersgetoutlook
+        method: GET
+        description: Microsoft Graph Get outlook from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: users-user-id-outlook-masterCategories
+      path: /users/{user-id}/outlook/masterCategories
+      operations:
+      - name: usersoutlooklistmastercategories
+        method: GET
+        description: Microsoft Graph Get masterCategories from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: usersoutlookcreatemastercategories
+        method: POST
+        description: Microsoft Graph Create new navigation property to masterCategories for users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: users-user-id-outlook-masterCategories-$count
+      path: /users/{user-id}/outlook/masterCategories/$count
+      operations:
+      - name: usersoutlookmastercategoriesgetcount8560
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-user-id-outlook-masterCategories-outlookCategory-id
+      path: /users/{user-id}/outlook/masterCategories/{outlookCategory-id}
+      operations:
+      - name: usersoutlookgetmastercategories
+        method: GET
+        description: Microsoft Graph Get masterCategories from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: usersoutlookupdatemastercategories
+        method: PATCH
+        description: Microsoft Graph Update the navigation property masterCategories in users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: usersoutlookdeletemastercategories
+        method: DELETE
+        description: Microsoft Graph Delete navigation property masterCategories for users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: users-user-id-outlook-supportedLanguages()
+      path: /users/{user-id}/outlook/supportedLanguages()
+      operations:
+      - name: usersuseroutlooksupportedlanguages
+        method: GET
+        description: Microsoft Graph Invoke function supportedLanguages
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-user-id-outlook-supportedTimeZones()
+      path: /users/{user-id}/outlook/supportedTimeZones()
+      operations:
+      - name: usersuseroutlooksupportedtimezones5c4f
+        method: GET
+        description: Microsoft Graph Invoke function supportedTimeZones
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-user-id-outlook-supportedTimeZones(TimeZoneStandard='{TimeZoneStandard}')
+      path: /users/{user-id}/outlook/supportedTimeZones(TimeZoneStandard='{TimeZoneStandard}')
+      operations:
+      - name: usersuseroutlooksupportedtimezones0d20
+        method: GET
+        description: Microsoft Graph Invoke function supportedTimeZones
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-users-outlookuser-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — users.outlookUser. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/users/{user-id}/outlook
+      name: users-user-id-outlook
+      description: REST surface for users-user-id-outlook.
+      operations:
+      - method: GET
+        name: usersgetoutlook
+        description: Microsoft Graph Get outlook from users
+        call: microsoft-graph-users-outlookuser.usersgetoutlook
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/outlook/mastercategories
+      name: users-user-id-outlook-mastercategories
+      description: REST surface for users-user-id-outlook-masterCategories.
+      operations:
+      - method: GET
+        name: usersoutlooklistmastercategories
+        description: Microsoft Graph Get masterCategories from users
+        call: microsoft-graph-users-outlookuser.usersoutlooklistmastercategories
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: usersoutlookcreatemastercategories
+        description: Microsoft Graph Create new navigation property to masterCategories for users
+        call: microsoft-graph-users-outlookuser.usersoutlookcreatemastercategories
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/outlook/mastercategories/count
+      name: users-user-id-outlook-mastercategories-count
+      description: REST surface for users-user-id-outlook-masterCategories-$count.
+      operations:
+      - method: GET
+        name: usersoutlookmastercategoriesgetcount8560
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-users-outlookuser.usersoutlookmastercategoriesgetcount8560
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/outlook/mastercategories/{outlookcategory-id}
+      name: users-user-id-outlook-mastercategories-outlookcategory-id
+      description: REST surface for users-user-id-outlook-masterCategories-outlookCategory-id.
+      operations:
+      - method: GET
+        name: usersoutlookgetmastercategories
+        description: Microsoft Graph Get masterCategories from users
+        call: microsoft-graph-users-outlookuser.usersoutlookgetmastercategories
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: usersoutlookupdatemastercategories
+        description: Microsoft Graph Update the navigation property masterCategories in users
+        call: microsoft-graph-users-outlookuser.usersoutlookupdatemastercategories
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: usersoutlookdeletemastercategories
+        description: Microsoft Graph Delete navigation property masterCategories for users
+        call: microsoft-graph-users-outlookuser.usersoutlookdeletemastercategories
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/outlook/supportedlanguages
+      name: users-user-id-outlook-supportedlanguages
+      description: REST surface for users-user-id-outlook-supportedLanguages().
+      operations:
+      - method: GET
+        name: usersuseroutlooksupportedlanguages
+        description: Microsoft Graph Invoke function supportedLanguages
+        call: microsoft-graph-users-outlookuser.usersuseroutlooksupportedlanguages
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/outlook/supportedtimezones
+      name: users-user-id-outlook-supportedtimezones
+      description: REST surface for users-user-id-outlook-supportedTimeZones().
+      operations:
+      - method: GET
+        name: usersuseroutlooksupportedtimezones5c4f
+        description: Microsoft Graph Invoke function supportedTimeZones
+        call: microsoft-graph-users-outlookuser.usersuseroutlooksupportedtimezones5c4f
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/outlook/supportedtimezones-timezonestandard-timezonestandard
+      name: users-user-id-outlook-supportedtimezones-timezonestandard-timezonestandard
+      description: REST surface for users-user-id-outlook-supportedTimeZones(TimeZoneStandard='{TimeZoneStandard}').
+      operations:
+      - method: GET
+        name: usersuseroutlooksupportedtimezones0d20
+        description: Microsoft Graph Invoke function supportedTimeZones
+        call: microsoft-graph-users-outlookuser.usersuseroutlooksupportedtimezones0d20
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-users-outlookuser-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — users.outlookUser. One tool
+      per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-outlook-users
+      description: Microsoft Graph Get outlook from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-outlookuser.usersgetoutlook
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-mastercategories-users
+      description: Microsoft Graph Get masterCategories from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-outlookuser.usersoutlooklistmastercategories
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to masterCategories for users
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-users-outlookuser.usersoutlookcreatemastercategories
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-outlookuser.usersoutlookmastercategoriesgetcount8560
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-mastercategories-users-2
+      description: Microsoft Graph Get masterCategories from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-outlookuser.usersoutlookgetmastercategories
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property masterCategories in users
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-outlookuser.usersoutlookupdatemastercategories
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property masterCategories for users
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-users-outlookuser.usersoutlookdeletemastercategories
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-supportedlanguages
+      description: Microsoft Graph Invoke function supportedLanguages
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-outlookuser.usersuseroutlooksupportedlanguages
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-supportedtimezones
+      description: Microsoft Graph Invoke function supportedTimeZones
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-outlookuser.usersuseroutlooksupportedtimezones5c4f
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-supportedtimezones-2
+      description: Microsoft Graph Invoke function supportedTimeZones
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-users-outlookuser.usersuseroutlooksupportedtimezones0d20
+      outputParameters:
+      - type: object
+        mapping: $.

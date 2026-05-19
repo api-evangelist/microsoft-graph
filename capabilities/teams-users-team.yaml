@@ -1,0 +1,223 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Teams — Users.team
+  description: 'Microsoft Graph Teams — Users.team. 4 operations. Lead operation: Microsoft Graph Get teamsApp from users.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Users.team
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: teams-users-team
+    baseUri: ''
+    description: Microsoft Graph Teams — Users.team business capability. Self-contained, no shared references.
+    resources:
+    - name: users-user-id-joinedTeams-team-id-channels-channel-id-tabs-teamsTab-id-teamsApp
+      path: /users/{user-id}/joinedTeams/{team-id}/channels/{channel-id}/tabs/{teamsTab-id}/teamsApp
+      operations:
+      - name: usersjoinedteamschannelstabsgetteamsapp
+        method: GET
+        description: Microsoft Graph Get teamsApp from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: users-user-id-joinedTeams-team-id-installedApps-teamsAppInstallation-id-teamsApp
+      path: /users/{user-id}/joinedTeams/{team-id}/installedApps/{teamsAppInstallation-id}/teamsApp
+      operations:
+      - name: usersjoinedteamsinstalledappsgetteamsapp
+        method: GET
+        description: Microsoft Graph Get teamsApp from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: users-user-id-joinedTeams-team-id-installedApps-teamsAppInstallation-id-teamsApp
+      path: /users/{user-id}/joinedTeams/{team-id}/installedApps/{teamsAppInstallation-id}/teamsAppDefinition
+      operations:
+      - name: usersjoinedteamsinstalledappsgetteamsappdefinition
+        method: GET
+        description: Microsoft Graph Get teamsAppDefinition from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: users-user-id-joinedTeams-team-id-primaryChannel-tabs-teamsTab-id-teamsApp
+      path: /users/{user-id}/joinedTeams/{team-id}/primaryChannel/tabs/{teamsTab-id}/teamsApp
+      operations:
+      - name: usersjoinedteamsprimarychanneltabsgetteamsapp
+        method: GET
+        description: Microsoft Graph Get teamsApp from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: teams-users-team-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Teams — Users.team. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/users/{user-id}/joinedteams/{team-id}/channels/{channel-id}/tabs/{teamstab-id}/teamsapp
+      name: users-user-id-joinedteams-team-id-channels-channel-id-tabs-teamstab-id-teamsapp
+      description: REST surface for users-user-id-joinedTeams-team-id-channels-channel-id-tabs-teamsTab-id-teamsApp.
+      operations:
+      - method: GET
+        name: usersjoinedteamschannelstabsgetteamsapp
+        description: Microsoft Graph Get teamsApp from users
+        call: teams-users-team.usersjoinedteamschannelstabsgetteamsapp
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/joinedteams/{team-id}/installedapps/{teamsappinstallation-id}/teamsapp
+      name: users-user-id-joinedteams-team-id-installedapps-teamsappinstallation-id-teamsapp
+      description: REST surface for users-user-id-joinedTeams-team-id-installedApps-teamsAppInstallation-id-teamsApp.
+      operations:
+      - method: GET
+        name: usersjoinedteamsinstalledappsgetteamsapp
+        description: Microsoft Graph Get teamsApp from users
+        call: teams-users-team.usersjoinedteamsinstalledappsgetteamsapp
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/joinedteams/{team-id}/installedapps/{teamsappinstallation-id}/teamsappdefinition
+      name: users-user-id-joinedteams-team-id-installedapps-teamsappinstallation-id-teamsapp
+      description: REST surface for users-user-id-joinedTeams-team-id-installedApps-teamsAppInstallation-id-teamsApp.
+      operations:
+      - method: GET
+        name: usersjoinedteamsinstalledappsgetteamsappdefinition
+        description: Microsoft Graph Get teamsAppDefinition from users
+        call: teams-users-team.usersjoinedteamsinstalledappsgetteamsappdefinition
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/joinedteams/{team-id}/primarychannel/tabs/{teamstab-id}/teamsapp
+      name: users-user-id-joinedteams-team-id-primarychannel-tabs-teamstab-id-teamsapp
+      description: REST surface for users-user-id-joinedTeams-team-id-primaryChannel-tabs-teamsTab-id-teamsApp.
+      operations:
+      - method: GET
+        name: usersjoinedteamsprimarychanneltabsgetteamsapp
+        description: Microsoft Graph Get teamsApp from users
+        call: teams-users-team.usersjoinedteamsprimarychanneltabsgetteamsapp
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: teams-users-team-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Teams — Users.team. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-teamsapp-users
+      description: Microsoft Graph Get teamsApp from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teams-users-team.usersjoinedteamschannelstabsgetteamsapp
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-teamsapp-users-2
+      description: Microsoft Graph Get teamsApp from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teams-users-team.usersjoinedteamsinstalledappsgetteamsapp
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-teamsappdefinition-users
+      description: Microsoft Graph Get teamsAppDefinition from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teams-users-team.usersjoinedteamsinstalledappsgetteamsappdefinition
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-teamsapp-users-3
+      description: Microsoft Graph Get teamsApp from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teams-users-team.usersjoinedteamsprimarychanneltabsgetteamsapp
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

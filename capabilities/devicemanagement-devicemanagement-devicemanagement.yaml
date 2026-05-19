@@ -1,0 +1,118 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Devicemanagement — deviceManagement.deviceManagement
+  description: 'Microsoft Graph Devicemanagement — deviceManagement.deviceManagement. 2 operations. Lead operation: Microsoft
+    Graph Get deviceManagement. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - deviceManagement.deviceManagement
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: devicemanagement-devicemanagement-devicemanagement
+    baseUri: ''
+    description: Microsoft Graph Devicemanagement — deviceManagement.deviceManagement business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: deviceManagement
+      path: /deviceManagement
+      operations:
+      - name: devicemanagementdevicemanagementgetdevicemanagement
+        method: GET
+        description: Microsoft Graph Get deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: devicemanagementdevicemanagementupdatedevicemanagement
+        method: PATCH
+        description: Microsoft Graph Update deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: devicemanagement-devicemanagement-devicemanagement-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Devicemanagement — deviceManagement.deviceManagement. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/devicemanagement
+      name: devicemanagement
+      description: REST surface for deviceManagement.
+      operations:
+      - method: GET
+        name: devicemanagementdevicemanagementgetdevicemanagement
+        description: Microsoft Graph Get deviceManagement
+        call: devicemanagement-devicemanagement-devicemanagement.devicemanagementdevicemanagementgetdevicemanagement
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: devicemanagementdevicemanagementupdatedevicemanagement
+        description: Microsoft Graph Update deviceManagement
+        call: devicemanagement-devicemanagement-devicemanagement.devicemanagementdevicemanagementupdatedevicemanagement
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: devicemanagement-devicemanagement-devicemanagement-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Devicemanagement — deviceManagement.deviceManagement. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-devicemanagement
+      description: Microsoft Graph Get deviceManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-devicemanagement.devicemanagementdevicemanagementgetdevicemanagement
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-devicemanagement
+      description: Microsoft Graph Update deviceManagement
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-devicemanagement.devicemanagementdevicemanagementupdatedevicemanagement
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

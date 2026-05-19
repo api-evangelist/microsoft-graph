@@ -1,0 +1,78 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Applications API — Applications Get by Ids
+  description: 'Microsoft Graph Applications API — Applications Get by Ids. 1 operations. Lead operation: Microsoft Graph
+    Create Get By Ids. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Applications Get by Ids
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: applications-applications-get-by-ids
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Applications API — Applications Get by Ids business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: applications-getByIds
+      path: /applications/getByIds
+      operations:
+      - name: getbyidsapplications
+        method: POST
+        description: Microsoft Graph Create Get By Ids
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: applications-applications-get-by-ids-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Applications API — Applications Get by Ids. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications/getbyids
+      name: applications-getbyids
+      description: REST surface for applications-getByIds.
+      operations:
+      - method: POST
+        name: getbyidsapplications
+        description: Microsoft Graph Create Get By Ids
+        call: applications-applications-get-by-ids.getbyidsapplications
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: applications-applications-get-by-ids-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Applications API — Applications Get by Ids. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-create-get-ids
+      description: Microsoft Graph Create Get By Ids
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: applications-applications-get-by-ids.getbyidsapplications
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

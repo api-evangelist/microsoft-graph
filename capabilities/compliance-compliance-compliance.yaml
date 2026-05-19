@@ -1,0 +1,117 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Compliance — Compliance.compliance
+  description: 'Microsoft Graph Compliance — Compliance.compliance. 2 operations. Lead operation: Microsoft Graph Get compliance.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Compliance.compliance
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: compliance-compliance-compliance
+    baseUri: ''
+    description: Microsoft Graph Compliance — Compliance.compliance business capability. Self-contained, no shared references.
+    resources:
+    - name: compliance
+      path: /compliance
+      operations:
+      - name: compliancecompliancegetcompliance
+        method: GET
+        description: Microsoft Graph Get compliance
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: compliancecomplianceupdatecompliance
+        method: PATCH
+        description: Microsoft Graph Update compliance
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: compliance-compliance-compliance-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Compliance — Compliance.compliance. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/compliance
+      name: compliance
+      description: REST surface for compliance.
+      operations:
+      - method: GET
+        name: compliancecompliancegetcompliance
+        description: Microsoft Graph Get compliance
+        call: compliance-compliance-compliance.compliancecompliancegetcompliance
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: compliancecomplianceupdatecompliance
+        description: Microsoft Graph Update compliance
+        call: compliance-compliance-compliance.compliancecomplianceupdatecompliance
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: compliance-compliance-compliance-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Compliance — Compliance.compliance. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-compliance
+      description: Microsoft Graph Get compliance
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: compliance-compliance-compliance.compliancecompliancegetcompliance
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-compliance
+      description: Microsoft Graph Update compliance
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: compliance-compliance-compliance.compliancecomplianceupdatecompliance
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

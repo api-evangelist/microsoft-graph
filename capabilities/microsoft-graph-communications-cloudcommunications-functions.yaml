@@ -1,0 +1,90 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — communications.cloudCommunications.Functions
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — communications.cloudCommunications.Functions.
+    1 operations. Lead operation: Microsoft Graph Invoke function getAllOnlineMeetingMessages. Self-contained Naftiko capability
+    covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - communications.cloudCommunications.Functions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-communications-cloudcommunications-functions
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — communications.cloudCommunications.Functions
+      business capability. Self-contained, no shared references.
+    resources:
+    - name: communications-getAllOnlineMeetingMessages()
+      path: /communications/getAllOnlineMeetingMessages()
+      operations:
+      - name: communicationsgetallonlinemeetingmessages
+        method: GET
+        description: Microsoft Graph Invoke function getAllOnlineMeetingMessages
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-communications-cloudcommunications-functions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — communications.cloudCommunications.Functions.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/communications/getallonlinemeetingmessages
+      name: communications-getallonlinemeetingmessages
+      description: REST surface for communications-getAllOnlineMeetingMessages().
+      operations:
+      - method: GET
+        name: communicationsgetallonlinemeetingmessages
+        description: Microsoft Graph Invoke function getAllOnlineMeetingMessages
+        call: microsoft-graph-communications-cloudcommunications-functions.communicationsgetallonlinemeetingmessages
+        with:
+          $select: rest.$select
+          $orderby: rest.$orderby
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-communications-cloudcommunications-functions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — communications.cloudCommunications.Functions.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-function-getallonlinemeetingmessages
+      description: Microsoft Graph Invoke function getAllOnlineMeetingMessages
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-communications-cloudcommunications-functions.communicationsgetallonlinemeetingmessages
+      with:
+        $select: tools.$select
+        $orderby: tools.$orderby
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

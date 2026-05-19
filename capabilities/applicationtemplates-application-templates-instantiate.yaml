@@ -1,0 +1,78 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Application Templates API — Application Templates Instantiate
+  description: 'Microsoft Graph Application Templates API — Application Templates Instantiate. 1 operations. Lead operation:
+    Microsoft Graph Create Instantiate. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Application Templates Instantiate
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: applicationtemplates-application-templates-instantiate
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Application Templates API — Application Templates Instantiate business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: applicationTemplates-applicationTemplate-id-instantiate
+      path: /applicationTemplates/{applicationTemplate-id}/instantiate
+      operations:
+      - name: instantiateapplicationtemplates
+        method: POST
+        description: Microsoft Graph Create Instantiate
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: applicationtemplates-application-templates-instantiate-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Application Templates API — Application Templates Instantiate. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applicationtemplates/{applicationtemplate-id}/instantiate
+      name: applicationtemplates-applicationtemplate-id-instantiate
+      description: REST surface for applicationTemplates-applicationTemplate-id-instantiate.
+      operations:
+      - method: POST
+        name: instantiateapplicationtemplates
+        description: Microsoft Graph Create Instantiate
+        call: applicationtemplates-application-templates-instantiate.instantiateapplicationtemplates
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: applicationtemplates-application-templates-instantiate-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Application Templates API — Application Templates Instantiate. One tool per
+      consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-create-instantiate
+      description: Microsoft Graph Create Instantiate
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: applicationtemplates-application-templates-instantiate.instantiateapplicationtemplates
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

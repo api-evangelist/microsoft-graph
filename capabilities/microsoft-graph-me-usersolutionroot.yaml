@@ -1,0 +1,332 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — me.userSolutionRoot
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — me.userSolutionRoot. 8 operations. Lead operation:
+    Microsoft Graph Get solutions from me. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - me.userSolutionRoot
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-me-usersolutionroot
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — me.userSolutionRoot business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: me-solutions
+      path: /me/solutions
+      operations:
+      - name: megetsolutions
+        method: GET
+        description: Microsoft Graph Get solutions from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: meupdatesolutions
+        method: PATCH
+        description: Microsoft Graph Update the navigation property solutions in me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: medeletesolutions
+        method: DELETE
+        description: Microsoft Graph Delete navigation property solutions for me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: me-solutions-workingTimeSchedule
+      path: /me/solutions/workingTimeSchedule
+      operations:
+      - name: mesolutionsgetworkingtimeschedule
+        method: GET
+        description: Microsoft Graph Get workingTimeSchedule from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: mesolutionsupdateworkingtimeschedule
+        method: PATCH
+        description: Microsoft Graph Update the navigation property workingTimeSchedule in me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: mesolutionsdeleteworkingtimeschedule
+        method: DELETE
+        description: Microsoft Graph Delete navigation property workingTimeSchedule for me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: me-solutions-workingTimeSchedule-endWorkingTime
+      path: /me/solutions/workingTimeSchedule/endWorkingTime
+      operations:
+      - name: mesolutionsworkingtimescheduleendworkingtime
+        method: POST
+        description: Microsoft Graph Invoke action endWorkingTime
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: me-solutions-workingTimeSchedule-startWorkingTime
+      path: /me/solutions/workingTimeSchedule/startWorkingTime
+      operations:
+      - name: mesolutionsworkingtimeschedulestartworkingtime
+        method: POST
+        description: Microsoft Graph Invoke action startWorkingTime
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-me-usersolutionroot-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — me.userSolutionRoot. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/me/solutions
+      name: me-solutions
+      description: REST surface for me-solutions.
+      operations:
+      - method: GET
+        name: megetsolutions
+        description: Microsoft Graph Get solutions from me
+        call: microsoft-graph-me-usersolutionroot.megetsolutions
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: meupdatesolutions
+        description: Microsoft Graph Update the navigation property solutions in me
+        call: microsoft-graph-me-usersolutionroot.meupdatesolutions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: medeletesolutions
+        description: Microsoft Graph Delete navigation property solutions for me
+        call: microsoft-graph-me-usersolutionroot.medeletesolutions
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/solutions/workingtimeschedule
+      name: me-solutions-workingtimeschedule
+      description: REST surface for me-solutions-workingTimeSchedule.
+      operations:
+      - method: GET
+        name: mesolutionsgetworkingtimeschedule
+        description: Microsoft Graph Get workingTimeSchedule from me
+        call: microsoft-graph-me-usersolutionroot.mesolutionsgetworkingtimeschedule
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: mesolutionsupdateworkingtimeschedule
+        description: Microsoft Graph Update the navigation property workingTimeSchedule in me
+        call: microsoft-graph-me-usersolutionroot.mesolutionsupdateworkingtimeschedule
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: mesolutionsdeleteworkingtimeschedule
+        description: Microsoft Graph Delete navigation property workingTimeSchedule for me
+        call: microsoft-graph-me-usersolutionroot.mesolutionsdeleteworkingtimeschedule
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/solutions/workingtimeschedule/endworkingtime
+      name: me-solutions-workingtimeschedule-endworkingtime
+      description: REST surface for me-solutions-workingTimeSchedule-endWorkingTime.
+      operations:
+      - method: POST
+        name: mesolutionsworkingtimescheduleendworkingtime
+        description: Microsoft Graph Invoke action endWorkingTime
+        call: microsoft-graph-me-usersolutionroot.mesolutionsworkingtimescheduleendworkingtime
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/solutions/workingtimeschedule/startworkingtime
+      name: me-solutions-workingtimeschedule-startworkingtime
+      description: REST surface for me-solutions-workingTimeSchedule-startWorkingTime.
+      operations:
+      - method: POST
+        name: mesolutionsworkingtimeschedulestartworkingtime
+        description: Microsoft Graph Invoke action startWorkingTime
+        call: microsoft-graph-me-usersolutionroot.mesolutionsworkingtimeschedulestartworkingtime
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-me-usersolutionroot-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — me.userSolutionRoot. One tool
+      per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-solutions-me
+      description: Microsoft Graph Get solutions from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-usersolutionroot.megetsolutions
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property solutions in me
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-usersolutionroot.meupdatesolutions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property solutions for me
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-me-usersolutionroot.medeletesolutions
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-workingtimeschedule-me
+      description: Microsoft Graph Get workingTimeSchedule from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-usersolutionroot.mesolutionsgetworkingtimeschedule
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property-2
+      description: Microsoft Graph Update the navigation property workingTimeSchedule in me
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-usersolutionroot.mesolutionsupdateworkingtimeschedule
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property-2
+      description: Microsoft Graph Delete navigation property workingTimeSchedule for me
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-me-usersolutionroot.mesolutionsdeleteworkingtimeschedule
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-endworkingtime
+      description: Microsoft Graph Invoke action endWorkingTime
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-me-usersolutionroot.mesolutionsworkingtimescheduleendworkingtime
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-startworkingtime
+      description: Microsoft Graph Invoke action startWorkingTime
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-me-usersolutionroot.mesolutionsworkingtimeschedulestartworkingtime
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,273 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — deviceAppManagement.mobileAppRelationship
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — deviceAppManagement.mobileAppRelationship. 6
+    operations. Lead operation: Microsoft Graph Get mobileAppRelationships from deviceAppManagement. Self-contained Naftiko
+    capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - deviceAppManagement.mobileAppRelationship
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-deviceappmanagement-mobileapprelationship
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — deviceAppManagement.mobileAppRelationship business
+      capability. Self-contained, no shared references.
+    resources:
+    - name: deviceAppManagement-mobileAppRelationships
+      path: /deviceAppManagement/mobileAppRelationships
+      operations:
+      - name: deviceappmanagementlistmobileapprelationships
+        method: GET
+        description: Microsoft Graph Get mobileAppRelationships from deviceAppManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: deviceappmanagementcreatemobileapprelationships
+        method: POST
+        description: Microsoft Graph Create new navigation property to mobileAppRelationships for deviceAppManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: deviceAppManagement-mobileAppRelationships-$count
+      path: /deviceAppManagement/mobileAppRelationships/$count
+      operations:
+      - name: deviceappmanagementmobileapprelationshipsgetcounta82f
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deviceAppManagement-mobileAppRelationships-mobileAppRelationship-id
+      path: /deviceAppManagement/mobileAppRelationships/{mobileAppRelationship-id}
+      operations:
+      - name: deviceappmanagementgetmobileapprelationships
+        method: GET
+        description: Microsoft Graph Get mobileAppRelationships from deviceAppManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: deviceappmanagementupdatemobileapprelationships
+        method: PATCH
+        description: Microsoft Graph Update the navigation property mobileAppRelationships in deviceAppManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deviceappmanagementdeletemobileapprelationships
+        method: DELETE
+        description: Microsoft Graph Delete navigation property mobileAppRelationships for deviceAppManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-deviceappmanagement-mobileapprelationship-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — deviceAppManagement.mobileAppRelationship.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/deviceappmanagement/mobileapprelationships
+      name: deviceappmanagement-mobileapprelationships
+      description: REST surface for deviceAppManagement-mobileAppRelationships.
+      operations:
+      - method: GET
+        name: deviceappmanagementlistmobileapprelationships
+        description: Microsoft Graph Get mobileAppRelationships from deviceAppManagement
+        call: microsoft-graph-deviceappmanagement-mobileapprelationship.deviceappmanagementlistmobileapprelationships
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: deviceappmanagementcreatemobileapprelationships
+        description: Microsoft Graph Create new navigation property to mobileAppRelationships for deviceAppManagement
+        call: microsoft-graph-deviceappmanagement-mobileapprelationship.deviceappmanagementcreatemobileapprelationships
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/deviceappmanagement/mobileapprelationships/count
+      name: deviceappmanagement-mobileapprelationships-count
+      description: REST surface for deviceAppManagement-mobileAppRelationships-$count.
+      operations:
+      - method: GET
+        name: deviceappmanagementmobileapprelationshipsgetcounta82f
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-deviceappmanagement-mobileapprelationship.deviceappmanagementmobileapprelationshipsgetcounta82f
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/deviceappmanagement/mobileapprelationships/{mobileapprelationship-id}
+      name: deviceappmanagement-mobileapprelationships-mobileapprelationship-id
+      description: REST surface for deviceAppManagement-mobileAppRelationships-mobileAppRelationship-id.
+      operations:
+      - method: GET
+        name: deviceappmanagementgetmobileapprelationships
+        description: Microsoft Graph Get mobileAppRelationships from deviceAppManagement
+        call: microsoft-graph-deviceappmanagement-mobileapprelationship.deviceappmanagementgetmobileapprelationships
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: deviceappmanagementupdatemobileapprelationships
+        description: Microsoft Graph Update the navigation property mobileAppRelationships in deviceAppManagement
+        call: microsoft-graph-deviceappmanagement-mobileapprelationship.deviceappmanagementupdatemobileapprelationships
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deviceappmanagementdeletemobileapprelationships
+        description: Microsoft Graph Delete navigation property mobileAppRelationships for deviceAppManagement
+        call: microsoft-graph-deviceappmanagement-mobileapprelationship.deviceappmanagementdeletemobileapprelationships
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-deviceappmanagement-mobileapprelationship-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — deviceAppManagement.mobileAppRelationship.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-mobileapprelationships-deviceappmanagement
+      description: Microsoft Graph Get mobileAppRelationships from deviceAppManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-deviceappmanagement-mobileapprelationship.deviceappmanagementlistmobileapprelationships
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to mobileAppRelationships for deviceAppManagement
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-deviceappmanagement-mobileapprelationship.deviceappmanagementcreatemobileapprelationships
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-deviceappmanagement-mobileapprelationship.deviceappmanagementmobileapprelationshipsgetcounta82f
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-mobileapprelationships-deviceappmanagement-2
+      description: Microsoft Graph Get mobileAppRelationships from deviceAppManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-deviceappmanagement-mobileapprelationship.deviceappmanagementgetmobileapprelationships
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property mobileAppRelationships in deviceAppManagement
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-deviceappmanagement-mobileapprelationship.deviceappmanagementupdatemobileapprelationships
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property mobileAppRelationships for deviceAppManagement
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-deviceappmanagement-mobileapprelationship.deviceappmanagementdeletemobileapprelationships
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

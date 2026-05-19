@@ -1,0 +1,151 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Teams — teamwork.teamsAppSettings
+  description: 'Microsoft Graph Teams — teamwork.teamsAppSettings. 3 operations. Lead operation: Microsoft Graph Get teamsAppSettings.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - teamwork.teamsAppSettings
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: teams-teamwork-teamsappsettings
+    baseUri: ''
+    description: Microsoft Graph Teams — teamwork.teamsAppSettings business capability. Self-contained, no shared references.
+    resources:
+    - name: teamwork-teamsAppSettings
+      path: /teamwork/teamsAppSettings
+      operations:
+      - name: teamworkgetteamsappsettings
+        method: GET
+        description: Microsoft Graph Get teamsAppSettings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: teamworkupdateteamsappsettings
+        method: PATCH
+        description: Microsoft Graph Update teamsAppSettings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: teamworkdeleteteamsappsettings
+        method: DELETE
+        description: Microsoft Graph Delete navigation property teamsAppSettings for teamwork
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: teams-teamwork-teamsappsettings-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Teams — teamwork.teamsAppSettings. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/teamwork/teamsappsettings
+      name: teamwork-teamsappsettings
+      description: REST surface for teamwork-teamsAppSettings.
+      operations:
+      - method: GET
+        name: teamworkgetteamsappsettings
+        description: Microsoft Graph Get teamsAppSettings
+        call: teams-teamwork-teamsappsettings.teamworkgetteamsappsettings
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: teamworkupdateteamsappsettings
+        description: Microsoft Graph Update teamsAppSettings
+        call: teams-teamwork-teamsappsettings.teamworkupdateteamsappsettings
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: teamworkdeleteteamsappsettings
+        description: Microsoft Graph Delete navigation property teamsAppSettings for teamwork
+        call: teams-teamwork-teamsappsettings.teamworkdeleteteamsappsettings
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: teams-teamwork-teamsappsettings-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Teams — teamwork.teamsAppSettings. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-teamsappsettings
+      description: Microsoft Graph Get teamsAppSettings
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teams-teamwork-teamsappsettings.teamworkgetteamsappsettings
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-teamsappsettings
+      description: Microsoft Graph Update teamsAppSettings
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: teams-teamwork-teamsappsettings.teamworkupdateteamsappsettings
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property teamsAppSettings for teamwork
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: teams-teamwork-teamsappsettings.teamworkdeleteteamsappsettings
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

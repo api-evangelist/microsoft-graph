@@ -1,0 +1,494 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — me.cloudPC
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — me.cloudPC. 12 operations. Lead operation: Microsoft
+    Graph List cloudPCs for user. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - me.cloudPC
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-me-cloudpc
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — me.cloudPC business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: me-cloudPCs
+      path: /me/cloudPCs
+      operations:
+      - name: melistcloudpcs
+        method: GET
+        description: Microsoft Graph List cloudPCs for user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: mecreatecloudpcs
+        method: POST
+        description: Microsoft Graph Create new navigation property to cloudPCs for me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: me-cloudPCs-$count
+      path: /me/cloudPCs/$count
+      operations:
+      - name: mecloudpcsgetcountb742
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: me-cloudPCs-cloudPC-id
+      path: /me/cloudPCs/{cloudPC-id}
+      operations:
+      - name: megetcloudpcs
+        method: GET
+        description: Microsoft Graph Get cloudPCs from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: meupdatecloudpcs
+        method: PATCH
+        description: Microsoft Graph Update the navigation property cloudPCs in me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: medeletecloudpcs
+        method: DELETE
+        description: Microsoft Graph Delete navigation property cloudPCs for me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: me-cloudPCs-cloudPC-id-endGracePeriod
+      path: /me/cloudPCs/{cloudPC-id}/endGracePeriod
+      operations:
+      - name: mecloudpcscloudpcendgraceperiod
+        method: POST
+        description: Microsoft Graph Invoke action endGracePeriod
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: me-cloudPCs-cloudPC-id-reboot
+      path: /me/cloudPCs/{cloudPC-id}/reboot
+      operations:
+      - name: mecloudpcscloudpcreboot
+        method: POST
+        description: Microsoft Graph Invoke action reboot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: me-cloudPCs-cloudPC-id-rename
+      path: /me/cloudPCs/{cloudPC-id}/rename
+      operations:
+      - name: mecloudpcscloudpcrename
+        method: POST
+        description: Microsoft Graph Invoke action rename
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: me-cloudPCs-cloudPC-id-resize
+      path: /me/cloudPCs/{cloudPC-id}/resize
+      operations:
+      - name: mecloudpcscloudpcresize
+        method: POST
+        description: Microsoft Graph Invoke action resize
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: me-cloudPCs-cloudPC-id-restore
+      path: /me/cloudPCs/{cloudPC-id}/restore
+      operations:
+      - name: mecloudpcscloudpcrestore
+        method: POST
+        description: Microsoft Graph Invoke action restore
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: me-cloudPCs-cloudPC-id-troubleshoot
+      path: /me/cloudPCs/{cloudPC-id}/troubleshoot
+      operations:
+      - name: mecloudpcscloudpctroubleshoot
+        method: POST
+        description: Microsoft Graph Invoke action troubleshoot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-me-cloudpc-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — me.cloudPC. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/me/cloudpcs
+      name: me-cloudpcs
+      description: REST surface for me-cloudPCs.
+      operations:
+      - method: GET
+        name: melistcloudpcs
+        description: Microsoft Graph List cloudPCs for user
+        call: microsoft-graph-me-cloudpc.melistcloudpcs
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: mecreatecloudpcs
+        description: Microsoft Graph Create new navigation property to cloudPCs for me
+        call: microsoft-graph-me-cloudpc.mecreatecloudpcs
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/cloudpcs/count
+      name: me-cloudpcs-count
+      description: REST surface for me-cloudPCs-$count.
+      operations:
+      - method: GET
+        name: mecloudpcsgetcountb742
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-me-cloudpc.mecloudpcsgetcountb742
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/cloudpcs/{cloudpc-id}
+      name: me-cloudpcs-cloudpc-id
+      description: REST surface for me-cloudPCs-cloudPC-id.
+      operations:
+      - method: GET
+        name: megetcloudpcs
+        description: Microsoft Graph Get cloudPCs from me
+        call: microsoft-graph-me-cloudpc.megetcloudpcs
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: meupdatecloudpcs
+        description: Microsoft Graph Update the navigation property cloudPCs in me
+        call: microsoft-graph-me-cloudpc.meupdatecloudpcs
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: medeletecloudpcs
+        description: Microsoft Graph Delete navigation property cloudPCs for me
+        call: microsoft-graph-me-cloudpc.medeletecloudpcs
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/cloudpcs/{cloudpc-id}/endgraceperiod
+      name: me-cloudpcs-cloudpc-id-endgraceperiod
+      description: REST surface for me-cloudPCs-cloudPC-id-endGracePeriod.
+      operations:
+      - method: POST
+        name: mecloudpcscloudpcendgraceperiod
+        description: Microsoft Graph Invoke action endGracePeriod
+        call: microsoft-graph-me-cloudpc.mecloudpcscloudpcendgraceperiod
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/cloudpcs/{cloudpc-id}/reboot
+      name: me-cloudpcs-cloudpc-id-reboot
+      description: REST surface for me-cloudPCs-cloudPC-id-reboot.
+      operations:
+      - method: POST
+        name: mecloudpcscloudpcreboot
+        description: Microsoft Graph Invoke action reboot
+        call: microsoft-graph-me-cloudpc.mecloudpcscloudpcreboot
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/cloudpcs/{cloudpc-id}/rename
+      name: me-cloudpcs-cloudpc-id-rename
+      description: REST surface for me-cloudPCs-cloudPC-id-rename.
+      operations:
+      - method: POST
+        name: mecloudpcscloudpcrename
+        description: Microsoft Graph Invoke action rename
+        call: microsoft-graph-me-cloudpc.mecloudpcscloudpcrename
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/cloudpcs/{cloudpc-id}/resize
+      name: me-cloudpcs-cloudpc-id-resize
+      description: REST surface for me-cloudPCs-cloudPC-id-resize.
+      operations:
+      - method: POST
+        name: mecloudpcscloudpcresize
+        description: Microsoft Graph Invoke action resize
+        call: microsoft-graph-me-cloudpc.mecloudpcscloudpcresize
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/cloudpcs/{cloudpc-id}/restore
+      name: me-cloudpcs-cloudpc-id-restore
+      description: REST surface for me-cloudPCs-cloudPC-id-restore.
+      operations:
+      - method: POST
+        name: mecloudpcscloudpcrestore
+        description: Microsoft Graph Invoke action restore
+        call: microsoft-graph-me-cloudpc.mecloudpcscloudpcrestore
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/cloudpcs/{cloudpc-id}/troubleshoot
+      name: me-cloudpcs-cloudpc-id-troubleshoot
+      description: REST surface for me-cloudPCs-cloudPC-id-troubleshoot.
+      operations:
+      - method: POST
+        name: mecloudpcscloudpctroubleshoot
+        description: Microsoft Graph Invoke action troubleshoot
+        call: microsoft-graph-me-cloudpc.mecloudpcscloudpctroubleshoot
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-me-cloudpc-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — me.cloudPC. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-cloudpcs-user
+      description: Microsoft Graph List cloudPCs for user
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-cloudpc.melistcloudpcs
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to cloudPCs for me
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-me-cloudpc.mecreatecloudpcs
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-cloudpc.mecloudpcsgetcountb742
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-cloudpcs-me
+      description: Microsoft Graph Get cloudPCs from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-cloudpc.megetcloudpcs
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property cloudPCs in me
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-cloudpc.meupdatecloudpcs
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property cloudPCs for me
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-me-cloudpc.medeletecloudpcs
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-endgraceperiod
+      description: Microsoft Graph Invoke action endGracePeriod
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-me-cloudpc.mecloudpcscloudpcendgraceperiod
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-reboot
+      description: Microsoft Graph Invoke action reboot
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-me-cloudpc.mecloudpcscloudpcreboot
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-rename
+      description: Microsoft Graph Invoke action rename
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-me-cloudpc.mecloudpcscloudpcrename
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-resize
+      description: Microsoft Graph Invoke action resize
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-me-cloudpc.mecloudpcscloudpcresize
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-restore
+      description: Microsoft Graph Invoke action restore
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-me-cloudpc.mecloudpcscloudpcrestore
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-troubleshoot
+      description: Microsoft Graph Invoke action troubleshoot
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-me-cloudpc.mecloudpcscloudpctroubleshoot
+      outputParameters:
+      - type: object
+        mapping: $.

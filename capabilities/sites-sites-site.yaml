@@ -1,0 +1,387 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Sites — Sites.site
+  description: 'Microsoft Graph Sites — Sites.site. 8 operations. Lead operation: Microsoft Graph List sites. Self-contained
+    Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Sites.site
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: sites-sites-site
+    baseUri: ''
+    description: Microsoft Graph Sites — Sites.site business capability. Self-contained, no shared references.
+    resources:
+    - name: sites
+      path: /sites
+      operations:
+      - name: sitessitelistsite
+        method: GET
+        description: Microsoft Graph List sites
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: sites-$count
+      path: /sites/$count
+      operations:
+      - name: sitesgetcount6254
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: sites-site-id
+      path: /sites/{site-id}
+      operations:
+      - name: sitessitegetsite
+        method: GET
+        description: Microsoft Graph Get a site resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: sitessiteupdatesite
+        method: PATCH
+        description: Microsoft Graph Update entity in sites
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: sites-site-id-getByPath(path='{path}')-sites
+      path: /sites/{site-id}/getByPath(path='{path}')/sites
+      operations:
+      - name: sitesgetbypathlistsites
+        method: GET
+        description: Microsoft Graph Get sites from sites
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: sites-site-id-sites
+      path: /sites/{site-id}/sites
+      operations:
+      - name: siteslistsites
+        method: GET
+        description: Microsoft Graph List subsites for a site
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: sites-site-id-sites-$count
+      path: /sites/{site-id}/sites/$count
+      operations:
+      - name: sitessitesgetcountf499
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: sites-site-id-sites-site-id1
+      path: /sites/{site-id}/sites/{site-id1}
+      operations:
+      - name: sitesgetsites
+        method: GET
+        description: Microsoft Graph Get sites from sites
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: sites-sites-site-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Sites — Sites.site. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/sites
+      name: sites
+      description: REST surface for sites.
+      operations:
+      - method: GET
+        name: sitessitelistsite
+        description: Microsoft Graph List sites
+        call: sites-sites-site.sitessitelistsite
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sites/count
+      name: sites-count
+      description: REST surface for sites-$count.
+      operations:
+      - method: GET
+        name: sitesgetcount6254
+        description: Microsoft Graph Get the number of the resource
+        call: sites-sites-site.sitesgetcount6254
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sites/{site-id}
+      name: sites-site-id
+      description: REST surface for sites-site-id.
+      operations:
+      - method: GET
+        name: sitessitegetsite
+        description: Microsoft Graph Get a site resource
+        call: sites-sites-site.sitessitegetsite
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: sitessiteupdatesite
+        description: Microsoft Graph Update entity in sites
+        call: sites-sites-site.sitessiteupdatesite
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sites/{site-id}/getbypath-path-path/sites
+      name: sites-site-id-getbypath-path-path-sites
+      description: REST surface for sites-site-id-getByPath(path='{path}')-sites.
+      operations:
+      - method: GET
+        name: sitesgetbypathlistsites
+        description: Microsoft Graph Get sites from sites
+        call: sites-sites-site.sitesgetbypathlistsites
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sites/{site-id}/sites
+      name: sites-site-id-sites
+      description: REST surface for sites-site-id-sites.
+      operations:
+      - method: GET
+        name: siteslistsites
+        description: Microsoft Graph List subsites for a site
+        call: sites-sites-site.siteslistsites
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sites/{site-id}/sites/count
+      name: sites-site-id-sites-count
+      description: REST surface for sites-site-id-sites-$count.
+      operations:
+      - method: GET
+        name: sitessitesgetcountf499
+        description: Microsoft Graph Get the number of the resource
+        call: sites-sites-site.sitessitesgetcountf499
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sites/{site-id}/sites/{site-id1}
+      name: sites-site-id-sites-site-id1
+      description: REST surface for sites-site-id-sites-site-id1.
+      operations:
+      - method: GET
+        name: sitesgetsites
+        description: Microsoft Graph Get sites from sites
+        call: sites-sites-site.sitesgetsites
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: sites-sites-site-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Sites — Sites.site. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-sites
+      description: Microsoft Graph List sites
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sites-sites-site.sitessitelistsite
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sites-sites-site.sitesgetcount6254
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-site-resource
+      description: Microsoft Graph Get a site resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sites-sites-site.sitessitegetsite
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-entity-sites
+      description: Microsoft Graph Update entity in sites
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: sites-sites-site.sitessiteupdatesite
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-sites-sites
+      description: Microsoft Graph Get sites from sites
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sites-sites-site.sitesgetbypathlistsites
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-list-subsites-site
+      description: Microsoft Graph List subsites for a site
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sites-sites-site.siteslistsites
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource-2
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sites-sites-site.sitessitesgetcountf499
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-sites-sites-2
+      description: Microsoft Graph Get sites from sites
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sites-sites-site.sitesgetsites
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

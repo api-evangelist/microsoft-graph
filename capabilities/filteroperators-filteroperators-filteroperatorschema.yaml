@@ -1,0 +1,272 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Filteroperators — filterOperators.filterOperatorSchema
+  description: 'Microsoft Graph Filteroperators — filterOperators.filterOperatorSchema. 6 operations. Lead operation: Microsoft
+    Graph Get entities from filterOperators. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - filterOperators.filterOperatorSchema
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: filteroperators-filteroperators-filteroperatorschema
+    baseUri: ''
+    description: Microsoft Graph Filteroperators — filterOperators.filterOperatorSchema business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: filterOperators
+      path: /filterOperators
+      operations:
+      - name: filteroperatorsfilteroperatorschemalistfilteroperatorschema
+        method: GET
+        description: Microsoft Graph Get entities from filterOperators
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: filteroperatorsfilteroperatorschemacreatefilteroperatorschema
+        method: POST
+        description: Microsoft Graph Add new entity to filterOperators
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: filterOperators-$count
+      path: /filterOperators/$count
+      operations:
+      - name: filteroperatorsgetcountb21d
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: filterOperators-filterOperatorSchema-id
+      path: /filterOperators/{filterOperatorSchema-id}
+      operations:
+      - name: filteroperatorsfilteroperatorschemagetfilteroperatorschema
+        method: GET
+        description: Microsoft Graph Get entity from filterOperators by key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: filteroperatorsfilteroperatorschemaupdatefilteroperatorschema
+        method: PATCH
+        description: Microsoft Graph Update entity in filterOperators
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: filteroperatorsfilteroperatorschemadeletefilteroperatorschema
+        method: DELETE
+        description: Microsoft Graph Delete entity from filterOperators
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: filteroperators-filteroperators-filteroperatorschema-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Filteroperators — filterOperators.filterOperatorSchema. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/filteroperators
+      name: filteroperators
+      description: REST surface for filterOperators.
+      operations:
+      - method: GET
+        name: filteroperatorsfilteroperatorschemalistfilteroperatorschema
+        description: Microsoft Graph Get entities from filterOperators
+        call: filteroperators-filteroperators-filteroperatorschema.filteroperatorsfilteroperatorschemalistfilteroperatorschema
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: filteroperatorsfilteroperatorschemacreatefilteroperatorschema
+        description: Microsoft Graph Add new entity to filterOperators
+        call: filteroperators-filteroperators-filteroperatorschema.filteroperatorsfilteroperatorschemacreatefilteroperatorschema
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/filteroperators/count
+      name: filteroperators-count
+      description: REST surface for filterOperators-$count.
+      operations:
+      - method: GET
+        name: filteroperatorsgetcountb21d
+        description: Microsoft Graph Get the number of the resource
+        call: filteroperators-filteroperators-filteroperatorschema.filteroperatorsgetcountb21d
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/filteroperators/{filteroperatorschema-id}
+      name: filteroperators-filteroperatorschema-id
+      description: REST surface for filterOperators-filterOperatorSchema-id.
+      operations:
+      - method: GET
+        name: filteroperatorsfilteroperatorschemagetfilteroperatorschema
+        description: Microsoft Graph Get entity from filterOperators by key
+        call: filteroperators-filteroperators-filteroperatorschema.filteroperatorsfilteroperatorschemagetfilteroperatorschema
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: filteroperatorsfilteroperatorschemaupdatefilteroperatorschema
+        description: Microsoft Graph Update entity in filterOperators
+        call: filteroperators-filteroperators-filteroperatorschema.filteroperatorsfilteroperatorschemaupdatefilteroperatorschema
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: filteroperatorsfilteroperatorschemadeletefilteroperatorschema
+        description: Microsoft Graph Delete entity from filterOperators
+        call: filteroperators-filteroperators-filteroperatorschema.filteroperatorsfilteroperatorschemadeletefilteroperatorschema
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: filteroperators-filteroperators-filteroperatorschema-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Filteroperators — filterOperators.filterOperatorSchema. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-entities-filteroperators
+      description: Microsoft Graph Get entities from filterOperators
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: filteroperators-filteroperators-filteroperatorschema.filteroperatorsfilteroperatorschemalistfilteroperatorschema
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-add-new-entity
+      description: Microsoft Graph Add new entity to filterOperators
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: filteroperators-filteroperators-filteroperatorschema.filteroperatorsfilteroperatorschemacreatefilteroperatorschema
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: filteroperators-filteroperators-filteroperatorschema.filteroperatorsgetcountb21d
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-entity-filteroperators
+      description: Microsoft Graph Get entity from filterOperators by key
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: filteroperators-filteroperators-filteroperatorschema.filteroperatorsfilteroperatorschemagetfilteroperatorschema
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-entity-filteroperators
+      description: Microsoft Graph Update entity in filterOperators
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: filteroperators-filteroperators-filteroperatorschema.filteroperatorsfilteroperatorschemaupdatefilteroperatorschema
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-entity-filteroperators
+      description: Microsoft Graph Delete entity from filterOperators
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: filteroperators-filteroperators-filteroperatorschema.filteroperatorsfilteroperatorschemadeletefilteroperatorschema
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

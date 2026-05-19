@@ -1,0 +1,454 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — groups.profilePhoto
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — groups.profilePhoto. 11 operations. Lead operation:
+    Microsoft Graph Get photo from groups. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - groups.profilePhoto
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-groups-profilephoto
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — groups.profilePhoto business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: groups-group-id-photo
+      path: /groups/{group-id}/photo
+      operations:
+      - name: groupsgetphoto
+        method: GET
+        description: Microsoft Graph Get photo from groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: groupsupdatephoto
+        method: PATCH
+        description: Microsoft Graph Update the navigation property photo in groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: groupsdeletephoto
+        method: DELETE
+        description: Microsoft Graph Delete navigation property photo for groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: groups-group-id-photo-$value
+      path: /groups/{group-id}/photo/$value
+      operations:
+      - name: groupsgetphotocontent
+        method: GET
+        description: Microsoft Graph Get media content for the navigation property photo from groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: groupsupdatephotocontent
+        method: PUT
+        description: Microsoft Graph Update media content for the navigation property photo in groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: groupsdeletephotocontent
+        method: DELETE
+        description: Microsoft Graph Delete media content for the navigation property photo in groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: groups-group-id-photos
+      path: /groups/{group-id}/photos
+      operations:
+      - name: groupslistphotos
+        method: GET
+        description: Microsoft Graph List photos
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: groups-group-id-photos-profilePhoto-id
+      path: /groups/{group-id}/photos/{profilePhoto-id}
+      operations:
+      - name: groupsgetphotos
+        method: GET
+        description: Microsoft Graph Get photos from groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: groups-group-id-photos-profilePhoto-id-$value
+      path: /groups/{group-id}/photos/{profilePhoto-id}/$value
+      operations:
+      - name: groupsgetphotoscontent
+        method: GET
+        description: Microsoft Graph List photos
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: groupsupdatephotoscontent
+        method: PUT
+        description: Microsoft Graph Update media content for the navigation property photos in groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: groupsdeletephotoscontent
+        method: DELETE
+        description: Microsoft Graph Delete media content for the navigation property photos in groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-groups-profilephoto-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — groups.profilePhoto. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/groups/{group-id}/photo
+      name: groups-group-id-photo
+      description: REST surface for groups-group-id-photo.
+      operations:
+      - method: GET
+        name: groupsgetphoto
+        description: Microsoft Graph Get photo from groups
+        call: microsoft-graph-groups-profilephoto.groupsgetphoto
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: groupsupdatephoto
+        description: Microsoft Graph Update the navigation property photo in groups
+        call: microsoft-graph-groups-profilephoto.groupsupdatephoto
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: groupsdeletephoto
+        description: Microsoft Graph Delete navigation property photo for groups
+        call: microsoft-graph-groups-profilephoto.groupsdeletephoto
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/photo/value
+      name: groups-group-id-photo-value
+      description: REST surface for groups-group-id-photo-$value.
+      operations:
+      - method: GET
+        name: groupsgetphotocontent
+        description: Microsoft Graph Get media content for the navigation property photo from groups
+        call: microsoft-graph-groups-profilephoto.groupsgetphotocontent
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: groupsupdatephotocontent
+        description: Microsoft Graph Update media content for the navigation property photo in groups
+        call: microsoft-graph-groups-profilephoto.groupsupdatephotocontent
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: groupsdeletephotocontent
+        description: Microsoft Graph Delete media content for the navigation property photo in groups
+        call: microsoft-graph-groups-profilephoto.groupsdeletephotocontent
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/photos
+      name: groups-group-id-photos
+      description: REST surface for groups-group-id-photos.
+      operations:
+      - method: GET
+        name: groupslistphotos
+        description: Microsoft Graph List photos
+        call: microsoft-graph-groups-profilephoto.groupslistphotos
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/photos/{profilephoto-id}
+      name: groups-group-id-photos-profilephoto-id
+      description: REST surface for groups-group-id-photos-profilePhoto-id.
+      operations:
+      - method: GET
+        name: groupsgetphotos
+        description: Microsoft Graph Get photos from groups
+        call: microsoft-graph-groups-profilephoto.groupsgetphotos
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/photos/{profilephoto-id}/value
+      name: groups-group-id-photos-profilephoto-id-value
+      description: REST surface for groups-group-id-photos-profilePhoto-id-$value.
+      operations:
+      - method: GET
+        name: groupsgetphotoscontent
+        description: Microsoft Graph List photos
+        call: microsoft-graph-groups-profilephoto.groupsgetphotoscontent
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: groupsupdatephotoscontent
+        description: Microsoft Graph Update media content for the navigation property photos in groups
+        call: microsoft-graph-groups-profilephoto.groupsupdatephotoscontent
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: groupsdeletephotoscontent
+        description: Microsoft Graph Delete media content for the navigation property photos in groups
+        call: microsoft-graph-groups-profilephoto.groupsdeletephotoscontent
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-groups-profilephoto-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — groups.profilePhoto. One tool
+      per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-photo-groups
+      description: Microsoft Graph Get photo from groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-profilephoto.groupsgetphoto
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property photo in groups
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-profilephoto.groupsupdatephoto
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property photo for groups
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-groups-profilephoto.groupsdeletephoto
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-media-content
+      description: Microsoft Graph Get media content for the navigation property photo from groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-profilephoto.groupsgetphotocontent
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-media-content
+      description: Microsoft Graph Update media content for the navigation property photo in groups
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-profilephoto.groupsupdatephotocontent
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-media-content
+      description: Microsoft Graph Delete media content for the navigation property photo in groups
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-groups-profilephoto.groupsdeletephotocontent
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-list-photos
+      description: Microsoft Graph List photos
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-profilephoto.groupslistphotos
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-photos-groups
+      description: Microsoft Graph Get photos from groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-profilephoto.groupsgetphotos
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-list-photos-2
+      description: Microsoft Graph List photos
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-profilephoto.groupsgetphotoscontent
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-media-content-2
+      description: Microsoft Graph Update media content for the navigation property photos in groups
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-profilephoto.groupsupdatephotoscontent
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-media-content-2
+      description: Microsoft Graph Delete media content for the navigation property photos in groups
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-groups-profilephoto.groupsdeletephotoscontent
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

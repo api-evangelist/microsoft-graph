@@ -1,0 +1,168 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Agreement Acceptances API — User Acceptances
+  description: 'Microsoft Graph Agreement Acceptances API — User Acceptances. 3 operations. Lead operation: Microsoft Graph
+    List user''s agreement acceptances. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - User Acceptances
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: agreementacceptances-user-acceptances
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Agreement Acceptances API — User Acceptances business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: users-user-id-agreementAcceptances
+      path: /users/{user-id}/agreementAcceptances
+      operations:
+      - name: listuseragreementacceptances
+        method: GET
+        description: Microsoft Graph List user's agreement acceptances
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: users-user-id-agreementAcceptances-$count
+      path: /users/{user-id}/agreementAcceptances/$count
+      operations:
+      - name: countuseragreementacceptances
+        method: GET
+        description: Microsoft Graph Count user's agreement acceptances
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-user-id-agreementAcceptances-agreementAcceptance-id
+      path: /users/{user-id}/agreementAcceptances/{agreementAcceptance-id}
+      operations:
+      - name: getuseragreementacceptance
+        method: GET
+        description: Microsoft Graph Get user's agreement acceptance
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: agreementacceptances-user-acceptances-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Agreement Acceptances API — User Acceptances. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/users/{user-id}/agreementacceptances
+      name: users-user-id-agreementacceptances
+      description: REST surface for users-user-id-agreementAcceptances.
+      operations:
+      - method: GET
+        name: listuseragreementacceptances
+        description: Microsoft Graph List user's agreement acceptances
+        call: agreementacceptances-user-acceptances.listuseragreementacceptances
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/agreementacceptances/count
+      name: users-user-id-agreementacceptances-count
+      description: REST surface for users-user-id-agreementAcceptances-$count.
+      operations:
+      - method: GET
+        name: countuseragreementacceptances
+        description: Microsoft Graph Count user's agreement acceptances
+        call: agreementacceptances-user-acceptances.countuseragreementacceptances
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/agreementacceptances/{agreementacceptance-id}
+      name: users-user-id-agreementacceptances-agreementacceptance-id
+      description: REST surface for users-user-id-agreementAcceptances-agreementAcceptance-id.
+      operations:
+      - method: GET
+        name: getuseragreementacceptance
+        description: Microsoft Graph Get user's agreement acceptance
+        call: agreementacceptances-user-acceptances.getuseragreementacceptance
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: agreementacceptances-user-acceptances-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Agreement Acceptances API — User Acceptances. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-user-s-agreement
+      description: Microsoft Graph List user's agreement acceptances
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agreementacceptances-user-acceptances.listuseragreementacceptances
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-count-user-s-agreement
+      description: Microsoft Graph Count user's agreement acceptances
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agreementacceptances-user-acceptances.countuseragreementacceptances
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-user-s-agreement
+      description: Microsoft Graph Get user's agreement acceptance
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agreementacceptances-user-acceptances.getuseragreementacceptance
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

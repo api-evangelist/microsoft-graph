@@ -1,0 +1,271 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Teamwork — teamwork.workforceIntegration
+  description: 'Microsoft Graph Teamwork — teamwork.workforceIntegration. 6 operations. Lead operation: Microsoft Graph List
+    workforceIntegrations. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - teamwork.workforceIntegration
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: teamwork-teamwork-workforceintegration
+    baseUri: ''
+    description: Microsoft Graph Teamwork — teamwork.workforceIntegration business capability. Self-contained, no shared references.
+    resources:
+    - name: teamwork-workforceIntegrations
+      path: /teamwork/workforceIntegrations
+      operations:
+      - name: teamworklistworkforceintegrations
+        method: GET
+        description: Microsoft Graph List workforceIntegrations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: teamworkcreateworkforceintegrations
+        method: POST
+        description: Microsoft Graph Create workforceIntegration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teamwork-workforceIntegrations-$count
+      path: /teamwork/workforceIntegrations/$count
+      operations:
+      - name: teamworkworkforceintegrationsgetcount5b5b
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: teamwork-workforceIntegrations-workforceIntegration-id
+      path: /teamwork/workforceIntegrations/{workforceIntegration-id}
+      operations:
+      - name: teamworkgetworkforceintegrations
+        method: GET
+        description: Microsoft Graph Get workforceIntegration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: teamworkupdateworkforceintegrations
+        method: PATCH
+        description: Microsoft Graph Update workforceIntegration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: teamworkdeleteworkforceintegrations
+        method: DELETE
+        description: Microsoft Graph Delete workforceIntegration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: teamwork-teamwork-workforceintegration-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Teamwork — teamwork.workforceIntegration. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/teamwork/workforceintegrations
+      name: teamwork-workforceintegrations
+      description: REST surface for teamwork-workforceIntegrations.
+      operations:
+      - method: GET
+        name: teamworklistworkforceintegrations
+        description: Microsoft Graph List workforceIntegrations
+        call: teamwork-teamwork-workforceintegration.teamworklistworkforceintegrations
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: teamworkcreateworkforceintegrations
+        description: Microsoft Graph Create workforceIntegration
+        call: teamwork-teamwork-workforceintegration.teamworkcreateworkforceintegrations
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teamwork/workforceintegrations/count
+      name: teamwork-workforceintegrations-count
+      description: REST surface for teamwork-workforceIntegrations-$count.
+      operations:
+      - method: GET
+        name: teamworkworkforceintegrationsgetcount5b5b
+        description: Microsoft Graph Get the number of the resource
+        call: teamwork-teamwork-workforceintegration.teamworkworkforceintegrationsgetcount5b5b
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teamwork/workforceintegrations/{workforceintegration-id}
+      name: teamwork-workforceintegrations-workforceintegration-id
+      description: REST surface for teamwork-workforceIntegrations-workforceIntegration-id.
+      operations:
+      - method: GET
+        name: teamworkgetworkforceintegrations
+        description: Microsoft Graph Get workforceIntegration
+        call: teamwork-teamwork-workforceintegration.teamworkgetworkforceintegrations
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: teamworkupdateworkforceintegrations
+        description: Microsoft Graph Update workforceIntegration
+        call: teamwork-teamwork-workforceintegration.teamworkupdateworkforceintegrations
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: teamworkdeleteworkforceintegrations
+        description: Microsoft Graph Delete workforceIntegration
+        call: teamwork-teamwork-workforceintegration.teamworkdeleteworkforceintegrations
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: teamwork-teamwork-workforceintegration-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Teamwork — teamwork.workforceIntegration. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-workforceintegrations
+      description: Microsoft Graph List workforceIntegrations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teamwork-teamwork-workforceintegration.teamworklistworkforceintegrations
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-workforceintegration
+      description: Microsoft Graph Create workforceIntegration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teamwork-teamwork-workforceintegration.teamworkcreateworkforceintegrations
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teamwork-teamwork-workforceintegration.teamworkworkforceintegrationsgetcount5b5b
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-workforceintegration
+      description: Microsoft Graph Get workforceIntegration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teamwork-teamwork-workforceintegration.teamworkgetworkforceintegrations
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-workforceintegration
+      description: Microsoft Graph Update workforceIntegration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: teamwork-teamwork-workforceintegration.teamworkupdateworkforceintegrations
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-workforceintegration
+      description: Microsoft Graph Delete workforceIntegration
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: teamwork-teamwork-workforceintegration.teamworkdeleteworkforceintegrations
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

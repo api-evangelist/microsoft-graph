@@ -1,0 +1,272 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Schemaextensions — schemaExtensions.schemaExtension
+  description: 'Microsoft Graph Schemaextensions — schemaExtensions.schemaExtension. 6 operations. Lead operation: Microsoft
+    Graph List schemaExtensions. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - schemaExtensions.schemaExtension
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: schemaextensions-schemaextensions-schemaextension
+    baseUri: ''
+    description: Microsoft Graph Schemaextensions — schemaExtensions.schemaExtension business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: schemaExtensions
+      path: /schemaExtensions
+      operations:
+      - name: schemaextensionsschemaextensionlistschemaextension
+        method: GET
+        description: Microsoft Graph List schemaExtensions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: schemaextensionsschemaextensioncreateschemaextension
+        method: POST
+        description: Microsoft Graph Create schemaExtension
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: schemaExtensions-$count
+      path: /schemaExtensions/$count
+      operations:
+      - name: schemaextensionsgetcounte324
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: schemaExtensions-schemaExtension-id
+      path: /schemaExtensions/{schemaExtension-id}
+      operations:
+      - name: schemaextensionsschemaextensiongetschemaextension
+        method: GET
+        description: Microsoft Graph Get schemaExtension
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: schemaextensionsschemaextensionupdateschemaextension
+        method: PATCH
+        description: Microsoft Graph Update schemaExtension
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: schemaextensionsschemaextensiondeleteschemaextension
+        method: DELETE
+        description: Microsoft Graph Delete schemaExtension
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: schemaextensions-schemaextensions-schemaextension-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Schemaextensions — schemaExtensions.schemaExtension. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/schemaextensions
+      name: schemaextensions
+      description: REST surface for schemaExtensions.
+      operations:
+      - method: GET
+        name: schemaextensionsschemaextensionlistschemaextension
+        description: Microsoft Graph List schemaExtensions
+        call: schemaextensions-schemaextensions-schemaextension.schemaextensionsschemaextensionlistschemaextension
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: schemaextensionsschemaextensioncreateschemaextension
+        description: Microsoft Graph Create schemaExtension
+        call: schemaextensions-schemaextensions-schemaextension.schemaextensionsschemaextensioncreateschemaextension
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/schemaextensions/count
+      name: schemaextensions-count
+      description: REST surface for schemaExtensions-$count.
+      operations:
+      - method: GET
+        name: schemaextensionsgetcounte324
+        description: Microsoft Graph Get the number of the resource
+        call: schemaextensions-schemaextensions-schemaextension.schemaextensionsgetcounte324
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/schemaextensions/{schemaextension-id}
+      name: schemaextensions-schemaextension-id
+      description: REST surface for schemaExtensions-schemaExtension-id.
+      operations:
+      - method: GET
+        name: schemaextensionsschemaextensiongetschemaextension
+        description: Microsoft Graph Get schemaExtension
+        call: schemaextensions-schemaextensions-schemaextension.schemaextensionsschemaextensiongetschemaextension
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: schemaextensionsschemaextensionupdateschemaextension
+        description: Microsoft Graph Update schemaExtension
+        call: schemaextensions-schemaextensions-schemaextension.schemaextensionsschemaextensionupdateschemaextension
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: schemaextensionsschemaextensiondeleteschemaextension
+        description: Microsoft Graph Delete schemaExtension
+        call: schemaextensions-schemaextensions-schemaextension.schemaextensionsschemaextensiondeleteschemaextension
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: schemaextensions-schemaextensions-schemaextension-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Schemaextensions — schemaExtensions.schemaExtension. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-schemaextensions
+      description: Microsoft Graph List schemaExtensions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: schemaextensions-schemaextensions-schemaextension.schemaextensionsschemaextensionlistschemaextension
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-schemaextension
+      description: Microsoft Graph Create schemaExtension
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: schemaextensions-schemaextensions-schemaextension.schemaextensionsschemaextensioncreateschemaextension
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: schemaextensions-schemaextensions-schemaextension.schemaextensionsgetcounte324
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-schemaextension
+      description: Microsoft Graph Get schemaExtension
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: schemaextensions-schemaextensions-schemaextension.schemaextensionsschemaextensiongetschemaextension
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-schemaextension
+      description: Microsoft Graph Update schemaExtension
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: schemaextensions-schemaextensions-schemaextension.schemaextensionsschemaextensionupdateschemaextension
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-schemaextension
+      description: Microsoft Graph Delete schemaExtension
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: schemaextensions-schemaextensions-schemaextension.schemaextensionsschemaextensiondeleteschemaextension
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

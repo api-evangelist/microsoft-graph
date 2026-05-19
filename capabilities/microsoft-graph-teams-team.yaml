@@ -1,0 +1,272 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — Teams.team
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — Teams.team. 6 operations. Lead operation: Microsoft
+    Graph List teams. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Teams.team
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-teams-team
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — Teams.team business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: teams
+      path: /teams
+      operations:
+      - name: teamsteamlistteam
+        method: GET
+        description: Microsoft Graph List teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: teamsteamcreateteam
+        method: POST
+        description: Microsoft Graph Create team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-$count
+      path: /teams/$count
+      operations:
+      - name: teamsgetcountff25
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: teams-team-id
+      path: /teams/{team-id}
+      operations:
+      - name: teamsteamgetteam
+        method: GET
+        description: Microsoft Graph Get team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: teamsteamupdateteam
+        method: PATCH
+        description: Microsoft Graph Update team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: teamsteamdeleteteam
+        method: DELETE
+        description: Microsoft Graph Delete entity from teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-teams-team-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — Teams.team. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/teams
+      name: teams
+      description: REST surface for teams.
+      operations:
+      - method: GET
+        name: teamsteamlistteam
+        description: Microsoft Graph List teams
+        call: microsoft-graph-teams-team.teamsteamlistteam
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: teamsteamcreateteam
+        description: Microsoft Graph Create team
+        call: microsoft-graph-teams-team.teamsteamcreateteam
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/count
+      name: teams-count
+      description: REST surface for teams-$count.
+      operations:
+      - method: GET
+        name: teamsgetcountff25
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-teams-team.teamsgetcountff25
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}
+      name: teams-team-id
+      description: REST surface for teams-team-id.
+      operations:
+      - method: GET
+        name: teamsteamgetteam
+        description: Microsoft Graph Get team
+        call: microsoft-graph-teams-team.teamsteamgetteam
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: teamsteamupdateteam
+        description: Microsoft Graph Update team
+        call: microsoft-graph-teams-team.teamsteamupdateteam
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: teamsteamdeleteteam
+        description: Microsoft Graph Delete entity from teams
+        call: microsoft-graph-teams-team.teamsteamdeleteteam
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-teams-team-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — Teams.team. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-teams
+      description: Microsoft Graph List teams
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-team.teamsteamlistteam
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-team
+      description: Microsoft Graph Create team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-teams-team.teamsteamcreateteam
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-team.teamsgetcountff25
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-team
+      description: Microsoft Graph Get team
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-team.teamsteamgetteam
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-team
+      description: Microsoft Graph Update team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-team.teamsteamupdateteam
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-entity-teams
+      description: Microsoft Graph Delete entity from teams
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-teams-team.teamsteamdeleteteam
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

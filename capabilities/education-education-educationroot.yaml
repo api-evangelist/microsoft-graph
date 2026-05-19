@@ -1,0 +1,117 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Education — education.educationRoot
+  description: 'Microsoft Graph Education — education.educationRoot. 2 operations. Lead operation: Microsoft Graph Get education.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - education.educationRoot
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: education-education-educationroot
+    baseUri: ''
+    description: Microsoft Graph Education — education.educationRoot business capability. Self-contained, no shared references.
+    resources:
+    - name: education
+      path: /education
+      operations:
+      - name: educationeducationrootgeteducationroot
+        method: GET
+        description: Microsoft Graph Get education
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: educationeducationrootupdateeducationroot
+        method: PATCH
+        description: Microsoft Graph Update education
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: education-education-educationroot-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Education — education.educationRoot. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/education
+      name: education
+      description: REST surface for education.
+      operations:
+      - method: GET
+        name: educationeducationrootgeteducationroot
+        description: Microsoft Graph Get education
+        call: education-education-educationroot.educationeducationrootgeteducationroot
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: educationeducationrootupdateeducationroot
+        description: Microsoft Graph Update education
+        call: education-education-educationroot.educationeducationrootupdateeducationroot
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: education-education-educationroot-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Education — education.educationRoot. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-education
+      description: Microsoft Graph Get education
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: education-education-educationroot.educationeducationrootgeteducationroot
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-education
+      description: Microsoft Graph Update education
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: education-education-educationroot.educationeducationrootupdateeducationroot
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,78 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Applications API — Applications Check Member Objects
+  description: 'Microsoft Graph Applications API — Applications Check Member Objects. 1 operations. Lead operation: Microsoft
+    Graph Create Check Member Objects. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Applications Check Member Objects
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: applications-applications-check-member-objects
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Applications API — Applications Check Member Objects business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: applications-application-id-checkMemberObjects
+      path: /applications/{application-id}/checkMemberObjects
+      operations:
+      - name: checkmemberobjectsapplications
+        method: POST
+        description: Microsoft Graph Create Check Member Objects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: applications-applications-check-member-objects-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Applications API — Applications Check Member Objects. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications/{application-id}/checkmemberobjects
+      name: applications-application-id-checkmemberobjects
+      description: REST surface for applications-application-id-checkMemberObjects.
+      operations:
+      - method: POST
+        name: checkmemberobjectsapplications
+        description: Microsoft Graph Create Check Member Objects
+        call: applications-applications-check-member-objects.checkmemberobjectsapplications
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: applications-applications-check-member-objects-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Applications API — Applications Check Member Objects. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-create-check-member
+      description: Microsoft Graph Create Check Member Objects
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: applications-applications-check-member-objects.checkmemberobjectsapplications
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

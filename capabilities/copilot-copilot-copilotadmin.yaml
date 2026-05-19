@@ -1,0 +1,383 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Copilot — copilot.copilotAdmin
+  description: 'Microsoft Graph Copilot — copilot.copilotAdmin. 9 operations. Lead operation: Microsoft Graph Get admin from
+    copilot. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - copilot.copilotAdmin
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: copilot-copilot-copilotadmin
+    baseUri: ''
+    description: Microsoft Graph Copilot — copilot.copilotAdmin business capability. Self-contained, no shared references.
+    resources:
+    - name: copilot-admin
+      path: /copilot/admin
+      operations:
+      - name: copilotgetadmin
+        method: GET
+        description: Microsoft Graph Get admin from copilot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: copilotupdateadmin
+        method: PATCH
+        description: Microsoft Graph Update the navigation property admin in copilot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: copilotdeleteadmin
+        method: DELETE
+        description: Microsoft Graph Delete navigation property admin for copilot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: copilot-admin-settings
+      path: /copilot/admin/settings
+      operations:
+      - name: copilotadmingetsettings
+        method: GET
+        description: Microsoft Graph Get settings from copilot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: copilotadminupdatesettings
+        method: PATCH
+        description: Microsoft Graph Update the navigation property settings in copilot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: copilotadmindeletesettings
+        method: DELETE
+        description: Microsoft Graph Delete navigation property settings for copilot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: copilot-admin-settings-limitedMode
+      path: /copilot/admin/settings/limitedMode
+      operations:
+      - name: copilotadminsettingsgetlimitedmode
+        method: GET
+        description: Microsoft Graph Get limitedMode from copilot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: copilotadminsettingsupdatelimitedmode
+        method: PATCH
+        description: Microsoft Graph Update the navigation property limitedMode in copilot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: copilotadminsettingsdeletelimitedmode
+        method: DELETE
+        description: Microsoft Graph Delete navigation property limitedMode for copilot
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: copilot-copilot-copilotadmin-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Copilot — copilot.copilotAdmin. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/copilot/admin
+      name: copilot-admin
+      description: REST surface for copilot-admin.
+      operations:
+      - method: GET
+        name: copilotgetadmin
+        description: Microsoft Graph Get admin from copilot
+        call: copilot-copilot-copilotadmin.copilotgetadmin
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: copilotupdateadmin
+        description: Microsoft Graph Update the navigation property admin in copilot
+        call: copilot-copilot-copilotadmin.copilotupdateadmin
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: copilotdeleteadmin
+        description: Microsoft Graph Delete navigation property admin for copilot
+        call: copilot-copilot-copilotadmin.copilotdeleteadmin
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/copilot/admin/settings
+      name: copilot-admin-settings
+      description: REST surface for copilot-admin-settings.
+      operations:
+      - method: GET
+        name: copilotadmingetsettings
+        description: Microsoft Graph Get settings from copilot
+        call: copilot-copilot-copilotadmin.copilotadmingetsettings
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: copilotadminupdatesettings
+        description: Microsoft Graph Update the navigation property settings in copilot
+        call: copilot-copilot-copilotadmin.copilotadminupdatesettings
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: copilotadmindeletesettings
+        description: Microsoft Graph Delete navigation property settings for copilot
+        call: copilot-copilot-copilotadmin.copilotadmindeletesettings
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/copilot/admin/settings/limitedmode
+      name: copilot-admin-settings-limitedmode
+      description: REST surface for copilot-admin-settings-limitedMode.
+      operations:
+      - method: GET
+        name: copilotadminsettingsgetlimitedmode
+        description: Microsoft Graph Get limitedMode from copilot
+        call: copilot-copilot-copilotadmin.copilotadminsettingsgetlimitedmode
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: copilotadminsettingsupdatelimitedmode
+        description: Microsoft Graph Update the navigation property limitedMode in copilot
+        call: copilot-copilot-copilotadmin.copilotadminsettingsupdatelimitedmode
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: copilotadminsettingsdeletelimitedmode
+        description: Microsoft Graph Delete navigation property limitedMode for copilot
+        call: copilot-copilot-copilotadmin.copilotadminsettingsdeletelimitedmode
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: copilot-copilot-copilotadmin-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Copilot — copilot.copilotAdmin. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-admin-copilot
+      description: Microsoft Graph Get admin from copilot
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: copilot-copilot-copilotadmin.copilotgetadmin
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property admin in copilot
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: copilot-copilot-copilotadmin.copilotupdateadmin
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property admin for copilot
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: copilot-copilot-copilotadmin.copilotdeleteadmin
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-settings-copilot
+      description: Microsoft Graph Get settings from copilot
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: copilot-copilot-copilotadmin.copilotadmingetsettings
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property-2
+      description: Microsoft Graph Update the navigation property settings in copilot
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: copilot-copilot-copilotadmin.copilotadminupdatesettings
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property-2
+      description: Microsoft Graph Delete navigation property settings for copilot
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: copilot-copilot-copilotadmin.copilotadmindeletesettings
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-limitedmode-copilot
+      description: Microsoft Graph Get limitedMode from copilot
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: copilot-copilot-copilotadmin.copilotadminsettingsgetlimitedmode
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property-3
+      description: Microsoft Graph Update the navigation property limitedMode in copilot
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: copilot-copilot-copilotadmin.copilotadminsettingsupdatelimitedmode
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property-3
+      description: Microsoft Graph Delete navigation property limitedMode for copilot
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: copilot-copilot-copilotadmin.copilotadminsettingsdeletelimitedmode
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

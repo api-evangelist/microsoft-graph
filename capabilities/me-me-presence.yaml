@@ -1,0 +1,351 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Me — Me.presence
+  description: 'Microsoft Graph Me — Me.presence. 8 operations. Lead operation: Microsoft Graph Get presence. Self-contained
+    Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Me.presence
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: me-me-presence
+    baseUri: ''
+    description: Microsoft Graph Me — Me.presence business capability. Self-contained, no shared references.
+    resources:
+    - name: me-presence
+      path: /me/presence
+      operations:
+      - name: megetpresence
+        method: GET
+        description: Microsoft Graph Get presence
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: meupdatepresence
+        method: PATCH
+        description: Microsoft Graph Update the navigation property presence in me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: medeletepresence
+        method: DELETE
+        description: Microsoft Graph Delete navigation property presence for me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: me-presence-clearPresence
+      path: /me/presence/clearPresence
+      operations:
+      - name: mepresenceclearpresence
+        method: POST
+        description: Microsoft Graph Invoke action clearPresence
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: me-presence-clearUserPreferredPresence
+      path: /me/presence/clearUserPreferredPresence
+      operations:
+      - name: mepresenceclearuserpreferredpresence
+        method: POST
+        description: Microsoft Graph Invoke action clearUserPreferredPresence
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: me-presence-setPresence
+      path: /me/presence/setPresence
+      operations:
+      - name: mepresencesetpresence
+        method: POST
+        description: Microsoft Graph Invoke action setPresence
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: me-presence-setStatusMessage
+      path: /me/presence/setStatusMessage
+      operations:
+      - name: mepresencesetstatusmessage
+        method: POST
+        description: Microsoft Graph Invoke action setStatusMessage
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: me-presence-setUserPreferredPresence
+      path: /me/presence/setUserPreferredPresence
+      operations:
+      - name: mepresencesetuserpreferredpresence
+        method: POST
+        description: Microsoft Graph Invoke action setUserPreferredPresence
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: me-me-presence-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Me — Me.presence. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/me/presence
+      name: me-presence
+      description: REST surface for me-presence.
+      operations:
+      - method: GET
+        name: megetpresence
+        description: Microsoft Graph Get presence
+        call: me-me-presence.megetpresence
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: meupdatepresence
+        description: Microsoft Graph Update the navigation property presence in me
+        call: me-me-presence.meupdatepresence
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: medeletepresence
+        description: Microsoft Graph Delete navigation property presence for me
+        call: me-me-presence.medeletepresence
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/presence/clearpresence
+      name: me-presence-clearpresence
+      description: REST surface for me-presence-clearPresence.
+      operations:
+      - method: POST
+        name: mepresenceclearpresence
+        description: Microsoft Graph Invoke action clearPresence
+        call: me-me-presence.mepresenceclearpresence
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/presence/clearuserpreferredpresence
+      name: me-presence-clearuserpreferredpresence
+      description: REST surface for me-presence-clearUserPreferredPresence.
+      operations:
+      - method: POST
+        name: mepresenceclearuserpreferredpresence
+        description: Microsoft Graph Invoke action clearUserPreferredPresence
+        call: me-me-presence.mepresenceclearuserpreferredpresence
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/presence/setpresence
+      name: me-presence-setpresence
+      description: REST surface for me-presence-setPresence.
+      operations:
+      - method: POST
+        name: mepresencesetpresence
+        description: Microsoft Graph Invoke action setPresence
+        call: me-me-presence.mepresencesetpresence
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/presence/setstatusmessage
+      name: me-presence-setstatusmessage
+      description: REST surface for me-presence-setStatusMessage.
+      operations:
+      - method: POST
+        name: mepresencesetstatusmessage
+        description: Microsoft Graph Invoke action setStatusMessage
+        call: me-me-presence.mepresencesetstatusmessage
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/presence/setuserpreferredpresence
+      name: me-presence-setuserpreferredpresence
+      description: REST surface for me-presence-setUserPreferredPresence.
+      operations:
+      - method: POST
+        name: mepresencesetuserpreferredpresence
+        description: Microsoft Graph Invoke action setUserPreferredPresence
+        call: me-me-presence.mepresencesetuserpreferredpresence
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: me-me-presence-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Me — Me.presence. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-presence
+      description: Microsoft Graph Get presence
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: me-me-presence.megetpresence
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property presence in me
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: me-me-presence.meupdatepresence
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property presence for me
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: me-me-presence.medeletepresence
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-clearpresence
+      description: Microsoft Graph Invoke action clearPresence
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: me-me-presence.mepresenceclearpresence
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-clearuserpreferredpresence
+      description: Microsoft Graph Invoke action clearUserPreferredPresence
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: me-me-presence.mepresenceclearuserpreferredpresence
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-setpresence
+      description: Microsoft Graph Invoke action setPresence
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: me-me-presence.mepresencesetpresence
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-setstatusmessage
+      description: Microsoft Graph Invoke action setStatusMessage
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: me-me-presence.mepresencesetstatusmessage
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-setuserpreferredpresence
+      description: Microsoft Graph Invoke action setUserPreferredPresence
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: me-me-presence.mepresencesetuserpreferredpresence
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,272 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Audit Logs API — Audit Logs Directory Audits
+  description: 'Microsoft Graph Audit Logs API — Audit Logs Directory Audits. 6 operations. Lead operation: Microsoft Graph
+    List directoryAudits. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Audit Logs Directory Audits
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: auditlogs-audit-logs-directory-audits
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Audit Logs API — Audit Logs Directory Audits business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: auditLogs-directoryAudits
+      path: /auditLogs/directoryAudits
+      operations:
+      - name: listauditlogsdirectoryaudits
+        method: GET
+        description: Microsoft Graph List directoryAudits
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: createauditlogsdirectoryaudits
+        method: POST
+        description: Microsoft Graph Create Directory Audits
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: auditLogs-directoryAudits-$count
+      path: /auditLogs/directoryAudits/$count
+      operations:
+      - name: countauditlogsdirectoryaudits
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: auditLogs-directoryAudits-directoryAudit-id
+      path: /auditLogs/directoryAudits/{directoryAudit-id}
+      operations:
+      - name: getauditlogsdirectoryaudits
+        method: GET
+        description: Microsoft Graph Get directoryAudit
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: updateauditlogsdirectoryaudits
+        method: PATCH
+        description: Microsoft Graph Update Directory Audits
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteauditlogsdirectoryaudits
+        method: DELETE
+        description: Microsoft Graph Delete Directory Audits
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: auditlogs-audit-logs-directory-audits-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Audit Logs API — Audit Logs Directory Audits. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/auditlogs/directoryaudits
+      name: auditlogs-directoryaudits
+      description: REST surface for auditLogs-directoryAudits.
+      operations:
+      - method: GET
+        name: listauditlogsdirectoryaudits
+        description: Microsoft Graph List directoryAudits
+        call: auditlogs-audit-logs-directory-audits.listauditlogsdirectoryaudits
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createauditlogsdirectoryaudits
+        description: Microsoft Graph Create Directory Audits
+        call: auditlogs-audit-logs-directory-audits.createauditlogsdirectoryaudits
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/auditlogs/directoryaudits/count
+      name: auditlogs-directoryaudits-count
+      description: REST surface for auditLogs-directoryAudits-$count.
+      operations:
+      - method: GET
+        name: countauditlogsdirectoryaudits
+        description: Microsoft Graph Get the number of the resource
+        call: auditlogs-audit-logs-directory-audits.countauditlogsdirectoryaudits
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/auditlogs/directoryaudits/{directoryaudit-id}
+      name: auditlogs-directoryaudits-directoryaudit-id
+      description: REST surface for auditLogs-directoryAudits-directoryAudit-id.
+      operations:
+      - method: GET
+        name: getauditlogsdirectoryaudits
+        description: Microsoft Graph Get directoryAudit
+        call: auditlogs-audit-logs-directory-audits.getauditlogsdirectoryaudits
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateauditlogsdirectoryaudits
+        description: Microsoft Graph Update Directory Audits
+        call: auditlogs-audit-logs-directory-audits.updateauditlogsdirectoryaudits
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteauditlogsdirectoryaudits
+        description: Microsoft Graph Delete Directory Audits
+        call: auditlogs-audit-logs-directory-audits.deleteauditlogsdirectoryaudits
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: auditlogs-audit-logs-directory-audits-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Audit Logs API — Audit Logs Directory Audits. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-directoryaudits
+      description: Microsoft Graph List directoryAudits
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: auditlogs-audit-logs-directory-audits.listauditlogsdirectoryaudits
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-directory-audits
+      description: Microsoft Graph Create Directory Audits
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: auditlogs-audit-logs-directory-audits.createauditlogsdirectoryaudits
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: auditlogs-audit-logs-directory-audits.countauditlogsdirectoryaudits
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-directoryaudit
+      description: Microsoft Graph Get directoryAudit
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: auditlogs-audit-logs-directory-audits.getauditlogsdirectoryaudits
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-directory-audits
+      description: Microsoft Graph Update Directory Audits
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: auditlogs-audit-logs-directory-audits.updateauditlogsdirectoryaudits
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-directory-audits
+      description: Microsoft Graph Delete Directory Audits
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: auditlogs-audit-logs-directory-audits.deleteauditlogsdirectoryaudits
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

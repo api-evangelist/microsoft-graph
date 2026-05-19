@@ -1,0 +1,167 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Users — Users.person
+  description: 'Microsoft Graph Users — Users.person. 3 operations. Lead operation: Microsoft Graph Get people from users.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Users.person
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: users-users-person
+    baseUri: ''
+    description: Microsoft Graph Users — Users.person business capability. Self-contained, no shared references.
+    resources:
+    - name: users-user-id-people
+      path: /users/{user-id}/people
+      operations:
+      - name: userslistpeople
+        method: GET
+        description: Microsoft Graph Get people from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: users-user-id-people-$count
+      path: /users/{user-id}/people/$count
+      operations:
+      - name: userspeoplegetcountd516
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-user-id-people-person-id
+      path: /users/{user-id}/people/{person-id}
+      operations:
+      - name: usersgetpeople
+        method: GET
+        description: Microsoft Graph Get people from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: users-users-person-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Users — Users.person. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/users/{user-id}/people
+      name: users-user-id-people
+      description: REST surface for users-user-id-people.
+      operations:
+      - method: GET
+        name: userslistpeople
+        description: Microsoft Graph Get people from users
+        call: users-users-person.userslistpeople
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/people/count
+      name: users-user-id-people-count
+      description: REST surface for users-user-id-people-$count.
+      operations:
+      - method: GET
+        name: userspeoplegetcountd516
+        description: Microsoft Graph Get the number of the resource
+        call: users-users-person.userspeoplegetcountd516
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/people/{person-id}
+      name: users-user-id-people-person-id
+      description: REST surface for users-user-id-people-person-id.
+      operations:
+      - method: GET
+        name: usersgetpeople
+        description: Microsoft Graph Get people from users
+        call: users-users-person.usersgetpeople
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: users-users-person-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Users — Users.person. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-people-users
+      description: Microsoft Graph Get people from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-users-person.userslistpeople
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-users-person.userspeoplegetcountd516
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-people-users-2
+      description: Microsoft Graph Get people from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-users-person.usersgetpeople
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

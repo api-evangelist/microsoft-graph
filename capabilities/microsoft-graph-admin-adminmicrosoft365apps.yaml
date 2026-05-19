@@ -1,0 +1,269 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — admin.adminMicrosoft365Apps
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — admin.adminMicrosoft365Apps. 6 operations. Lead
+    operation: Microsoft Graph Get microsoft365Apps from admin. Self-contained Naftiko capability covering one Microsoft Graph
+    business surface.'
+  tags:
+  - Microsoft Graph
+  - admin.adminMicrosoft365Apps
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-admin-adminmicrosoft365apps
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — admin.adminMicrosoft365Apps business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: admin-microsoft365Apps
+      path: /admin/microsoft365Apps
+      operations:
+      - name: admingetmicrosoft365apps
+        method: GET
+        description: Microsoft Graph Get microsoft365Apps from admin
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: adminupdatemicrosoft365apps
+        method: PATCH
+        description: Microsoft Graph Update the navigation property microsoft365Apps in admin
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: admindeletemicrosoft365apps
+        method: DELETE
+        description: Microsoft Graph Delete navigation property microsoft365Apps for admin
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: admin-microsoft365Apps-installationOptions
+      path: /admin/microsoft365Apps/installationOptions
+      operations:
+      - name: adminmicrosoft365appsgetinstallationoptions
+        method: GET
+        description: Microsoft Graph Get m365AppsInstallationOptions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: adminmicrosoft365appsupdateinstallationoptions
+        method: PATCH
+        description: Microsoft Graph Update m365AppsInstallationOptions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: adminmicrosoft365appsdeleteinstallationoptions
+        method: DELETE
+        description: Microsoft Graph Delete navigation property installationOptions for admin
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-admin-adminmicrosoft365apps-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — admin.adminMicrosoft365Apps.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/admin/microsoft365apps
+      name: admin-microsoft365apps
+      description: REST surface for admin-microsoft365Apps.
+      operations:
+      - method: GET
+        name: admingetmicrosoft365apps
+        description: Microsoft Graph Get microsoft365Apps from admin
+        call: microsoft-graph-admin-adminmicrosoft365apps.admingetmicrosoft365apps
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: adminupdatemicrosoft365apps
+        description: Microsoft Graph Update the navigation property microsoft365Apps in admin
+        call: microsoft-graph-admin-adminmicrosoft365apps.adminupdatemicrosoft365apps
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: admindeletemicrosoft365apps
+        description: Microsoft Graph Delete navigation property microsoft365Apps for admin
+        call: microsoft-graph-admin-adminmicrosoft365apps.admindeletemicrosoft365apps
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/microsoft365apps/installationoptions
+      name: admin-microsoft365apps-installationoptions
+      description: REST surface for admin-microsoft365Apps-installationOptions.
+      operations:
+      - method: GET
+        name: adminmicrosoft365appsgetinstallationoptions
+        description: Microsoft Graph Get m365AppsInstallationOptions
+        call: microsoft-graph-admin-adminmicrosoft365apps.adminmicrosoft365appsgetinstallationoptions
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: adminmicrosoft365appsupdateinstallationoptions
+        description: Microsoft Graph Update m365AppsInstallationOptions
+        call: microsoft-graph-admin-adminmicrosoft365apps.adminmicrosoft365appsupdateinstallationoptions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: adminmicrosoft365appsdeleteinstallationoptions
+        description: Microsoft Graph Delete navigation property installationOptions for admin
+        call: microsoft-graph-admin-adminmicrosoft365apps.adminmicrosoft365appsdeleteinstallationoptions
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-admin-adminmicrosoft365apps-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — admin.adminMicrosoft365Apps.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-microsoft365apps-admin
+      description: Microsoft Graph Get microsoft365Apps from admin
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-admin-adminmicrosoft365apps.admingetmicrosoft365apps
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property microsoft365Apps in admin
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-admin-adminmicrosoft365apps.adminupdatemicrosoft365apps
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property microsoft365Apps for admin
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-admin-adminmicrosoft365apps.admindeletemicrosoft365apps
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-m365appsinstallationoptions
+      description: Microsoft Graph Get m365AppsInstallationOptions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-admin-adminmicrosoft365apps.adminmicrosoft365appsgetinstallationoptions
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-m365appsinstallationoptions
+      description: Microsoft Graph Update m365AppsInstallationOptions
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-admin-adminmicrosoft365apps.adminmicrosoft365appsupdateinstallationoptions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property-2
+      description: Microsoft Graph Delete navigation property installationOptions for admin
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-admin-adminmicrosoft365apps.adminmicrosoft365appsdeleteinstallationoptions
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

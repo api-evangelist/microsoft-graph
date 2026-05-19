@@ -1,0 +1,402 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Devices — Devices.device
+  description: 'Microsoft Graph Devices — Devices.device. 9 operations. Lead operation: Microsoft Graph List devices. Self-contained
+    Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Devices.device
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: devices-devices-device
+    baseUri: ''
+    description: Microsoft Graph Devices — Devices.device business capability. Self-contained, no shared references.
+    resources:
+    - name: devices
+      path: /devices
+      operations:
+      - name: devicesdevicelistdevice
+        method: GET
+        description: Microsoft Graph List devices
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConsistencyLevel
+          in: header
+          type: string
+          description: 'Indicates the requested consistency level. Documentation URL: https://docs.microsoft.com/graph/aad-advanced-queries'
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: devicesdevicecreatedevice
+        method: POST
+        description: Microsoft Graph Create device
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: devices(deviceId='{deviceId}')
+      path: /devices(deviceId='{deviceId}')
+      operations:
+      - name: devicesdevicegetdevicebydeviceid
+        method: GET
+        description: Microsoft Graph Get device
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: devicesdeviceupdatedevicebydeviceid
+        method: PATCH
+        description: Microsoft Graph Update device
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: devicesdevicedeletedevicebydeviceid
+        method: DELETE
+        description: Microsoft Graph Delete device
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: devices-$count
+      path: /devices/$count
+      operations:
+      - name: devicesgetcount3489
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConsistencyLevel
+          in: header
+          type: string
+          description: 'Indicates the requested consistency level. Documentation URL: https://docs.microsoft.com/graph/aad-advanced-queries'
+    - name: devices-device-id
+      path: /devices/{device-id}
+      operations:
+      - name: devicesdevicegetdevice
+        method: GET
+        description: Microsoft Graph Get device
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: devicesdeviceupdatedevice
+        method: PATCH
+        description: Microsoft Graph Update device
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: devicesdevicedeletedevice
+        method: DELETE
+        description: Microsoft Graph Delete device
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: devices-devices-device-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Devices — Devices.device. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/devices
+      name: devices
+      description: REST surface for devices.
+      operations:
+      - method: GET
+        name: devicesdevicelistdevice
+        description: Microsoft Graph List devices
+        call: devices-devices-device.devicesdevicelistdevice
+        with:
+          ConsistencyLevel: rest.ConsistencyLevel
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: devicesdevicecreatedevice
+        description: Microsoft Graph Create device
+        call: devices-devices-device.devicesdevicecreatedevice
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devices-deviceid-deviceid
+      name: devices-deviceid-deviceid
+      description: REST surface for devices(deviceId='{deviceId}').
+      operations:
+      - method: GET
+        name: devicesdevicegetdevicebydeviceid
+        description: Microsoft Graph Get device
+        call: devices-devices-device.devicesdevicegetdevicebydeviceid
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: devicesdeviceupdatedevicebydeviceid
+        description: Microsoft Graph Update device
+        call: devices-devices-device.devicesdeviceupdatedevicebydeviceid
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: devicesdevicedeletedevicebydeviceid
+        description: Microsoft Graph Delete device
+        call: devices-devices-device.devicesdevicedeletedevicebydeviceid
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devices/count
+      name: devices-count
+      description: REST surface for devices-$count.
+      operations:
+      - method: GET
+        name: devicesgetcount3489
+        description: Microsoft Graph Get the number of the resource
+        call: devices-devices-device.devicesgetcount3489
+        with:
+          ConsistencyLevel: rest.ConsistencyLevel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devices/{device-id}
+      name: devices-device-id
+      description: REST surface for devices-device-id.
+      operations:
+      - method: GET
+        name: devicesdevicegetdevice
+        description: Microsoft Graph Get device
+        call: devices-devices-device.devicesdevicegetdevice
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: devicesdeviceupdatedevice
+        description: Microsoft Graph Update device
+        call: devices-devices-device.devicesdeviceupdatedevice
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: devicesdevicedeletedevice
+        description: Microsoft Graph Delete device
+        call: devices-devices-device.devicesdevicedeletedevice
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: devices-devices-device-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Devices — Devices.device. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-devices
+      description: Microsoft Graph List devices
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devices-devices-device.devicesdevicelistdevice
+      with:
+        ConsistencyLevel: tools.ConsistencyLevel
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-device
+      description: Microsoft Graph Create device
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devices-devices-device.devicesdevicecreatedevice
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-device
+      description: Microsoft Graph Get device
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devices-devices-device.devicesdevicegetdevicebydeviceid
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-device
+      description: Microsoft Graph Update device
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: devices-devices-device.devicesdeviceupdatedevicebydeviceid
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-device
+      description: Microsoft Graph Delete device
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: devices-devices-device.devicesdevicedeletedevicebydeviceid
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devices-devices-device.devicesgetcount3489
+      with:
+        ConsistencyLevel: tools.ConsistencyLevel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-device-2
+      description: Microsoft Graph Get device
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devices-devices-device.devicesdevicegetdevice
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-device-2
+      description: Microsoft Graph Update device
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: devices-devices-device.devicesdeviceupdatedevice
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-device-2
+      description: Microsoft Graph Delete device
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: devices-devices-device.devicesdevicedeletedevice
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

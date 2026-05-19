@@ -1,0 +1,320 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Devicemanagement — deviceManagement.deviceAndAppManagementRoleAssignment
+  description: 'Microsoft Graph Devicemanagement — deviceManagement.deviceAndAppManagementRoleAssignment. 7 operations. Lead
+    operation: Microsoft Graph Get roleAssignments from deviceManagement. Self-contained Naftiko capability covering one Microsoft
+    Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - deviceManagement.deviceAndAppManagementRoleAssignment
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: devicemanagement-devicemanagement-deviceandappmanagementroleassignment
+    baseUri: ''
+    description: Microsoft Graph Devicemanagement — deviceManagement.deviceAndAppManagementRoleAssignment business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: deviceManagement-roleAssignments
+      path: /deviceManagement/roleAssignments
+      operations:
+      - name: devicemanagementlistroleassignments
+        method: GET
+        description: Microsoft Graph Get roleAssignments from deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: devicemanagementcreateroleassignments
+        method: POST
+        description: Microsoft Graph Create new navigation property to roleAssignments for deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: deviceManagement-roleAssignments-$count
+      path: /deviceManagement/roleAssignments/$count
+      operations:
+      - name: devicemanagementroleassignmentsgetcount13e6
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deviceManagement-roleAssignments-deviceAndAppManagementRoleAssignment-id
+      path: /deviceManagement/roleAssignments/{deviceAndAppManagementRoleAssignment-id}
+      operations:
+      - name: devicemanagementgetroleassignments
+        method: GET
+        description: Microsoft Graph Get roleAssignments from deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: devicemanagementupdateroleassignments
+        method: PATCH
+        description: Microsoft Graph Update the navigation property roleAssignments in deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: devicemanagementdeleteroleassignments
+        method: DELETE
+        description: Microsoft Graph Delete navigation property roleAssignments for deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: deviceManagement-roleAssignments-deviceAndAppManagementRoleAssignment-id-roleDef
+      path: /deviceManagement/roleAssignments/{deviceAndAppManagementRoleAssignment-id}/roleDefinition
+      operations:
+      - name: devicemanagementroleassignmentsgetroledefinition
+        method: GET
+        description: Microsoft Graph Get roleDefinition from deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: devicemanagement-devicemanagement-deviceandappmanagementroleassignment-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Devicemanagement — deviceManagement.deviceAndAppManagementRoleAssignment.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/devicemanagement/roleassignments
+      name: devicemanagement-roleassignments
+      description: REST surface for deviceManagement-roleAssignments.
+      operations:
+      - method: GET
+        name: devicemanagementlistroleassignments
+        description: Microsoft Graph Get roleAssignments from deviceManagement
+        call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementlistroleassignments
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: devicemanagementcreateroleassignments
+        description: Microsoft Graph Create new navigation property to roleAssignments for deviceManagement
+        call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementcreateroleassignments
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devicemanagement/roleassignments/count
+      name: devicemanagement-roleassignments-count
+      description: REST surface for deviceManagement-roleAssignments-$count.
+      operations:
+      - method: GET
+        name: devicemanagementroleassignmentsgetcount13e6
+        description: Microsoft Graph Get the number of the resource
+        call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementroleassignmentsgetcount13e6
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devicemanagement/roleassignments/{deviceandappmanagementroleassignment-id}
+      name: devicemanagement-roleassignments-deviceandappmanagementroleassignment-id
+      description: REST surface for deviceManagement-roleAssignments-deviceAndAppManagementRoleAssignment-id.
+      operations:
+      - method: GET
+        name: devicemanagementgetroleassignments
+        description: Microsoft Graph Get roleAssignments from deviceManagement
+        call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementgetroleassignments
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: devicemanagementupdateroleassignments
+        description: Microsoft Graph Update the navigation property roleAssignments in deviceManagement
+        call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementupdateroleassignments
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: devicemanagementdeleteroleassignments
+        description: Microsoft Graph Delete navigation property roleAssignments for deviceManagement
+        call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementdeleteroleassignments
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devicemanagement/roleassignments/{deviceandappmanagementroleassignment-id}/roledefinition
+      name: devicemanagement-roleassignments-deviceandappmanagementroleassignment-id-roledef
+      description: REST surface for deviceManagement-roleAssignments-deviceAndAppManagementRoleAssignment-id-roleDef.
+      operations:
+      - method: GET
+        name: devicemanagementroleassignmentsgetroledefinition
+        description: Microsoft Graph Get roleDefinition from deviceManagement
+        call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementroleassignmentsgetroledefinition
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: devicemanagement-devicemanagement-deviceandappmanagementroleassignment-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Devicemanagement — deviceManagement.deviceAndAppManagementRoleAssignment.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-roleassignments-devicemanagement
+      description: Microsoft Graph Get roleAssignments from deviceManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementlistroleassignments
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to roleAssignments for deviceManagement
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementcreateroleassignments
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementroleassignmentsgetcount13e6
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-roleassignments-devicemanagement-2
+      description: Microsoft Graph Get roleAssignments from deviceManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementgetroleassignments
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property roleAssignments in deviceManagement
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementupdateroleassignments
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property roleAssignments for deviceManagement
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementdeleteroleassignments
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-roledefinition-devicemanagement
+      description: Microsoft Graph Get roleDefinition from deviceManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-deviceandappmanagementroleassignment.devicemanagementroleassignmentsgetroledefinition
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

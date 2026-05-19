@@ -1,0 +1,79 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — security.security.Actions
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — security.security.Actions. 1 operations. Lead
+    operation: Microsoft Graph Invoke action runHuntingQuery. Self-contained Naftiko capability covering one Microsoft Graph
+    business surface.'
+  tags:
+  - Microsoft Graph
+  - security.security.Actions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-security-security-actions
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — security.security.Actions business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: security-microsoft.graph.security.runHuntingQuery
+      path: /security/microsoft.graph.security.runHuntingQuery
+      operations:
+      - name: securityrunhuntingquery
+        method: POST
+        description: Microsoft Graph Invoke action runHuntingQuery
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-security-security-actions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — security.security.Actions.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/security/microsoft-graph-security-runhuntingquery
+      name: security-microsoft-graph-security-runhuntingquery
+      description: REST surface for security-microsoft.graph.security.runHuntingQuery.
+      operations:
+      - method: POST
+        name: securityrunhuntingquery
+        description: Microsoft Graph Invoke action runHuntingQuery
+        call: microsoft-graph-security-security-actions.securityrunhuntingquery
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-security-security-actions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — security.security.Actions.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-action-runhuntingquery
+      description: Microsoft Graph Invoke action runHuntingQuery
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-security-security-actions.securityrunhuntingquery
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

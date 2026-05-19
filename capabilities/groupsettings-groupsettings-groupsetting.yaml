@@ -1,0 +1,272 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Groupsettings — groupSettings.groupSetting
+  description: 'Microsoft Graph Groupsettings — groupSettings.groupSetting. 6 operations. Lead operation: Microsoft Graph
+    List settings. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - groupSettings.groupSetting
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: groupsettings-groupsettings-groupsetting
+    baseUri: ''
+    description: Microsoft Graph Groupsettings — groupSettings.groupSetting business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: groupSettings
+      path: /groupSettings
+      operations:
+      - name: groupsettingsgroupsettinglistgroupsetting
+        method: GET
+        description: Microsoft Graph List settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: groupsettingsgroupsettingcreategroupsetting
+        method: POST
+        description: Microsoft Graph Create settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: groupSettings-$count
+      path: /groupSettings/$count
+      operations:
+      - name: groupsettingsgetcountd8de
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: groupSettings-groupSetting-id
+      path: /groupSettings/{groupSetting-id}
+      operations:
+      - name: groupsettingsgroupsettinggetgroupsetting
+        method: GET
+        description: Microsoft Graph Get groupSetting
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: groupsettingsgroupsettingupdategroupsetting
+        method: PATCH
+        description: Microsoft Graph Update groupSetting
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: groupsettingsgroupsettingdeletegroupsetting
+        method: DELETE
+        description: Microsoft Graph Delete a group setting
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: groupsettings-groupsettings-groupsetting-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Groupsettings — groupSettings.groupSetting. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/groupsettings
+      name: groupsettings
+      description: REST surface for groupSettings.
+      operations:
+      - method: GET
+        name: groupsettingsgroupsettinglistgroupsetting
+        description: Microsoft Graph List settings
+        call: groupsettings-groupsettings-groupsetting.groupsettingsgroupsettinglistgroupsetting
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: groupsettingsgroupsettingcreategroupsetting
+        description: Microsoft Graph Create settings
+        call: groupsettings-groupsettings-groupsetting.groupsettingsgroupsettingcreategroupsetting
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groupsettings/count
+      name: groupsettings-count
+      description: REST surface for groupSettings-$count.
+      operations:
+      - method: GET
+        name: groupsettingsgetcountd8de
+        description: Microsoft Graph Get the number of the resource
+        call: groupsettings-groupsettings-groupsetting.groupsettingsgetcountd8de
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groupsettings/{groupsetting-id}
+      name: groupsettings-groupsetting-id
+      description: REST surface for groupSettings-groupSetting-id.
+      operations:
+      - method: GET
+        name: groupsettingsgroupsettinggetgroupsetting
+        description: Microsoft Graph Get groupSetting
+        call: groupsettings-groupsettings-groupsetting.groupsettingsgroupsettinggetgroupsetting
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: groupsettingsgroupsettingupdategroupsetting
+        description: Microsoft Graph Update groupSetting
+        call: groupsettings-groupsettings-groupsetting.groupsettingsgroupsettingupdategroupsetting
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: groupsettingsgroupsettingdeletegroupsetting
+        description: Microsoft Graph Delete a group setting
+        call: groupsettings-groupsettings-groupsetting.groupsettingsgroupsettingdeletegroupsetting
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: groupsettings-groupsettings-groupsetting-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Groupsettings — groupSettings.groupSetting. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-settings
+      description: Microsoft Graph List settings
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: groupsettings-groupsettings-groupsetting.groupsettingsgroupsettinglistgroupsetting
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-settings
+      description: Microsoft Graph Create settings
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: groupsettings-groupsettings-groupsetting.groupsettingsgroupsettingcreategroupsetting
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: groupsettings-groupsettings-groupsetting.groupsettingsgetcountd8de
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-groupsetting
+      description: Microsoft Graph Get groupSetting
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: groupsettings-groupsettings-groupsetting.groupsettingsgroupsettinggetgroupsetting
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-groupsetting
+      description: Microsoft Graph Update groupSetting
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: groupsettings-groupsettings-groupsetting.groupsettingsgroupsettingupdategroupsetting
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-group-setting
+      description: Microsoft Graph Delete a group setting
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: groupsettings-groupsettings-groupsetting.groupsettingsgroupsettingdeletegroupsetting
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

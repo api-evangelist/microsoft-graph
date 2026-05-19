@@ -1,0 +1,278 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Me — education.educationClass
+  description: 'Microsoft Graph Me — education.educationClass. 6 operations. Lead operation: Microsoft Graph List members
+    of an educationClass. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - education.educationClass
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: me-education-educationclass
+    baseUri: ''
+    description: Microsoft Graph Me — education.educationClass business capability. Self-contained, no shared references.
+    resources:
+    - name: education-classes-educationClass-id-members
+      path: /education/classes/{educationClass-id}/members
+      operations:
+      - name: educationclasseslistmembers
+        method: GET
+        description: Microsoft Graph List members of an educationClass
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: education-classes-educationClass-id-members-$count
+      path: /education/classes/{educationClass-id}/members/$count
+      operations:
+      - name: educationclassesmembersgetcount4459
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: education-classes-educationClass-id-members-$ref
+      path: /education/classes/{educationClass-id}/members/$ref
+      operations:
+      - name: educationclasseslistrefmembers
+        method: GET
+        description: Microsoft Graph List members of an educationClass
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+      - name: educationclassescreaterefmembers
+        method: POST
+        description: Microsoft Graph Add a student
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: educationclassesdeleterefmembers
+        method: DELETE
+        description: Microsoft Graph Remove member from educationClass
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+        - name: '@id'
+          in: query
+          type: string
+          description: The delete Uri
+          required: true
+    - name: education-classes-educationClass-id-members-educationUser-id-$ref
+      path: /education/classes/{educationClass-id}/members/{educationUser-id}/$ref
+      operations:
+      - name: educationclassesmembersdeleterefeducationuser
+        method: DELETE
+        description: Microsoft Graph Remove member from educationClass
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: me-education-educationclass-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Me — education.educationClass. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/education/classes/{educationclass-id}/members
+      name: education-classes-educationclass-id-members
+      description: REST surface for education-classes-educationClass-id-members.
+      operations:
+      - method: GET
+        name: educationclasseslistmembers
+        description: Microsoft Graph List members of an educationClass
+        call: me-education-educationclass.educationclasseslistmembers
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/education/classes/{educationclass-id}/members/count
+      name: education-classes-educationclass-id-members-count
+      description: REST surface for education-classes-educationClass-id-members-$count.
+      operations:
+      - method: GET
+        name: educationclassesmembersgetcount4459
+        description: Microsoft Graph Get the number of the resource
+        call: me-education-educationclass.educationclassesmembersgetcount4459
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/education/classes/{educationclass-id}/members/ref
+      name: education-classes-educationclass-id-members-ref
+      description: REST surface for education-classes-educationClass-id-members-$ref.
+      operations:
+      - method: GET
+        name: educationclasseslistrefmembers
+        description: Microsoft Graph List members of an educationClass
+        call: me-education-educationclass.educationclasseslistrefmembers
+        with:
+          $orderby: rest.$orderby
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: educationclassescreaterefmembers
+        description: Microsoft Graph Add a student
+        call: me-education-educationclass.educationclassescreaterefmembers
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: educationclassesdeleterefmembers
+        description: Microsoft Graph Remove member from educationClass
+        call: me-education-educationclass.educationclassesdeleterefmembers
+        with:
+          If-Match: rest.If-Match
+          '@id': rest.@id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/education/classes/{educationclass-id}/members/{educationuser-id}/ref
+      name: education-classes-educationclass-id-members-educationuser-id-ref
+      description: REST surface for education-classes-educationClass-id-members-educationUser-id-$ref.
+      operations:
+      - method: DELETE
+        name: educationclassesmembersdeleterefeducationuser
+        description: Microsoft Graph Remove member from educationClass
+        call: me-education-educationclass.educationclassesmembersdeleterefeducationuser
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: me-education-educationclass-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Me — education.educationClass. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-members-educationclass
+      description: Microsoft Graph List members of an educationClass
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: me-education-educationclass.educationclasseslistmembers
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: me-education-educationclass.educationclassesmembersgetcount4459
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-list-members-educationclass-2
+      description: Microsoft Graph List members of an educationClass
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: me-education-educationclass.educationclasseslistrefmembers
+      with:
+        $orderby: tools.$orderby
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-add-student
+      description: Microsoft Graph Add a student
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: me-education-educationclass.educationclassescreaterefmembers
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-remove-member-educationclass
+      description: Microsoft Graph Remove member from educationClass
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: me-education-educationclass.educationclassesdeleterefmembers
+      with:
+        If-Match: tools.If-Match
+        '@id': tools.@id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-remove-member-educationclass-2
+      description: Microsoft Graph Remove member from educationClass
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: me-education-educationclass.educationclassesmembersdeleterefeducationuser
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

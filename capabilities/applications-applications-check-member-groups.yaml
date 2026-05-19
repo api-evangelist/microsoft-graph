@@ -1,0 +1,78 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Applications API — Applications Check Member Groups
+  description: 'Microsoft Graph Applications API — Applications Check Member Groups. 1 operations. Lead operation: Microsoft
+    Graph Create Check Member Groups. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Applications Check Member Groups
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: applications-applications-check-member-groups
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Applications API — Applications Check Member Groups business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: applications-application-id-checkMemberGroups
+      path: /applications/{application-id}/checkMemberGroups
+      operations:
+      - name: checkmembergroupsapplications
+        method: POST
+        description: Microsoft Graph Create Check Member Groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: applications-applications-check-member-groups-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Applications API — Applications Check Member Groups. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications/{application-id}/checkmembergroups
+      name: applications-application-id-checkmembergroups
+      description: REST surface for applications-application-id-checkMemberGroups.
+      operations:
+      - method: POST
+        name: checkmembergroupsapplications
+        description: Microsoft Graph Create Check Member Groups
+        call: applications-applications-check-member-groups.checkmembergroupsapplications
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: applications-applications-check-member-groups-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Applications API — Applications Check Member Groups. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-create-check-member
+      description: Microsoft Graph Create Check Member Groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: applications-applications-check-member-groups.checkmembergroupsapplications
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

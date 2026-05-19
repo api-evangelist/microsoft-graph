@@ -1,0 +1,266 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Agreement Acceptances API — Agreement Acceptances
+  description: 'Microsoft Graph Agreement Acceptances API — Agreement Acceptances. 6 operations. Lead operation: Microsoft
+    Graph List all agreement acceptances. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Agreement Acceptances
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: agreementacceptances-agreement-acceptances
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Agreement Acceptances API — Agreement Acceptances business capability. Self-contained, no
+      shared references.
+    resources:
+    - name: agreementAcceptances
+      path: /agreementAcceptances
+      operations:
+      - name: listagreementacceptances
+        method: GET
+        description: Microsoft Graph List all agreement acceptances
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: createagreementacceptance
+        method: POST
+        description: Microsoft Graph Create a new agreement acceptance
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: agreementAcceptances-$count
+      path: /agreementAcceptances/$count
+      operations:
+      - name: countagreementacceptances
+        method: GET
+        description: Microsoft Graph Count agreement acceptances
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: agreementAcceptances-agreementAcceptance-id
+      path: /agreementAcceptances/{agreementAcceptance-id}
+      operations:
+      - name: getagreementacceptance
+        method: GET
+        description: Microsoft Graph Get an agreement acceptance by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+      - name: updateagreementacceptance
+        method: PATCH
+        description: Microsoft Graph Update an agreement acceptance
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteagreementacceptance
+        method: DELETE
+        description: Microsoft Graph Delete an agreement acceptance
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag for optimistic concurrency control
+  exposes:
+  - type: rest
+    namespace: agreementacceptances-agreement-acceptances-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Agreement Acceptances API — Agreement Acceptances. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/agreementacceptances
+      name: agreementacceptances
+      description: REST surface for agreementAcceptances.
+      operations:
+      - method: GET
+        name: listagreementacceptances
+        description: Microsoft Graph List all agreement acceptances
+        call: agreementacceptances-agreement-acceptances.listagreementacceptances
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createagreementacceptance
+        description: Microsoft Graph Create a new agreement acceptance
+        call: agreementacceptances-agreement-acceptances.createagreementacceptance
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/agreementacceptances/count
+      name: agreementacceptances-count
+      description: REST surface for agreementAcceptances-$count.
+      operations:
+      - method: GET
+        name: countagreementacceptances
+        description: Microsoft Graph Count agreement acceptances
+        call: agreementacceptances-agreement-acceptances.countagreementacceptances
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/agreementacceptances/{agreementacceptance-id}
+      name: agreementacceptances-agreementacceptance-id
+      description: REST surface for agreementAcceptances-agreementAcceptance-id.
+      operations:
+      - method: GET
+        name: getagreementacceptance
+        description: Microsoft Graph Get an agreement acceptance by ID
+        call: agreementacceptances-agreement-acceptances.getagreementacceptance
+        with:
+          $select: rest.$select
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateagreementacceptance
+        description: Microsoft Graph Update an agreement acceptance
+        call: agreementacceptances-agreement-acceptances.updateagreementacceptance
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteagreementacceptance
+        description: Microsoft Graph Delete an agreement acceptance
+        call: agreementacceptances-agreement-acceptances.deleteagreementacceptance
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: agreementacceptances-agreement-acceptances-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Agreement Acceptances API — Agreement Acceptances. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-all-agreement
+      description: Microsoft Graph List all agreement acceptances
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agreementacceptances-agreement-acceptances.listagreementacceptances
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-agreement
+      description: Microsoft Graph Create a new agreement acceptance
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: agreementacceptances-agreement-acceptances.createagreementacceptance
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-count-agreement-acceptances
+      description: Microsoft Graph Count agreement acceptances
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agreementacceptances-agreement-acceptances.countagreementacceptances
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-agreement-acceptance
+      description: Microsoft Graph Get an agreement acceptance by ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agreementacceptances-agreement-acceptances.getagreementacceptance
+      with:
+        $select: tools.$select
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-agreement-acceptance
+      description: Microsoft Graph Update an agreement acceptance
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: agreementacceptances-agreement-acceptances.updateagreementacceptance
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-agreement-acceptance
+      description: Microsoft Graph Delete an agreement acceptance
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: agreementacceptances-agreement-acceptances.deleteagreementacceptance
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

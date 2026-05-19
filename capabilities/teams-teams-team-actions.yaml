@@ -1,0 +1,225 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Teams — teams.team.Actions
+  description: 'Microsoft Graph Teams — teams.team.Actions. 5 operations. Lead operation: Microsoft Graph Invoke action archive.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - teams.team.Actions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: teams-teams-team-actions
+    baseUri: ''
+    description: Microsoft Graph Teams — teams.team.Actions business capability. Self-contained, no shared references.
+    resources:
+    - name: teams-team-id-archive
+      path: /teams/{team-id}/archive
+      operations:
+      - name: teamsteamarchive
+        method: POST
+        description: Microsoft Graph Invoke action archive
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team-id-clone
+      path: /teams/{team-id}/clone
+      operations:
+      - name: teamsteamclone
+        method: POST
+        description: Microsoft Graph Invoke action clone
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team-id-completeMigration
+      path: /teams/{team-id}/completeMigration
+      operations:
+      - name: teamsteamcompletemigration
+        method: POST
+        description: Microsoft Graph Invoke action completeMigration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: teams-team-id-sendActivityNotification
+      path: /teams/{team-id}/sendActivityNotification
+      operations:
+      - name: teamsteamsendactivitynotification
+        method: POST
+        description: Microsoft Graph Invoke action sendActivityNotification
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team-id-unarchive
+      path: /teams/{team-id}/unarchive
+      operations:
+      - name: teamsteamunarchive
+        method: POST
+        description: Microsoft Graph Invoke action unarchive
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: teams-teams-team-actions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Teams — teams.team.Actions. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/teams/{team-id}/archive
+      name: teams-team-id-archive
+      description: REST surface for teams-team-id-archive.
+      operations:
+      - method: POST
+        name: teamsteamarchive
+        description: Microsoft Graph Invoke action archive
+        call: teams-teams-team-actions.teamsteamarchive
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/clone
+      name: teams-team-id-clone
+      description: REST surface for teams-team-id-clone.
+      operations:
+      - method: POST
+        name: teamsteamclone
+        description: Microsoft Graph Invoke action clone
+        call: teams-teams-team-actions.teamsteamclone
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/completemigration
+      name: teams-team-id-completemigration
+      description: REST surface for teams-team-id-completeMigration.
+      operations:
+      - method: POST
+        name: teamsteamcompletemigration
+        description: Microsoft Graph Invoke action completeMigration
+        call: teams-teams-team-actions.teamsteamcompletemigration
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/sendactivitynotification
+      name: teams-team-id-sendactivitynotification
+      description: REST surface for teams-team-id-sendActivityNotification.
+      operations:
+      - method: POST
+        name: teamsteamsendactivitynotification
+        description: Microsoft Graph Invoke action sendActivityNotification
+        call: teams-teams-team-actions.teamsteamsendactivitynotification
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/unarchive
+      name: teams-team-id-unarchive
+      description: REST surface for teams-team-id-unarchive.
+      operations:
+      - method: POST
+        name: teamsteamunarchive
+        description: Microsoft Graph Invoke action unarchive
+        call: teams-teams-team-actions.teamsteamunarchive
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: teams-teams-team-actions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Teams — teams.team.Actions. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-action-archive
+      description: Microsoft Graph Invoke action archive
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams-teams-team-actions.teamsteamarchive
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-clone
+      description: Microsoft Graph Invoke action clone
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams-teams-team-actions.teamsteamclone
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-completemigration
+      description: Microsoft Graph Invoke action completeMigration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams-teams-team-actions.teamsteamcompletemigration
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-sendactivitynotification
+      description: Microsoft Graph Invoke action sendActivityNotification
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams-teams-team-actions.teamsteamsendactivitynotification
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-unarchive
+      description: Microsoft Graph Invoke action unarchive
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams-teams-team-actions.teamsteamunarchive
+      outputParameters:
+      - type: object
+        mapping: $.

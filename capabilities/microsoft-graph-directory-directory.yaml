@@ -1,0 +1,118 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — Directory.directory
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — Directory.directory. 2 operations. Lead operation:
+    Microsoft Graph Get directory. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Directory.directory
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-directory-directory
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — Directory.directory business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: directory
+      path: /directory
+      operations:
+      - name: directorydirectorygetdirectory
+        method: GET
+        description: Microsoft Graph Get directory
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: directorydirectoryupdatedirectory
+        method: PATCH
+        description: Microsoft Graph Update directory
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-directory-directory-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — Directory.directory. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/directory
+      name: directory
+      description: REST surface for directory.
+      operations:
+      - method: GET
+        name: directorydirectorygetdirectory
+        description: Microsoft Graph Get directory
+        call: microsoft-graph-directory-directory.directorydirectorygetdirectory
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: directorydirectoryupdatedirectory
+        description: Microsoft Graph Update directory
+        call: microsoft-graph-directory-directory.directorydirectoryupdatedirectory
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-directory-directory-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — Directory.directory. One tool
+      per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-directory
+      description: Microsoft Graph Get directory
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-directory-directory.directorydirectorygetdirectory
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-directory
+      description: Microsoft Graph Update directory
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-directory-directory.directorydirectoryupdatedirectory
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

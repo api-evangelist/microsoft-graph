@@ -1,0 +1,84 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Devicemanagement — deviceManagement.softwareUpdateStatusSummary
+  description: 'Microsoft Graph Devicemanagement — deviceManagement.softwareUpdateStatusSummary. 1 operations. Lead operation:
+    Microsoft Graph Get softwareUpdateStatusSummary from deviceManagement. Self-contained Naftiko capability covering one
+    Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - deviceManagement.softwareUpdateStatusSummary
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: devicemanagement-devicemanagement-softwareupdatestatussummary
+    baseUri: ''
+    description: Microsoft Graph Devicemanagement — deviceManagement.softwareUpdateStatusSummary business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: deviceManagement-softwareUpdateStatusSummary
+      path: /deviceManagement/softwareUpdateStatusSummary
+      operations:
+      - name: devicemanagementgetsoftwareupdatestatussummary
+        method: GET
+        description: Microsoft Graph Get softwareUpdateStatusSummary from deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: devicemanagement-devicemanagement-softwareupdatestatussummary-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Devicemanagement — deviceManagement.softwareUpdateStatusSummary. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/devicemanagement/softwareupdatestatussummary
+      name: devicemanagement-softwareupdatestatussummary
+      description: REST surface for deviceManagement-softwareUpdateStatusSummary.
+      operations:
+      - method: GET
+        name: devicemanagementgetsoftwareupdatestatussummary
+        description: Microsoft Graph Get softwareUpdateStatusSummary from deviceManagement
+        call: devicemanagement-devicemanagement-softwareupdatestatussummary.devicemanagementgetsoftwareupdatestatussummary
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: devicemanagement-devicemanagement-softwareupdatestatussummary-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Devicemanagement — deviceManagement.softwareUpdateStatusSummary. One tool
+      per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-softwareupdatestatussummary-devicemanagement
+      description: Microsoft Graph Get softwareUpdateStatusSummary from deviceManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-softwareupdatestatussummary.devicemanagementgetsoftwareupdatestatussummary
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

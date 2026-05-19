@@ -1,0 +1,142 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Filteroperators — Applications.synchronization
+  description: 'Microsoft Graph Filteroperators — Applications.synchronization. 2 operations. Lead operation: Microsoft Graph
+    Invoke function filterOperators. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Applications.synchronization
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: filteroperators-applications-synchronization
+    baseUri: ''
+    description: Microsoft Graph Filteroperators — Applications.synchronization business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: applications-application-id-synchronization-jobs-synchronizationJob-id-schema-fi
+      path: /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/filterOperators()
+      operations:
+      - name: applicationsapplicationsynchronizationjobssynchronizationjobschemafilteroperators
+        method: GET
+        description: Microsoft Graph Invoke function filterOperators
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: applications-application-id-synchronization-templates-synchronizationTemplate-id
+      path: /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/filterOperators()
+      operations:
+      - name: applicationsapplicationsynchronizationtemplatessynchronizationtemplateschemafilteroperators
+        method: GET
+        description: Microsoft Graph Invoke function filterOperators
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: filteroperators-applications-synchronization-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Filteroperators — Applications.synchronization. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications/{application-id}/synchronization/jobs/{synchronizationjob-id}/schema/filteroperators
+      name: applications-application-id-synchronization-jobs-synchronizationjob-id-schema-fi
+      description: REST surface for applications-application-id-synchronization-jobs-synchronizationJob-id-schema-fi.
+      operations:
+      - method: GET
+        name: applicationsapplicationsynchronizationjobssynchronizationjobschemafilteroperators
+        description: Microsoft Graph Invoke function filterOperators
+        call: filteroperators-applications-synchronization.applicationsapplicationsynchronizationjobssynchronizationjobschemafilteroperators
+        with:
+          $select: rest.$select
+          $orderby: rest.$orderby
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{application-id}/synchronization/templates/{synchronizationtemplate-id}/schema/filteroperators
+      name: applications-application-id-synchronization-templates-synchronizationtemplate-id
+      description: REST surface for applications-application-id-synchronization-templates-synchronizationTemplate-id.
+      operations:
+      - method: GET
+        name: applicationsapplicationsynchronizationtemplatessynchronizationtemplateschemafilteroperators
+        description: Microsoft Graph Invoke function filterOperators
+        call: filteroperators-applications-synchronization.applicationsapplicationsynchronizationtemplatessynchronizationtemplateschemafilteroperators
+        with:
+          $select: rest.$select
+          $orderby: rest.$orderby
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: filteroperators-applications-synchronization-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Filteroperators — Applications.synchronization. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-function-filteroperators
+      description: Microsoft Graph Invoke function filterOperators
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: filteroperators-applications-synchronization.applicationsapplicationsynchronizationjobssynchronizationjobschemafilteroperators
+      with:
+        $select: tools.$select
+        $orderby: tools.$orderby
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-filteroperators-2
+      description: Microsoft Graph Invoke function filterOperators
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: filteroperators-applications-synchronization.applicationsapplicationsynchronizationtemplatessynchronizationtemplateschemafilteroperators
+      with:
+        $select: tools.$select
+        $orderby: tools.$orderby
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

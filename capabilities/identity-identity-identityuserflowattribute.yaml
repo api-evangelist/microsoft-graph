@@ -1,0 +1,272 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Identity — identity.identityUserFlowAttribute
+  description: 'Microsoft Graph Identity — identity.identityUserFlowAttribute. 6 operations. Lead operation: Microsoft Graph
+    List identityUserFlowAttributes. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - identity.identityUserFlowAttribute
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: identity-identity-identityuserflowattribute
+    baseUri: ''
+    description: Microsoft Graph Identity — identity.identityUserFlowAttribute business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: identity-userFlowAttributes
+      path: /identity/userFlowAttributes
+      operations:
+      - name: identitylistuserflowattributes
+        method: GET
+        description: Microsoft Graph List identityUserFlowAttributes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: identitycreateuserflowattributes
+        method: POST
+        description: Microsoft Graph Create identityUserFlowAttribute
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: identity-userFlowAttributes-$count
+      path: /identity/userFlowAttributes/$count
+      operations:
+      - name: identityuserflowattributesgetcount9651
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: identity-userFlowAttributes-identityUserFlowAttribute-id
+      path: /identity/userFlowAttributes/{identityUserFlowAttribute-id}
+      operations:
+      - name: identitygetuserflowattributes
+        method: GET
+        description: Microsoft Graph Get identityUserFlowAttribute
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: identityupdateuserflowattributes
+        method: PATCH
+        description: Microsoft Graph Update identityUserFlowAttribute
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: identitydeleteuserflowattributes
+        method: DELETE
+        description: Microsoft Graph Delete identityUserFlowAttribute
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: identity-identity-identityuserflowattribute-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Identity — identity.identityUserFlowAttribute. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/identity/userflowattributes
+      name: identity-userflowattributes
+      description: REST surface for identity-userFlowAttributes.
+      operations:
+      - method: GET
+        name: identitylistuserflowattributes
+        description: Microsoft Graph List identityUserFlowAttributes
+        call: identity-identity-identityuserflowattribute.identitylistuserflowattributes
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: identitycreateuserflowattributes
+        description: Microsoft Graph Create identityUserFlowAttribute
+        call: identity-identity-identityuserflowattribute.identitycreateuserflowattributes
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/identity/userflowattributes/count
+      name: identity-userflowattributes-count
+      description: REST surface for identity-userFlowAttributes-$count.
+      operations:
+      - method: GET
+        name: identityuserflowattributesgetcount9651
+        description: Microsoft Graph Get the number of the resource
+        call: identity-identity-identityuserflowattribute.identityuserflowattributesgetcount9651
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/identity/userflowattributes/{identityuserflowattribute-id}
+      name: identity-userflowattributes-identityuserflowattribute-id
+      description: REST surface for identity-userFlowAttributes-identityUserFlowAttribute-id.
+      operations:
+      - method: GET
+        name: identitygetuserflowattributes
+        description: Microsoft Graph Get identityUserFlowAttribute
+        call: identity-identity-identityuserflowattribute.identitygetuserflowattributes
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: identityupdateuserflowattributes
+        description: Microsoft Graph Update identityUserFlowAttribute
+        call: identity-identity-identityuserflowattribute.identityupdateuserflowattributes
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: identitydeleteuserflowattributes
+        description: Microsoft Graph Delete identityUserFlowAttribute
+        call: identity-identity-identityuserflowattribute.identitydeleteuserflowattributes
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: identity-identity-identityuserflowattribute-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Identity — identity.identityUserFlowAttribute. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-identityuserflowattributes
+      description: Microsoft Graph List identityUserFlowAttributes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: identity-identity-identityuserflowattribute.identitylistuserflowattributes
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-identityuserflowattribute
+      description: Microsoft Graph Create identityUserFlowAttribute
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: identity-identity-identityuserflowattribute.identitycreateuserflowattributes
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: identity-identity-identityuserflowattribute.identityuserflowattributesgetcount9651
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-identityuserflowattribute
+      description: Microsoft Graph Get identityUserFlowAttribute
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: identity-identity-identityuserflowattribute.identitygetuserflowattributes
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-identityuserflowattribute
+      description: Microsoft Graph Update identityUserFlowAttribute
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: identity-identity-identityuserflowattribute.identityupdateuserflowattributes
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-identityuserflowattribute
+      description: Microsoft Graph Delete identityUserFlowAttribute
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: identity-identity-identityuserflowattribute.identitydeleteuserflowattributes
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

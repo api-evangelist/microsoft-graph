@@ -1,0 +1,304 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Identityproviders — identity.identityProviderBase
+  description: 'Microsoft Graph Identityproviders — identity.identityProviderBase. 7 operations. Lead operation: Microsoft
+    Graph List identityProviders. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - identity.identityProviderBase
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: identityproviders-identity-identityproviderbase
+    baseUri: ''
+    description: Microsoft Graph Identityproviders — identity.identityProviderBase business capability. Self-contained, no
+      shared references.
+    resources:
+    - name: identity-identityProviders
+      path: /identity/identityProviders
+      operations:
+      - name: identitylistidentityproviders
+        method: GET
+        description: Microsoft Graph List identityProviders
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: identitycreateidentityproviders
+        method: POST
+        description: Microsoft Graph Create identityProvider
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: identity-identityProviders-$count
+      path: /identity/identityProviders/$count
+      operations:
+      - name: identityidentityprovidersgetcount7742
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: identity-identityProviders-availableProviderTypes()
+      path: /identity/identityProviders/availableProviderTypes()
+      operations:
+      - name: identityidentityprovidersavailableprovidertypes
+        method: GET
+        description: Microsoft Graph Invoke function availableProviderTypes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: identity-identityProviders-identityProviderBase-id
+      path: /identity/identityProviders/{identityProviderBase-id}
+      operations:
+      - name: identitygetidentityproviders
+        method: GET
+        description: Microsoft Graph Get identityProvider
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: identityupdateidentityproviders
+        method: PATCH
+        description: Microsoft Graph Update identityProvider
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: identitydeleteidentityproviders
+        method: DELETE
+        description: Microsoft Graph Delete identityProvider
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: identityproviders-identity-identityproviderbase-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Identityproviders — identity.identityProviderBase. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/identity/identityproviders
+      name: identity-identityproviders
+      description: REST surface for identity-identityProviders.
+      operations:
+      - method: GET
+        name: identitylistidentityproviders
+        description: Microsoft Graph List identityProviders
+        call: identityproviders-identity-identityproviderbase.identitylistidentityproviders
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: identitycreateidentityproviders
+        description: Microsoft Graph Create identityProvider
+        call: identityproviders-identity-identityproviderbase.identitycreateidentityproviders
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/identity/identityproviders/count
+      name: identity-identityproviders-count
+      description: REST surface for identity-identityProviders-$count.
+      operations:
+      - method: GET
+        name: identityidentityprovidersgetcount7742
+        description: Microsoft Graph Get the number of the resource
+        call: identityproviders-identity-identityproviderbase.identityidentityprovidersgetcount7742
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/identity/identityproviders/availableprovidertypes
+      name: identity-identityproviders-availableprovidertypes
+      description: REST surface for identity-identityProviders-availableProviderTypes().
+      operations:
+      - method: GET
+        name: identityidentityprovidersavailableprovidertypes
+        description: Microsoft Graph Invoke function availableProviderTypes
+        call: identityproviders-identity-identityproviderbase.identityidentityprovidersavailableprovidertypes
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/identity/identityproviders/{identityproviderbase-id}
+      name: identity-identityproviders-identityproviderbase-id
+      description: REST surface for identity-identityProviders-identityProviderBase-id.
+      operations:
+      - method: GET
+        name: identitygetidentityproviders
+        description: Microsoft Graph Get identityProvider
+        call: identityproviders-identity-identityproviderbase.identitygetidentityproviders
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: identityupdateidentityproviders
+        description: Microsoft Graph Update identityProvider
+        call: identityproviders-identity-identityproviderbase.identityupdateidentityproviders
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: identitydeleteidentityproviders
+        description: Microsoft Graph Delete identityProvider
+        call: identityproviders-identity-identityproviderbase.identitydeleteidentityproviders
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: identityproviders-identity-identityproviderbase-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Identityproviders — identity.identityProviderBase. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-identityproviders
+      description: Microsoft Graph List identityProviders
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: identityproviders-identity-identityproviderbase.identitylistidentityproviders
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-identityprovider
+      description: Microsoft Graph Create identityProvider
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: identityproviders-identity-identityproviderbase.identitycreateidentityproviders
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: identityproviders-identity-identityproviderbase.identityidentityprovidersgetcount7742
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-availableprovidertypes
+      description: Microsoft Graph Invoke function availableProviderTypes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: identityproviders-identity-identityproviderbase.identityidentityprovidersavailableprovidertypes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-identityprovider
+      description: Microsoft Graph Get identityProvider
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: identityproviders-identity-identityproviderbase.identitygetidentityproviders
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-identityprovider
+      description: Microsoft Graph Update identityProvider
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: identityproviders-identity-identityproviderbase.identityupdateidentityproviders
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-identityprovider
+      description: Microsoft Graph Delete identityProvider
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: identityproviders-identity-identityproviderbase.identitydeleteidentityproviders
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

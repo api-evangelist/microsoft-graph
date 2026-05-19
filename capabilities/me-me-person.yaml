@@ -1,0 +1,167 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Me — Me.person
+  description: 'Microsoft Graph Me — Me.person. 3 operations. Lead operation: Microsoft Graph List people. Self-contained
+    Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Me.person
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: me-me-person
+    baseUri: ''
+    description: Microsoft Graph Me — Me.person business capability. Self-contained, no shared references.
+    resources:
+    - name: me-people
+      path: /me/people
+      operations:
+      - name: melistpeople
+        method: GET
+        description: Microsoft Graph List people
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: me-people-$count
+      path: /me/people/$count
+      operations:
+      - name: mepeoplegetcounteaef
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: me-people-person-id
+      path: /me/people/{person-id}
+      operations:
+      - name: megetpeople
+        method: GET
+        description: Microsoft Graph Get people from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: me-me-person-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Me — Me.person. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/me/people
+      name: me-people
+      description: REST surface for me-people.
+      operations:
+      - method: GET
+        name: melistpeople
+        description: Microsoft Graph List people
+        call: me-me-person.melistpeople
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/people/count
+      name: me-people-count
+      description: REST surface for me-people-$count.
+      operations:
+      - method: GET
+        name: mepeoplegetcounteaef
+        description: Microsoft Graph Get the number of the resource
+        call: me-me-person.mepeoplegetcounteaef
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/people/{person-id}
+      name: me-people-person-id
+      description: REST surface for me-people-person-id.
+      operations:
+      - method: GET
+        name: megetpeople
+        description: Microsoft Graph Get people from me
+        call: me-me-person.megetpeople
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: me-me-person-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Me — Me.person. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-people
+      description: Microsoft Graph List people
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: me-me-person.melistpeople
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: me-me-person.mepeoplegetcounteaef
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-people-me
+      description: Microsoft Graph Get people from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: me-me-person.megetpeople
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

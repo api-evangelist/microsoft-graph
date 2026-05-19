@@ -1,0 +1,280 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — applications.appManagementPolicy
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — applications.appManagementPolicy. 6 operations.
+    Lead operation: Microsoft Graph Get appManagementPolicies from applications. Self-contained Naftiko capability covering
+    one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - applications.appManagementPolicy
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-applications-appmanagementpolicy
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — applications.appManagementPolicy business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: applications-application-id-appManagementPolicies
+      path: /applications/{application-id}/appManagementPolicies
+      operations:
+      - name: applicationslistappmanagementpolicies
+        method: GET
+        description: Microsoft Graph Get appManagementPolicies from applications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: applications-application-id-appManagementPolicies-$count
+      path: /applications/{application-id}/appManagementPolicies/$count
+      operations:
+      - name: applicationsappmanagementpoliciesgetcount3aad
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: applications-application-id-appManagementPolicies-$ref
+      path: /applications/{application-id}/appManagementPolicies/$ref
+      operations:
+      - name: applicationslistrefappmanagementpolicies
+        method: GET
+        description: Microsoft Graph Get ref of appManagementPolicies from applications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+      - name: applicationscreaterefappmanagementpolicies
+        method: POST
+        description: Microsoft Graph Assign appliesTo
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: applicationsdeleterefappmanagementpolicies
+        method: DELETE
+        description: Microsoft Graph Remove appliesTo
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+        - name: '@id'
+          in: query
+          type: string
+          description: The delete Uri
+          required: true
+    - name: applications-application-id-appManagementPolicies-appManagementPolicy-id-$ref
+      path: /applications/{application-id}/appManagementPolicies/{appManagementPolicy-id}/$ref
+      operations:
+      - name: applicationsappmanagementpoliciesdeleterefappmanagementpolicy
+        method: DELETE
+        description: Microsoft Graph Remove appliesTo
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-applications-appmanagementpolicy-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — applications.appManagementPolicy.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications/{application-id}/appmanagementpolicies
+      name: applications-application-id-appmanagementpolicies
+      description: REST surface for applications-application-id-appManagementPolicies.
+      operations:
+      - method: GET
+        name: applicationslistappmanagementpolicies
+        description: Microsoft Graph Get appManagementPolicies from applications
+        call: microsoft-graph-applications-appmanagementpolicy.applicationslistappmanagementpolicies
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{application-id}/appmanagementpolicies/count
+      name: applications-application-id-appmanagementpolicies-count
+      description: REST surface for applications-application-id-appManagementPolicies-$count.
+      operations:
+      - method: GET
+        name: applicationsappmanagementpoliciesgetcount3aad
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-applications-appmanagementpolicy.applicationsappmanagementpoliciesgetcount3aad
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{application-id}/appmanagementpolicies/ref
+      name: applications-application-id-appmanagementpolicies-ref
+      description: REST surface for applications-application-id-appManagementPolicies-$ref.
+      operations:
+      - method: GET
+        name: applicationslistrefappmanagementpolicies
+        description: Microsoft Graph Get ref of appManagementPolicies from applications
+        call: microsoft-graph-applications-appmanagementpolicy.applicationslistrefappmanagementpolicies
+        with:
+          $orderby: rest.$orderby
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: applicationscreaterefappmanagementpolicies
+        description: Microsoft Graph Assign appliesTo
+        call: microsoft-graph-applications-appmanagementpolicy.applicationscreaterefappmanagementpolicies
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: applicationsdeleterefappmanagementpolicies
+        description: Microsoft Graph Remove appliesTo
+        call: microsoft-graph-applications-appmanagementpolicy.applicationsdeleterefappmanagementpolicies
+        with:
+          If-Match: rest.If-Match
+          '@id': rest.@id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{application-id}/appmanagementpolicies/{appmanagementpolicy-id}/ref
+      name: applications-application-id-appmanagementpolicies-appmanagementpolicy-id-ref
+      description: REST surface for applications-application-id-appManagementPolicies-appManagementPolicy-id-$ref.
+      operations:
+      - method: DELETE
+        name: applicationsappmanagementpoliciesdeleterefappmanagementpolicy
+        description: Microsoft Graph Remove appliesTo
+        call: microsoft-graph-applications-appmanagementpolicy.applicationsappmanagementpoliciesdeleterefappmanagementpolicy
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-applications-appmanagementpolicy-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — applications.appManagementPolicy.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-appmanagementpolicies-applications
+      description: Microsoft Graph Get appManagementPolicies from applications
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-applications-appmanagementpolicy.applicationslistappmanagementpolicies
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-applications-appmanagementpolicy.applicationsappmanagementpoliciesgetcount3aad
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-ref-appmanagementpolicies
+      description: Microsoft Graph Get ref of appManagementPolicies from applications
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-applications-appmanagementpolicy.applicationslistrefappmanagementpolicies
+      with:
+        $orderby: tools.$orderby
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-assign-appliesto
+      description: Microsoft Graph Assign appliesTo
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-applications-appmanagementpolicy.applicationscreaterefappmanagementpolicies
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-remove-appliesto
+      description: Microsoft Graph Remove appliesTo
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-applications-appmanagementpolicy.applicationsdeleterefappmanagementpolicies
+      with:
+        If-Match: tools.If-Match
+        '@id': tools.@id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-remove-appliesto-2
+      description: Microsoft Graph Remove appliesTo
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-applications-appmanagementpolicy.applicationsappmanagementpoliciesdeleterefappmanagementpolicy
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

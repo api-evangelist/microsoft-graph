@@ -1,0 +1,136 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Me — users.onlineMeeting
+  description: 'Microsoft Graph Me — users.onlineMeeting. 3 operations. Lead operation: Microsoft Graph Get callTranscript.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - users.onlineMeeting
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: me-users-onlinemeeting
+    baseUri: ''
+    description: Microsoft Graph Me — users.onlineMeeting business capability. Self-contained, no shared references.
+    resources:
+    - name: users-user-id-onlineMeetings-onlineMeeting-id-transcripts-callTranscript-id-meta
+      path: /users/{user-id}/onlineMeetings/{onlineMeeting-id}/transcripts/{callTranscript-id}/metadataContent
+      operations:
+      - name: usersonlinemeetingsgettranscriptsmetadatacontent
+        method: GET
+        description: Microsoft Graph Get callTranscript
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: usersonlinemeetingsupdatetranscriptsmetadatacontent
+        method: PUT
+        description: Microsoft Graph Update metadataContent for the navigation property transcripts in users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: usersonlinemeetingsdeletetranscriptsmetadatacontent
+        method: DELETE
+        description: Microsoft Graph Delete metadataContent for the navigation property transcripts in users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: me-users-onlinemeeting-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Me — users.onlineMeeting. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/users/{user-id}/onlinemeetings/{onlinemeeting-id}/transcripts/{calltranscript-id}/metadatacontent
+      name: users-user-id-onlinemeetings-onlinemeeting-id-transcripts-calltranscript-id-meta
+      description: REST surface for users-user-id-onlineMeetings-onlineMeeting-id-transcripts-callTranscript-id-meta.
+      operations:
+      - method: GET
+        name: usersonlinemeetingsgettranscriptsmetadatacontent
+        description: Microsoft Graph Get callTranscript
+        call: me-users-onlinemeeting.usersonlinemeetingsgettranscriptsmetadatacontent
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: usersonlinemeetingsupdatetranscriptsmetadatacontent
+        description: Microsoft Graph Update metadataContent for the navigation property transcripts in users
+        call: me-users-onlinemeeting.usersonlinemeetingsupdatetranscriptsmetadatacontent
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: usersonlinemeetingsdeletetranscriptsmetadatacontent
+        description: Microsoft Graph Delete metadataContent for the navigation property transcripts in users
+        call: me-users-onlinemeeting.usersonlinemeetingsdeletetranscriptsmetadatacontent
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: me-users-onlinemeeting-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Me — users.onlineMeeting. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-calltranscript
+      description: Microsoft Graph Get callTranscript
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: me-users-onlinemeeting.usersonlinemeetingsgettranscriptsmetadatacontent
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-metadatacontent-navigation
+      description: Microsoft Graph Update metadataContent for the navigation property transcripts in users
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: me-users-onlinemeeting.usersonlinemeetingsupdatetranscriptsmetadatacontent
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-metadatacontent-navigation
+      description: Microsoft Graph Delete metadataContent for the navigation property transcripts in users
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: me-users-onlinemeeting.usersonlinemeetingsdeletetranscriptsmetadatacontent
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

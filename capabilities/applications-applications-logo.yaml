@@ -1,0 +1,136 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Applications API — Applications Logo
+  description: 'Microsoft Graph Applications API — Applications Logo. 3 operations. Lead operation: Microsoft Graph Get logo
+    for application from applications. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Applications Logo
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: applications-applications-logo
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Applications API — Applications Logo business capability. Self-contained, no shared references.
+    resources:
+    - name: applications-application-id-logo
+      path: /applications/{application-id}/logo
+      operations:
+      - name: getapplicationslogo
+        method: GET
+        description: Microsoft Graph Get logo for application from applications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: replaceapplicationslogo
+        method: PUT
+        description: Microsoft Graph Update logo for application in applications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteapplicationslogo
+        method: DELETE
+        description: Microsoft Graph Delete logo for application in applications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: applications-applications-logo-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Applications API — Applications Logo. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications/{application-id}/logo
+      name: applications-application-id-logo
+      description: REST surface for applications-application-id-logo.
+      operations:
+      - method: GET
+        name: getapplicationslogo
+        description: Microsoft Graph Get logo for application from applications
+        call: applications-applications-logo.getapplicationslogo
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: replaceapplicationslogo
+        description: Microsoft Graph Update logo for application in applications
+        call: applications-applications-logo.replaceapplicationslogo
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteapplicationslogo
+        description: Microsoft Graph Delete logo for application in applications
+        call: applications-applications-logo.deleteapplicationslogo
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: applications-applications-logo-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Applications API — Applications Logo. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-logo-application
+      description: Microsoft Graph Get logo for application from applications
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: applications-applications-logo.getapplicationslogo
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-logo-application
+      description: Microsoft Graph Update logo for application in applications
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: applications-applications-logo.replaceapplicationslogo
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-logo-application
+      description: Microsoft Graph Delete logo for application in applications
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: applications-applications-logo.deleteapplicationslogo
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

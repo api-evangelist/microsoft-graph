@@ -1,0 +1,273 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Oauth2permissiongrants — oauth2PermissionGrants.oAuth2PermissionGrant
+  description: 'Microsoft Graph Oauth2permissiongrants — oauth2PermissionGrants.oAuth2PermissionGrant. 6 operations. Lead
+    operation: Microsoft Graph List oauth2PermissionGrants (delegated permission grants). Self-contained Naftiko capability
+    covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - oauth2PermissionGrants.oAuth2PermissionGrant
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant
+    baseUri: ''
+    description: Microsoft Graph Oauth2permissiongrants — oauth2PermissionGrants.oAuth2PermissionGrant business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: oauth2PermissionGrants
+      path: /oauth2PermissionGrants
+      operations:
+      - name: oauth2permissiongrantsoauth2permissiongrantlistoauth2permissiongrant
+        method: GET
+        description: Microsoft Graph List oauth2PermissionGrants (delegated permission grants)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: oauth2permissiongrantsoauth2permissiongrantcreateoauth2permissiongrant
+        method: POST
+        description: Microsoft Graph Create oAuth2PermissionGrant (a delegated permission grant)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: oauth2PermissionGrants-$count
+      path: /oauth2PermissionGrants/$count
+      operations:
+      - name: oauth2permissiongrantsgetcount8287
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: oauth2PermissionGrants-oAuth2PermissionGrant-id
+      path: /oauth2PermissionGrants/{oAuth2PermissionGrant-id}
+      operations:
+      - name: oauth2permissiongrantsoauth2permissiongrantgetoauth2permissiongrant
+        method: GET
+        description: Microsoft Graph Get oAuth2PermissionGrant (a delegated permission grant)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: oauth2permissiongrantsoauth2permissiongrantupdateoauth2permissiongrant
+        method: PATCH
+        description: Microsoft Graph Update a delegated permission grant (oAuth2PermissionGrant)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: oauth2permissiongrantsoauth2permissiongrantdeleteoauth2permissiongrant
+        method: DELETE
+        description: Microsoft Graph Delete oAuth2PermissionGrant (a delegated permission grant)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Oauth2permissiongrants — oauth2PermissionGrants.oAuth2PermissionGrant. One
+      Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/oauth2permissiongrants
+      name: oauth2permissiongrants
+      description: REST surface for oauth2PermissionGrants.
+      operations:
+      - method: GET
+        name: oauth2permissiongrantsoauth2permissiongrantlistoauth2permissiongrant
+        description: Microsoft Graph List oauth2PermissionGrants (delegated permission grants)
+        call: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant.oauth2permissiongrantsoauth2permissiongrantlistoauth2permissiongrant
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: oauth2permissiongrantsoauth2permissiongrantcreateoauth2permissiongrant
+        description: Microsoft Graph Create oAuth2PermissionGrant (a delegated permission grant)
+        call: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant.oauth2permissiongrantsoauth2permissiongrantcreateoauth2permissiongrant
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/oauth2permissiongrants/count
+      name: oauth2permissiongrants-count
+      description: REST surface for oauth2PermissionGrants-$count.
+      operations:
+      - method: GET
+        name: oauth2permissiongrantsgetcount8287
+        description: Microsoft Graph Get the number of the resource
+        call: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant.oauth2permissiongrantsgetcount8287
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/oauth2permissiongrants/{oauth2permissiongrant-id}
+      name: oauth2permissiongrants-oauth2permissiongrant-id
+      description: REST surface for oauth2PermissionGrants-oAuth2PermissionGrant-id.
+      operations:
+      - method: GET
+        name: oauth2permissiongrantsoauth2permissiongrantgetoauth2permissiongrant
+        description: Microsoft Graph Get oAuth2PermissionGrant (a delegated permission grant)
+        call: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant.oauth2permissiongrantsoauth2permissiongrantgetoauth2permissiongrant
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: oauth2permissiongrantsoauth2permissiongrantupdateoauth2permissiongrant
+        description: Microsoft Graph Update a delegated permission grant (oAuth2PermissionGrant)
+        call: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant.oauth2permissiongrantsoauth2permissiongrantupdateoauth2permissiongrant
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: oauth2permissiongrantsoauth2permissiongrantdeleteoauth2permissiongrant
+        description: Microsoft Graph Delete oAuth2PermissionGrant (a delegated permission grant)
+        call: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant.oauth2permissiongrantsoauth2permissiongrantdeleteoauth2permissiongrant
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Oauth2permissiongrants — oauth2PermissionGrants.oAuth2PermissionGrant. One
+      tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-oauth2permissiongrants-delegated
+      description: Microsoft Graph List oauth2PermissionGrants (delegated permission grants)
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant.oauth2permissiongrantsoauth2permissiongrantlistoauth2permissiongrant
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-oauth2permissiongrant-delegated
+      description: Microsoft Graph Create oAuth2PermissionGrant (a delegated permission grant)
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant.oauth2permissiongrantsoauth2permissiongrantcreateoauth2permissiongrant
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant.oauth2permissiongrantsgetcount8287
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-oauth2permissiongrant-delegated
+      description: Microsoft Graph Get oAuth2PermissionGrant (a delegated permission grant)
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant.oauth2permissiongrantsoauth2permissiongrantgetoauth2permissiongrant
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-delegated-permission
+      description: Microsoft Graph Update a delegated permission grant (oAuth2PermissionGrant)
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant.oauth2permissiongrantsoauth2permissiongrantupdateoauth2permissiongrant
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-oauth2permissiongrant-delegated
+      description: Microsoft Graph Delete oAuth2PermissionGrant (a delegated permission grant)
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: oauth2permissiongrants-oauth2permissiongrants-oauth2permissiongrant.oauth2permissiongrantsoauth2permissiongrantdeleteoauth2permissiongrant
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

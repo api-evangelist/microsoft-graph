@@ -1,0 +1,102 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Admin API — Report Settings
+  description: 'Microsoft Graph Admin API — Report Settings. 2 operations. Lead operation: Microsoft Graph Get report settings.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Report Settings
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-report-settings
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Admin API — Report Settings business capability. Self-contained, no shared references.
+    resources:
+    - name: admin-reportSettings
+      path: /admin/reportSettings
+      operations:
+      - name: getreportsettings
+        method: GET
+        description: Microsoft Graph Get report settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatereportsettings
+        method: PATCH
+        description: Microsoft Graph Update report settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: admin-report-settings-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Admin API — Report Settings. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/admin/reportsettings
+      name: admin-reportsettings
+      description: REST surface for admin-reportSettings.
+      operations:
+      - method: GET
+        name: getreportsettings
+        description: Microsoft Graph Get report settings
+        call: admin-report-settings.getreportsettings
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updatereportsettings
+        description: Microsoft Graph Update report settings
+        call: admin-report-settings.updatereportsettings
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-report-settings-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Admin API — Report Settings. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-report-settings
+      description: Microsoft Graph Get report settings
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-report-settings.getreportsettings
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-report-settings
+      description: Microsoft Graph Update report settings
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: admin-report-settings.updatereportsettings
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

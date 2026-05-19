@@ -1,0 +1,118 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — identity.identityContainer
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — identity.identityContainer. 2 operations. Lead
+    operation: Microsoft Graph Get identity. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - identity.identityContainer
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-identity-identitycontainer
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — identity.identityContainer business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: identity
+      path: /identity
+      operations:
+      - name: identityidentitycontainergetidentitycontainer
+        method: GET
+        description: Microsoft Graph Get identity
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: identityidentitycontainerupdateidentitycontainer
+        method: PATCH
+        description: Microsoft Graph Update identity
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-identity-identitycontainer-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — identity.identityContainer.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/identity
+      name: identity
+      description: REST surface for identity.
+      operations:
+      - method: GET
+        name: identityidentitycontainergetidentitycontainer
+        description: Microsoft Graph Get identity
+        call: microsoft-graph-identity-identitycontainer.identityidentitycontainergetidentitycontainer
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: identityidentitycontainerupdateidentitycontainer
+        description: Microsoft Graph Update identity
+        call: microsoft-graph-identity-identitycontainer.identityidentitycontainerupdateidentitycontainer
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-identity-identitycontainer-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — identity.identityContainer.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-identity
+      description: Microsoft Graph Get identity
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-identity-identitycontainer.identityidentitycontainergetidentitycontainer
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-identity
+      description: Microsoft Graph Update identity
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-identity-identitycontainer.identityidentitycontainerupdateidentitycontainer
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

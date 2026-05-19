@@ -1,0 +1,169 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Applications API — Applications Home Realm Discovery Policies
+  description: 'Microsoft Graph Applications API — Applications Home Realm Discovery Policies. 3 operations. Lead operation:
+    Microsoft Graph Get homeRealmDiscoveryPolicies from applications. Self-contained Naftiko capability covering one Microsoft
+    Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Applications Home Realm Discovery Policies
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: applications-applications-home-realm-discovery-policies
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Applications API — Applications Home Realm Discovery Policies business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: applications-application-id-homeRealmDiscoveryPolicies
+      path: /applications/{application-id}/homeRealmDiscoveryPolicies
+      operations:
+      - name: getapplicationshomerealmdiscoverypolicies
+        method: GET
+        description: Microsoft Graph Get homeRealmDiscoveryPolicies from applications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: applications-application-id-homeRealmDiscoveryPolicies-$count
+      path: /applications/{application-id}/homeRealmDiscoveryPolicies/$count
+      operations:
+      - name: countapplicationshomerealmdiscoverypolicies
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: applications-application-id-homeRealmDiscoveryPolicies-homeRealmDiscoveryPolicy-
+      path: /applications/{application-id}/homeRealmDiscoveryPolicies/{homeRealmDiscoveryPolicy-id}
+      operations:
+      - name: getapplicationshomerealmdiscoverypolicies1
+        method: GET
+        description: Microsoft Graph Get homeRealmDiscoveryPolicies from applications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: applications-applications-home-realm-discovery-policies-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Applications API — Applications Home Realm Discovery Policies. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications/{application-id}/homerealmdiscoverypolicies
+      name: applications-application-id-homerealmdiscoverypolicies
+      description: REST surface for applications-application-id-homeRealmDiscoveryPolicies.
+      operations:
+      - method: GET
+        name: getapplicationshomerealmdiscoverypolicies
+        description: Microsoft Graph Get homeRealmDiscoveryPolicies from applications
+        call: applications-applications-home-realm-discovery-policies.getapplicationshomerealmdiscoverypolicies
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{application-id}/homerealmdiscoverypolicies/count
+      name: applications-application-id-homerealmdiscoverypolicies-count
+      description: REST surface for applications-application-id-homeRealmDiscoveryPolicies-$count.
+      operations:
+      - method: GET
+        name: countapplicationshomerealmdiscoverypolicies
+        description: Microsoft Graph Get the number of the resource
+        call: applications-applications-home-realm-discovery-policies.countapplicationshomerealmdiscoverypolicies
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{application-id}/homerealmdiscoverypolicies/{homerealmdiscoverypolicy-id}
+      name: applications-application-id-homerealmdiscoverypolicies-homerealmdiscoverypolicy
+      description: REST surface for applications-application-id-homeRealmDiscoveryPolicies-homeRealmDiscoveryPolicy-.
+      operations:
+      - method: GET
+        name: getapplicationshomerealmdiscoverypolicies1
+        description: Microsoft Graph Get homeRealmDiscoveryPolicies from applications
+        call: applications-applications-home-realm-discovery-policies.getapplicationshomerealmdiscoverypolicies1
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: applications-applications-home-realm-discovery-policies-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Applications API — Applications Home Realm Discovery Policies. One tool per
+      consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-homerealmdiscoverypolicies-applications
+      description: Microsoft Graph Get homeRealmDiscoveryPolicies from applications
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: applications-applications-home-realm-discovery-policies.getapplicationshomerealmdiscoverypolicies
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: applications-applications-home-realm-discovery-policies.countapplicationshomerealmdiscoverypolicies
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-homerealmdiscoverypolicies-applications-2
+      description: Microsoft Graph Get homeRealmDiscoveryPolicies from applications
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: applications-applications-home-realm-discovery-policies.getapplicationshomerealmdiscoverypolicies1
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

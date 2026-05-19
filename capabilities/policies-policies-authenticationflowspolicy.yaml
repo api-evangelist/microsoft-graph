@@ -1,0 +1,152 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Policies — policies.authenticationFlowsPolicy
+  description: 'Microsoft Graph Policies — policies.authenticationFlowsPolicy. 3 operations. Lead operation: Microsoft Graph
+    Get authenticationFlowsPolicy. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - policies.authenticationFlowsPolicy
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: policies-policies-authenticationflowspolicy
+    baseUri: ''
+    description: Microsoft Graph Policies — policies.authenticationFlowsPolicy business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: policies-authenticationFlowsPolicy
+      path: /policies/authenticationFlowsPolicy
+      operations:
+      - name: policiesgetauthenticationflowspolicy
+        method: GET
+        description: Microsoft Graph Get authenticationFlowsPolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: policiesupdateauthenticationflowspolicy
+        method: PATCH
+        description: Microsoft Graph Update authenticationFlowsPolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: policiesdeleteauthenticationflowspolicy
+        method: DELETE
+        description: Microsoft Graph Delete navigation property authenticationFlowsPolicy for policies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: policies-policies-authenticationflowspolicy-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Policies — policies.authenticationFlowsPolicy. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/policies/authenticationflowspolicy
+      name: policies-authenticationflowspolicy
+      description: REST surface for policies-authenticationFlowsPolicy.
+      operations:
+      - method: GET
+        name: policiesgetauthenticationflowspolicy
+        description: Microsoft Graph Get authenticationFlowsPolicy
+        call: policies-policies-authenticationflowspolicy.policiesgetauthenticationflowspolicy
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: policiesupdateauthenticationflowspolicy
+        description: Microsoft Graph Update authenticationFlowsPolicy
+        call: policies-policies-authenticationflowspolicy.policiesupdateauthenticationflowspolicy
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: policiesdeleteauthenticationflowspolicy
+        description: Microsoft Graph Delete navigation property authenticationFlowsPolicy for policies
+        call: policies-policies-authenticationflowspolicy.policiesdeleteauthenticationflowspolicy
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: policies-policies-authenticationflowspolicy-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Policies — policies.authenticationFlowsPolicy. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-authenticationflowspolicy
+      description: Microsoft Graph Get authenticationFlowsPolicy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: policies-policies-authenticationflowspolicy.policiesgetauthenticationflowspolicy
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-authenticationflowspolicy
+      description: Microsoft Graph Update authenticationFlowsPolicy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: policies-policies-authenticationflowspolicy.policiesupdateauthenticationflowspolicy
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property authenticationFlowsPolicy for policies
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: policies-policies-authenticationflowspolicy.policiesdeleteauthenticationflowspolicy
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,272 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Directory — directoryRoleTemplates.directoryRoleTemplate
+  description: 'Microsoft Graph Directory — directoryRoleTemplates.directoryRoleTemplate. 6 operations. Lead operation: Microsoft
+    Graph List directoryRoleTemplates. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - directoryRoleTemplates.directoryRoleTemplate
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: directory-directoryroletemplates-directoryroletemplate
+    baseUri: ''
+    description: Microsoft Graph Directory — directoryRoleTemplates.directoryRoleTemplate business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: directoryRoleTemplates
+      path: /directoryRoleTemplates
+      operations:
+      - name: directoryroletemplatesdirectoryroletemplatelistdirectoryroletemplate
+        method: GET
+        description: Microsoft Graph List directoryRoleTemplates
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: directoryroletemplatesdirectoryroletemplatecreatedirectoryroletemplate
+        method: POST
+        description: Microsoft Graph Add new entity to directoryRoleTemplates
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: directoryRoleTemplates-$count
+      path: /directoryRoleTemplates/$count
+      operations:
+      - name: directoryroletemplatesgetcounted85
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: directoryRoleTemplates-directoryRoleTemplate-id
+      path: /directoryRoleTemplates/{directoryRoleTemplate-id}
+      operations:
+      - name: directoryroletemplatesdirectoryroletemplategetdirectoryroletemplate
+        method: GET
+        description: Microsoft Graph Get directoryRoleTemplate
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: directoryroletemplatesdirectoryroletemplateupdatedirectoryroletemplate
+        method: PATCH
+        description: Microsoft Graph Update entity in directoryRoleTemplates
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: directoryroletemplatesdirectoryroletemplatedeletedirectoryroletemplate
+        method: DELETE
+        description: Microsoft Graph Delete entity from directoryRoleTemplates
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: directory-directoryroletemplates-directoryroletemplate-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Directory — directoryRoleTemplates.directoryRoleTemplate. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/directoryroletemplates
+      name: directoryroletemplates
+      description: REST surface for directoryRoleTemplates.
+      operations:
+      - method: GET
+        name: directoryroletemplatesdirectoryroletemplatelistdirectoryroletemplate
+        description: Microsoft Graph List directoryRoleTemplates
+        call: directory-directoryroletemplates-directoryroletemplate.directoryroletemplatesdirectoryroletemplatelistdirectoryroletemplate
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: directoryroletemplatesdirectoryroletemplatecreatedirectoryroletemplate
+        description: Microsoft Graph Add new entity to directoryRoleTemplates
+        call: directory-directoryroletemplates-directoryroletemplate.directoryroletemplatesdirectoryroletemplatecreatedirectoryroletemplate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/directoryroletemplates/count
+      name: directoryroletemplates-count
+      description: REST surface for directoryRoleTemplates-$count.
+      operations:
+      - method: GET
+        name: directoryroletemplatesgetcounted85
+        description: Microsoft Graph Get the number of the resource
+        call: directory-directoryroletemplates-directoryroletemplate.directoryroletemplatesgetcounted85
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/directoryroletemplates/{directoryroletemplate-id}
+      name: directoryroletemplates-directoryroletemplate-id
+      description: REST surface for directoryRoleTemplates-directoryRoleTemplate-id.
+      operations:
+      - method: GET
+        name: directoryroletemplatesdirectoryroletemplategetdirectoryroletemplate
+        description: Microsoft Graph Get directoryRoleTemplate
+        call: directory-directoryroletemplates-directoryroletemplate.directoryroletemplatesdirectoryroletemplategetdirectoryroletemplate
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: directoryroletemplatesdirectoryroletemplateupdatedirectoryroletemplate
+        description: Microsoft Graph Update entity in directoryRoleTemplates
+        call: directory-directoryroletemplates-directoryroletemplate.directoryroletemplatesdirectoryroletemplateupdatedirectoryroletemplate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: directoryroletemplatesdirectoryroletemplatedeletedirectoryroletemplate
+        description: Microsoft Graph Delete entity from directoryRoleTemplates
+        call: directory-directoryroletemplates-directoryroletemplate.directoryroletemplatesdirectoryroletemplatedeletedirectoryroletemplate
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: directory-directoryroletemplates-directoryroletemplate-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Directory — directoryRoleTemplates.directoryRoleTemplate. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-directoryroletemplates
+      description: Microsoft Graph List directoryRoleTemplates
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: directory-directoryroletemplates-directoryroletemplate.directoryroletemplatesdirectoryroletemplatelistdirectoryroletemplate
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-add-new-entity
+      description: Microsoft Graph Add new entity to directoryRoleTemplates
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: directory-directoryroletemplates-directoryroletemplate.directoryroletemplatesdirectoryroletemplatecreatedirectoryroletemplate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: directory-directoryroletemplates-directoryroletemplate.directoryroletemplatesgetcounted85
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-directoryroletemplate
+      description: Microsoft Graph Get directoryRoleTemplate
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: directory-directoryroletemplates-directoryroletemplate.directoryroletemplatesdirectoryroletemplategetdirectoryroletemplate
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-entity-directoryroletemplates
+      description: Microsoft Graph Update entity in directoryRoleTemplates
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: directory-directoryroletemplates-directoryroletemplate.directoryroletemplatesdirectoryroletemplateupdatedirectoryroletemplate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-entity-directoryroletemplates
+      description: Microsoft Graph Delete entity from directoryRoleTemplates
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: directory-directoryroletemplates-directoryroletemplate.directoryroletemplatesdirectoryroletemplatedeletedirectoryroletemplate
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

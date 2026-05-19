@@ -1,0 +1,273 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — dataPolicyOperations.dataPolicyOperation
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — dataPolicyOperations.dataPolicyOperation. 6
+    operations. Lead operation: Microsoft Graph Get dataPolicyOperation. Self-contained Naftiko capability covering one Microsoft
+    Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - dataPolicyOperations.dataPolicyOperation
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-datapolicyoperations-datapolicyoperation
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — dataPolicyOperations.dataPolicyOperation business
+      capability. Self-contained, no shared references.
+    resources:
+    - name: dataPolicyOperations
+      path: /dataPolicyOperations
+      operations:
+      - name: datapolicyoperationsdatapolicyoperationlistdatapolicyoperation
+        method: GET
+        description: Microsoft Graph Get dataPolicyOperation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: datapolicyoperationsdatapolicyoperationcreatedatapolicyoperation
+        method: POST
+        description: Microsoft Graph Add new entity to dataPolicyOperations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: dataPolicyOperations-$count
+      path: /dataPolicyOperations/$count
+      operations:
+      - name: datapolicyoperationsgetcountb129
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: dataPolicyOperations-dataPolicyOperation-id
+      path: /dataPolicyOperations/{dataPolicyOperation-id}
+      operations:
+      - name: datapolicyoperationsdatapolicyoperationgetdatapolicyoperation
+        method: GET
+        description: Microsoft Graph Get dataPolicyOperation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: datapolicyoperationsdatapolicyoperationupdatedatapolicyoperation
+        method: PATCH
+        description: Microsoft Graph Update entity in dataPolicyOperations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: datapolicyoperationsdatapolicyoperationdeletedatapolicyoperation
+        method: DELETE
+        description: Microsoft Graph Delete entity from dataPolicyOperations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-datapolicyoperations-datapolicyoperation-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — dataPolicyOperations.dataPolicyOperation.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/datapolicyoperations
+      name: datapolicyoperations
+      description: REST surface for dataPolicyOperations.
+      operations:
+      - method: GET
+        name: datapolicyoperationsdatapolicyoperationlistdatapolicyoperation
+        description: Microsoft Graph Get dataPolicyOperation
+        call: microsoft-graph-datapolicyoperations-datapolicyoperation.datapolicyoperationsdatapolicyoperationlistdatapolicyoperation
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: datapolicyoperationsdatapolicyoperationcreatedatapolicyoperation
+        description: Microsoft Graph Add new entity to dataPolicyOperations
+        call: microsoft-graph-datapolicyoperations-datapolicyoperation.datapolicyoperationsdatapolicyoperationcreatedatapolicyoperation
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/datapolicyoperations/count
+      name: datapolicyoperations-count
+      description: REST surface for dataPolicyOperations-$count.
+      operations:
+      - method: GET
+        name: datapolicyoperationsgetcountb129
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-datapolicyoperations-datapolicyoperation.datapolicyoperationsgetcountb129
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/datapolicyoperations/{datapolicyoperation-id}
+      name: datapolicyoperations-datapolicyoperation-id
+      description: REST surface for dataPolicyOperations-dataPolicyOperation-id.
+      operations:
+      - method: GET
+        name: datapolicyoperationsdatapolicyoperationgetdatapolicyoperation
+        description: Microsoft Graph Get dataPolicyOperation
+        call: microsoft-graph-datapolicyoperations-datapolicyoperation.datapolicyoperationsdatapolicyoperationgetdatapolicyoperation
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: datapolicyoperationsdatapolicyoperationupdatedatapolicyoperation
+        description: Microsoft Graph Update entity in dataPolicyOperations
+        call: microsoft-graph-datapolicyoperations-datapolicyoperation.datapolicyoperationsdatapolicyoperationupdatedatapolicyoperation
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: datapolicyoperationsdatapolicyoperationdeletedatapolicyoperation
+        description: Microsoft Graph Delete entity from dataPolicyOperations
+        call: microsoft-graph-datapolicyoperations-datapolicyoperation.datapolicyoperationsdatapolicyoperationdeletedatapolicyoperation
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-datapolicyoperations-datapolicyoperation-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — dataPolicyOperations.dataPolicyOperation.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-datapolicyoperation
+      description: Microsoft Graph Get dataPolicyOperation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-datapolicyoperations-datapolicyoperation.datapolicyoperationsdatapolicyoperationlistdatapolicyoperation
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-add-new-entity
+      description: Microsoft Graph Add new entity to dataPolicyOperations
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-datapolicyoperations-datapolicyoperation.datapolicyoperationsdatapolicyoperationcreatedatapolicyoperation
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-datapolicyoperations-datapolicyoperation.datapolicyoperationsgetcountb129
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-datapolicyoperation-2
+      description: Microsoft Graph Get dataPolicyOperation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-datapolicyoperations-datapolicyoperation.datapolicyoperationsdatapolicyoperationgetdatapolicyoperation
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-entity-datapolicyoperations
+      description: Microsoft Graph Update entity in dataPolicyOperations
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-datapolicyoperations-datapolicyoperation.datapolicyoperationsdatapolicyoperationupdatedatapolicyoperation
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-entity-datapolicyoperations
+      description: Microsoft Graph Delete entity from dataPolicyOperations
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-datapolicyoperations-datapolicyoperation.datapolicyoperationsdatapolicyoperationdeletedatapolicyoperation
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

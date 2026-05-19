@@ -1,0 +1,305 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Devicemanagement — deviceManagement.deviceManagementPartner
+  description: 'Microsoft Graph Devicemanagement — deviceManagement.deviceManagementPartner. 7 operations. Lead operation:
+    Microsoft Graph Get deviceManagementPartners from deviceManagement. Self-contained Naftiko capability covering one Microsoft
+    Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - deviceManagement.deviceManagementPartner
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: devicemanagement-devicemanagement-devicemanagementpartner
+    baseUri: ''
+    description: Microsoft Graph Devicemanagement — deviceManagement.deviceManagementPartner business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: deviceManagement-deviceManagementPartners
+      path: /deviceManagement/deviceManagementPartners
+      operations:
+      - name: devicemanagementlistdevicemanagementpartners
+        method: GET
+        description: Microsoft Graph Get deviceManagementPartners from deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: devicemanagementcreatedevicemanagementpartners
+        method: POST
+        description: Microsoft Graph Create new navigation property to deviceManagementPartners for deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: deviceManagement-deviceManagementPartners-$count
+      path: /deviceManagement/deviceManagementPartners/$count
+      operations:
+      - name: devicemanagementdevicemanagementpartnersgetcount6f25
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deviceManagement-deviceManagementPartners-deviceManagementPartner-id
+      path: /deviceManagement/deviceManagementPartners/{deviceManagementPartner-id}
+      operations:
+      - name: devicemanagementgetdevicemanagementpartners
+        method: GET
+        description: Microsoft Graph Get deviceManagementPartners from deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: devicemanagementupdatedevicemanagementpartners
+        method: PATCH
+        description: Microsoft Graph Update the navigation property deviceManagementPartners in deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: devicemanagementdeletedevicemanagementpartners
+        method: DELETE
+        description: Microsoft Graph Delete navigation property deviceManagementPartners for deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: deviceManagement-deviceManagementPartners-deviceManagementPartner-id-terminate
+      path: /deviceManagement/deviceManagementPartners/{deviceManagementPartner-id}/terminate
+      operations:
+      - name: devicemanagementdevicemanagementpartnersdevicemanagementpartnerterminate
+        method: POST
+        description: Microsoft Graph Invoke action terminate
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: devicemanagement-devicemanagement-devicemanagementpartner-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Devicemanagement — deviceManagement.deviceManagementPartner. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/devicemanagement/devicemanagementpartners
+      name: devicemanagement-devicemanagementpartners
+      description: REST surface for deviceManagement-deviceManagementPartners.
+      operations:
+      - method: GET
+        name: devicemanagementlistdevicemanagementpartners
+        description: Microsoft Graph Get deviceManagementPartners from deviceManagement
+        call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementlistdevicemanagementpartners
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: devicemanagementcreatedevicemanagementpartners
+        description: Microsoft Graph Create new navigation property to deviceManagementPartners for deviceManagement
+        call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementcreatedevicemanagementpartners
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devicemanagement/devicemanagementpartners/count
+      name: devicemanagement-devicemanagementpartners-count
+      description: REST surface for deviceManagement-deviceManagementPartners-$count.
+      operations:
+      - method: GET
+        name: devicemanagementdevicemanagementpartnersgetcount6f25
+        description: Microsoft Graph Get the number of the resource
+        call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementdevicemanagementpartnersgetcount6f25
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devicemanagement/devicemanagementpartners/{devicemanagementpartner-id}
+      name: devicemanagement-devicemanagementpartners-devicemanagementpartner-id
+      description: REST surface for deviceManagement-deviceManagementPartners-deviceManagementPartner-id.
+      operations:
+      - method: GET
+        name: devicemanagementgetdevicemanagementpartners
+        description: Microsoft Graph Get deviceManagementPartners from deviceManagement
+        call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementgetdevicemanagementpartners
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: devicemanagementupdatedevicemanagementpartners
+        description: Microsoft Graph Update the navigation property deviceManagementPartners in deviceManagement
+        call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementupdatedevicemanagementpartners
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: devicemanagementdeletedevicemanagementpartners
+        description: Microsoft Graph Delete navigation property deviceManagementPartners for deviceManagement
+        call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementdeletedevicemanagementpartners
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devicemanagement/devicemanagementpartners/{devicemanagementpartner-id}/terminate
+      name: devicemanagement-devicemanagementpartners-devicemanagementpartner-id-terminate
+      description: REST surface for deviceManagement-deviceManagementPartners-deviceManagementPartner-id-terminate.
+      operations:
+      - method: POST
+        name: devicemanagementdevicemanagementpartnersdevicemanagementpartnerterminate
+        description: Microsoft Graph Invoke action terminate
+        call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementdevicemanagementpartnersdevicemanagementpartnerterminate
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: devicemanagement-devicemanagement-devicemanagementpartner-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Devicemanagement — deviceManagement.deviceManagementPartner. One tool per
+      consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-devicemanagementpartners-devicemanagement
+      description: Microsoft Graph Get deviceManagementPartners from deviceManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementlistdevicemanagementpartners
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to deviceManagementPartners for deviceManagement
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementcreatedevicemanagementpartners
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementdevicemanagementpartnersgetcount6f25
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-devicemanagementpartners-devicemanagement-2
+      description: Microsoft Graph Get deviceManagementPartners from deviceManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementgetdevicemanagementpartners
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property deviceManagementPartners in deviceManagement
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementupdatedevicemanagementpartners
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property deviceManagementPartners for deviceManagement
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementdeletedevicemanagementpartners
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-terminate
+      description: Microsoft Graph Invoke action terminate
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devicemanagement-devicemanagement-devicemanagementpartner.devicemanagementdevicemanagementpartnersdevicemanagementpartnerterminate
+      outputParameters:
+      - type: object
+        mapping: $.

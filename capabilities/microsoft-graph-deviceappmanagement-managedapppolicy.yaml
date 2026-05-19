@@ -1,0 +1,315 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — deviceAppManagement.managedAppPolicy
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — deviceAppManagement.managedAppPolicy. 7 operations.
+    Lead operation: Microsoft Graph Get managedAppPolicies from deviceAppManagement. Self-contained Naftiko capability covering
+    one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - deviceAppManagement.managedAppPolicy
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-deviceappmanagement-managedapppolicy
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — deviceAppManagement.managedAppPolicy business
+      capability. Self-contained, no shared references.
+    resources:
+    - name: deviceAppManagement-managedAppPolicies
+      path: /deviceAppManagement/managedAppPolicies
+      operations:
+      - name: deviceappmanagementlistmanagedapppolicies
+        method: GET
+        description: Microsoft Graph Get managedAppPolicies from deviceAppManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: deviceappmanagementcreatemanagedapppolicies
+        method: POST
+        description: Microsoft Graph Create new navigation property to managedAppPolicies for deviceAppManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: deviceAppManagement-managedAppPolicies-$count
+      path: /deviceAppManagement/managedAppPolicies/$count
+      operations:
+      - name: deviceappmanagementmanagedapppoliciesgetcountb24d
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deviceAppManagement-managedAppPolicies-managedAppPolicy-id
+      path: /deviceAppManagement/managedAppPolicies/{managedAppPolicy-id}
+      operations:
+      - name: deviceappmanagementgetmanagedapppolicies
+        method: GET
+        description: Microsoft Graph Get managedAppPolicies from deviceAppManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: deviceappmanagementupdatemanagedapppolicies
+        method: PATCH
+        description: Microsoft Graph Update the navigation property managedAppPolicies in deviceAppManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deviceappmanagementdeletemanagedapppolicies
+        method: DELETE
+        description: Microsoft Graph Delete navigation property managedAppPolicies for deviceAppManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: deviceAppManagement-managedAppPolicies-managedAppPolicy-id-targetApps
+      path: /deviceAppManagement/managedAppPolicies/{managedAppPolicy-id}/targetApps
+      operations:
+      - name: deviceappmanagementmanagedapppoliciesmanagedapppolicytargetapps
+        method: POST
+        description: Microsoft Graph Invoke action targetApps
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-deviceappmanagement-managedapppolicy-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — deviceAppManagement.managedAppPolicy.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/deviceappmanagement/managedapppolicies
+      name: deviceappmanagement-managedapppolicies
+      description: REST surface for deviceAppManagement-managedAppPolicies.
+      operations:
+      - method: GET
+        name: deviceappmanagementlistmanagedapppolicies
+        description: Microsoft Graph Get managedAppPolicies from deviceAppManagement
+        call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementlistmanagedapppolicies
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: deviceappmanagementcreatemanagedapppolicies
+        description: Microsoft Graph Create new navigation property to managedAppPolicies for deviceAppManagement
+        call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementcreatemanagedapppolicies
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/deviceappmanagement/managedapppolicies/count
+      name: deviceappmanagement-managedapppolicies-count
+      description: REST surface for deviceAppManagement-managedAppPolicies-$count.
+      operations:
+      - method: GET
+        name: deviceappmanagementmanagedapppoliciesgetcountb24d
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementmanagedapppoliciesgetcountb24d
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/deviceappmanagement/managedapppolicies/{managedapppolicy-id}
+      name: deviceappmanagement-managedapppolicies-managedapppolicy-id
+      description: REST surface for deviceAppManagement-managedAppPolicies-managedAppPolicy-id.
+      operations:
+      - method: GET
+        name: deviceappmanagementgetmanagedapppolicies
+        description: Microsoft Graph Get managedAppPolicies from deviceAppManagement
+        call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementgetmanagedapppolicies
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: deviceappmanagementupdatemanagedapppolicies
+        description: Microsoft Graph Update the navigation property managedAppPolicies in deviceAppManagement
+        call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementupdatemanagedapppolicies
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deviceappmanagementdeletemanagedapppolicies
+        description: Microsoft Graph Delete navigation property managedAppPolicies for deviceAppManagement
+        call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementdeletemanagedapppolicies
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/deviceappmanagement/managedapppolicies/{managedapppolicy-id}/targetapps
+      name: deviceappmanagement-managedapppolicies-managedapppolicy-id-targetapps
+      description: REST surface for deviceAppManagement-managedAppPolicies-managedAppPolicy-id-targetApps.
+      operations:
+      - method: POST
+        name: deviceappmanagementmanagedapppoliciesmanagedapppolicytargetapps
+        description: Microsoft Graph Invoke action targetApps
+        call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementmanagedapppoliciesmanagedapppolicytargetapps
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-deviceappmanagement-managedapppolicy-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — deviceAppManagement.managedAppPolicy.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-managedapppolicies-deviceappmanagement
+      description: Microsoft Graph Get managedAppPolicies from deviceAppManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementlistmanagedapppolicies
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to managedAppPolicies for deviceAppManagement
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementcreatemanagedapppolicies
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementmanagedapppoliciesgetcountb24d
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-managedapppolicies-deviceappmanagement-2
+      description: Microsoft Graph Get managedAppPolicies from deviceAppManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementgetmanagedapppolicies
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property managedAppPolicies in deviceAppManagement
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementupdatemanagedapppolicies
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property managedAppPolicies for deviceAppManagement
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementdeletemanagedapppolicies
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-targetapps
+      description: Microsoft Graph Invoke action targetApps
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-deviceappmanagement-managedapppolicy.deviceappmanagementmanagedapppoliciesmanagedapppolicytargetapps
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,88 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Users — me.managedDevice
+  description: 'Microsoft Graph Users — me.managedDevice. 1 operations. Lead operation: Microsoft Graph Get users from me.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - me.managedDevice
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: users-me-manageddevice
+    baseUri: ''
+    description: Microsoft Graph Users — me.managedDevice business capability. Self-contained, no shared references.
+    resources:
+    - name: me-managedDevices-managedDevice-id-users
+      path: /me/managedDevices/{managedDevice-id}/users
+      operations:
+      - name: memanageddeviceslistusers
+        method: GET
+        description: Microsoft Graph Get users from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: users-me-manageddevice-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Users — me.managedDevice. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/me/manageddevices/{manageddevice-id}/users
+      name: me-manageddevices-manageddevice-id-users
+      description: REST surface for me-managedDevices-managedDevice-id-users.
+      operations:
+      - method: GET
+        name: memanageddeviceslistusers
+        description: Microsoft Graph Get users from me
+        call: users-me-manageddevice.memanageddeviceslistusers
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: users-me-manageddevice-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Users — me.managedDevice. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-users-me
+      description: Microsoft Graph Get users from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-me-manageddevice.memanageddeviceslistusers
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

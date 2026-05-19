@@ -1,0 +1,328 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Agreements API — Agreement File Localizations
+  description: 'Microsoft Graph Agreements API — Agreement File Localizations. 7 operations. Lead operation: Microsoft Graph
+    List agreement file localizations. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Agreement File Localizations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: agreements-agreement-file-localizations
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Agreements API — Agreement File Localizations business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: agreements-agreement-id-file-localizations
+      path: /agreements/{agreement-id}/file/localizations
+      operations:
+      - name: listagreementfilelocalizations
+        method: GET
+        description: Microsoft Graph List agreement file localizations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: createagreementfilelocalization
+        method: POST
+        description: Microsoft Graph Create agreement file localization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: agreements-agreement-id-file-localizations-agreementFileLocalization-id
+      path: /agreements/{agreement-id}/file/localizations/{agreementFileLocalization-id}
+      operations:
+      - name: getagreementfilelocalization
+        method: GET
+        description: Microsoft Graph Get agreement file localization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: updateagreementfilelocalization
+        method: PATCH
+        description: Microsoft Graph Update agreement file localization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteagreementfilelocalization
+        method: DELETE
+        description: Microsoft Graph Delete agreement file localization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag for optimistic concurrency control
+    - name: agreements-agreement-id-files
+      path: /agreements/{agreement-id}/files
+      operations:
+      - name: listagreementfiles
+        method: GET
+        description: Microsoft Graph List agreement files
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: createagreementfileitem
+        method: POST
+        description: Microsoft Graph Create agreement file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: agreements-agreement-file-localizations-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Agreements API — Agreement File Localizations. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/agreements/{agreement-id}/file/localizations
+      name: agreements-agreement-id-file-localizations
+      description: REST surface for agreements-agreement-id-file-localizations.
+      operations:
+      - method: GET
+        name: listagreementfilelocalizations
+        description: Microsoft Graph List agreement file localizations
+        call: agreements-agreement-file-localizations.listagreementfilelocalizations
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createagreementfilelocalization
+        description: Microsoft Graph Create agreement file localization
+        call: agreements-agreement-file-localizations.createagreementfilelocalization
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/agreements/{agreement-id}/file/localizations/{agreementfilelocalization-id}
+      name: agreements-agreement-id-file-localizations-agreementfilelocalization-id
+      description: REST surface for agreements-agreement-id-file-localizations-agreementFileLocalization-id.
+      operations:
+      - method: GET
+        name: getagreementfilelocalization
+        description: Microsoft Graph Get agreement file localization
+        call: agreements-agreement-file-localizations.getagreementfilelocalization
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateagreementfilelocalization
+        description: Microsoft Graph Update agreement file localization
+        call: agreements-agreement-file-localizations.updateagreementfilelocalization
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteagreementfilelocalization
+        description: Microsoft Graph Delete agreement file localization
+        call: agreements-agreement-file-localizations.deleteagreementfilelocalization
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/agreements/{agreement-id}/files
+      name: agreements-agreement-id-files
+      description: REST surface for agreements-agreement-id-files.
+      operations:
+      - method: GET
+        name: listagreementfiles
+        description: Microsoft Graph List agreement files
+        call: agreements-agreement-file-localizations.listagreementfiles
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createagreementfileitem
+        description: Microsoft Graph Create agreement file
+        call: agreements-agreement-file-localizations.createagreementfileitem
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: agreements-agreement-file-localizations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Agreements API — Agreement File Localizations. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-agreement-file
+      description: Microsoft Graph List agreement file localizations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agreements-agreement-file-localizations.listagreementfilelocalizations
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-agreement-file
+      description: Microsoft Graph Create agreement file localization
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: agreements-agreement-file-localizations.createagreementfilelocalization
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-agreement-file
+      description: Microsoft Graph Get agreement file localization
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agreements-agreement-file-localizations.getagreementfilelocalization
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-agreement-file
+      description: Microsoft Graph Update agreement file localization
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: agreements-agreement-file-localizations.updateagreementfilelocalization
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-agreement-file
+      description: Microsoft Graph Delete agreement file localization
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: agreements-agreement-file-localizations.deleteagreementfilelocalization
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-list-agreement-files
+      description: Microsoft Graph List agreement files
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agreements-agreement-file-localizations.listagreementfiles
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-agreement-file-2
+      description: Microsoft Graph Create agreement file
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: agreements-agreement-file-localizations.createagreementfileitem
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

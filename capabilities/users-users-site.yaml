@@ -1,0 +1,251 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Users — Users.site
+  description: 'Microsoft Graph Users — Users.site. 5 operations. Lead operation: Microsoft Graph Get followedSites from users.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Users.site
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: users-users-site
+    baseUri: ''
+    description: Microsoft Graph Users — Users.site business capability. Self-contained, no shared references.
+    resources:
+    - name: users-user-id-followedSites
+      path: /users/{user-id}/followedSites
+      operations:
+      - name: userslistfollowedsites
+        method: GET
+        description: Microsoft Graph Get followedSites from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: users-user-id-followedSites-$count
+      path: /users/{user-id}/followedSites/$count
+      operations:
+      - name: usersfollowedsitesgetcount40c9
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-user-id-followedSites-add
+      path: /users/{user-id}/followedSites/add
+      operations:
+      - name: usersuserfollowedsitesadd
+        method: POST
+        description: Microsoft Graph Invoke action add
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: users-user-id-followedSites-remove
+      path: /users/{user-id}/followedSites/remove
+      operations:
+      - name: usersuserfollowedsitesremove
+        method: POST
+        description: Microsoft Graph Invoke action remove
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: users-user-id-followedSites-site-id
+      path: /users/{user-id}/followedSites/{site-id}
+      operations:
+      - name: usersgetfollowedsites
+        method: GET
+        description: Microsoft Graph Get followedSites from users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: users-users-site-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Users — Users.site. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/users/{user-id}/followedsites
+      name: users-user-id-followedsites
+      description: REST surface for users-user-id-followedSites.
+      operations:
+      - method: GET
+        name: userslistfollowedsites
+        description: Microsoft Graph Get followedSites from users
+        call: users-users-site.userslistfollowedsites
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/followedsites/count
+      name: users-user-id-followedsites-count
+      description: REST surface for users-user-id-followedSites-$count.
+      operations:
+      - method: GET
+        name: usersfollowedsitesgetcount40c9
+        description: Microsoft Graph Get the number of the resource
+        call: users-users-site.usersfollowedsitesgetcount40c9
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/followedsites/add
+      name: users-user-id-followedsites-add
+      description: REST surface for users-user-id-followedSites-add.
+      operations:
+      - method: POST
+        name: usersuserfollowedsitesadd
+        description: Microsoft Graph Invoke action add
+        call: users-users-site.usersuserfollowedsitesadd
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/followedsites/remove
+      name: users-user-id-followedsites-remove
+      description: REST surface for users-user-id-followedSites-remove.
+      operations:
+      - method: POST
+        name: usersuserfollowedsitesremove
+        description: Microsoft Graph Invoke action remove
+        call: users-users-site.usersuserfollowedsitesremove
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/followedsites/{site-id}
+      name: users-user-id-followedsites-site-id
+      description: REST surface for users-user-id-followedSites-site-id.
+      operations:
+      - method: GET
+        name: usersgetfollowedsites
+        description: Microsoft Graph Get followedSites from users
+        call: users-users-site.usersgetfollowedsites
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: users-users-site-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Users — Users.site. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-followedsites-users
+      description: Microsoft Graph Get followedSites from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-users-site.userslistfollowedsites
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-users-site.usersfollowedsitesgetcount40c9
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-add
+      description: Microsoft Graph Invoke action add
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: users-users-site.usersuserfollowedsitesadd
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-remove
+      description: Microsoft Graph Invoke action remove
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: users-users-site.usersuserfollowedsitesremove
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-followedsites-users-2
+      description: Microsoft Graph Get followedSites from users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-users-site.usersgetfollowedsites
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,280 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.claimsMappingPolicy
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.claimsMappingPolicy. 6 operations.
+    Lead operation: Microsoft Graph List assigned claimsMappingPolicy. Self-contained Naftiko capability covering one Microsoft
+    Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - servicePrincipals.claimsMappingPolicy
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-serviceprincipals-claimsmappingpolicy
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.claimsMappingPolicy business
+      capability. Self-contained, no shared references.
+    resources:
+    - name: servicePrincipals-servicePrincipal-id-claimsMappingPolicies
+      path: /servicePrincipals/{servicePrincipal-id}/claimsMappingPolicies
+      operations:
+      - name: serviceprincipalslistclaimsmappingpolicies
+        method: GET
+        description: Microsoft Graph List assigned claimsMappingPolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: servicePrincipals-servicePrincipal-id-claimsMappingPolicies-$count
+      path: /servicePrincipals/{servicePrincipal-id}/claimsMappingPolicies/$count
+      operations:
+      - name: serviceprincipalsclaimsmappingpoliciesgetcount832a
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: servicePrincipals-servicePrincipal-id-claimsMappingPolicies-$ref
+      path: /servicePrincipals/{servicePrincipal-id}/claimsMappingPolicies/$ref
+      operations:
+      - name: serviceprincipalslistrefclaimsmappingpolicies
+        method: GET
+        description: Microsoft Graph List assigned claimsMappingPolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+      - name: serviceprincipalscreaterefclaimsmappingpolicies
+        method: POST
+        description: Microsoft Graph Assign claimsMappingPolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: serviceprincipalsdeleterefclaimsmappingpolicies
+        method: DELETE
+        description: Microsoft Graph Remove claimsMappingPolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+        - name: '@id'
+          in: query
+          type: string
+          description: The delete Uri
+          required: true
+    - name: servicePrincipals-servicePrincipal-id-claimsMappingPolicies-claimsMappingPolicy-
+      path: /servicePrincipals/{servicePrincipal-id}/claimsMappingPolicies/{claimsMappingPolicy-id}/$ref
+      operations:
+      - name: serviceprincipalsclaimsmappingpoliciesdeleterefclaimsmappingpolicy
+        method: DELETE
+        description: Microsoft Graph Remove claimsMappingPolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-serviceprincipals-claimsmappingpolicy-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.claimsMappingPolicy.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/claimsmappingpolicies
+      name: serviceprincipals-serviceprincipal-id-claimsmappingpolicies
+      description: REST surface for servicePrincipals-servicePrincipal-id-claimsMappingPolicies.
+      operations:
+      - method: GET
+        name: serviceprincipalslistclaimsmappingpolicies
+        description: Microsoft Graph List assigned claimsMappingPolicy
+        call: microsoft-graph-serviceprincipals-claimsmappingpolicy.serviceprincipalslistclaimsmappingpolicies
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/claimsmappingpolicies/count
+      name: serviceprincipals-serviceprincipal-id-claimsmappingpolicies-count
+      description: REST surface for servicePrincipals-servicePrincipal-id-claimsMappingPolicies-$count.
+      operations:
+      - method: GET
+        name: serviceprincipalsclaimsmappingpoliciesgetcount832a
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-serviceprincipals-claimsmappingpolicy.serviceprincipalsclaimsmappingpoliciesgetcount832a
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/claimsmappingpolicies/ref
+      name: serviceprincipals-serviceprincipal-id-claimsmappingpolicies-ref
+      description: REST surface for servicePrincipals-servicePrincipal-id-claimsMappingPolicies-$ref.
+      operations:
+      - method: GET
+        name: serviceprincipalslistrefclaimsmappingpolicies
+        description: Microsoft Graph List assigned claimsMappingPolicy
+        call: microsoft-graph-serviceprincipals-claimsmappingpolicy.serviceprincipalslistrefclaimsmappingpolicies
+        with:
+          $orderby: rest.$orderby
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: serviceprincipalscreaterefclaimsmappingpolicies
+        description: Microsoft Graph Assign claimsMappingPolicy
+        call: microsoft-graph-serviceprincipals-claimsmappingpolicy.serviceprincipalscreaterefclaimsmappingpolicies
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: serviceprincipalsdeleterefclaimsmappingpolicies
+        description: Microsoft Graph Remove claimsMappingPolicy
+        call: microsoft-graph-serviceprincipals-claimsmappingpolicy.serviceprincipalsdeleterefclaimsmappingpolicies
+        with:
+          If-Match: rest.If-Match
+          '@id': rest.@id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/claimsmappingpolicies/{claimsmappingpolicy-id}/ref
+      name: serviceprincipals-serviceprincipal-id-claimsmappingpolicies-claimsmappingpolicy
+      description: REST surface for servicePrincipals-servicePrincipal-id-claimsMappingPolicies-claimsMappingPolicy-.
+      operations:
+      - method: DELETE
+        name: serviceprincipalsclaimsmappingpoliciesdeleterefclaimsmappingpolicy
+        description: Microsoft Graph Remove claimsMappingPolicy
+        call: microsoft-graph-serviceprincipals-claimsmappingpolicy.serviceprincipalsclaimsmappingpoliciesdeleterefclaimsmappingpolicy
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-serviceprincipals-claimsmappingpolicy-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.claimsMappingPolicy.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-assigned-claimsmappingpolicy
+      description: Microsoft Graph List assigned claimsMappingPolicy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-claimsmappingpolicy.serviceprincipalslistclaimsmappingpolicies
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-claimsmappingpolicy.serviceprincipalsclaimsmappingpoliciesgetcount832a
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-list-assigned-claimsmappingpolicy-2
+      description: Microsoft Graph List assigned claimsMappingPolicy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-claimsmappingpolicy.serviceprincipalslistrefclaimsmappingpolicies
+      with:
+        $orderby: tools.$orderby
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-assign-claimsmappingpolicy
+      description: Microsoft Graph Assign claimsMappingPolicy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-serviceprincipals-claimsmappingpolicy.serviceprincipalscreaterefclaimsmappingpolicies
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-remove-claimsmappingpolicy
+      description: Microsoft Graph Remove claimsMappingPolicy
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-claimsmappingpolicy.serviceprincipalsdeleterefclaimsmappingpolicies
+      with:
+        If-Match: tools.If-Match
+        '@id': tools.@id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-remove-claimsmappingpolicy-2
+      description: Microsoft Graph Remove claimsMappingPolicy
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-claimsmappingpolicy.serviceprincipalsclaimsmappingpoliciesdeleterefclaimsmappingpolicy
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

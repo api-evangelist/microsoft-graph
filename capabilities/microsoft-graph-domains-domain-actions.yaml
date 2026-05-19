@@ -1,0 +1,142 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — domains.domain.Actions
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — domains.domain.Actions. 3 operations. Lead operation:
+    Microsoft Graph Invoke action forceDelete. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - domains.domain.Actions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-domains-domain-actions
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — domains.domain.Actions business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: domains-domain-id-forceDelete
+      path: /domains/{domain-id}/forceDelete
+      operations:
+      - name: domainsdomainforcedelete
+        method: POST
+        description: Microsoft Graph Invoke action forceDelete
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: domains-domain-id-promote
+      path: /domains/{domain-id}/promote
+      operations:
+      - name: domainsdomainpromote
+        method: POST
+        description: Microsoft Graph Invoke action promote
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: domains-domain-id-verify
+      path: /domains/{domain-id}/verify
+      operations:
+      - name: domainsdomainverify
+        method: POST
+        description: Microsoft Graph Invoke action verify
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-domains-domain-actions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — domains.domain.Actions. One
+      Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/domains/{domain-id}/forcedelete
+      name: domains-domain-id-forcedelete
+      description: REST surface for domains-domain-id-forceDelete.
+      operations:
+      - method: POST
+        name: domainsdomainforcedelete
+        description: Microsoft Graph Invoke action forceDelete
+        call: microsoft-graph-domains-domain-actions.domainsdomainforcedelete
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/domains/{domain-id}/promote
+      name: domains-domain-id-promote
+      description: REST surface for domains-domain-id-promote.
+      operations:
+      - method: POST
+        name: domainsdomainpromote
+        description: Microsoft Graph Invoke action promote
+        call: microsoft-graph-domains-domain-actions.domainsdomainpromote
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/domains/{domain-id}/verify
+      name: domains-domain-id-verify
+      description: REST surface for domains-domain-id-verify.
+      operations:
+      - method: POST
+        name: domainsdomainverify
+        description: Microsoft Graph Invoke action verify
+        call: microsoft-graph-domains-domain-actions.domainsdomainverify
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-domains-domain-actions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — domains.domain.Actions. One
+      tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-action-forcedelete
+      description: Microsoft Graph Invoke action forceDelete
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-domains-domain-actions.domainsdomainforcedelete
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-promote
+      description: Microsoft Graph Invoke action promote
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-domains-domain-actions.domainsdomainpromote
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-verify
+      description: Microsoft Graph Invoke action verify
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-domains-domain-actions.domainsdomainverify
+      outputParameters:
+      - type: object
+        mapping: $.

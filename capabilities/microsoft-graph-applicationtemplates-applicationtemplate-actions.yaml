@@ -1,0 +1,79 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — applicationTemplates.applicationTemplate.Actions
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — applicationTemplates.applicationTemplate.Actions.
+    1 operations. Lead operation: Microsoft Graph Invoke action instantiate. Self-contained Naftiko capability covering one
+    Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - applicationTemplates.applicationTemplate.Actions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-applicationtemplates-applicationtemplate-actions
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — applicationTemplates.applicationTemplate.Actions
+      business capability. Self-contained, no shared references.
+    resources:
+    - name: applicationTemplates-applicationTemplate-id-instantiate
+      path: /applicationTemplates/{applicationTemplate-id}/instantiate
+      operations:
+      - name: applicationtemplatesapplicationtemplateinstantiate
+        method: POST
+        description: Microsoft Graph Invoke action instantiate
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-applicationtemplates-applicationtemplate-actions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — applicationTemplates.applicationTemplate.Actions.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applicationtemplates/{applicationtemplate-id}/instantiate
+      name: applicationtemplates-applicationtemplate-id-instantiate
+      description: REST surface for applicationTemplates-applicationTemplate-id-instantiate.
+      operations:
+      - method: POST
+        name: applicationtemplatesapplicationtemplateinstantiate
+        description: Microsoft Graph Invoke action instantiate
+        call: microsoft-graph-applicationtemplates-applicationtemplate-actions.applicationtemplatesapplicationtemplateinstantiate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-applicationtemplates-applicationtemplate-actions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — applicationTemplates.applicationTemplate.Actions.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-action-instantiate
+      description: Microsoft Graph Invoke action instantiate
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-applicationtemplates-applicationtemplate-actions.applicationtemplatesapplicationtemplateinstantiate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

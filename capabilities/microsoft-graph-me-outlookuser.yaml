@@ -1,0 +1,415 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — me.outlookUser
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — me.outlookUser. 10 operations. Lead operation:
+    Microsoft Graph Get outlook from me. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - me.outlookUser
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-me-outlookuser
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — me.outlookUser business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: me-outlook
+      path: /me/outlook
+      operations:
+      - name: megetoutlook
+        method: GET
+        description: Microsoft Graph Get outlook from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: me-outlook-masterCategories
+      path: /me/outlook/masterCategories
+      operations:
+      - name: meoutlooklistmastercategories
+        method: GET
+        description: Microsoft Graph List masterCategories
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: meoutlookcreatemastercategories
+        method: POST
+        description: Microsoft Graph Create Outlook category
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: me-outlook-masterCategories-$count
+      path: /me/outlook/masterCategories/$count
+      operations:
+      - name: meoutlookmastercategoriesgetcount7754
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: me-outlook-masterCategories-outlookCategory-id
+      path: /me/outlook/masterCategories/{outlookCategory-id}
+      operations:
+      - name: meoutlookgetmastercategories
+        method: GET
+        description: Microsoft Graph Get Outlook category
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: meoutlookupdatemastercategories
+        method: PATCH
+        description: Microsoft Graph Update outlookCategory
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: meoutlookdeletemastercategories
+        method: DELETE
+        description: Microsoft Graph Delete outlookCategory
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: me-outlook-supportedLanguages()
+      path: /me/outlook/supportedLanguages()
+      operations:
+      - name: meoutlooksupportedlanguages
+        method: GET
+        description: Microsoft Graph Invoke function supportedLanguages
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: me-outlook-supportedTimeZones()
+      path: /me/outlook/supportedTimeZones()
+      operations:
+      - name: meoutlooksupportedtimezones5c4f
+        method: GET
+        description: Microsoft Graph Invoke function supportedTimeZones
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: me-outlook-supportedTimeZones(TimeZoneStandard='{TimeZoneStandard}')
+      path: /me/outlook/supportedTimeZones(TimeZoneStandard='{TimeZoneStandard}')
+      operations:
+      - name: meoutlooksupportedtimezones0d20
+        method: GET
+        description: Microsoft Graph Invoke function supportedTimeZones
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-me-outlookuser-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — me.outlookUser. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/me/outlook
+      name: me-outlook
+      description: REST surface for me-outlook.
+      operations:
+      - method: GET
+        name: megetoutlook
+        description: Microsoft Graph Get outlook from me
+        call: microsoft-graph-me-outlookuser.megetoutlook
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/outlook/mastercategories
+      name: me-outlook-mastercategories
+      description: REST surface for me-outlook-masterCategories.
+      operations:
+      - method: GET
+        name: meoutlooklistmastercategories
+        description: Microsoft Graph List masterCategories
+        call: microsoft-graph-me-outlookuser.meoutlooklistmastercategories
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: meoutlookcreatemastercategories
+        description: Microsoft Graph Create Outlook category
+        call: microsoft-graph-me-outlookuser.meoutlookcreatemastercategories
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/outlook/mastercategories/count
+      name: me-outlook-mastercategories-count
+      description: REST surface for me-outlook-masterCategories-$count.
+      operations:
+      - method: GET
+        name: meoutlookmastercategoriesgetcount7754
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-me-outlookuser.meoutlookmastercategoriesgetcount7754
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/outlook/mastercategories/{outlookcategory-id}
+      name: me-outlook-mastercategories-outlookcategory-id
+      description: REST surface for me-outlook-masterCategories-outlookCategory-id.
+      operations:
+      - method: GET
+        name: meoutlookgetmastercategories
+        description: Microsoft Graph Get Outlook category
+        call: microsoft-graph-me-outlookuser.meoutlookgetmastercategories
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: meoutlookupdatemastercategories
+        description: Microsoft Graph Update outlookCategory
+        call: microsoft-graph-me-outlookuser.meoutlookupdatemastercategories
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: meoutlookdeletemastercategories
+        description: Microsoft Graph Delete outlookCategory
+        call: microsoft-graph-me-outlookuser.meoutlookdeletemastercategories
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/outlook/supportedlanguages
+      name: me-outlook-supportedlanguages
+      description: REST surface for me-outlook-supportedLanguages().
+      operations:
+      - method: GET
+        name: meoutlooksupportedlanguages
+        description: Microsoft Graph Invoke function supportedLanguages
+        call: microsoft-graph-me-outlookuser.meoutlooksupportedlanguages
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/outlook/supportedtimezones
+      name: me-outlook-supportedtimezones
+      description: REST surface for me-outlook-supportedTimeZones().
+      operations:
+      - method: GET
+        name: meoutlooksupportedtimezones5c4f
+        description: Microsoft Graph Invoke function supportedTimeZones
+        call: microsoft-graph-me-outlookuser.meoutlooksupportedtimezones5c4f
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/outlook/supportedtimezones-timezonestandard-timezonestandard
+      name: me-outlook-supportedtimezones-timezonestandard-timezonestandard
+      description: REST surface for me-outlook-supportedTimeZones(TimeZoneStandard='{TimeZoneStandard}').
+      operations:
+      - method: GET
+        name: meoutlooksupportedtimezones0d20
+        description: Microsoft Graph Invoke function supportedTimeZones
+        call: microsoft-graph-me-outlookuser.meoutlooksupportedtimezones0d20
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-me-outlookuser-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — me.outlookUser. One tool per
+      consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-outlook-me
+      description: Microsoft Graph Get outlook from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-outlookuser.megetoutlook
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-list-mastercategories
+      description: Microsoft Graph List masterCategories
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-outlookuser.meoutlooklistmastercategories
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-outlook-category
+      description: Microsoft Graph Create Outlook category
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-me-outlookuser.meoutlookcreatemastercategories
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-outlookuser.meoutlookmastercategoriesgetcount7754
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-outlook-category
+      description: Microsoft Graph Get Outlook category
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-outlookuser.meoutlookgetmastercategories
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-outlookcategory
+      description: Microsoft Graph Update outlookCategory
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-outlookuser.meoutlookupdatemastercategories
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-outlookcategory
+      description: Microsoft Graph Delete outlookCategory
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-me-outlookuser.meoutlookdeletemastercategories
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-supportedlanguages
+      description: Microsoft Graph Invoke function supportedLanguages
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-outlookuser.meoutlooksupportedlanguages
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-supportedtimezones
+      description: Microsoft Graph Invoke function supportedTimeZones
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-outlookuser.meoutlooksupportedtimezones5c4f
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-supportedtimezones-2
+      description: Microsoft Graph Invoke function supportedTimeZones
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-outlookuser.meoutlooksupportedtimezones0d20
+      outputParameters:
+      - type: object
+        mapping: $.

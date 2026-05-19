@@ -1,0 +1,223 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Teams — Groups.team
+  description: 'Microsoft Graph Teams — Groups.team. 4 operations. Lead operation: Microsoft Graph Get teamsApp from groups.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Groups.team
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: teams-groups-team
+    baseUri: ''
+    description: Microsoft Graph Teams — Groups.team business capability. Self-contained, no shared references.
+    resources:
+    - name: groups-group-id-team-channels-channel-id-tabs-teamsTab-id-teamsApp
+      path: /groups/{group-id}/team/channels/{channel-id}/tabs/{teamsTab-id}/teamsApp
+      operations:
+      - name: groupsteamchannelstabsgetteamsapp
+        method: GET
+        description: Microsoft Graph Get teamsApp from groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: groups-group-id-team-installedApps-teamsAppInstallation-id-teamsApp
+      path: /groups/{group-id}/team/installedApps/{teamsAppInstallation-id}/teamsApp
+      operations:
+      - name: groupsteaminstalledappsgetteamsapp
+        method: GET
+        description: Microsoft Graph Get teamsApp from groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: groups-group-id-team-installedApps-teamsAppInstallation-id-teamsAppDefinition
+      path: /groups/{group-id}/team/installedApps/{teamsAppInstallation-id}/teamsAppDefinition
+      operations:
+      - name: groupsteaminstalledappsgetteamsappdefinition
+        method: GET
+        description: Microsoft Graph Get teamsAppDefinition from groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: groups-group-id-team-primaryChannel-tabs-teamsTab-id-teamsApp
+      path: /groups/{group-id}/team/primaryChannel/tabs/{teamsTab-id}/teamsApp
+      operations:
+      - name: groupsteamprimarychanneltabsgetteamsapp
+        method: GET
+        description: Microsoft Graph Get teamsApp from groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: teams-groups-team-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Teams — Groups.team. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/groups/{group-id}/team/channels/{channel-id}/tabs/{teamstab-id}/teamsapp
+      name: groups-group-id-team-channels-channel-id-tabs-teamstab-id-teamsapp
+      description: REST surface for groups-group-id-team-channels-channel-id-tabs-teamsTab-id-teamsApp.
+      operations:
+      - method: GET
+        name: groupsteamchannelstabsgetteamsapp
+        description: Microsoft Graph Get teamsApp from groups
+        call: teams-groups-team.groupsteamchannelstabsgetteamsapp
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/team/installedapps/{teamsappinstallation-id}/teamsapp
+      name: groups-group-id-team-installedapps-teamsappinstallation-id-teamsapp
+      description: REST surface for groups-group-id-team-installedApps-teamsAppInstallation-id-teamsApp.
+      operations:
+      - method: GET
+        name: groupsteaminstalledappsgetteamsapp
+        description: Microsoft Graph Get teamsApp from groups
+        call: teams-groups-team.groupsteaminstalledappsgetteamsapp
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/team/installedapps/{teamsappinstallation-id}/teamsappdefinition
+      name: groups-group-id-team-installedapps-teamsappinstallation-id-teamsappdefinition
+      description: REST surface for groups-group-id-team-installedApps-teamsAppInstallation-id-teamsAppDefinition.
+      operations:
+      - method: GET
+        name: groupsteaminstalledappsgetteamsappdefinition
+        description: Microsoft Graph Get teamsAppDefinition from groups
+        call: teams-groups-team.groupsteaminstalledappsgetteamsappdefinition
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/team/primarychannel/tabs/{teamstab-id}/teamsapp
+      name: groups-group-id-team-primarychannel-tabs-teamstab-id-teamsapp
+      description: REST surface for groups-group-id-team-primaryChannel-tabs-teamsTab-id-teamsApp.
+      operations:
+      - method: GET
+        name: groupsteamprimarychanneltabsgetteamsapp
+        description: Microsoft Graph Get teamsApp from groups
+        call: teams-groups-team.groupsteamprimarychanneltabsgetteamsapp
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: teams-groups-team-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Teams — Groups.team. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-teamsapp-groups
+      description: Microsoft Graph Get teamsApp from groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teams-groups-team.groupsteamchannelstabsgetteamsapp
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-teamsapp-groups-2
+      description: Microsoft Graph Get teamsApp from groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teams-groups-team.groupsteaminstalledappsgetteamsapp
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-teamsappdefinition-groups
+      description: Microsoft Graph Get teamsAppDefinition from groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teams-groups-team.groupsteaminstalledappsgetteamsappdefinition
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-teamsapp-groups-3
+      description: Microsoft Graph Get teamsApp from groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teams-groups-team.groupsteamprimarychanneltabsgetteamsapp
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

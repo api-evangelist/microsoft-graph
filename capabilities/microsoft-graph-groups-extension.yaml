@@ -1,0 +1,272 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — Groups.extension
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — Groups.extension. 6 operations. Lead operation:
+    Microsoft Graph Get extensions from groups. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Groups.extension
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-groups-extension
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — Groups.extension business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: groups-group-id-extensions
+      path: /groups/{group-id}/extensions
+      operations:
+      - name: groupslistextensions
+        method: GET
+        description: Microsoft Graph Get extensions from groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: groupscreateextensions
+        method: POST
+        description: Microsoft Graph Create new navigation property to extensions for groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: groups-group-id-extensions-$count
+      path: /groups/{group-id}/extensions/$count
+      operations:
+      - name: groupsextensionsgetcounte2e0
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: groups-group-id-extensions-extension-id
+      path: /groups/{group-id}/extensions/{extension-id}
+      operations:
+      - name: groupsgetextensions
+        method: GET
+        description: Microsoft Graph Get extensions from groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: groupsupdateextensions
+        method: PATCH
+        description: Microsoft Graph Update the navigation property extensions in groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: groupsdeleteextensions
+        method: DELETE
+        description: Microsoft Graph Delete navigation property extensions for groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-groups-extension-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — Groups.extension. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/groups/{group-id}/extensions
+      name: groups-group-id-extensions
+      description: REST surface for groups-group-id-extensions.
+      operations:
+      - method: GET
+        name: groupslistextensions
+        description: Microsoft Graph Get extensions from groups
+        call: microsoft-graph-groups-extension.groupslistextensions
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: groupscreateextensions
+        description: Microsoft Graph Create new navigation property to extensions for groups
+        call: microsoft-graph-groups-extension.groupscreateextensions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/extensions/count
+      name: groups-group-id-extensions-count
+      description: REST surface for groups-group-id-extensions-$count.
+      operations:
+      - method: GET
+        name: groupsextensionsgetcounte2e0
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-groups-extension.groupsextensionsgetcounte2e0
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/extensions/{extension-id}
+      name: groups-group-id-extensions-extension-id
+      description: REST surface for groups-group-id-extensions-extension-id.
+      operations:
+      - method: GET
+        name: groupsgetextensions
+        description: Microsoft Graph Get extensions from groups
+        call: microsoft-graph-groups-extension.groupsgetextensions
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: groupsupdateextensions
+        description: Microsoft Graph Update the navigation property extensions in groups
+        call: microsoft-graph-groups-extension.groupsupdateextensions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: groupsdeleteextensions
+        description: Microsoft Graph Delete navigation property extensions for groups
+        call: microsoft-graph-groups-extension.groupsdeleteextensions
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-groups-extension-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — Groups.extension. One tool
+      per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-extensions-groups
+      description: Microsoft Graph Get extensions from groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-extension.groupslistextensions
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to extensions for groups
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-groups-extension.groupscreateextensions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-extension.groupsextensionsgetcounte2e0
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-extensions-groups-2
+      description: Microsoft Graph Get extensions from groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-extension.groupsgetextensions
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property extensions in groups
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-extension.groupsupdateextensions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property extensions for groups
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-groups-extension.groupsdeleteextensions
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

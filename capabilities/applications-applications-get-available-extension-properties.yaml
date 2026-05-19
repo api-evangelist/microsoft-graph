@@ -1,0 +1,79 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Applications API — Applications Get Available Extension Properties
+  description: 'Microsoft Graph Applications API — Applications Get Available Extension Properties. 1 operations. Lead operation:
+    Microsoft Graph Create Get Available Extension Properties. Self-contained Naftiko capability covering one Microsoft Graph
+    business surface.'
+  tags:
+  - Microsoft Graph
+  - Applications Get Available Extension Properties
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: applications-applications-get-available-extension-properties
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Applications API — Applications Get Available Extension Properties business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: applications-getAvailableExtensionProperties
+      path: /applications/getAvailableExtensionProperties
+      operations:
+      - name: createapplicationsgetavailableextensionproperties
+        method: POST
+        description: Microsoft Graph Create Get Available Extension Properties
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: applications-applications-get-available-extension-properties-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Applications API — Applications Get Available Extension Properties. One
+      Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications/getavailableextensionproperties
+      name: applications-getavailableextensionproperties
+      description: REST surface for applications-getAvailableExtensionProperties.
+      operations:
+      - method: POST
+        name: createapplicationsgetavailableextensionproperties
+        description: Microsoft Graph Create Get Available Extension Properties
+        call: applications-applications-get-available-extension-properties.createapplicationsgetavailableextensionproperties
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: applications-applications-get-available-extension-properties-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Applications API — Applications Get Available Extension Properties. One tool
+      per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-create-get-available
+      description: Microsoft Graph Create Get Available Extension Properties
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: applications-applications-get-available-extension-properties.createapplicationsgetavailableextensionproperties
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

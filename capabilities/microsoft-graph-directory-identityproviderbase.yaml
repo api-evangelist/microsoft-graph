@@ -1,0 +1,305 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — directory.identityProviderBase
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — directory.identityProviderBase. 7 operations.
+    Lead operation: Microsoft Graph Get federationConfigurations from directory. Self-contained Naftiko capability covering
+    one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - directory.identityProviderBase
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-directory-identityproviderbase
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — directory.identityProviderBase business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: directory-federationConfigurations
+      path: /directory/federationConfigurations
+      operations:
+      - name: directorylistfederationconfigurations
+        method: GET
+        description: Microsoft Graph Get federationConfigurations from directory
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: directorycreatefederationconfigurations
+        method: POST
+        description: Microsoft Graph Create new navigation property to federationConfigurations for directory
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: directory-federationConfigurations-$count
+      path: /directory/federationConfigurations/$count
+      operations:
+      - name: directoryfederationconfigurationsgetcount1592
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: directory-federationConfigurations-availableProviderTypes()
+      path: /directory/federationConfigurations/availableProviderTypes()
+      operations:
+      - name: directoryfederationconfigurationsavailableprovidertypes
+        method: GET
+        description: Microsoft Graph Invoke function availableProviderTypes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: directory-federationConfigurations-identityProviderBase-id
+      path: /directory/federationConfigurations/{identityProviderBase-id}
+      operations:
+      - name: directorygetfederationconfigurations
+        method: GET
+        description: Microsoft Graph Get federationConfigurations from directory
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: directoryupdatefederationconfigurations
+        method: PATCH
+        description: Microsoft Graph Update the navigation property federationConfigurations in directory
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: directorydeletefederationconfigurations
+        method: DELETE
+        description: Microsoft Graph Delete samlOrWsFedExternalDomainFederation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-directory-identityproviderbase-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — directory.identityProviderBase.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/directory/federationconfigurations
+      name: directory-federationconfigurations
+      description: REST surface for directory-federationConfigurations.
+      operations:
+      - method: GET
+        name: directorylistfederationconfigurations
+        description: Microsoft Graph Get federationConfigurations from directory
+        call: microsoft-graph-directory-identityproviderbase.directorylistfederationconfigurations
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: directorycreatefederationconfigurations
+        description: Microsoft Graph Create new navigation property to federationConfigurations for directory
+        call: microsoft-graph-directory-identityproviderbase.directorycreatefederationconfigurations
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/directory/federationconfigurations/count
+      name: directory-federationconfigurations-count
+      description: REST surface for directory-federationConfigurations-$count.
+      operations:
+      - method: GET
+        name: directoryfederationconfigurationsgetcount1592
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-directory-identityproviderbase.directoryfederationconfigurationsgetcount1592
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/directory/federationconfigurations/availableprovidertypes
+      name: directory-federationconfigurations-availableprovidertypes
+      description: REST surface for directory-federationConfigurations-availableProviderTypes().
+      operations:
+      - method: GET
+        name: directoryfederationconfigurationsavailableprovidertypes
+        description: Microsoft Graph Invoke function availableProviderTypes
+        call: microsoft-graph-directory-identityproviderbase.directoryfederationconfigurationsavailableprovidertypes
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/directory/federationconfigurations/{identityproviderbase-id}
+      name: directory-federationconfigurations-identityproviderbase-id
+      description: REST surface for directory-federationConfigurations-identityProviderBase-id.
+      operations:
+      - method: GET
+        name: directorygetfederationconfigurations
+        description: Microsoft Graph Get federationConfigurations from directory
+        call: microsoft-graph-directory-identityproviderbase.directorygetfederationconfigurations
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: directoryupdatefederationconfigurations
+        description: Microsoft Graph Update the navigation property federationConfigurations in directory
+        call: microsoft-graph-directory-identityproviderbase.directoryupdatefederationconfigurations
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: directorydeletefederationconfigurations
+        description: Microsoft Graph Delete samlOrWsFedExternalDomainFederation
+        call: microsoft-graph-directory-identityproviderbase.directorydeletefederationconfigurations
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-directory-identityproviderbase-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — directory.identityProviderBase.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-federationconfigurations-directory
+      description: Microsoft Graph Get federationConfigurations from directory
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-directory-identityproviderbase.directorylistfederationconfigurations
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to federationConfigurations for directory
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-directory-identityproviderbase.directorycreatefederationconfigurations
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-directory-identityproviderbase.directoryfederationconfigurationsgetcount1592
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-availableprovidertypes
+      description: Microsoft Graph Invoke function availableProviderTypes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-directory-identityproviderbase.directoryfederationconfigurationsavailableprovidertypes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-federationconfigurations-directory-2
+      description: Microsoft Graph Get federationConfigurations from directory
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-directory-identityproviderbase.directorygetfederationconfigurations
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property federationConfigurations in directory
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-directory-identityproviderbase.directoryupdatefederationconfigurations
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-samlorwsfedexternaldomainfederation
+      description: Microsoft Graph Delete samlOrWsFedExternalDomainFederation
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-directory-identityproviderbase.directorydeletefederationconfigurations
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

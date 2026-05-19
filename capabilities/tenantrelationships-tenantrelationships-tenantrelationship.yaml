@@ -1,0 +1,118 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Tenantrelationships — tenantRelationships.tenantRelationship
+  description: 'Microsoft Graph Tenantrelationships — tenantRelationships.tenantRelationship. 2 operations. Lead operation:
+    Microsoft Graph Get tenantRelationships. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - tenantRelationships.tenantRelationship
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: tenantrelationships-tenantrelationships-tenantrelationship
+    baseUri: ''
+    description: Microsoft Graph Tenantrelationships — tenantRelationships.tenantRelationship business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: tenantRelationships
+      path: /tenantRelationships
+      operations:
+      - name: tenantrelationshipstenantrelationshipgettenantrelationship
+        method: GET
+        description: Microsoft Graph Get tenantRelationships
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: tenantrelationshipstenantrelationshipupdatetenantrelationship
+        method: PATCH
+        description: Microsoft Graph Update tenantRelationships
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: tenantrelationships-tenantrelationships-tenantrelationship-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Tenantrelationships — tenantRelationships.tenantRelationship. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/tenantrelationships
+      name: tenantrelationships
+      description: REST surface for tenantRelationships.
+      operations:
+      - method: GET
+        name: tenantrelationshipstenantrelationshipgettenantrelationship
+        description: Microsoft Graph Get tenantRelationships
+        call: tenantrelationships-tenantrelationships-tenantrelationship.tenantrelationshipstenantrelationshipgettenantrelationship
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: tenantrelationshipstenantrelationshipupdatetenantrelationship
+        description: Microsoft Graph Update tenantRelationships
+        call: tenantrelationships-tenantrelationships-tenantrelationship.tenantrelationshipstenantrelationshipupdatetenantrelationship
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: tenantrelationships-tenantrelationships-tenantrelationship-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Tenantrelationships — tenantRelationships.tenantRelationship. One tool per
+      consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-tenantrelationships
+      description: Microsoft Graph Get tenantRelationships
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: tenantrelationships-tenantrelationships-tenantrelationship.tenantrelationshipstenantrelationshipgettenantrelationship
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-tenantrelationships
+      description: Microsoft Graph Update tenantRelationships
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: tenantrelationships-tenantrelationships-tenantrelationship.tenantrelationshipstenantrelationshipupdatetenantrelationship
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

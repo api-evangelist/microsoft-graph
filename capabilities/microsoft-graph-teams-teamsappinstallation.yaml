@@ -1,0 +1,409 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — teams.teamsAppInstallation
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — teams.teamsAppInstallation. 9 operations. Lead
+    operation: Microsoft Graph List apps in team. Self-contained Naftiko capability covering one Microsoft Graph business
+    surface.'
+  tags:
+  - Microsoft Graph
+  - teams.teamsAppInstallation
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-teams-teamsappinstallation
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — teams.teamsAppInstallation business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: teams-team-id-installedApps
+      path: /teams/{team-id}/installedApps
+      operations:
+      - name: teamslistinstalledapps
+        method: GET
+        description: Microsoft Graph List apps in team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: teamscreateinstalledapps
+        method: POST
+        description: Microsoft Graph Add app to team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team-id-installedApps-$count
+      path: /teams/{team-id}/installedApps/$count
+      operations:
+      - name: teamsinstalledappsgetcountd47b
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: teams-team-id-installedApps-teamsAppInstallation-id
+      path: /teams/{team-id}/installedApps/{teamsAppInstallation-id}
+      operations:
+      - name: teamsgetinstalledapps
+        method: GET
+        description: Microsoft Graph Get installed app in team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: teamsupdateinstalledapps
+        method: PATCH
+        description: Microsoft Graph Update the navigation property installedApps in teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: teamsdeleteinstalledapps
+        method: DELETE
+        description: Microsoft Graph Remove app from team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: teams-team-id-installedApps-teamsAppInstallation-id-teamsApp
+      path: /teams/{team-id}/installedApps/{teamsAppInstallation-id}/teamsApp
+      operations:
+      - name: teamsinstalledappsgetteamsapp
+        method: GET
+        description: Microsoft Graph Get teamsApp from teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: teams-team-id-installedApps-teamsAppInstallation-id-teamsAppDefinition
+      path: /teams/{team-id}/installedApps/{teamsAppInstallation-id}/teamsAppDefinition
+      operations:
+      - name: teamsinstalledappsgetteamsappdefinition
+        method: GET
+        description: Microsoft Graph Get teamsAppDefinition from teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: teams-team-id-installedApps-teamsAppInstallation-id-upgrade
+      path: /teams/{team-id}/installedApps/{teamsAppInstallation-id}/upgrade
+      operations:
+      - name: teamsteaminstalledappsteamsappinstallationupgrade
+        method: POST
+        description: Microsoft Graph Invoke action upgrade
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-teams-teamsappinstallation-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — teams.teamsAppInstallation.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/teams/{team-id}/installedapps
+      name: teams-team-id-installedapps
+      description: REST surface for teams-team-id-installedApps.
+      operations:
+      - method: GET
+        name: teamslistinstalledapps
+        description: Microsoft Graph List apps in team
+        call: microsoft-graph-teams-teamsappinstallation.teamslistinstalledapps
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: teamscreateinstalledapps
+        description: Microsoft Graph Add app to team
+        call: microsoft-graph-teams-teamsappinstallation.teamscreateinstalledapps
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/installedapps/count
+      name: teams-team-id-installedapps-count
+      description: REST surface for teams-team-id-installedApps-$count.
+      operations:
+      - method: GET
+        name: teamsinstalledappsgetcountd47b
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-teams-teamsappinstallation.teamsinstalledappsgetcountd47b
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/installedapps/{teamsappinstallation-id}
+      name: teams-team-id-installedapps-teamsappinstallation-id
+      description: REST surface for teams-team-id-installedApps-teamsAppInstallation-id.
+      operations:
+      - method: GET
+        name: teamsgetinstalledapps
+        description: Microsoft Graph Get installed app in team
+        call: microsoft-graph-teams-teamsappinstallation.teamsgetinstalledapps
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: teamsupdateinstalledapps
+        description: Microsoft Graph Update the navigation property installedApps in teams
+        call: microsoft-graph-teams-teamsappinstallation.teamsupdateinstalledapps
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: teamsdeleteinstalledapps
+        description: Microsoft Graph Remove app from team
+        call: microsoft-graph-teams-teamsappinstallation.teamsdeleteinstalledapps
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/installedapps/{teamsappinstallation-id}/teamsapp
+      name: teams-team-id-installedapps-teamsappinstallation-id-teamsapp
+      description: REST surface for teams-team-id-installedApps-teamsAppInstallation-id-teamsApp.
+      operations:
+      - method: GET
+        name: teamsinstalledappsgetteamsapp
+        description: Microsoft Graph Get teamsApp from teams
+        call: microsoft-graph-teams-teamsappinstallation.teamsinstalledappsgetteamsapp
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/installedapps/{teamsappinstallation-id}/teamsappdefinition
+      name: teams-team-id-installedapps-teamsappinstallation-id-teamsappdefinition
+      description: REST surface for teams-team-id-installedApps-teamsAppInstallation-id-teamsAppDefinition.
+      operations:
+      - method: GET
+        name: teamsinstalledappsgetteamsappdefinition
+        description: Microsoft Graph Get teamsAppDefinition from teams
+        call: microsoft-graph-teams-teamsappinstallation.teamsinstalledappsgetteamsappdefinition
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/installedapps/{teamsappinstallation-id}/upgrade
+      name: teams-team-id-installedapps-teamsappinstallation-id-upgrade
+      description: REST surface for teams-team-id-installedApps-teamsAppInstallation-id-upgrade.
+      operations:
+      - method: POST
+        name: teamsteaminstalledappsteamsappinstallationupgrade
+        description: Microsoft Graph Invoke action upgrade
+        call: microsoft-graph-teams-teamsappinstallation.teamsteaminstalledappsteamsappinstallationupgrade
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-teams-teamsappinstallation-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — teams.teamsAppInstallation.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-apps-team
+      description: Microsoft Graph List apps in team
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-teamsappinstallation.teamslistinstalledapps
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-add-app-team
+      description: Microsoft Graph Add app to team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-teams-teamsappinstallation.teamscreateinstalledapps
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-teamsappinstallation.teamsinstalledappsgetcountd47b
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-installed-app
+      description: Microsoft Graph Get installed app in team
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-teamsappinstallation.teamsgetinstalledapps
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property installedApps in teams
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-teamsappinstallation.teamsupdateinstalledapps
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-remove-app-team
+      description: Microsoft Graph Remove app from team
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-teams-teamsappinstallation.teamsdeleteinstalledapps
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-teamsapp-teams
+      description: Microsoft Graph Get teamsApp from teams
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-teamsappinstallation.teamsinstalledappsgetteamsapp
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-teamsappdefinition-teams
+      description: Microsoft Graph Get teamsAppDefinition from teams
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-teamsappinstallation.teamsinstalledappsgetteamsappdefinition
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-upgrade
+      description: Microsoft Graph Invoke action upgrade
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-teams-teamsappinstallation.teamsteaminstalledappsteamsappinstallationupgrade
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

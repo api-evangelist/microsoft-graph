@@ -1,0 +1,215 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — Me.drive
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — Me.drive. 4 operations. Lead operation: Microsoft
+    Graph Get Drive. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Me.drive
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-me-drive
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — Me.drive business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: me-drive
+      path: /me/drive
+      operations:
+      - name: megetdrive
+        method: GET
+        description: Microsoft Graph Get Drive
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: me-drives
+      path: /me/drives
+      operations:
+      - name: melistdrives
+        method: GET
+        description: Microsoft Graph List available drives
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: me-drives-$count
+      path: /me/drives/$count
+      operations:
+      - name: medrivesgetcount2023
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: me-drives-drive-id
+      path: /me/drives/{drive-id}
+      operations:
+      - name: megetdrives
+        method: GET
+        description: Microsoft Graph Get drives from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-me-drive-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — Me.drive. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/me/drive
+      name: me-drive
+      description: REST surface for me-drive.
+      operations:
+      - method: GET
+        name: megetdrive
+        description: Microsoft Graph Get Drive
+        call: microsoft-graph-me-drive.megetdrive
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/drives
+      name: me-drives
+      description: REST surface for me-drives.
+      operations:
+      - method: GET
+        name: melistdrives
+        description: Microsoft Graph List available drives
+        call: microsoft-graph-me-drive.melistdrives
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/drives/count
+      name: me-drives-count
+      description: REST surface for me-drives-$count.
+      operations:
+      - method: GET
+        name: medrivesgetcount2023
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-me-drive.medrivesgetcount2023
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/drives/{drive-id}
+      name: me-drives-drive-id
+      description: REST surface for me-drives-drive-id.
+      operations:
+      - method: GET
+        name: megetdrives
+        description: Microsoft Graph Get drives from me
+        call: microsoft-graph-me-drive.megetdrives
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-me-drive-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — Me.drive. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-drive
+      description: Microsoft Graph Get Drive
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-drive.megetdrive
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-list-available-drives
+      description: Microsoft Graph List available drives
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-drive.melistdrives
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-drive.medrivesgetcount2023
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-drives-me
+      description: Microsoft Graph Get drives from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-drive.megetdrives
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

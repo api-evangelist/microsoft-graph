@@ -1,0 +1,271 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Search — Search.acronym
+  description: 'Microsoft Graph Search — Search.acronym. 6 operations. Lead operation: Microsoft Graph List acronyms. Self-contained
+    Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Search.acronym
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: search-search-acronym
+    baseUri: ''
+    description: Microsoft Graph Search — Search.acronym business capability. Self-contained, no shared references.
+    resources:
+    - name: search-acronyms
+      path: /search/acronyms
+      operations:
+      - name: searchlistacronyms
+        method: GET
+        description: Microsoft Graph List acronyms
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: searchcreateacronyms
+        method: POST
+        description: Microsoft Graph Create acronym
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: search-acronyms-$count
+      path: /search/acronyms/$count
+      operations:
+      - name: searchacronymsgetcountb41d
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search-acronyms-acronym-id
+      path: /search/acronyms/{acronym-id}
+      operations:
+      - name: searchgetacronyms
+        method: GET
+        description: Microsoft Graph Get acronym
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: searchupdateacronyms
+        method: PATCH
+        description: Microsoft Graph Update acronym
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: searchdeleteacronyms
+        method: DELETE
+        description: Microsoft Graph Delete acronym
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: search-search-acronym-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Search — Search.acronym. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/search/acronyms
+      name: search-acronyms
+      description: REST surface for search-acronyms.
+      operations:
+      - method: GET
+        name: searchlistacronyms
+        description: Microsoft Graph List acronyms
+        call: search-search-acronym.searchlistacronyms
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: searchcreateacronyms
+        description: Microsoft Graph Create acronym
+        call: search-search-acronym.searchcreateacronyms
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/search/acronyms/count
+      name: search-acronyms-count
+      description: REST surface for search-acronyms-$count.
+      operations:
+      - method: GET
+        name: searchacronymsgetcountb41d
+        description: Microsoft Graph Get the number of the resource
+        call: search-search-acronym.searchacronymsgetcountb41d
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/search/acronyms/{acronym-id}
+      name: search-acronyms-acronym-id
+      description: REST surface for search-acronyms-acronym-id.
+      operations:
+      - method: GET
+        name: searchgetacronyms
+        description: Microsoft Graph Get acronym
+        call: search-search-acronym.searchgetacronyms
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: searchupdateacronyms
+        description: Microsoft Graph Update acronym
+        call: search-search-acronym.searchupdateacronyms
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: searchdeleteacronyms
+        description: Microsoft Graph Delete acronym
+        call: search-search-acronym.searchdeleteacronyms
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: search-search-acronym-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Search — Search.acronym. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-acronyms
+      description: Microsoft Graph List acronyms
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: search-search-acronym.searchlistacronyms
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-acronym
+      description: Microsoft Graph Create acronym
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: search-search-acronym.searchcreateacronyms
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: search-search-acronym.searchacronymsgetcountb41d
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-acronym
+      description: Microsoft Graph Get acronym
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: search-search-acronym.searchgetacronyms
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-acronym
+      description: Microsoft Graph Update acronym
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: search-search-acronym.searchupdateacronyms
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-acronym
+      description: Microsoft Graph Delete acronym
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: search-search-acronym.searchdeleteacronyms
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

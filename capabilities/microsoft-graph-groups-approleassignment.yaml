@@ -1,0 +1,294 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — groups.appRoleAssignment
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — groups.appRoleAssignment. 6 operations. Lead
+    operation: Microsoft Graph List appRoleAssignments granted to a group. Self-contained Naftiko capability covering one
+    Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - groups.appRoleAssignment
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-groups-approleassignment
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — groups.appRoleAssignment business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: groups-group-id-appRoleAssignments
+      path: /groups/{group-id}/appRoleAssignments
+      operations:
+      - name: groupslistapproleassignments
+        method: GET
+        description: Microsoft Graph List appRoleAssignments granted to a group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConsistencyLevel
+          in: header
+          type: string
+          description: 'Indicates the requested consistency level. Documentation URL: https://docs.microsoft.com/graph/aad-advanced-queries'
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: groupscreateapproleassignments
+        method: POST
+        description: Microsoft Graph Grant an appRoleAssignment to a group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: groups-group-id-appRoleAssignments-$count
+      path: /groups/{group-id}/appRoleAssignments/$count
+      operations:
+      - name: groupsapproleassignmentsgetcountce16
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConsistencyLevel
+          in: header
+          type: string
+          description: 'Indicates the requested consistency level. Documentation URL: https://docs.microsoft.com/graph/aad-advanced-queries'
+    - name: groups-group-id-appRoleAssignments-appRoleAssignment-id
+      path: /groups/{group-id}/appRoleAssignments/{appRoleAssignment-id}
+      operations:
+      - name: groupsgetapproleassignments
+        method: GET
+        description: Microsoft Graph Get appRoleAssignments from groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConsistencyLevel
+          in: header
+          type: string
+          description: 'Indicates the requested consistency level. Documentation URL: https://docs.microsoft.com/graph/aad-advanced-queries'
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: groupsupdateapproleassignments
+        method: PATCH
+        description: Microsoft Graph Update the navigation property appRoleAssignments in groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: groupsdeleteapproleassignments
+        method: DELETE
+        description: Microsoft Graph Delete appRoleAssignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-groups-approleassignment-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — groups.appRoleAssignment.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/groups/{group-id}/approleassignments
+      name: groups-group-id-approleassignments
+      description: REST surface for groups-group-id-appRoleAssignments.
+      operations:
+      - method: GET
+        name: groupslistapproleassignments
+        description: Microsoft Graph List appRoleAssignments granted to a group
+        call: microsoft-graph-groups-approleassignment.groupslistapproleassignments
+        with:
+          ConsistencyLevel: rest.ConsistencyLevel
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: groupscreateapproleassignments
+        description: Microsoft Graph Grant an appRoleAssignment to a group
+        call: microsoft-graph-groups-approleassignment.groupscreateapproleassignments
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/approleassignments/count
+      name: groups-group-id-approleassignments-count
+      description: REST surface for groups-group-id-appRoleAssignments-$count.
+      operations:
+      - method: GET
+        name: groupsapproleassignmentsgetcountce16
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-groups-approleassignment.groupsapproleassignmentsgetcountce16
+        with:
+          ConsistencyLevel: rest.ConsistencyLevel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/approleassignments/{approleassignment-id}
+      name: groups-group-id-approleassignments-approleassignment-id
+      description: REST surface for groups-group-id-appRoleAssignments-appRoleAssignment-id.
+      operations:
+      - method: GET
+        name: groupsgetapproleassignments
+        description: Microsoft Graph Get appRoleAssignments from groups
+        call: microsoft-graph-groups-approleassignment.groupsgetapproleassignments
+        with:
+          ConsistencyLevel: rest.ConsistencyLevel
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: groupsupdateapproleassignments
+        description: Microsoft Graph Update the navigation property appRoleAssignments in groups
+        call: microsoft-graph-groups-approleassignment.groupsupdateapproleassignments
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: groupsdeleteapproleassignments
+        description: Microsoft Graph Delete appRoleAssignment
+        call: microsoft-graph-groups-approleassignment.groupsdeleteapproleassignments
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-groups-approleassignment-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — groups.appRoleAssignment. One
+      tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-approleassignments-granted
+      description: Microsoft Graph List appRoleAssignments granted to a group
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-approleassignment.groupslistapproleassignments
+      with:
+        ConsistencyLevel: tools.ConsistencyLevel
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-grant-approleassignment-group
+      description: Microsoft Graph Grant an appRoleAssignment to a group
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-groups-approleassignment.groupscreateapproleassignments
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-approleassignment.groupsapproleassignmentsgetcountce16
+      with:
+        ConsistencyLevel: tools.ConsistencyLevel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-approleassignments-groups
+      description: Microsoft Graph Get appRoleAssignments from groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-approleassignment.groupsgetapproleassignments
+      with:
+        ConsistencyLevel: tools.ConsistencyLevel
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property appRoleAssignments in groups
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-groups-approleassignment.groupsupdateapproleassignments
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-approleassignment
+      description: Microsoft Graph Delete appRoleAssignment
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-groups-approleassignment.groupsdeleteapproleassignments
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,185 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — deviceManagement.applePushNotificationCertificate
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — deviceManagement.applePushNotificationCertificate.
+    4 operations. Lead operation: Microsoft Graph Get applePushNotificationCertificate from deviceManagement. Self-contained
+    Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - deviceManagement.applePushNotificationCertificate
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-devicemanagement-applepushnotificationcertificate
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — deviceManagement.applePushNotificationCertificate
+      business capability. Self-contained, no shared references.
+    resources:
+    - name: deviceManagement-applePushNotificationCertificate
+      path: /deviceManagement/applePushNotificationCertificate
+      operations:
+      - name: devicemanagementgetapplepushnotificationcertificate
+        method: GET
+        description: Microsoft Graph Get applePushNotificationCertificate from deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: devicemanagementupdateapplepushnotificationcertificate
+        method: PATCH
+        description: Microsoft Graph Update the navigation property applePushNotificationCertificate in deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: devicemanagementdeleteapplepushnotificationcertificate
+        method: DELETE
+        description: Microsoft Graph Delete navigation property applePushNotificationCertificate for deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: deviceManagement-applePushNotificationCertificate-downloadApplePushNotificationC
+      path: /deviceManagement/applePushNotificationCertificate/downloadApplePushNotificationCertificateSigningRequest()
+      operations:
+      - name: devicemanagementapplepushnotificationcertificatedownloadapplepushnotificationcertificatesigningrequest
+        method: GET
+        description: Microsoft Graph Invoke function downloadApplePushNotificationCertificateSigningRequest
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-devicemanagement-applepushnotificationcertificate-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — deviceManagement.applePushNotificationCertificate.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/devicemanagement/applepushnotificationcertificate
+      name: devicemanagement-applepushnotificationcertificate
+      description: REST surface for deviceManagement-applePushNotificationCertificate.
+      operations:
+      - method: GET
+        name: devicemanagementgetapplepushnotificationcertificate
+        description: Microsoft Graph Get applePushNotificationCertificate from deviceManagement
+        call: microsoft-graph-devicemanagement-applepushnotificationcertificate.devicemanagementgetapplepushnotificationcertificate
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: devicemanagementupdateapplepushnotificationcertificate
+        description: Microsoft Graph Update the navigation property applePushNotificationCertificate in deviceManagement
+        call: microsoft-graph-devicemanagement-applepushnotificationcertificate.devicemanagementupdateapplepushnotificationcertificate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: devicemanagementdeleteapplepushnotificationcertificate
+        description: Microsoft Graph Delete navigation property applePushNotificationCertificate for deviceManagement
+        call: microsoft-graph-devicemanagement-applepushnotificationcertificate.devicemanagementdeleteapplepushnotificationcertificate
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devicemanagement/applepushnotificationcertificate/downloadapplepushnotificationcertificatesigningrequest
+      name: devicemanagement-applepushnotificationcertificate-downloadapplepushnotificationc
+      description: REST surface for deviceManagement-applePushNotificationCertificate-downloadApplePushNotificationC.
+      operations:
+      - method: GET
+        name: devicemanagementapplepushnotificationcertificatedownloadapplepushnotificationcertificatesigningrequest
+        description: Microsoft Graph Invoke function downloadApplePushNotificationCertificateSigningRequest
+        call: microsoft-graph-devicemanagement-applepushnotificationcertificate.devicemanagementapplepushnotificationcertificatedownloadapplepushnotificationcertificatesigningrequest
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-devicemanagement-applepushnotificationcertificate-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — deviceManagement.applePushNotificationCertificate.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-applepushnotificationcertificate-devicemanagement
+      description: Microsoft Graph Get applePushNotificationCertificate from deviceManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-devicemanagement-applepushnotificationcertificate.devicemanagementgetapplepushnotificationcertificate
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property applePushNotificationCertificate in deviceManagement
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-devicemanagement-applepushnotificationcertificate.devicemanagementupdateapplepushnotificationcertificate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property applePushNotificationCertificate for deviceManagement
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-devicemanagement-applepushnotificationcertificate.devicemanagementdeleteapplepushnotificationcertificate
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-downloadapplepushnotificationcertificatesigningr
+      description: Microsoft Graph Invoke function downloadApplePushNotificationCertificateSigningRequest
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-devicemanagement-applepushnotificationcertificate.devicemanagementapplepushnotificationcertificatedownloadapplepushnotificationcertificatesigningrequest
+      outputParameters:
+      - type: object
+        mapping: $.

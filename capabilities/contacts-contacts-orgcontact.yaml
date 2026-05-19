@@ -1,0 +1,251 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Contacts — contacts.orgContact
+  description: 'Microsoft Graph Contacts — contacts.orgContact. 5 operations. Lead operation: Microsoft Graph List orgContacts.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - contacts.orgContact
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: contacts-contacts-orgcontact
+    baseUri: ''
+    description: Microsoft Graph Contacts — contacts.orgContact business capability. Self-contained, no shared references.
+    resources:
+    - name: contacts
+      path: /contacts
+      operations:
+      - name: contactsorgcontactlistorgcontact
+        method: GET
+        description: Microsoft Graph List orgContacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConsistencyLevel
+          in: header
+          type: string
+          description: 'Indicates the requested consistency level. Documentation URL: https://docs.microsoft.com/graph/aad-advanced-queries'
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: contacts-$count
+      path: /contacts/$count
+      operations:
+      - name: contactsgetcount60f9
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConsistencyLevel
+          in: header
+          type: string
+          description: 'Indicates the requested consistency level. Documentation URL: https://docs.microsoft.com/graph/aad-advanced-queries'
+    - name: contacts-orgContact-id
+      path: /contacts/{orgContact-id}
+      operations:
+      - name: contactsorgcontactgetorgcontact
+        method: GET
+        description: Microsoft Graph Get orgContact
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: contactsorgcontactupdateorgcontact
+        method: PATCH
+        description: Microsoft Graph Update entity in contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: contactsorgcontactdeleteorgcontact
+        method: DELETE
+        description: Microsoft Graph Delete entity from contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: contacts-contacts-orgcontact-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Contacts — contacts.orgContact. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/contacts
+      name: contacts
+      description: REST surface for contacts.
+      operations:
+      - method: GET
+        name: contactsorgcontactlistorgcontact
+        description: Microsoft Graph List orgContacts
+        call: contacts-contacts-orgcontact.contactsorgcontactlistorgcontact
+        with:
+          ConsistencyLevel: rest.ConsistencyLevel
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/contacts/count
+      name: contacts-count
+      description: REST surface for contacts-$count.
+      operations:
+      - method: GET
+        name: contactsgetcount60f9
+        description: Microsoft Graph Get the number of the resource
+        call: contacts-contacts-orgcontact.contactsgetcount60f9
+        with:
+          ConsistencyLevel: rest.ConsistencyLevel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/contacts/{orgcontact-id}
+      name: contacts-orgcontact-id
+      description: REST surface for contacts-orgContact-id.
+      operations:
+      - method: GET
+        name: contactsorgcontactgetorgcontact
+        description: Microsoft Graph Get orgContact
+        call: contacts-contacts-orgcontact.contactsorgcontactgetorgcontact
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: contactsorgcontactupdateorgcontact
+        description: Microsoft Graph Update entity in contacts
+        call: contacts-contacts-orgcontact.contactsorgcontactupdateorgcontact
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: contactsorgcontactdeleteorgcontact
+        description: Microsoft Graph Delete entity from contacts
+        call: contacts-contacts-orgcontact.contactsorgcontactdeleteorgcontact
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: contacts-contacts-orgcontact-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Contacts — contacts.orgContact. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-orgcontacts
+      description: Microsoft Graph List orgContacts
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: contacts-contacts-orgcontact.contactsorgcontactlistorgcontact
+      with:
+        ConsistencyLevel: tools.ConsistencyLevel
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: contacts-contacts-orgcontact.contactsgetcount60f9
+      with:
+        ConsistencyLevel: tools.ConsistencyLevel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-orgcontact
+      description: Microsoft Graph Get orgContact
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: contacts-contacts-orgcontact.contactsorgcontactgetorgcontact
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-entity-contacts
+      description: Microsoft Graph Update entity in contacts
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: contacts-contacts-orgcontact.contactsorgcontactupdateorgcontact
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-entity-contacts
+      description: Microsoft Graph Delete entity from contacts
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: contacts-contacts-orgcontact.contactsorgcontactdeleteorgcontact
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

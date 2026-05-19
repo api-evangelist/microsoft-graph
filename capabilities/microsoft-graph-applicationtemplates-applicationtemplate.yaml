@@ -1,0 +1,169 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — applicationTemplates.applicationTemplate
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — applicationTemplates.applicationTemplate. 3
+    operations. Lead operation: Microsoft Graph List applicationTemplates. Self-contained Naftiko capability covering one
+    Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - applicationTemplates.applicationTemplate
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-applicationtemplates-applicationtemplate
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — applicationTemplates.applicationTemplate business
+      capability. Self-contained, no shared references.
+    resources:
+    - name: applicationTemplates
+      path: /applicationTemplates
+      operations:
+      - name: applicationtemplatesapplicationtemplatelistapplicationtemplate
+        method: GET
+        description: Microsoft Graph List applicationTemplates
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: applicationTemplates-$count
+      path: /applicationTemplates/$count
+      operations:
+      - name: applicationtemplatesgetcountd1a3
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: applicationTemplates-applicationTemplate-id
+      path: /applicationTemplates/{applicationTemplate-id}
+      operations:
+      - name: applicationtemplatesapplicationtemplategetapplicationtemplate
+        method: GET
+        description: Microsoft Graph Get applicationTemplate
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-applicationtemplates-applicationtemplate-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — applicationTemplates.applicationTemplate.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applicationtemplates
+      name: applicationtemplates
+      description: REST surface for applicationTemplates.
+      operations:
+      - method: GET
+        name: applicationtemplatesapplicationtemplatelistapplicationtemplate
+        description: Microsoft Graph List applicationTemplates
+        call: microsoft-graph-applicationtemplates-applicationtemplate.applicationtemplatesapplicationtemplatelistapplicationtemplate
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applicationtemplates/count
+      name: applicationtemplates-count
+      description: REST surface for applicationTemplates-$count.
+      operations:
+      - method: GET
+        name: applicationtemplatesgetcountd1a3
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-applicationtemplates-applicationtemplate.applicationtemplatesgetcountd1a3
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applicationtemplates/{applicationtemplate-id}
+      name: applicationtemplates-applicationtemplate-id
+      description: REST surface for applicationTemplates-applicationTemplate-id.
+      operations:
+      - method: GET
+        name: applicationtemplatesapplicationtemplategetapplicationtemplate
+        description: Microsoft Graph Get applicationTemplate
+        call: microsoft-graph-applicationtemplates-applicationtemplate.applicationtemplatesapplicationtemplategetapplicationtemplate
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-applicationtemplates-applicationtemplate-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — applicationTemplates.applicationTemplate.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-applicationtemplates
+      description: Microsoft Graph List applicationTemplates
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-applicationtemplates-applicationtemplate.applicationtemplatesapplicationtemplatelistapplicationtemplate
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-applicationtemplates-applicationtemplate.applicationtemplatesgetcountd1a3
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-applicationtemplate
+      description: Microsoft Graph Get applicationTemplate
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-applicationtemplates-applicationtemplate.applicationtemplatesapplicationtemplategetapplicationtemplate
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,313 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Identity — security.identityContainer
+  description: 'Microsoft Graph Identity — security.identityContainer. 7 operations. Lead operation: Microsoft Graph List
+    identityAccounts objects. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - security.identityContainer
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: identity-security-identitycontainer
+    baseUri: ''
+    description: Microsoft Graph Identity — security.identityContainer business capability. Self-contained, no shared references.
+    resources:
+    - name: security-identities-identityAccounts
+      path: /security/identities/identityAccounts
+      operations:
+      - name: securityidentitieslistidentityaccounts
+        method: GET
+        description: Microsoft Graph List identityAccounts objects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: securityidentitiescreateidentityaccounts
+        method: POST
+        description: Microsoft Graph Create new navigation property to identityAccounts for security
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: security-identities-identityAccounts-$count
+      path: /security/identities/identityAccounts/$count
+      operations:
+      - name: securityidentitiesidentityaccountsgetcount3544
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: security-identities-identityAccounts-identityAccounts-id
+      path: /security/identities/identityAccounts/{identityAccounts-id}
+      operations:
+      - name: securityidentitiesgetidentityaccounts
+        method: GET
+        description: Microsoft Graph Get identityAccounts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: securityidentitiesupdateidentityaccounts
+        method: PATCH
+        description: Microsoft Graph Update the navigation property identityAccounts in security
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: securityidentitiesdeleteidentityaccounts
+        method: DELETE
+        description: Microsoft Graph Delete navigation property identityAccounts for security
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: security-identities-identityAccounts-identityAccounts-id-microsoft.graph.securit
+      path: /security/identities/identityAccounts/{identityAccounts-id}/microsoft.graph.security.invokeAction
+      operations:
+      - name: securityidentitiesidentityaccountsidentityaccountsinvokeaction
+        method: POST
+        description: Microsoft Graph Invoke action invokeAction
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: identity-security-identitycontainer-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Identity — security.identityContainer. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/security/identities/identityaccounts
+      name: security-identities-identityaccounts
+      description: REST surface for security-identities-identityAccounts.
+      operations:
+      - method: GET
+        name: securityidentitieslistidentityaccounts
+        description: Microsoft Graph List identityAccounts objects
+        call: identity-security-identitycontainer.securityidentitieslistidentityaccounts
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: securityidentitiescreateidentityaccounts
+        description: Microsoft Graph Create new navigation property to identityAccounts for security
+        call: identity-security-identitycontainer.securityidentitiescreateidentityaccounts
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/security/identities/identityaccounts/count
+      name: security-identities-identityaccounts-count
+      description: REST surface for security-identities-identityAccounts-$count.
+      operations:
+      - method: GET
+        name: securityidentitiesidentityaccountsgetcount3544
+        description: Microsoft Graph Get the number of the resource
+        call: identity-security-identitycontainer.securityidentitiesidentityaccountsgetcount3544
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/security/identities/identityaccounts/{identityaccounts-id}
+      name: security-identities-identityaccounts-identityaccounts-id
+      description: REST surface for security-identities-identityAccounts-identityAccounts-id.
+      operations:
+      - method: GET
+        name: securityidentitiesgetidentityaccounts
+        description: Microsoft Graph Get identityAccounts
+        call: identity-security-identitycontainer.securityidentitiesgetidentityaccounts
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: securityidentitiesupdateidentityaccounts
+        description: Microsoft Graph Update the navigation property identityAccounts in security
+        call: identity-security-identitycontainer.securityidentitiesupdateidentityaccounts
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: securityidentitiesdeleteidentityaccounts
+        description: Microsoft Graph Delete navigation property identityAccounts for security
+        call: identity-security-identitycontainer.securityidentitiesdeleteidentityaccounts
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/security/identities/identityaccounts/{identityaccounts-id}/microsoft-graph-security-invokeaction
+      name: security-identities-identityaccounts-identityaccounts-id-microsoft-graph-securit
+      description: REST surface for security-identities-identityAccounts-identityAccounts-id-microsoft.graph.securit.
+      operations:
+      - method: POST
+        name: securityidentitiesidentityaccountsidentityaccountsinvokeaction
+        description: Microsoft Graph Invoke action invokeAction
+        call: identity-security-identitycontainer.securityidentitiesidentityaccountsidentityaccountsinvokeaction
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: identity-security-identitycontainer-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Identity — security.identityContainer. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-identityaccounts-objects
+      description: Microsoft Graph List identityAccounts objects
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: identity-security-identitycontainer.securityidentitieslistidentityaccounts
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to identityAccounts for security
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: identity-security-identitycontainer.securityidentitiescreateidentityaccounts
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: identity-security-identitycontainer.securityidentitiesidentityaccountsgetcount3544
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-identityaccounts
+      description: Microsoft Graph Get identityAccounts
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: identity-security-identitycontainer.securityidentitiesgetidentityaccounts
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property identityAccounts in security
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: identity-security-identitycontainer.securityidentitiesupdateidentityaccounts
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property identityAccounts for security
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: identity-security-identitycontainer.securityidentitiesdeleteidentityaccounts
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-invokeaction
+      description: Microsoft Graph Invoke action invokeAction
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: identity-security-identitycontainer.securityidentitiesidentityaccountsidentityaccountsinvokeaction
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

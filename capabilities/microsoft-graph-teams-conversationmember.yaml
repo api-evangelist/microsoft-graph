@@ -1,0 +1,357 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — teams.conversationMember
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — teams.conversationMember. 8 operations. Lead
+    operation: Microsoft Graph List members of team. Self-contained Naftiko capability covering one Microsoft Graph business
+    surface.'
+  tags:
+  - Microsoft Graph
+  - teams.conversationMember
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-teams-conversationmember
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — teams.conversationMember business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: teams-team-id-members
+      path: /teams/{team-id}/members
+      operations:
+      - name: teamslistmembers
+        method: GET
+        description: Microsoft Graph List members of team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: teamscreatemembers
+        method: POST
+        description: Microsoft Graph Add member to team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team-id-members-$count
+      path: /teams/{team-id}/members/$count
+      operations:
+      - name: teamsmembersgetcount717b
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: teams-team-id-members-add
+      path: /teams/{team-id}/members/add
+      operations:
+      - name: teamsteammembersadd
+        method: POST
+        description: Microsoft Graph Invoke action add
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team-id-members-remove
+      path: /teams/{team-id}/members/remove
+      operations:
+      - name: teamsteammembersremove
+        method: POST
+        description: Microsoft Graph Invoke action remove
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team-id-members-conversationMember-id
+      path: /teams/{team-id}/members/{conversationMember-id}
+      operations:
+      - name: teamsgetmembers
+        method: GET
+        description: Microsoft Graph Get member of team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: teamsupdatemembers
+        method: PATCH
+        description: Microsoft Graph Update member in team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: teamsdeletemembers
+        method: DELETE
+        description: Microsoft Graph Remove member from team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-teams-conversationmember-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — teams.conversationMember.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/teams/{team-id}/members
+      name: teams-team-id-members
+      description: REST surface for teams-team-id-members.
+      operations:
+      - method: GET
+        name: teamslistmembers
+        description: Microsoft Graph List members of team
+        call: microsoft-graph-teams-conversationmember.teamslistmembers
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: teamscreatemembers
+        description: Microsoft Graph Add member to team
+        call: microsoft-graph-teams-conversationmember.teamscreatemembers
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/members/count
+      name: teams-team-id-members-count
+      description: REST surface for teams-team-id-members-$count.
+      operations:
+      - method: GET
+        name: teamsmembersgetcount717b
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-teams-conversationmember.teamsmembersgetcount717b
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/members/add
+      name: teams-team-id-members-add
+      description: REST surface for teams-team-id-members-add.
+      operations:
+      - method: POST
+        name: teamsteammembersadd
+        description: Microsoft Graph Invoke action add
+        call: microsoft-graph-teams-conversationmember.teamsteammembersadd
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/members/remove
+      name: teams-team-id-members-remove
+      description: REST surface for teams-team-id-members-remove.
+      operations:
+      - method: POST
+        name: teamsteammembersremove
+        description: Microsoft Graph Invoke action remove
+        call: microsoft-graph-teams-conversationmember.teamsteammembersremove
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-id}/members/{conversationmember-id}
+      name: teams-team-id-members-conversationmember-id
+      description: REST surface for teams-team-id-members-conversationMember-id.
+      operations:
+      - method: GET
+        name: teamsgetmembers
+        description: Microsoft Graph Get member of team
+        call: microsoft-graph-teams-conversationmember.teamsgetmembers
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: teamsupdatemembers
+        description: Microsoft Graph Update member in team
+        call: microsoft-graph-teams-conversationmember.teamsupdatemembers
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: teamsdeletemembers
+        description: Microsoft Graph Remove member from team
+        call: microsoft-graph-teams-conversationmember.teamsdeletemembers
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-teams-conversationmember-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — teams.conversationMember. One
+      tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-members-team
+      description: Microsoft Graph List members of team
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-conversationmember.teamslistmembers
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-add-member-team
+      description: Microsoft Graph Add member to team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-teams-conversationmember.teamscreatemembers
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-conversationmember.teamsmembersgetcount717b
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-add
+      description: Microsoft Graph Invoke action add
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-teams-conversationmember.teamsteammembersadd
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-remove
+      description: Microsoft Graph Invoke action remove
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-teams-conversationmember.teamsteammembersremove
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-member-team
+      description: Microsoft Graph Get member of team
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-conversationmember.teamsgetmembers
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-member-team
+      description: Microsoft Graph Update member in team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-conversationmember.teamsupdatemembers
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-remove-member-team
+      description: Microsoft Graph Remove member from team
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-teams-conversationmember.teamsdeletemembers
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,151 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Admin API — Internet Explorer Mode
+  description: 'Microsoft Graph Admin API — Internet Explorer Mode. 3 operations. Lead operation: Microsoft Graph Get Internet
+    Explorer mode settings. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Internet Explorer Mode
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-internet-explorer-mode
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Admin API — Internet Explorer Mode business capability. Self-contained, no shared references.
+    resources:
+    - name: admin-edge-internetExplorerMode
+      path: /admin/edge/internetExplorerMode
+      operations:
+      - name: getedgeinternetexplorermode
+        method: GET
+        description: Microsoft Graph Get Internet Explorer mode settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: updateedgeinternetexplorermode
+        method: PATCH
+        description: Microsoft Graph Update Internet Explorer mode settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteedgeinternetexplorermode
+        method: DELETE
+        description: Microsoft Graph Delete Internet Explorer mode settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag for optimistic concurrency control
+  exposes:
+  - type: rest
+    namespace: admin-internet-explorer-mode-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Admin API — Internet Explorer Mode. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/admin/edge/internetexplorermode
+      name: admin-edge-internetexplorermode
+      description: REST surface for admin-edge-internetExplorerMode.
+      operations:
+      - method: GET
+        name: getedgeinternetexplorermode
+        description: Microsoft Graph Get Internet Explorer mode settings
+        call: admin-internet-explorer-mode.getedgeinternetexplorermode
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateedgeinternetexplorermode
+        description: Microsoft Graph Update Internet Explorer mode settings
+        call: admin-internet-explorer-mode.updateedgeinternetexplorermode
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteedgeinternetexplorermode
+        description: Microsoft Graph Delete Internet Explorer mode settings
+        call: admin-internet-explorer-mode.deleteedgeinternetexplorermode
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-internet-explorer-mode-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Admin API — Internet Explorer Mode. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-internet-explorer
+      description: Microsoft Graph Get Internet Explorer mode settings
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-internet-explorer-mode.getedgeinternetexplorermode
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-internet-explorer
+      description: Microsoft Graph Update Internet Explorer mode settings
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: admin-internet-explorer-mode.updateedgeinternetexplorermode
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-internet-explorer
+      description: Microsoft Graph Delete Internet Explorer mode settings
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: admin-internet-explorer-mode.deleteedgeinternetexplorermode
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

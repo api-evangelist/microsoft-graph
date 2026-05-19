@@ -1,0 +1,287 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Directory — directoryObjects.directoryObject
+  description: 'Microsoft Graph Directory — directoryObjects.directoryObject. 6 operations. Lead operation: Microsoft Graph
+    Get entities from directoryObjects. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - directoryObjects.directoryObject
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: directory-directoryobjects-directoryobject
+    baseUri: ''
+    description: Microsoft Graph Directory — directoryObjects.directoryObject business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: directoryObjects
+      path: /directoryObjects
+      operations:
+      - name: directoryobjectsdirectoryobjectlistdirectoryobject
+        method: GET
+        description: Microsoft Graph Get entities from directoryObjects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConsistencyLevel
+          in: header
+          type: string
+          description: 'Indicates the requested consistency level. Documentation URL: https://docs.microsoft.com/graph/aad-advanced-queries'
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: directoryobjectsdirectoryobjectcreatedirectoryobject
+        method: POST
+        description: Microsoft Graph Add new entity to directoryObjects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: directoryObjects-$count
+      path: /directoryObjects/$count
+      operations:
+      - name: directoryobjectsgetcount3210
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConsistencyLevel
+          in: header
+          type: string
+          description: 'Indicates the requested consistency level. Documentation URL: https://docs.microsoft.com/graph/aad-advanced-queries'
+    - name: directoryObjects-directoryObject-id
+      path: /directoryObjects/{directoryObject-id}
+      operations:
+      - name: directoryobjectsdirectoryobjectgetdirectoryobject
+        method: GET
+        description: Microsoft Graph Get directoryObject
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: directoryobjectsdirectoryobjectupdatedirectoryobject
+        method: PATCH
+        description: Microsoft Graph Update entity in directoryObjects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: directoryobjectsdirectoryobjectdeletedirectoryobject
+        method: DELETE
+        description: Microsoft Graph Delete directoryObject
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: directory-directoryobjects-directoryobject-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Directory — directoryObjects.directoryObject. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/directoryobjects
+      name: directoryobjects
+      description: REST surface for directoryObjects.
+      operations:
+      - method: GET
+        name: directoryobjectsdirectoryobjectlistdirectoryobject
+        description: Microsoft Graph Get entities from directoryObjects
+        call: directory-directoryobjects-directoryobject.directoryobjectsdirectoryobjectlistdirectoryobject
+        with:
+          ConsistencyLevel: rest.ConsistencyLevel
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: directoryobjectsdirectoryobjectcreatedirectoryobject
+        description: Microsoft Graph Add new entity to directoryObjects
+        call: directory-directoryobjects-directoryobject.directoryobjectsdirectoryobjectcreatedirectoryobject
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/directoryobjects/count
+      name: directoryobjects-count
+      description: REST surface for directoryObjects-$count.
+      operations:
+      - method: GET
+        name: directoryobjectsgetcount3210
+        description: Microsoft Graph Get the number of the resource
+        call: directory-directoryobjects-directoryobject.directoryobjectsgetcount3210
+        with:
+          ConsistencyLevel: rest.ConsistencyLevel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/directoryobjects/{directoryobject-id}
+      name: directoryobjects-directoryobject-id
+      description: REST surface for directoryObjects-directoryObject-id.
+      operations:
+      - method: GET
+        name: directoryobjectsdirectoryobjectgetdirectoryobject
+        description: Microsoft Graph Get directoryObject
+        call: directory-directoryobjects-directoryobject.directoryobjectsdirectoryobjectgetdirectoryobject
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: directoryobjectsdirectoryobjectupdatedirectoryobject
+        description: Microsoft Graph Update entity in directoryObjects
+        call: directory-directoryobjects-directoryobject.directoryobjectsdirectoryobjectupdatedirectoryobject
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: directoryobjectsdirectoryobjectdeletedirectoryobject
+        description: Microsoft Graph Delete directoryObject
+        call: directory-directoryobjects-directoryobject.directoryobjectsdirectoryobjectdeletedirectoryobject
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: directory-directoryobjects-directoryobject-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Directory — directoryObjects.directoryObject. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-entities-directoryobjects
+      description: Microsoft Graph Get entities from directoryObjects
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: directory-directoryobjects-directoryobject.directoryobjectsdirectoryobjectlistdirectoryobject
+      with:
+        ConsistencyLevel: tools.ConsistencyLevel
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-add-new-entity
+      description: Microsoft Graph Add new entity to directoryObjects
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: directory-directoryobjects-directoryobject.directoryobjectsdirectoryobjectcreatedirectoryobject
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: directory-directoryobjects-directoryobject.directoryobjectsgetcount3210
+      with:
+        ConsistencyLevel: tools.ConsistencyLevel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-directoryobject
+      description: Microsoft Graph Get directoryObject
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: directory-directoryobjects-directoryobject.directoryobjectsdirectoryobjectgetdirectoryobject
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-entity-directoryobjects
+      description: Microsoft Graph Update entity in directoryObjects
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: directory-directoryobjects-directoryobject.directoryobjectsdirectoryobjectupdatedirectoryobject
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-directoryobject
+      description: Microsoft Graph Delete directoryObject
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: directory-directoryobjects-directoryobject.directoryobjectsdirectoryobjectdeletedirectoryobject
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,67 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Admin API — Copilot Administration
+  description: 'Microsoft Graph Admin API — Copilot Administration. 1 operations. Lead operation: Microsoft Graph Get Copilot
+    admin settings. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Copilot Administration
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-copilot-administration
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Admin API — Copilot Administration business capability. Self-contained, no shared references.
+    resources:
+    - name: copilot-admin
+      path: /copilot/admin
+      operations:
+      - name: getcopilotadmin
+        method: GET
+        description: Microsoft Graph Get Copilot admin settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: admin-copilot-administration-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Admin API — Copilot Administration. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/copilot/admin
+      name: copilot-admin
+      description: REST surface for copilot-admin.
+      operations:
+      - method: GET
+        name: getcopilotadmin
+        description: Microsoft Graph Get Copilot admin settings
+        call: admin-copilot-administration.getcopilotadmin
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-copilot-administration-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Admin API — Copilot Administration. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-copilot-admin
+      description: Microsoft Graph Get Copilot admin settings
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-copilot-administration.getcopilotadmin
+      outputParameters:
+      - type: object
+        mapping: $.

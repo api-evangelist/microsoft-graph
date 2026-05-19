@@ -1,0 +1,303 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Subscriptions — drives.driveItem
+  description: 'Microsoft Graph Subscriptions — drives.driveItem. 7 operations. Lead operation: Microsoft Graph Get subscriptions
+    from drives. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - drives.driveItem
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: subscriptions-drives-driveitem
+    baseUri: ''
+    description: Microsoft Graph Subscriptions — drives.driveItem business capability. Self-contained, no shared references.
+    resources:
+    - name: drives-drive-id-items-driveItem-id-subscriptions
+      path: /drives/{drive-id}/items/{driveItem-id}/subscriptions
+      operations:
+      - name: drivesitemslistsubscriptions
+        method: GET
+        description: Microsoft Graph Get subscriptions from drives
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: drivesitemscreatesubscriptions
+        method: POST
+        description: Microsoft Graph Create new navigation property to subscriptions for drives
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: drives-drive-id-items-driveItem-id-subscriptions-$count
+      path: /drives/{drive-id}/items/{driveItem-id}/subscriptions/$count
+      operations:
+      - name: drivesitemssubscriptionsgetcountf848
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: drives-drive-id-items-driveItem-id-subscriptions-subscription-id
+      path: /drives/{drive-id}/items/{driveItem-id}/subscriptions/{subscription-id}
+      operations:
+      - name: drivesitemsgetsubscriptions
+        method: GET
+        description: Microsoft Graph Get subscriptions from drives
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: drivesitemsupdatesubscriptions
+        method: PATCH
+        description: Microsoft Graph Update the navigation property subscriptions in drives
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: drivesitemsdeletesubscriptions
+        method: DELETE
+        description: Microsoft Graph Delete navigation property subscriptions for drives
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: drives-drive-id-items-driveItem-id-subscriptions-subscription-id-reauthorize
+      path: /drives/{drive-id}/items/{driveItem-id}/subscriptions/{subscription-id}/reauthorize
+      operations:
+      - name: drivesdriveitemsdriveitemsubscriptionssubscriptionreauthorize
+        method: POST
+        description: Microsoft Graph Invoke action reauthorize
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: subscriptions-drives-driveitem-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Subscriptions — drives.driveItem. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/drives/{drive-id}/items/{driveitem-id}/subscriptions
+      name: drives-drive-id-items-driveitem-id-subscriptions
+      description: REST surface for drives-drive-id-items-driveItem-id-subscriptions.
+      operations:
+      - method: GET
+        name: drivesitemslistsubscriptions
+        description: Microsoft Graph Get subscriptions from drives
+        call: subscriptions-drives-driveitem.drivesitemslistsubscriptions
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: drivesitemscreatesubscriptions
+        description: Microsoft Graph Create new navigation property to subscriptions for drives
+        call: subscriptions-drives-driveitem.drivesitemscreatesubscriptions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/drives/{drive-id}/items/{driveitem-id}/subscriptions/count
+      name: drives-drive-id-items-driveitem-id-subscriptions-count
+      description: REST surface for drives-drive-id-items-driveItem-id-subscriptions-$count.
+      operations:
+      - method: GET
+        name: drivesitemssubscriptionsgetcountf848
+        description: Microsoft Graph Get the number of the resource
+        call: subscriptions-drives-driveitem.drivesitemssubscriptionsgetcountf848
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/drives/{drive-id}/items/{driveitem-id}/subscriptions/{subscription-id}
+      name: drives-drive-id-items-driveitem-id-subscriptions-subscription-id
+      description: REST surface for drives-drive-id-items-driveItem-id-subscriptions-subscription-id.
+      operations:
+      - method: GET
+        name: drivesitemsgetsubscriptions
+        description: Microsoft Graph Get subscriptions from drives
+        call: subscriptions-drives-driveitem.drivesitemsgetsubscriptions
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: drivesitemsupdatesubscriptions
+        description: Microsoft Graph Update the navigation property subscriptions in drives
+        call: subscriptions-drives-driveitem.drivesitemsupdatesubscriptions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: drivesitemsdeletesubscriptions
+        description: Microsoft Graph Delete navigation property subscriptions for drives
+        call: subscriptions-drives-driveitem.drivesitemsdeletesubscriptions
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/drives/{drive-id}/items/{driveitem-id}/subscriptions/{subscription-id}/reauthorize
+      name: drives-drive-id-items-driveitem-id-subscriptions-subscription-id-reauthorize
+      description: REST surface for drives-drive-id-items-driveItem-id-subscriptions-subscription-id-reauthorize.
+      operations:
+      - method: POST
+        name: drivesdriveitemsdriveitemsubscriptionssubscriptionreauthorize
+        description: Microsoft Graph Invoke action reauthorize
+        call: subscriptions-drives-driveitem.drivesdriveitemsdriveitemsubscriptionssubscriptionreauthorize
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: subscriptions-drives-driveitem-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Subscriptions — drives.driveItem. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-subscriptions-drives
+      description: Microsoft Graph Get subscriptions from drives
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: subscriptions-drives-driveitem.drivesitemslistsubscriptions
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to subscriptions for drives
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: subscriptions-drives-driveitem.drivesitemscreatesubscriptions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: subscriptions-drives-driveitem.drivesitemssubscriptionsgetcountf848
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-subscriptions-drives-2
+      description: Microsoft Graph Get subscriptions from drives
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: subscriptions-drives-driveitem.drivesitemsgetsubscriptions
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property subscriptions in drives
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: subscriptions-drives-driveitem.drivesitemsupdatesubscriptions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property subscriptions for drives
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: subscriptions-drives-driveitem.drivesitemsdeletesubscriptions
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-reauthorize
+      description: Microsoft Graph Invoke action reauthorize
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: subscriptions-drives-driveitem.drivesdriveitemsdriveitemsubscriptionssubscriptionreauthorize
+      outputParameters:
+      - type: object
+        mapping: $.

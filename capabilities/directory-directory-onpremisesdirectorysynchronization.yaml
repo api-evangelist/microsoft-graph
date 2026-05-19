@@ -1,0 +1,273 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Directory — directory.onPremisesDirectorySynchronization
+  description: 'Microsoft Graph Directory — directory.onPremisesDirectorySynchronization. 6 operations. Lead operation: Microsoft
+    Graph Get onPremisesDirectorySynchronization. Self-contained Naftiko capability covering one Microsoft Graph business
+    surface.'
+  tags:
+  - Microsoft Graph
+  - directory.onPremisesDirectorySynchronization
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: directory-directory-onpremisesdirectorysynchronization
+    baseUri: ''
+    description: Microsoft Graph Directory — directory.onPremisesDirectorySynchronization business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: directory-onPremisesSynchronization
+      path: /directory/onPremisesSynchronization
+      operations:
+      - name: directorylistonpremisessynchronization
+        method: GET
+        description: Microsoft Graph Get onPremisesDirectorySynchronization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: directorycreateonpremisessynchronization
+        method: POST
+        description: Microsoft Graph Create new navigation property to onPremisesSynchronization for directory
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: directory-onPremisesSynchronization-$count
+      path: /directory/onPremisesSynchronization/$count
+      operations:
+      - name: directoryonpremisessynchronizationgetcountdf9d
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: directory-onPremisesSynchronization-onPremisesDirectorySynchronization-id
+      path: /directory/onPremisesSynchronization/{onPremisesDirectorySynchronization-id}
+      operations:
+      - name: directorygetonpremisessynchronization
+        method: GET
+        description: Microsoft Graph Get onPremisesDirectorySynchronization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: directoryupdateonpremisessynchronization
+        method: PATCH
+        description: Microsoft Graph Update onPremisesDirectorySynchronization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: directorydeleteonpremisessynchronization
+        method: DELETE
+        description: Microsoft Graph Delete navigation property onPremisesSynchronization for directory
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: directory-directory-onpremisesdirectorysynchronization-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Directory — directory.onPremisesDirectorySynchronization. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/directory/onpremisessynchronization
+      name: directory-onpremisessynchronization
+      description: REST surface for directory-onPremisesSynchronization.
+      operations:
+      - method: GET
+        name: directorylistonpremisessynchronization
+        description: Microsoft Graph Get onPremisesDirectorySynchronization
+        call: directory-directory-onpremisesdirectorysynchronization.directorylistonpremisessynchronization
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: directorycreateonpremisessynchronization
+        description: Microsoft Graph Create new navigation property to onPremisesSynchronization for directory
+        call: directory-directory-onpremisesdirectorysynchronization.directorycreateonpremisessynchronization
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/directory/onpremisessynchronization/count
+      name: directory-onpremisessynchronization-count
+      description: REST surface for directory-onPremisesSynchronization-$count.
+      operations:
+      - method: GET
+        name: directoryonpremisessynchronizationgetcountdf9d
+        description: Microsoft Graph Get the number of the resource
+        call: directory-directory-onpremisesdirectorysynchronization.directoryonpremisessynchronizationgetcountdf9d
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/directory/onpremisessynchronization/{onpremisesdirectorysynchronization-id}
+      name: directory-onpremisessynchronization-onpremisesdirectorysynchronization-id
+      description: REST surface for directory-onPremisesSynchronization-onPremisesDirectorySynchronization-id.
+      operations:
+      - method: GET
+        name: directorygetonpremisessynchronization
+        description: Microsoft Graph Get onPremisesDirectorySynchronization
+        call: directory-directory-onpremisesdirectorysynchronization.directorygetonpremisessynchronization
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: directoryupdateonpremisessynchronization
+        description: Microsoft Graph Update onPremisesDirectorySynchronization
+        call: directory-directory-onpremisesdirectorysynchronization.directoryupdateonpremisessynchronization
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: directorydeleteonpremisessynchronization
+        description: Microsoft Graph Delete navigation property onPremisesSynchronization for directory
+        call: directory-directory-onpremisesdirectorysynchronization.directorydeleteonpremisessynchronization
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: directory-directory-onpremisesdirectorysynchronization-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Directory — directory.onPremisesDirectorySynchronization. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-onpremisesdirectorysynchronization
+      description: Microsoft Graph Get onPremisesDirectorySynchronization
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: directory-directory-onpremisesdirectorysynchronization.directorylistonpremisessynchronization
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to onPremisesSynchronization for directory
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: directory-directory-onpremisesdirectorysynchronization.directorycreateonpremisessynchronization
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: directory-directory-onpremisesdirectorysynchronization.directoryonpremisessynchronizationgetcountdf9d
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-onpremisesdirectorysynchronization-2
+      description: Microsoft Graph Get onPremisesDirectorySynchronization
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: directory-directory-onpremisesdirectorysynchronization.directorygetonpremisessynchronization
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-onpremisesdirectorysynchronization
+      description: Microsoft Graph Update onPremisesDirectorySynchronization
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: directory-directory-onpremisesdirectorysynchronization.directoryupdateonpremisessynchronization
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property onPremisesSynchronization for directory
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: directory-directory-onpremisesdirectorysynchronization.directorydeleteonpremisessynchronization
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

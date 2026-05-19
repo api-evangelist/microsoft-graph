@@ -1,0 +1,84 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Applications API — Applications Created on Behalf Of
+  description: 'Microsoft Graph Applications API — Applications Created on Behalf Of. 1 operations. Lead operation: Microsoft
+    Graph Get createdOnBehalfOf from applications. Self-contained Naftiko capability covering one Microsoft Graph business
+    surface.'
+  tags:
+  - Microsoft Graph
+  - Applications Created on Behalf Of
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: applications-applications-created-on-behalf-of
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Applications API — Applications Created on Behalf Of business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: applications-application-id-createdOnBehalfOf
+      path: /applications/{application-id}/createdOnBehalfOf
+      operations:
+      - name: getapplicationscreatedonbehalfof
+        method: GET
+        description: Microsoft Graph Get createdOnBehalfOf from applications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: applications-applications-created-on-behalf-of-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Applications API — Applications Created on Behalf Of. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications/{application-id}/createdonbehalfof
+      name: applications-application-id-createdonbehalfof
+      description: REST surface for applications-application-id-createdOnBehalfOf.
+      operations:
+      - method: GET
+        name: getapplicationscreatedonbehalfof
+        description: Microsoft Graph Get createdOnBehalfOf from applications
+        call: applications-applications-created-on-behalf-of.getapplicationscreatedonbehalfof
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: applications-applications-created-on-behalf-of-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Applications API — Applications Created on Behalf Of. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-createdonbehalfof-applications
+      description: Microsoft Graph Get createdOnBehalfOf from applications
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: applications-applications-created-on-behalf-of.getapplicationscreatedonbehalfof
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

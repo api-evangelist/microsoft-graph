@@ -1,0 +1,235 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — Agreements.agreement
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — Agreements.agreement. 5 operations. Lead operation:
+    Microsoft Graph Get entities from agreements. Self-contained Naftiko capability covering one Microsoft Graph business
+    surface.'
+  tags:
+  - Microsoft Graph
+  - Agreements.agreement
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-agreements-agreement
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — Agreements.agreement business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: agreements
+      path: /agreements
+      operations:
+      - name: agreementsagreementlistagreement
+        method: GET
+        description: Microsoft Graph Get entities from agreements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: agreementsagreementcreateagreement
+        method: POST
+        description: Microsoft Graph Add new entity to agreements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: agreements-agreement-id
+      path: /agreements/{agreement-id}
+      operations:
+      - name: agreementsagreementgetagreement
+        method: GET
+        description: Microsoft Graph Get entity from agreements by key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+      - name: agreementsagreementupdateagreement
+        method: PATCH
+        description: Microsoft Graph Update entity in agreements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: agreementsagreementdeleteagreement
+        method: DELETE
+        description: Microsoft Graph Delete entity from agreements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-agreements-agreement-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — Agreements.agreement. One
+      Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/agreements
+      name: agreements
+      description: REST surface for agreements.
+      operations:
+      - method: GET
+        name: agreementsagreementlistagreement
+        description: Microsoft Graph Get entities from agreements
+        call: microsoft-graph-agreements-agreement.agreementsagreementlistagreement
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: agreementsagreementcreateagreement
+        description: Microsoft Graph Add new entity to agreements
+        call: microsoft-graph-agreements-agreement.agreementsagreementcreateagreement
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/agreements/{agreement-id}
+      name: agreements-agreement-id
+      description: REST surface for agreements-agreement-id.
+      operations:
+      - method: GET
+        name: agreementsagreementgetagreement
+        description: Microsoft Graph Get entity from agreements by key
+        call: microsoft-graph-agreements-agreement.agreementsagreementgetagreement
+        with:
+          $select: rest.$select
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: agreementsagreementupdateagreement
+        description: Microsoft Graph Update entity in agreements
+        call: microsoft-graph-agreements-agreement.agreementsagreementupdateagreement
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: agreementsagreementdeleteagreement
+        description: Microsoft Graph Delete entity from agreements
+        call: microsoft-graph-agreements-agreement.agreementsagreementdeleteagreement
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-agreements-agreement-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — Agreements.agreement. One tool
+      per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-entities-agreements
+      description: Microsoft Graph Get entities from agreements
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-agreements-agreement.agreementsagreementlistagreement
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-add-new-entity
+      description: Microsoft Graph Add new entity to agreements
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-agreements-agreement.agreementsagreementcreateagreement
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-entity-agreements
+      description: Microsoft Graph Get entity from agreements by key
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-agreements-agreement.agreementsagreementgetagreement
+      with:
+        $select: tools.$select
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-entity-agreements
+      description: Microsoft Graph Update entity in agreements
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-agreements-agreement.agreementsagreementupdateagreement
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-entity-agreements
+      description: Microsoft Graph Delete entity from agreements
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-agreements-agreement.agreementsagreementdeleteagreement
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

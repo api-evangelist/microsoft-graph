@@ -1,0 +1,117 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Audit Logs API — Audit Logs
+  description: 'Microsoft Graph Audit Logs API — Audit Logs. 2 operations. Lead operation: Microsoft Graph Get auditLogs.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Audit Logs
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: auditlogs-audit-logs
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Audit Logs API — Audit Logs business capability. Self-contained, no shared references.
+    resources:
+    - name: auditLogs
+      path: /auditLogs
+      operations:
+      - name: listauditlogs
+        method: GET
+        description: Microsoft Graph Get auditLogs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: updateauditlogs
+        method: PATCH
+        description: Microsoft Graph Update auditLogs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: auditlogs-audit-logs-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Audit Logs API — Audit Logs. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/auditlogs
+      name: auditlogs
+      description: REST surface for auditLogs.
+      operations:
+      - method: GET
+        name: listauditlogs
+        description: Microsoft Graph Get auditLogs
+        call: auditlogs-audit-logs.listauditlogs
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateauditlogs
+        description: Microsoft Graph Update auditLogs
+        call: auditlogs-audit-logs.updateauditlogs
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: auditlogs-audit-logs-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Audit Logs API — Audit Logs. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-auditlogs
+      description: Microsoft Graph Get auditLogs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: auditlogs-audit-logs.listauditlogs
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-auditlogs
+      description: Microsoft Graph Update auditLogs
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: auditlogs-audit-logs.updateauditlogs
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

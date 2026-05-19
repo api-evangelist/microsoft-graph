@@ -1,0 +1,272 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — Contracts.contract
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — Contracts.contract. 6 operations. Lead operation:
+    Microsoft Graph List contracts. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Contracts.contract
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-contracts-contract
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — Contracts.contract business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: contracts
+      path: /contracts
+      operations:
+      - name: contractscontractlistcontract
+        method: GET
+        description: Microsoft Graph List contracts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: contractscontractcreatecontract
+        method: POST
+        description: Microsoft Graph Add new entity to contracts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: contracts-$count
+      path: /contracts/$count
+      operations:
+      - name: contractsgetcount8092
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: contracts-contract-id
+      path: /contracts/{contract-id}
+      operations:
+      - name: contractscontractgetcontract
+        method: GET
+        description: Microsoft Graph Get Contract
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: contractscontractupdatecontract
+        method: PATCH
+        description: Microsoft Graph Update entity in contracts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: contractscontractdeletecontract
+        method: DELETE
+        description: Microsoft Graph Delete entity from contracts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-contracts-contract-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — Contracts.contract. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/contracts
+      name: contracts
+      description: REST surface for contracts.
+      operations:
+      - method: GET
+        name: contractscontractlistcontract
+        description: Microsoft Graph List contracts
+        call: microsoft-graph-contracts-contract.contractscontractlistcontract
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: contractscontractcreatecontract
+        description: Microsoft Graph Add new entity to contracts
+        call: microsoft-graph-contracts-contract.contractscontractcreatecontract
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/contracts/count
+      name: contracts-count
+      description: REST surface for contracts-$count.
+      operations:
+      - method: GET
+        name: contractsgetcount8092
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-contracts-contract.contractsgetcount8092
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/contracts/{contract-id}
+      name: contracts-contract-id
+      description: REST surface for contracts-contract-id.
+      operations:
+      - method: GET
+        name: contractscontractgetcontract
+        description: Microsoft Graph Get Contract
+        call: microsoft-graph-contracts-contract.contractscontractgetcontract
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: contractscontractupdatecontract
+        description: Microsoft Graph Update entity in contracts
+        call: microsoft-graph-contracts-contract.contractscontractupdatecontract
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: contractscontractdeletecontract
+        description: Microsoft Graph Delete entity from contracts
+        call: microsoft-graph-contracts-contract.contractscontractdeletecontract
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-contracts-contract-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — Contracts.contract. One tool
+      per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-contracts
+      description: Microsoft Graph List contracts
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-contracts-contract.contractscontractlistcontract
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-add-new-entity
+      description: Microsoft Graph Add new entity to contracts
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-contracts-contract.contractscontractcreatecontract
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-contracts-contract.contractsgetcount8092
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-contract
+      description: Microsoft Graph Get Contract
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-contracts-contract.contractscontractgetcontract
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-entity-contracts
+      description: Microsoft Graph Update entity in contracts
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-contracts-contract.contractscontractupdatecontract
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-entity-contracts
+      description: Microsoft Graph Delete entity from contracts
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-contracts-contract.contractscontractdeletecontract
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

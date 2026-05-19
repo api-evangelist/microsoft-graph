@@ -1,0 +1,96 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — teams.team.Functions
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — teams.team.Functions. 1 operations. Lead operation:
+    Microsoft Graph Invoke function getAllMessages. Self-contained Naftiko capability covering one Microsoft Graph business
+    surface.'
+  tags:
+  - Microsoft Graph
+  - teams.team.Functions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-teams-team-functions
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — teams.team.Functions business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: teams-getAllMessages()
+      path: /teams/getAllMessages()
+      operations:
+      - name: teamsgetallmessages
+        method: GET
+        description: Microsoft Graph Invoke function getAllMessages
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: model
+          in: query
+          type: string
+          description: The payment model for the API
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-teams-team-functions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — teams.team.Functions. One
+      Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/teams/getallmessages
+      name: teams-getallmessages
+      description: REST surface for teams-getAllMessages().
+      operations:
+      - method: GET
+        name: teamsgetallmessages
+        description: Microsoft Graph Invoke function getAllMessages
+        call: microsoft-graph-teams-team-functions.teamsgetallmessages
+        with:
+          model: rest.model
+          $select: rest.$select
+          $orderby: rest.$orderby
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-teams-team-functions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — teams.team.Functions. One tool
+      per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-function-getallmessages
+      description: Microsoft Graph Invoke function getAllMessages
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-teams-team-functions.teamsgetallmessages
+      with:
+        model: tools.model
+        $select: tools.$select
+        $orderby: tools.$orderby
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

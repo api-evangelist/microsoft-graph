@@ -1,0 +1,157 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — Invitations.invitation
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — Invitations.invitation. 3 operations. Lead operation:
+    Microsoft Graph Get entities from invitations. Self-contained Naftiko capability covering one Microsoft Graph business
+    surface.'
+  tags:
+  - Microsoft Graph
+  - Invitations.invitation
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-invitations-invitation
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — Invitations.invitation business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: invitations
+      path: /invitations
+      operations:
+      - name: invitationsinvitationlistinvitation
+        method: GET
+        description: Microsoft Graph Get entities from invitations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: invitationsinvitationcreateinvitation
+        method: POST
+        description: Microsoft Graph Create invitation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: invitations-$count
+      path: /invitations/$count
+      operations:
+      - name: invitationsgetcount8ff1
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-invitations-invitation-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — Invitations.invitation. One
+      Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/invitations
+      name: invitations
+      description: REST surface for invitations.
+      operations:
+      - method: GET
+        name: invitationsinvitationlistinvitation
+        description: Microsoft Graph Get entities from invitations
+        call: microsoft-graph-invitations-invitation.invitationsinvitationlistinvitation
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: invitationsinvitationcreateinvitation
+        description: Microsoft Graph Create invitation
+        call: microsoft-graph-invitations-invitation.invitationsinvitationcreateinvitation
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/invitations/count
+      name: invitations-count
+      description: REST surface for invitations-$count.
+      operations:
+      - method: GET
+        name: invitationsgetcount8ff1
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-invitations-invitation.invitationsgetcount8ff1
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-invitations-invitation-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — Invitations.invitation. One
+      tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-entities-invitations
+      description: Microsoft Graph Get entities from invitations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-invitations-invitation.invitationsinvitationlistinvitation
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-invitation
+      description: Microsoft Graph Create invitation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-invitations-invitation.invitationsinvitationcreateinvitation
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-invitations-invitation.invitationsgetcount8ff1
+      outputParameters:
+      - type: object
+        mapping: $.

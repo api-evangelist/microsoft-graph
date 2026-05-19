@@ -1,0 +1,77 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Search — search.searchEntity.Actions
+  description: 'Microsoft Graph Search — search.searchEntity.Actions. 1 operations. Lead operation: Microsoft Graph Invoke
+    action query. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - search.searchEntity.Actions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: search-search-searchentity-actions
+    baseUri: ''
+    description: Microsoft Graph Search — search.searchEntity.Actions business capability. Self-contained, no shared references.
+    resources:
+    - name: search-query
+      path: /search/query
+      operations:
+      - name: searchquery
+        method: POST
+        description: Microsoft Graph Invoke action query
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: search-search-searchentity-actions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Search — search.searchEntity.Actions. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/search/query
+      name: search-query
+      description: REST surface for search-query.
+      operations:
+      - method: POST
+        name: searchquery
+        description: Microsoft Graph Invoke action query
+        call: search-search-searchentity-actions.searchquery
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: search-search-searchentity-actions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Search — search.searchEntity.Actions. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-action-query
+      description: Microsoft Graph Invoke action query
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: search-search-searchentity-actions.searchquery
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

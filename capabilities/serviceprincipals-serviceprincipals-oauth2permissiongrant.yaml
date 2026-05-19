@@ -1,0 +1,169 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Serviceprincipals — servicePrincipals.oAuth2PermissionGrant
+  description: 'Microsoft Graph Serviceprincipals — servicePrincipals.oAuth2PermissionGrant. 3 operations. Lead operation:
+    Microsoft Graph List oauth2PermissionGrants granted to a service principal. Self-contained Naftiko capability covering
+    one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - servicePrincipals.oAuth2PermissionGrant
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: serviceprincipals-serviceprincipals-oauth2permissiongrant
+    baseUri: ''
+    description: Microsoft Graph Serviceprincipals — servicePrincipals.oAuth2PermissionGrant business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: servicePrincipals-servicePrincipal-id-oauth2PermissionGrants
+      path: /servicePrincipals/{servicePrincipal-id}/oauth2PermissionGrants
+      operations:
+      - name: serviceprincipalslistoauth2permissiongrants
+        method: GET
+        description: Microsoft Graph List oauth2PermissionGrants granted to a service principal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: servicePrincipals-servicePrincipal-id-oauth2PermissionGrants-$count
+      path: /servicePrincipals/{servicePrincipal-id}/oauth2PermissionGrants/$count
+      operations:
+      - name: serviceprincipalsoauth2permissiongrantsgetcountf9dc
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: servicePrincipals-servicePrincipal-id-oauth2PermissionGrants-oAuth2PermissionGra
+      path: /servicePrincipals/{servicePrincipal-id}/oauth2PermissionGrants/{oAuth2PermissionGrant-id}
+      operations:
+      - name: serviceprincipalsgetoauth2permissiongrants
+        method: GET
+        description: Microsoft Graph Get oauth2PermissionGrants from servicePrincipals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: serviceprincipals-serviceprincipals-oauth2permissiongrant-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Serviceprincipals — servicePrincipals.oAuth2PermissionGrant. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/oauth2permissiongrants
+      name: serviceprincipals-serviceprincipal-id-oauth2permissiongrants
+      description: REST surface for servicePrincipals-servicePrincipal-id-oauth2PermissionGrants.
+      operations:
+      - method: GET
+        name: serviceprincipalslistoauth2permissiongrants
+        description: Microsoft Graph List oauth2PermissionGrants granted to a service principal
+        call: serviceprincipals-serviceprincipals-oauth2permissiongrant.serviceprincipalslistoauth2permissiongrants
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/oauth2permissiongrants/count
+      name: serviceprincipals-serviceprincipal-id-oauth2permissiongrants-count
+      description: REST surface for servicePrincipals-servicePrincipal-id-oauth2PermissionGrants-$count.
+      operations:
+      - method: GET
+        name: serviceprincipalsoauth2permissiongrantsgetcountf9dc
+        description: Microsoft Graph Get the number of the resource
+        call: serviceprincipals-serviceprincipals-oauth2permissiongrant.serviceprincipalsoauth2permissiongrantsgetcountf9dc
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/oauth2permissiongrants/{oauth2permissiongrant-id}
+      name: serviceprincipals-serviceprincipal-id-oauth2permissiongrants-oauth2permissiongra
+      description: REST surface for servicePrincipals-servicePrincipal-id-oauth2PermissionGrants-oAuth2PermissionGra.
+      operations:
+      - method: GET
+        name: serviceprincipalsgetoauth2permissiongrants
+        description: Microsoft Graph Get oauth2PermissionGrants from servicePrincipals
+        call: serviceprincipals-serviceprincipals-oauth2permissiongrant.serviceprincipalsgetoauth2permissiongrants
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: serviceprincipals-serviceprincipals-oauth2permissiongrant-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Serviceprincipals — servicePrincipals.oAuth2PermissionGrant. One tool per
+      consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-oauth2permissiongrants-granted
+      description: Microsoft Graph List oauth2PermissionGrants granted to a service principal
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serviceprincipals-serviceprincipals-oauth2permissiongrant.serviceprincipalslistoauth2permissiongrants
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serviceprincipals-serviceprincipals-oauth2permissiongrant.serviceprincipalsoauth2permissiongrantsgetcountf9dc
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-oauth2permissiongrants-serviceprincipals
+      description: Microsoft Graph Get oauth2PermissionGrants from servicePrincipals
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serviceprincipals-serviceprincipals-oauth2permissiongrant.serviceprincipalsgetoauth2permissiongrants
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

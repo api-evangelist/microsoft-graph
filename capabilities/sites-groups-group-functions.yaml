@@ -1,0 +1,194 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Sites — groups.group.Functions
+  description: 'Microsoft Graph Sites — groups.group.Functions. 3 operations. Lead operation: Microsoft Graph Invoke function
+    getActivitiesByInterval. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - groups.group.Functions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: sites-groups-group-functions
+    baseUri: ''
+    description: Microsoft Graph Sites — groups.group.Functions business capability. Self-contained, no shared references.
+    resources:
+    - name: groups-group-id-sites-site-id-getByPath(path='{path}')-getActivitiesByInterval()
+      path: /groups/{group-id}/sites/{site-id}/getByPath(path='{path}')/getActivitiesByInterval()
+      operations:
+      - name: groupsgroupsitessitegetbypathgetactivitiesbyinterval4c35
+        method: GET
+        description: Microsoft Graph Invoke function getActivitiesByInterval
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: groups-group-id-sites-site-id-getByPath(path='{path}')-getActivitiesByInterval(s
+      path: /groups/{group-id}/sites/{site-id}/getByPath(path='{path}')/getActivitiesByInterval(startDateTime='{startDateTime}',endDateTime='{endDateTime}',interval='{interval}')
+      operations:
+      - name: groupsgroupsitessitegetbypathgetactivitiesbyintervalad27
+        method: GET
+        description: Microsoft Graph Invoke function getActivitiesByInterval
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: groups-group-id-sites-site-id-getByPath(path='{path}')-getApplicableContentTypes
+      path: /groups/{group-id}/sites/{site-id}/getByPath(path='{path}')/getApplicableContentTypesForList(listId='{listId}')
+      operations:
+      - name: groupsgroupsitessitegetbypathgetapplicablecontenttypesforlist
+        method: GET
+        description: Microsoft Graph Invoke function getApplicableContentTypesForList
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: sites-groups-group-functions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Sites — groups.group.Functions. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/groups/{group-id}/sites/{site-id}/getbypath-path-path/getactivitiesbyinterval
+      name: groups-group-id-sites-site-id-getbypath-path-path-getactivitiesbyinterval
+      description: REST surface for groups-group-id-sites-site-id-getByPath(path='{path}')-getActivitiesByInterval().
+      operations:
+      - method: GET
+        name: groupsgroupsitessitegetbypathgetactivitiesbyinterval4c35
+        description: Microsoft Graph Invoke function getActivitiesByInterval
+        call: sites-groups-group-functions.groupsgroupsitessitegetbypathgetactivitiesbyinterval4c35
+        with:
+          $select: rest.$select
+          $orderby: rest.$orderby
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/sites/{site-id}/getbypath-path-path/getactivitiesbyinterval-startdatetime-startdatetime-enddatetime-enddatetime-interval-interval
+      name: groups-group-id-sites-site-id-getbypath-path-path-getactivitiesbyinterval-s
+      description: REST surface for groups-group-id-sites-site-id-getByPath(path='{path}')-getActivitiesByInterval(s.
+      operations:
+      - method: GET
+        name: groupsgroupsitessitegetbypathgetactivitiesbyintervalad27
+        description: Microsoft Graph Invoke function getActivitiesByInterval
+        call: sites-groups-group-functions.groupsgroupsitessitegetbypathgetactivitiesbyintervalad27
+        with:
+          $select: rest.$select
+          $orderby: rest.$orderby
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/groups/{group-id}/sites/{site-id}/getbypath-path-path/getapplicablecontenttypesforlist-listid-listid
+      name: groups-group-id-sites-site-id-getbypath-path-path-getapplicablecontenttypes
+      description: REST surface for groups-group-id-sites-site-id-getByPath(path='{path}')-getApplicableContentTypes.
+      operations:
+      - method: GET
+        name: groupsgroupsitessitegetbypathgetapplicablecontenttypesforlist
+        description: Microsoft Graph Invoke function getApplicableContentTypesForList
+        call: sites-groups-group-functions.groupsgroupsitessitegetbypathgetapplicablecontenttypesforlist
+        with:
+          $select: rest.$select
+          $orderby: rest.$orderby
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: sites-groups-group-functions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Sites — groups.group.Functions. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-function-getactivitiesbyinterval
+      description: Microsoft Graph Invoke function getActivitiesByInterval
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sites-groups-group-functions.groupsgroupsitessitegetbypathgetactivitiesbyinterval4c35
+      with:
+        $select: tools.$select
+        $orderby: tools.$orderby
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-getactivitiesbyinterval-2
+      description: Microsoft Graph Invoke function getActivitiesByInterval
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sites-groups-group-functions.groupsgroupsitessitegetbypathgetactivitiesbyintervalad27
+      with:
+        $select: tools.$select
+        $orderby: tools.$orderby
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-getapplicablecontenttypesforlist
+      description: Microsoft Graph Invoke function getApplicableContentTypesForList
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sites-groups-group-functions.groupsgroupsitessitegetbypathgetapplicablecontenttypesforlist
+      with:
+        $select: tools.$select
+        $orderby: tools.$orderby
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

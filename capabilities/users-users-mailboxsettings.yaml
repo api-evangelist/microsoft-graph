@@ -1,0 +1,117 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Users — users.mailboxSettings
+  description: 'Microsoft Graph Users — users.mailboxSettings. 2 operations. Lead operation: Microsoft Graph Get mailboxSettings
+    property value. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - users.mailboxSettings
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: users-users-mailboxsettings
+    baseUri: ''
+    description: Microsoft Graph Users — users.mailboxSettings business capability. Self-contained, no shared references.
+    resources:
+    - name: users-user-id-mailboxSettings
+      path: /users/{user-id}/mailboxSettings
+      operations:
+      - name: usersgetmailboxsettings
+        method: GET
+        description: Microsoft Graph Get mailboxSettings property value
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: usersupdatemailboxsettings
+        method: PATCH
+        description: Microsoft Graph Update property mailboxSettings value.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: users-users-mailboxsettings-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Users — users.mailboxSettings. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/users/{user-id}/mailboxsettings
+      name: users-user-id-mailboxsettings
+      description: REST surface for users-user-id-mailboxSettings.
+      operations:
+      - method: GET
+        name: usersgetmailboxsettings
+        description: Microsoft Graph Get mailboxSettings property value
+        call: users-users-mailboxsettings.usersgetmailboxsettings
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: usersupdatemailboxsettings
+        description: Microsoft Graph Update property mailboxSettings value.
+        call: users-users-mailboxsettings.usersupdatemailboxsettings
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: users-users-mailboxsettings-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Users — users.mailboxSettings. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-mailboxsettings-property
+      description: Microsoft Graph Get mailboxSettings property value
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-users-mailboxsettings.usersgetmailboxsettings
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-property-mailboxsettings
+      description: Microsoft Graph Update property mailboxSettings value.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: users-users-mailboxsettings.usersupdatemailboxsettings
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

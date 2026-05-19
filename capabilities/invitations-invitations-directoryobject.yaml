@@ -1,0 +1,168 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Invitations — invitations.directoryObject
+  description: 'Microsoft Graph Invitations — invitations.directoryObject. 3 operations. Lead operation: Microsoft Graph Get
+    invitedUserSponsors from invitations. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - invitations.directoryObject
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: invitations-invitations-directoryobject
+    baseUri: ''
+    description: Microsoft Graph Invitations — invitations.directoryObject business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: invitations-invitedUserSponsors
+      path: /invitations/invitedUserSponsors
+      operations:
+      - name: invitationslistinvitedusersponsors
+        method: GET
+        description: Microsoft Graph Get invitedUserSponsors from invitations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: invitations-invitedUserSponsors-$count
+      path: /invitations/invitedUserSponsors/$count
+      operations:
+      - name: invitationsinvitedusersponsorsgetcount648d
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: invitations-invitedUserSponsors-directoryObject-id
+      path: /invitations/invitedUserSponsors/{directoryObject-id}
+      operations:
+      - name: invitationsgetinvitedusersponsors
+        method: GET
+        description: Microsoft Graph Get invitedUserSponsors from invitations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: invitations-invitations-directoryobject-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Invitations — invitations.directoryObject. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/invitations/invitedusersponsors
+      name: invitations-invitedusersponsors
+      description: REST surface for invitations-invitedUserSponsors.
+      operations:
+      - method: GET
+        name: invitationslistinvitedusersponsors
+        description: Microsoft Graph Get invitedUserSponsors from invitations
+        call: invitations-invitations-directoryobject.invitationslistinvitedusersponsors
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/invitations/invitedusersponsors/count
+      name: invitations-invitedusersponsors-count
+      description: REST surface for invitations-invitedUserSponsors-$count.
+      operations:
+      - method: GET
+        name: invitationsinvitedusersponsorsgetcount648d
+        description: Microsoft Graph Get the number of the resource
+        call: invitations-invitations-directoryobject.invitationsinvitedusersponsorsgetcount648d
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/invitations/invitedusersponsors/{directoryobject-id}
+      name: invitations-invitedusersponsors-directoryobject-id
+      description: REST surface for invitations-invitedUserSponsors-directoryObject-id.
+      operations:
+      - method: GET
+        name: invitationsgetinvitedusersponsors
+        description: Microsoft Graph Get invitedUserSponsors from invitations
+        call: invitations-invitations-directoryobject.invitationsgetinvitedusersponsors
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: invitations-invitations-directoryobject-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Invitations — invitations.directoryObject. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-invitedusersponsors-invitations
+      description: Microsoft Graph Get invitedUserSponsors from invitations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: invitations-invitations-directoryobject.invitationslistinvitedusersponsors
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: invitations-invitations-directoryobject.invitationsinvitedusersponsorsgetcount648d
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-invitedusersponsors-invitations-2
+      description: Microsoft Graph Get invitedUserSponsors from invitations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: invitations-invitations-directoryobject.invitationsgetinvitedusersponsors
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

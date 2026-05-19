@@ -1,0 +1,141 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Functions — Applications.synchronization
+  description: 'Microsoft Graph Functions — Applications.synchronization. 2 operations. Lead operation: Microsoft Graph Invoke
+    function functions. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Applications.synchronization
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: functions-applications-synchronization
+    baseUri: ''
+    description: Microsoft Graph Functions — Applications.synchronization business capability. Self-contained, no shared references.
+    resources:
+    - name: applications-application-id-synchronization-jobs-synchronizationJob-id-schema-fu
+      path: /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/functions()
+      operations:
+      - name: applicationsapplicationsynchronizationjobssynchronizationjobschemafunctions
+        method: GET
+        description: Microsoft Graph Invoke function functions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: applications-application-id-synchronization-templates-synchronizationTemplate-id
+      path: /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/functions()
+      operations:
+      - name: applicationsapplicationsynchronizationtemplatessynchronizationtemplateschemafunctions
+        method: GET
+        description: Microsoft Graph Invoke function functions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: functions-applications-synchronization-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Functions — Applications.synchronization. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications/{application-id}/synchronization/jobs/{synchronizationjob-id}/schema/functions
+      name: applications-application-id-synchronization-jobs-synchronizationjob-id-schema-fu
+      description: REST surface for applications-application-id-synchronization-jobs-synchronizationJob-id-schema-fu.
+      operations:
+      - method: GET
+        name: applicationsapplicationsynchronizationjobssynchronizationjobschemafunctions
+        description: Microsoft Graph Invoke function functions
+        call: functions-applications-synchronization.applicationsapplicationsynchronizationjobssynchronizationjobschemafunctions
+        with:
+          $select: rest.$select
+          $orderby: rest.$orderby
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{application-id}/synchronization/templates/{synchronizationtemplate-id}/schema/functions
+      name: applications-application-id-synchronization-templates-synchronizationtemplate-id
+      description: REST surface for applications-application-id-synchronization-templates-synchronizationTemplate-id.
+      operations:
+      - method: GET
+        name: applicationsapplicationsynchronizationtemplatessynchronizationtemplateschemafunctions
+        description: Microsoft Graph Invoke function functions
+        call: functions-applications-synchronization.applicationsapplicationsynchronizationtemplatessynchronizationtemplateschemafunctions
+        with:
+          $select: rest.$select
+          $orderby: rest.$orderby
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: functions-applications-synchronization-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Functions — Applications.synchronization. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-function-functions
+      description: Microsoft Graph Invoke function functions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: functions-applications-synchronization.applicationsapplicationsynchronizationjobssynchronizationjobschemafunctions
+      with:
+        $select: tools.$select
+        $orderby: tools.$orderby
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-function-functions-2
+      description: Microsoft Graph Invoke function functions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: functions-applications-synchronization.applicationsapplicationsynchronizationtemplatessynchronizationtemplateschemafunctions
+      with:
+        $select: tools.$select
+        $orderby: tools.$orderby
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,78 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Applications API — Applications Remove Key
+  description: 'Microsoft Graph Applications API — Applications Remove Key. 1 operations. Lead operation: Microsoft Graph
+    Create Remove Key. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Applications Remove Key
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: applications-applications-remove-key
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Applications API — Applications Remove Key business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: applications-application-id-removeKey
+      path: /applications/{application-id}/removeKey
+      operations:
+      - name: removekeyapplications
+        method: POST
+        description: Microsoft Graph Create Remove Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: applications-applications-remove-key-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Applications API — Applications Remove Key. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications/{application-id}/removekey
+      name: applications-application-id-removekey
+      description: REST surface for applications-application-id-removeKey.
+      operations:
+      - method: POST
+        name: removekeyapplications
+        description: Microsoft Graph Create Remove Key
+        call: applications-applications-remove-key.removekeyapplications
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: applications-applications-remove-key-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Applications API — Applications Remove Key. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-create-remove-key
+      description: Microsoft Graph Create Remove Key
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: applications-applications-remove-key.removekeyapplications
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

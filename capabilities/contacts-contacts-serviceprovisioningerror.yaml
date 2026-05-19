@@ -1,0 +1,131 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Contacts — contacts.serviceProvisioningError
+  description: 'Microsoft Graph Contacts — contacts.serviceProvisioningError. 2 operations. Lead operation: Microsoft Graph
+    Get serviceProvisioningErrors property value. Self-contained Naftiko capability covering one Microsoft Graph business
+    surface.'
+  tags:
+  - Microsoft Graph
+  - contacts.serviceProvisioningError
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: contacts-contacts-serviceprovisioningerror
+    baseUri: ''
+    description: Microsoft Graph Contacts — contacts.serviceProvisioningError business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: contacts-orgContact-id-serviceProvisioningErrors
+      path: /contacts/{orgContact-id}/serviceProvisioningErrors
+      operations:
+      - name: contactslistserviceprovisioningerrors
+        method: GET
+        description: Microsoft Graph Get serviceProvisioningErrors property value
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: contacts-orgContact-id-serviceProvisioningErrors-$count
+      path: /contacts/{orgContact-id}/serviceProvisioningErrors/$count
+      operations:
+      - name: contactsserviceprovisioningerrorsgetcount33c2
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConsistencyLevel
+          in: header
+          type: string
+          description: 'Indicates the requested consistency level. Documentation URL: https://docs.microsoft.com/graph/aad-advanced-queries'
+  exposes:
+  - type: rest
+    namespace: contacts-contacts-serviceprovisioningerror-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Contacts — contacts.serviceProvisioningError. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/contacts/{orgcontact-id}/serviceprovisioningerrors
+      name: contacts-orgcontact-id-serviceprovisioningerrors
+      description: REST surface for contacts-orgContact-id-serviceProvisioningErrors.
+      operations:
+      - method: GET
+        name: contactslistserviceprovisioningerrors
+        description: Microsoft Graph Get serviceProvisioningErrors property value
+        call: contacts-contacts-serviceprovisioningerror.contactslistserviceprovisioningerrors
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/contacts/{orgcontact-id}/serviceprovisioningerrors/count
+      name: contacts-orgcontact-id-serviceprovisioningerrors-count
+      description: REST surface for contacts-orgContact-id-serviceProvisioningErrors-$count.
+      operations:
+      - method: GET
+        name: contactsserviceprovisioningerrorsgetcount33c2
+        description: Microsoft Graph Get the number of the resource
+        call: contacts-contacts-serviceprovisioningerror.contactsserviceprovisioningerrorsgetcount33c2
+        with:
+          ConsistencyLevel: rest.ConsistencyLevel
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: contacts-contacts-serviceprovisioningerror-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Contacts — contacts.serviceProvisioningError. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-serviceprovisioningerrors-property
+      description: Microsoft Graph Get serviceProvisioningErrors property value
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: contacts-contacts-serviceprovisioningerror.contactslistserviceprovisioningerrors
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: contacts-contacts-serviceprovisioningerror.contactsserviceprovisioningerrorsgetcount33c2
+      with:
+        ConsistencyLevel: tools.ConsistencyLevel
+      outputParameters:
+      - type: object
+        mapping: $.

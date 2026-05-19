@@ -1,0 +1,77 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Applications API — Applications Add Key
+  description: 'Microsoft Graph Applications API — Applications Add Key. 1 operations. Lead operation: Microsoft Graph Create
+    Add Key. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Applications Add Key
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: applications-applications-add-key
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Applications API — Applications Add Key business capability. Self-contained, no shared references.
+    resources:
+    - name: applications-application-id-addKey
+      path: /applications/{application-id}/addKey
+      operations:
+      - name: addkeyapplications
+        method: POST
+        description: Microsoft Graph Create Add Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: applications-applications-add-key-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Applications API — Applications Add Key. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications/{application-id}/addkey
+      name: applications-application-id-addkey
+      description: REST surface for applications-application-id-addKey.
+      operations:
+      - method: POST
+        name: addkeyapplications
+        description: Microsoft Graph Create Add Key
+        call: applications-applications-add-key.addkeyapplications
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: applications-applications-add-key-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Applications API — Applications Add Key. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-create-add-key
+      description: Microsoft Graph Create Add Key
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: applications-applications-add-key.addkeyapplications
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

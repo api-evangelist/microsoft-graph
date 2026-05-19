@@ -1,0 +1,153 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Devicemanagement — deviceManagement.deviceCompliancePolicyDeviceStateSummary
+  description: 'Microsoft Graph Devicemanagement — deviceManagement.deviceCompliancePolicyDeviceStateSummary. 3 operations.
+    Lead operation: Microsoft Graph Get deviceCompliancePolicyDeviceStateSummary from deviceManagement. Self-contained Naftiko
+    capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - deviceManagement.deviceCompliancePolicyDeviceStateSummary
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: devicemanagement-devicemanagement-devicecompliancepolicydevicestatesummary
+    baseUri: ''
+    description: Microsoft Graph Devicemanagement — deviceManagement.deviceCompliancePolicyDeviceStateSummary business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: deviceManagement-deviceCompliancePolicyDeviceStateSummary
+      path: /deviceManagement/deviceCompliancePolicyDeviceStateSummary
+      operations:
+      - name: devicemanagementgetdevicecompliancepolicydevicestatesummary
+        method: GET
+        description: Microsoft Graph Get deviceCompliancePolicyDeviceStateSummary from deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: devicemanagementupdatedevicecompliancepolicydevicestatesummary
+        method: PATCH
+        description: Microsoft Graph Update the navigation property deviceCompliancePolicyDeviceStateSummary in deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: devicemanagementdeletedevicecompliancepolicydevicestatesummary
+        method: DELETE
+        description: Microsoft Graph Delete navigation property deviceCompliancePolicyDeviceStateSummary for deviceManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: devicemanagement-devicemanagement-devicecompliancepolicydevicestatesummary-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Devicemanagement — deviceManagement.deviceCompliancePolicyDeviceStateSummary.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/devicemanagement/devicecompliancepolicydevicestatesummary
+      name: devicemanagement-devicecompliancepolicydevicestatesummary
+      description: REST surface for deviceManagement-deviceCompliancePolicyDeviceStateSummary.
+      operations:
+      - method: GET
+        name: devicemanagementgetdevicecompliancepolicydevicestatesummary
+        description: Microsoft Graph Get deviceCompliancePolicyDeviceStateSummary from deviceManagement
+        call: devicemanagement-devicemanagement-devicecompliancepolicydevicestatesummary.devicemanagementgetdevicecompliancepolicydevicestatesummary
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: devicemanagementupdatedevicecompliancepolicydevicestatesummary
+        description: Microsoft Graph Update the navigation property deviceCompliancePolicyDeviceStateSummary in deviceManagement
+        call: devicemanagement-devicemanagement-devicecompliancepolicydevicestatesummary.devicemanagementupdatedevicecompliancepolicydevicestatesummary
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: devicemanagementdeletedevicecompliancepolicydevicestatesummary
+        description: Microsoft Graph Delete navigation property deviceCompliancePolicyDeviceStateSummary for deviceManagement
+        call: devicemanagement-devicemanagement-devicecompliancepolicydevicestatesummary.devicemanagementdeletedevicecompliancepolicydevicestatesummary
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: devicemanagement-devicemanagement-devicecompliancepolicydevicestatesummary-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Devicemanagement — deviceManagement.deviceCompliancePolicyDeviceStateSummary.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-devicecompliancepolicydevicestatesummary-devicemanagement
+      description: Microsoft Graph Get deviceCompliancePolicyDeviceStateSummary from deviceManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-devicecompliancepolicydevicestatesummary.devicemanagementgetdevicecompliancepolicydevicestatesummary
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property deviceCompliancePolicyDeviceStateSummary in deviceManagement
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: devicemanagement-devicemanagement-devicecompliancepolicydevicestatesummary.devicemanagementupdatedevicecompliancepolicydevicestatesummary
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property deviceCompliancePolicyDeviceStateSummary for deviceManagement
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: devicemanagement-devicemanagement-devicecompliancepolicydevicestatesummary.devicemanagementdeletedevicecompliancepolicydevicestatesummary
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,402 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — Sites.permission
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — Sites.permission. 9 operations. Lead operation:
+    Microsoft Graph Get permissions from sites. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Sites.permission
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-sites-permission
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — Sites.permission business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: sites-site-id-getByPath(path='{path}')-permissions
+      path: /sites/{site-id}/getByPath(path='{path}')/permissions
+      operations:
+      - name: sitesgetbypathlistpermissions
+        method: GET
+        description: Microsoft Graph Get permissions from sites
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: sitesgetbypathcreatepermissions
+        method: POST
+        description: Microsoft Graph Create new navigation property to permissions for sites
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: sites-site-id-permissions
+      path: /sites/{site-id}/permissions
+      operations:
+      - name: siteslistpermissions
+        method: GET
+        description: Microsoft Graph List permissions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: sitescreatepermissions
+        method: POST
+        description: Microsoft Graph Create permission
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: sites-site-id-permissions-$count
+      path: /sites/{site-id}/permissions/$count
+      operations:
+      - name: sitespermissionsgetcount511e
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: sites-site-id-permissions-permission-id
+      path: /sites/{site-id}/permissions/{permission-id}
+      operations:
+      - name: sitesgetpermissions
+        method: GET
+        description: Microsoft Graph Get permission
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: sitesupdatepermissions
+        method: PATCH
+        description: Microsoft Graph Update permission
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: sitesdeletepermissions
+        method: DELETE
+        description: Microsoft Graph Delete permission
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: sites-site-id-permissions-permission-id-grant
+      path: /sites/{site-id}/permissions/{permission-id}/grant
+      operations:
+      - name: sitessitepermissionspermissiongrant
+        method: POST
+        description: Microsoft Graph Invoke action grant
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-sites-permission-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — Sites.permission. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/sites/{site-id}/getbypath-path-path/permissions
+      name: sites-site-id-getbypath-path-path-permissions
+      description: REST surface for sites-site-id-getByPath(path='{path}')-permissions.
+      operations:
+      - method: GET
+        name: sitesgetbypathlistpermissions
+        description: Microsoft Graph Get permissions from sites
+        call: microsoft-graph-sites-permission.sitesgetbypathlistpermissions
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: sitesgetbypathcreatepermissions
+        description: Microsoft Graph Create new navigation property to permissions for sites
+        call: microsoft-graph-sites-permission.sitesgetbypathcreatepermissions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sites/{site-id}/permissions
+      name: sites-site-id-permissions
+      description: REST surface for sites-site-id-permissions.
+      operations:
+      - method: GET
+        name: siteslistpermissions
+        description: Microsoft Graph List permissions
+        call: microsoft-graph-sites-permission.siteslistpermissions
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: sitescreatepermissions
+        description: Microsoft Graph Create permission
+        call: microsoft-graph-sites-permission.sitescreatepermissions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sites/{site-id}/permissions/count
+      name: sites-site-id-permissions-count
+      description: REST surface for sites-site-id-permissions-$count.
+      operations:
+      - method: GET
+        name: sitespermissionsgetcount511e
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-sites-permission.sitespermissionsgetcount511e
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sites/{site-id}/permissions/{permission-id}
+      name: sites-site-id-permissions-permission-id
+      description: REST surface for sites-site-id-permissions-permission-id.
+      operations:
+      - method: GET
+        name: sitesgetpermissions
+        description: Microsoft Graph Get permission
+        call: microsoft-graph-sites-permission.sitesgetpermissions
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: sitesupdatepermissions
+        description: Microsoft Graph Update permission
+        call: microsoft-graph-sites-permission.sitesupdatepermissions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: sitesdeletepermissions
+        description: Microsoft Graph Delete permission
+        call: microsoft-graph-sites-permission.sitesdeletepermissions
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sites/{site-id}/permissions/{permission-id}/grant
+      name: sites-site-id-permissions-permission-id-grant
+      description: REST surface for sites-site-id-permissions-permission-id-grant.
+      operations:
+      - method: POST
+        name: sitessitepermissionspermissiongrant
+        description: Microsoft Graph Invoke action grant
+        call: microsoft-graph-sites-permission.sitessitepermissionspermissiongrant
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-sites-permission-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — Sites.permission. One tool
+      per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-permissions-sites
+      description: Microsoft Graph Get permissions from sites
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-sites-permission.sitesgetbypathlistpermissions
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to permissions for sites
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-sites-permission.sitesgetbypathcreatepermissions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-list-permissions
+      description: Microsoft Graph List permissions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-sites-permission.siteslistpermissions
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-permission
+      description: Microsoft Graph Create permission
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-sites-permission.sitescreatepermissions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-sites-permission.sitespermissionsgetcount511e
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-permission
+      description: Microsoft Graph Get permission
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-sites-permission.sitesgetpermissions
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-permission
+      description: Microsoft Graph Update permission
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-sites-permission.sitesupdatepermissions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-permission
+      description: Microsoft Graph Delete permission
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-sites-permission.sitesdeletepermissions
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-grant
+      description: Microsoft Graph Invoke action grant
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-sites-permission.sitessitepermissionspermissiongrant
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

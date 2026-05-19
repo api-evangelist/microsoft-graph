@@ -1,0 +1,83 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — shares.listItem
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — shares.listItem. 1 operations. Lead operation:
+    Microsoft Graph Get listItem from shares. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - shares.listItem
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-shares-listitem
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — shares.listItem business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: shares-sharedDriveItem-id-listItem
+      path: /shares/{sharedDriveItem-id}/listItem
+      operations:
+      - name: sharesgetlistitem
+        method: GET
+        description: Microsoft Graph Get listItem from shares
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-shares-listitem-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — shares.listItem. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/shares/{shareddriveitem-id}/listitem
+      name: shares-shareddriveitem-id-listitem
+      description: REST surface for shares-sharedDriveItem-id-listItem.
+      operations:
+      - method: GET
+        name: sharesgetlistitem
+        description: Microsoft Graph Get listItem from shares
+        call: microsoft-graph-shares-listitem.sharesgetlistitem
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-shares-listitem-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — shares.listItem. One tool per
+      consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-listitem-shares
+      description: Microsoft Graph Get listItem from shares
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-shares-listitem.sharesgetlistitem
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

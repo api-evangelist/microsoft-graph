@@ -1,0 +1,77 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Copilot — copilot.copilotRoot.Actions
+  description: 'Microsoft Graph Copilot — copilot.copilotRoot.Actions. 1 operations. Lead operation: Microsoft Graph Invoke
+    action retrieval. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - copilot.copilotRoot.Actions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: copilot-copilot-copilotroot-actions
+    baseUri: ''
+    description: Microsoft Graph Copilot — copilot.copilotRoot.Actions business capability. Self-contained, no shared references.
+    resources:
+    - name: copilot-retrieval
+      path: /copilot/retrieval
+      operations:
+      - name: copilotretrieval
+        method: POST
+        description: Microsoft Graph Invoke action retrieval
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: copilot-copilot-copilotroot-actions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Copilot — copilot.copilotRoot.Actions. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/copilot/retrieval
+      name: copilot-retrieval
+      description: REST surface for copilot-retrieval.
+      operations:
+      - method: POST
+        name: copilotretrieval
+        description: Microsoft Graph Invoke action retrieval
+        call: copilot-copilot-copilotroot-actions.copilotretrieval
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: copilot-copilot-copilotroot-actions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Copilot — copilot.copilotRoot.Actions. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-action-retrieval
+      description: Microsoft Graph Invoke action retrieval
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: copilot-copilot-copilotroot-actions.copilotretrieval
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

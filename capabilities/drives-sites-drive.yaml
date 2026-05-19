@@ -1,0 +1,220 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Drives — Sites.drive
+  description: 'Microsoft Graph Drives — Sites.drive. 4 operations. Lead operation: Microsoft Graph Get drives from sites.
+    Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Sites.drive
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: drives-sites-drive
+    baseUri: ''
+    description: Microsoft Graph Drives — Sites.drive business capability. Self-contained, no shared references.
+    resources:
+    - name: sites-site-id-drives
+      path: /sites/{site-id}/drives
+      operations:
+      - name: siteslistdrives
+        method: GET
+        description: Microsoft Graph Get drives from sites
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: sites-site-id-drives-$count
+      path: /sites/{site-id}/drives/$count
+      operations:
+      - name: sitesdrivesgetcount5071
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: sites-site-id-drives-drive-id
+      path: /sites/{site-id}/drives/{drive-id}
+      operations:
+      - name: sitesgetdrives
+        method: GET
+        description: Microsoft Graph Get drives from sites
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: sites-site-id-getByPath(path='{path}')-drives
+      path: /sites/{site-id}/getByPath(path='{path}')/drives
+      operations:
+      - name: sitesgetbypathlistdrives
+        method: GET
+        description: Microsoft Graph Get drives from sites
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: drives-sites-drive-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Drives — Sites.drive. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/sites/{site-id}/drives
+      name: sites-site-id-drives
+      description: REST surface for sites-site-id-drives.
+      operations:
+      - method: GET
+        name: siteslistdrives
+        description: Microsoft Graph Get drives from sites
+        call: drives-sites-drive.siteslistdrives
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sites/{site-id}/drives/count
+      name: sites-site-id-drives-count
+      description: REST surface for sites-site-id-drives-$count.
+      operations:
+      - method: GET
+        name: sitesdrivesgetcount5071
+        description: Microsoft Graph Get the number of the resource
+        call: drives-sites-drive.sitesdrivesgetcount5071
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sites/{site-id}/drives/{drive-id}
+      name: sites-site-id-drives-drive-id
+      description: REST surface for sites-site-id-drives-drive-id.
+      operations:
+      - method: GET
+        name: sitesgetdrives
+        description: Microsoft Graph Get drives from sites
+        call: drives-sites-drive.sitesgetdrives
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sites/{site-id}/getbypath-path-path/drives
+      name: sites-site-id-getbypath-path-path-drives
+      description: REST surface for sites-site-id-getByPath(path='{path}')-drives.
+      operations:
+      - method: GET
+        name: sitesgetbypathlistdrives
+        description: Microsoft Graph Get drives from sites
+        call: drives-sites-drive.sitesgetbypathlistdrives
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: drives-sites-drive-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Drives — Sites.drive. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-drives-sites
+      description: Microsoft Graph Get drives from sites
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: drives-sites-drive.siteslistdrives
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: drives-sites-drive.sitesdrivesgetcount5071
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-drives-sites-2
+      description: Microsoft Graph Get drives from sites
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: drives-sites-drive.sitesgetdrives
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-drives-sites-3
+      description: Microsoft Graph Get drives from sites
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: drives-sites-drive.sitesgetbypathlistdrives
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

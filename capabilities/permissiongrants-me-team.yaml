@@ -1,0 +1,271 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Permissiongrants — Me.team
+  description: 'Microsoft Graph Permissiongrants — Me.team. 6 operations. Lead operation: Microsoft Graph Get permissionGrants
+    from me. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Me.team
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: permissiongrants-me-team
+    baseUri: ''
+    description: Microsoft Graph Permissiongrants — Me.team business capability. Self-contained, no shared references.
+    resources:
+    - name: me-joinedTeams-team-id-permissionGrants
+      path: /me/joinedTeams/{team-id}/permissionGrants
+      operations:
+      - name: mejoinedteamslistpermissiongrants
+        method: GET
+        description: Microsoft Graph Get permissionGrants from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: mejoinedteamscreatepermissiongrants
+        method: POST
+        description: Microsoft Graph Create new navigation property to permissionGrants for me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: me-joinedTeams-team-id-permissionGrants-$count
+      path: /me/joinedTeams/{team-id}/permissionGrants/$count
+      operations:
+      - name: mejoinedteamspermissiongrantsgetcounta196
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: me-joinedTeams-team-id-permissionGrants-resourceSpecificPermissionGrant-id
+      path: /me/joinedTeams/{team-id}/permissionGrants/{resourceSpecificPermissionGrant-id}
+      operations:
+      - name: mejoinedteamsgetpermissiongrants
+        method: GET
+        description: Microsoft Graph Get permissionGrants from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: mejoinedteamsupdatepermissiongrants
+        method: PATCH
+        description: Microsoft Graph Update the navigation property permissionGrants in me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: mejoinedteamsdeletepermissiongrants
+        method: DELETE
+        description: Microsoft Graph Delete navigation property permissionGrants for me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: permissiongrants-me-team-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Permissiongrants — Me.team. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/me/joinedteams/{team-id}/permissiongrants
+      name: me-joinedteams-team-id-permissiongrants
+      description: REST surface for me-joinedTeams-team-id-permissionGrants.
+      operations:
+      - method: GET
+        name: mejoinedteamslistpermissiongrants
+        description: Microsoft Graph Get permissionGrants from me
+        call: permissiongrants-me-team.mejoinedteamslistpermissiongrants
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: mejoinedteamscreatepermissiongrants
+        description: Microsoft Graph Create new navigation property to permissionGrants for me
+        call: permissiongrants-me-team.mejoinedteamscreatepermissiongrants
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/joinedteams/{team-id}/permissiongrants/count
+      name: me-joinedteams-team-id-permissiongrants-count
+      description: REST surface for me-joinedTeams-team-id-permissionGrants-$count.
+      operations:
+      - method: GET
+        name: mejoinedteamspermissiongrantsgetcounta196
+        description: Microsoft Graph Get the number of the resource
+        call: permissiongrants-me-team.mejoinedteamspermissiongrantsgetcounta196
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/joinedteams/{team-id}/permissiongrants/{resourcespecificpermissiongrant-id}
+      name: me-joinedteams-team-id-permissiongrants-resourcespecificpermissiongrant-id
+      description: REST surface for me-joinedTeams-team-id-permissionGrants-resourceSpecificPermissionGrant-id.
+      operations:
+      - method: GET
+        name: mejoinedteamsgetpermissiongrants
+        description: Microsoft Graph Get permissionGrants from me
+        call: permissiongrants-me-team.mejoinedteamsgetpermissiongrants
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: mejoinedteamsupdatepermissiongrants
+        description: Microsoft Graph Update the navigation property permissionGrants in me
+        call: permissiongrants-me-team.mejoinedteamsupdatepermissiongrants
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: mejoinedteamsdeletepermissiongrants
+        description: Microsoft Graph Delete navigation property permissionGrants for me
+        call: permissiongrants-me-team.mejoinedteamsdeletepermissiongrants
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: permissiongrants-me-team-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Permissiongrants — Me.team. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-permissiongrants-me
+      description: Microsoft Graph Get permissionGrants from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: permissiongrants-me-team.mejoinedteamslistpermissiongrants
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to permissionGrants for me
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: permissiongrants-me-team.mejoinedteamscreatepermissiongrants
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: permissiongrants-me-team.mejoinedteamspermissiongrantsgetcounta196
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-permissiongrants-me-2
+      description: Microsoft Graph Get permissionGrants from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: permissiongrants-me-team.mejoinedteamsgetpermissiongrants
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property permissionGrants in me
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: permissiongrants-me-team.mejoinedteamsupdatepermissiongrants
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property permissionGrants for me
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: permissiongrants-me-team.mejoinedteamsdeletepermissiongrants
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

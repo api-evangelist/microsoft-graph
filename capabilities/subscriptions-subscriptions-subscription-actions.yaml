@@ -1,0 +1,68 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Subscriptions — subscriptions.subscription.Actions
+  description: 'Microsoft Graph Subscriptions — subscriptions.subscription.Actions. 1 operations. Lead operation: Microsoft
+    Graph Invoke action reauthorize. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - subscriptions.subscription.Actions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: subscriptions-subscriptions-subscription-actions
+    baseUri: ''
+    description: Microsoft Graph Subscriptions — subscriptions.subscription.Actions business capability. Self-contained, no
+      shared references.
+    resources:
+    - name: subscriptions-subscription-id-reauthorize
+      path: /subscriptions/{subscription-id}/reauthorize
+      operations:
+      - name: subscriptionssubscriptionreauthorize
+        method: POST
+        description: Microsoft Graph Invoke action reauthorize
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: subscriptions-subscriptions-subscription-actions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Subscriptions — subscriptions.subscription.Actions. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/subscriptions/{subscription-id}/reauthorize
+      name: subscriptions-subscription-id-reauthorize
+      description: REST surface for subscriptions-subscription-id-reauthorize.
+      operations:
+      - method: POST
+        name: subscriptionssubscriptionreauthorize
+        description: Microsoft Graph Invoke action reauthorize
+        call: subscriptions-subscriptions-subscription-actions.subscriptionssubscriptionreauthorize
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: subscriptions-subscriptions-subscription-actions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Subscriptions — subscriptions.subscription.Actions. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-action-reauthorize
+      description: Microsoft Graph Invoke action reauthorize
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: subscriptions-subscriptions-subscription-actions.subscriptionssubscriptionreauthorize
+      outputParameters:
+      - type: object
+        mapping: $.

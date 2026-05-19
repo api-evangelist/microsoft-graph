@@ -1,0 +1,279 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Applications API — Applications Token Issuance Policies
+  description: 'Microsoft Graph Applications API — Applications Token Issuance Policies. 6 operations. Lead operation: Microsoft
+    Graph List assigned tokenIssuancePolicies. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Applications Token Issuance Policies
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: applications-applications-token-issuance-policies
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Applications API — Applications Token Issuance Policies business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: applications-application-id-tokenIssuancePolicies
+      path: /applications/{application-id}/tokenIssuancePolicies
+      operations:
+      - name: getapplicationstokenissuancepolicies
+        method: GET
+        description: Microsoft Graph List assigned tokenIssuancePolicies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: applications-application-id-tokenIssuancePolicies-$count
+      path: /applications/{application-id}/tokenIssuancePolicies/$count
+      operations:
+      - name: countapplicationstokenissuancepolicies
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: applications-application-id-tokenIssuancePolicies-$ref
+      path: /applications/{application-id}/tokenIssuancePolicies/$ref
+      operations:
+      - name: getapplicationstokenissuancepolicies1
+        method: GET
+        description: Microsoft Graph List assigned tokenIssuancePolicies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+      - name: createapplicationstokenissuancepolicies
+        method: POST
+        description: Microsoft Graph Assign tokenIssuancePolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteapplicationstokenissuancepolicies1
+        method: DELETE
+        description: Microsoft Graph Remove tokenIssuancePolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+        - name: '@id'
+          in: query
+          type: string
+          description: The delete Uri
+          required: true
+    - name: applications-application-id-tokenIssuancePolicies-tokenIssuancePolicy-id-$ref
+      path: /applications/{application-id}/tokenIssuancePolicies/{tokenIssuancePolicy-id}/$ref
+      operations:
+      - name: deleteapplicationstokenissuancepolicies
+        method: DELETE
+        description: Microsoft Graph Remove tokenIssuancePolicy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: applications-applications-token-issuance-policies-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Applications API — Applications Token Issuance Policies. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications/{application-id}/tokenissuancepolicies
+      name: applications-application-id-tokenissuancepolicies
+      description: REST surface for applications-application-id-tokenIssuancePolicies.
+      operations:
+      - method: GET
+        name: getapplicationstokenissuancepolicies
+        description: Microsoft Graph List assigned tokenIssuancePolicies
+        call: applications-applications-token-issuance-policies.getapplicationstokenissuancepolicies
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{application-id}/tokenissuancepolicies/count
+      name: applications-application-id-tokenissuancepolicies-count
+      description: REST surface for applications-application-id-tokenIssuancePolicies-$count.
+      operations:
+      - method: GET
+        name: countapplicationstokenissuancepolicies
+        description: Microsoft Graph Get the number of the resource
+        call: applications-applications-token-issuance-policies.countapplicationstokenissuancepolicies
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{application-id}/tokenissuancepolicies/ref
+      name: applications-application-id-tokenissuancepolicies-ref
+      description: REST surface for applications-application-id-tokenIssuancePolicies-$ref.
+      operations:
+      - method: GET
+        name: getapplicationstokenissuancepolicies1
+        description: Microsoft Graph List assigned tokenIssuancePolicies
+        call: applications-applications-token-issuance-policies.getapplicationstokenissuancepolicies1
+        with:
+          $orderby: rest.$orderby
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createapplicationstokenissuancepolicies
+        description: Microsoft Graph Assign tokenIssuancePolicy
+        call: applications-applications-token-issuance-policies.createapplicationstokenissuancepolicies
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteapplicationstokenissuancepolicies1
+        description: Microsoft Graph Remove tokenIssuancePolicy
+        call: applications-applications-token-issuance-policies.deleteapplicationstokenissuancepolicies1
+        with:
+          If-Match: rest.If-Match
+          '@id': rest.@id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{application-id}/tokenissuancepolicies/{tokenissuancepolicy-id}/ref
+      name: applications-application-id-tokenissuancepolicies-tokenissuancepolicy-id-ref
+      description: REST surface for applications-application-id-tokenIssuancePolicies-tokenIssuancePolicy-id-$ref.
+      operations:
+      - method: DELETE
+        name: deleteapplicationstokenissuancepolicies
+        description: Microsoft Graph Remove tokenIssuancePolicy
+        call: applications-applications-token-issuance-policies.deleteapplicationstokenissuancepolicies
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: applications-applications-token-issuance-policies-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Applications API — Applications Token Issuance Policies. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-assigned-tokenissuancepolicies
+      description: Microsoft Graph List assigned tokenIssuancePolicies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: applications-applications-token-issuance-policies.getapplicationstokenissuancepolicies
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: applications-applications-token-issuance-policies.countapplicationstokenissuancepolicies
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-list-assigned-tokenissuancepolicies-2
+      description: Microsoft Graph List assigned tokenIssuancePolicies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: applications-applications-token-issuance-policies.getapplicationstokenissuancepolicies1
+      with:
+        $orderby: tools.$orderby
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-assign-tokenissuancepolicy
+      description: Microsoft Graph Assign tokenIssuancePolicy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: applications-applications-token-issuance-policies.createapplicationstokenissuancepolicies
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-remove-tokenissuancepolicy
+      description: Microsoft Graph Remove tokenIssuancePolicy
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: applications-applications-token-issuance-policies.deleteapplicationstokenissuancepolicies1
+      with:
+        If-Match: tools.If-Match
+        '@id': tools.@id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-remove-tokenissuancepolicy-2
+      description: Microsoft Graph Remove tokenIssuancePolicy
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: applications-applications-token-issuance-policies.deleteapplicationstokenissuancepolicies
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

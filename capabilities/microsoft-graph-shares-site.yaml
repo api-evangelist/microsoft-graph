@@ -1,0 +1,83 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — Shares.site
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — Shares.site. 1 operations. Lead operation: Microsoft
+    Graph Get site from shares. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Shares.site
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-shares-site
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — Shares.site business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: shares-sharedDriveItem-id-site
+      path: /shares/{sharedDriveItem-id}/site
+      operations:
+      - name: sharesgetsite
+        method: GET
+        description: Microsoft Graph Get site from shares
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-shares-site-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — Shares.site. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/shares/{shareddriveitem-id}/site
+      name: shares-shareddriveitem-id-site
+      description: REST surface for shares-sharedDriveItem-id-site.
+      operations:
+      - method: GET
+        name: sharesgetsite
+        description: Microsoft Graph Get site from shares
+        call: microsoft-graph-shares-site.sharesgetsite
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-shares-site-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — Shares.site. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-site-shares
+      description: Microsoft Graph Get site from shares
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-shares-site.sharesgetsite
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

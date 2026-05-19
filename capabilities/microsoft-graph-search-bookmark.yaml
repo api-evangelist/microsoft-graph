@@ -1,0 +1,272 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — Search.bookmark
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — Search.bookmark. 6 operations. Lead operation:
+    Microsoft Graph List bookmarks. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Search.bookmark
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-search-bookmark
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — Search.bookmark business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: search-bookmarks
+      path: /search/bookmarks
+      operations:
+      - name: searchlistbookmarks
+        method: GET
+        description: Microsoft Graph List bookmarks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: searchcreatebookmarks
+        method: POST
+        description: Microsoft Graph Create bookmark
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: search-bookmarks-$count
+      path: /search/bookmarks/$count
+      operations:
+      - name: searchbookmarksgetcountb2b7
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search-bookmarks-bookmark-id
+      path: /search/bookmarks/{bookmark-id}
+      operations:
+      - name: searchgetbookmarks
+        method: GET
+        description: Microsoft Graph Get bookmark
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: searchupdatebookmarks
+        method: PATCH
+        description: Microsoft Graph Update bookmark
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: searchdeletebookmarks
+        method: DELETE
+        description: Microsoft Graph Delete bookmark
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-search-bookmark-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — Search.bookmark. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/search/bookmarks
+      name: search-bookmarks
+      description: REST surface for search-bookmarks.
+      operations:
+      - method: GET
+        name: searchlistbookmarks
+        description: Microsoft Graph List bookmarks
+        call: microsoft-graph-search-bookmark.searchlistbookmarks
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: searchcreatebookmarks
+        description: Microsoft Graph Create bookmark
+        call: microsoft-graph-search-bookmark.searchcreatebookmarks
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/search/bookmarks/count
+      name: search-bookmarks-count
+      description: REST surface for search-bookmarks-$count.
+      operations:
+      - method: GET
+        name: searchbookmarksgetcountb2b7
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-search-bookmark.searchbookmarksgetcountb2b7
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/search/bookmarks/{bookmark-id}
+      name: search-bookmarks-bookmark-id
+      description: REST surface for search-bookmarks-bookmark-id.
+      operations:
+      - method: GET
+        name: searchgetbookmarks
+        description: Microsoft Graph Get bookmark
+        call: microsoft-graph-search-bookmark.searchgetbookmarks
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: searchupdatebookmarks
+        description: Microsoft Graph Update bookmark
+        call: microsoft-graph-search-bookmark.searchupdatebookmarks
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: searchdeletebookmarks
+        description: Microsoft Graph Delete bookmark
+        call: microsoft-graph-search-bookmark.searchdeletebookmarks
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-search-bookmark-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — Search.bookmark. One tool per
+      consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-bookmarks
+      description: Microsoft Graph List bookmarks
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-search-bookmark.searchlistbookmarks
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-bookmark
+      description: Microsoft Graph Create bookmark
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-search-bookmark.searchcreatebookmarks
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-search-bookmark.searchbookmarksgetcountb2b7
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-bookmark
+      description: Microsoft Graph Get bookmark
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-search-bookmark.searchgetbookmarks
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-bookmark
+      description: Microsoft Graph Update bookmark
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-search-bookmark.searchupdatebookmarks
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-bookmark
+      description: Microsoft Graph Delete bookmark
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-search-bookmark.searchdeletebookmarks
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

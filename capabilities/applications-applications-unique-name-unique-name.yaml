@@ -1,0 +1,152 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Applications API — Applications(unique Name='{unique Name}')
+  description: 'Microsoft Graph Applications API — Applications(unique Name=''{unique Name}''). 3 operations. Lead operation:
+    Microsoft Graph Get application. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Applications(unique Name='{unique Name}')
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: applications-applications-unique-name-unique-name
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Applications API — Applications(unique Name='{unique Name}') business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: applications(uniqueName='{uniqueName}')
+      path: /applications(uniqueName='{uniqueName}')
+      operations:
+      - name: getapplicationsuniquenameuniquename
+        method: GET
+        description: Microsoft Graph Get application
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: updateapplicationsuniquenameuniquename
+        method: PATCH
+        description: Microsoft Graph Upsert application
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteapplicationsuniquenameuniquename
+        method: DELETE
+        description: Microsoft Graph Delete application
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: applications-applications-unique-name-unique-name-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Applications API — Applications(unique Name='{unique Name}'). One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/applications-uniquename-uniquename
+      name: applications-uniquename-uniquename
+      description: REST surface for applications(uniqueName='{uniqueName}').
+      operations:
+      - method: GET
+        name: getapplicationsuniquenameuniquename
+        description: Microsoft Graph Get application
+        call: applications-applications-unique-name-unique-name.getapplicationsuniquenameuniquename
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateapplicationsuniquenameuniquename
+        description: Microsoft Graph Upsert application
+        call: applications-applications-unique-name-unique-name.updateapplicationsuniquenameuniquename
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteapplicationsuniquenameuniquename
+        description: Microsoft Graph Delete application
+        call: applications-applications-unique-name-unique-name.deleteapplicationsuniquenameuniquename
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: applications-applications-unique-name-unique-name-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Applications API — Applications(unique Name='{unique Name}'). One tool per
+      consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-application
+      description: Microsoft Graph Get application
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: applications-applications-unique-name-unique-name.getapplicationsuniquenameuniquename
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-upsert-application
+      description: Microsoft Graph Upsert application
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: applications-applications-unique-name-unique-name.updateapplicationsuniquenameuniquename
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-application
+      description: Microsoft Graph Delete application
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: applications-applications-unique-name-unique-name.deleteapplicationsuniquenameuniquename
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

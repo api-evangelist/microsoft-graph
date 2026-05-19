@@ -1,0 +1,315 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — identity.identityApiConnector
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — identity.identityApiConnector. 7 operations.
+    Lead operation: Microsoft Graph List identityApiConnectors. Self-contained Naftiko capability covering one Microsoft Graph
+    business surface.'
+  tags:
+  - Microsoft Graph
+  - identity.identityApiConnector
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-identity-identityapiconnector
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — identity.identityApiConnector business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: identity-apiConnectors
+      path: /identity/apiConnectors
+      operations:
+      - name: identitylistapiconnectors
+        method: GET
+        description: Microsoft Graph List identityApiConnectors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: identitycreateapiconnectors
+        method: POST
+        description: Microsoft Graph Create identityApiConnector
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: identity-apiConnectors-$count
+      path: /identity/apiConnectors/$count
+      operations:
+      - name: identityapiconnectorsgetcount7133
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: identity-apiConnectors-identityApiConnector-id
+      path: /identity/apiConnectors/{identityApiConnector-id}
+      operations:
+      - name: identitygetapiconnectors
+        method: GET
+        description: Microsoft Graph Get identityApiConnector
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: identityupdateapiconnectors
+        method: PATCH
+        description: Microsoft Graph Update identityApiConnector
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: identitydeleteapiconnectors
+        method: DELETE
+        description: Microsoft Graph Delete identityApiConnector
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: identity-apiConnectors-identityApiConnector-id-uploadClientCertificate
+      path: /identity/apiConnectors/{identityApiConnector-id}/uploadClientCertificate
+      operations:
+      - name: identityapiconnectorsidentityapiconnectoruploadclientcertificate
+        method: POST
+        description: Microsoft Graph Invoke action uploadClientCertificate
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-identity-identityapiconnector-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — identity.identityApiConnector.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/identity/apiconnectors
+      name: identity-apiconnectors
+      description: REST surface for identity-apiConnectors.
+      operations:
+      - method: GET
+        name: identitylistapiconnectors
+        description: Microsoft Graph List identityApiConnectors
+        call: microsoft-graph-identity-identityapiconnector.identitylistapiconnectors
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: identitycreateapiconnectors
+        description: Microsoft Graph Create identityApiConnector
+        call: microsoft-graph-identity-identityapiconnector.identitycreateapiconnectors
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/identity/apiconnectors/count
+      name: identity-apiconnectors-count
+      description: REST surface for identity-apiConnectors-$count.
+      operations:
+      - method: GET
+        name: identityapiconnectorsgetcount7133
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-identity-identityapiconnector.identityapiconnectorsgetcount7133
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/identity/apiconnectors/{identityapiconnector-id}
+      name: identity-apiconnectors-identityapiconnector-id
+      description: REST surface for identity-apiConnectors-identityApiConnector-id.
+      operations:
+      - method: GET
+        name: identitygetapiconnectors
+        description: Microsoft Graph Get identityApiConnector
+        call: microsoft-graph-identity-identityapiconnector.identitygetapiconnectors
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: identityupdateapiconnectors
+        description: Microsoft Graph Update identityApiConnector
+        call: microsoft-graph-identity-identityapiconnector.identityupdateapiconnectors
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: identitydeleteapiconnectors
+        description: Microsoft Graph Delete identityApiConnector
+        call: microsoft-graph-identity-identityapiconnector.identitydeleteapiconnectors
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/identity/apiconnectors/{identityapiconnector-id}/uploadclientcertificate
+      name: identity-apiconnectors-identityapiconnector-id-uploadclientcertificate
+      description: REST surface for identity-apiConnectors-identityApiConnector-id-uploadClientCertificate.
+      operations:
+      - method: POST
+        name: identityapiconnectorsidentityapiconnectoruploadclientcertificate
+        description: Microsoft Graph Invoke action uploadClientCertificate
+        call: microsoft-graph-identity-identityapiconnector.identityapiconnectorsidentityapiconnectoruploadclientcertificate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-identity-identityapiconnector-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — identity.identityApiConnector.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-identityapiconnectors
+      description: Microsoft Graph List identityApiConnectors
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-identity-identityapiconnector.identitylistapiconnectors
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-identityapiconnector
+      description: Microsoft Graph Create identityApiConnector
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-identity-identityapiconnector.identitycreateapiconnectors
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-identity-identityapiconnector.identityapiconnectorsgetcount7133
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-identityapiconnector
+      description: Microsoft Graph Get identityApiConnector
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-identity-identityapiconnector.identitygetapiconnectors
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-identityapiconnector
+      description: Microsoft Graph Update identityApiConnector
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-identity-identityapiconnector.identityupdateapiconnectors
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-identityapiconnector
+      description: Microsoft Graph Delete identityApiConnector
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-identity-identityapiconnector.identitydeleteapiconnectors
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-uploadclientcertificate
+      description: Microsoft Graph Invoke action uploadClientCertificate
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-identity-identityapiconnector.identityapiconnectorsidentityapiconnectoruploadclientcertificate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

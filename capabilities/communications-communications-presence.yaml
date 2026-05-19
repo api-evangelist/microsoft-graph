@@ -1,0 +1,471 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Communications — Communications.presence
+  description: 'Microsoft Graph Communications — Communications.presence. 11 operations. Lead operation: Microsoft Graph Get
+    presence. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Communications.presence
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: communications-communications-presence
+    baseUri: ''
+    description: Microsoft Graph Communications — Communications.presence business capability. Self-contained, no shared references.
+    resources:
+    - name: communications-presences
+      path: /communications/presences
+      operations:
+      - name: communicationslistpresences
+        method: GET
+        description: Microsoft Graph Get presence
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: communicationscreatepresences
+        method: POST
+        description: Microsoft Graph Create new navigation property to presences for communications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: communications-presences-$count
+      path: /communications/presences/$count
+      operations:
+      - name: communicationspresencesgetcounte4ed
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: communications-presences-presence-id
+      path: /communications/presences/{presence-id}
+      operations:
+      - name: communicationsgetpresences
+        method: GET
+        description: Microsoft Graph Get presence
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: communicationsupdatepresences
+        method: PATCH
+        description: Microsoft Graph Update the navigation property presences in communications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: communicationsdeletepresences
+        method: DELETE
+        description: Microsoft Graph Delete navigation property presences for communications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: communications-presences-presence-id-clearPresence
+      path: /communications/presences/{presence-id}/clearPresence
+      operations:
+      - name: communicationspresencespresenceclearpresence
+        method: POST
+        description: Microsoft Graph Invoke action clearPresence
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: communications-presences-presence-id-clearUserPreferredPresence
+      path: /communications/presences/{presence-id}/clearUserPreferredPresence
+      operations:
+      - name: communicationspresencespresenceclearuserpreferredpresence
+        method: POST
+        description: Microsoft Graph Invoke action clearUserPreferredPresence
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: communications-presences-presence-id-setPresence
+      path: /communications/presences/{presence-id}/setPresence
+      operations:
+      - name: communicationspresencespresencesetpresence
+        method: POST
+        description: Microsoft Graph Invoke action setPresence
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: communications-presences-presence-id-setStatusMessage
+      path: /communications/presences/{presence-id}/setStatusMessage
+      operations:
+      - name: communicationspresencespresencesetstatusmessage
+        method: POST
+        description: Microsoft Graph Invoke action setStatusMessage
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: communications-presences-presence-id-setUserPreferredPresence
+      path: /communications/presences/{presence-id}/setUserPreferredPresence
+      operations:
+      - name: communicationspresencespresencesetuserpreferredpresence
+        method: POST
+        description: Microsoft Graph Invoke action setUserPreferredPresence
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: communications-communications-presence-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Communications — Communications.presence. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/communications/presences
+      name: communications-presences
+      description: REST surface for communications-presences.
+      operations:
+      - method: GET
+        name: communicationslistpresences
+        description: Microsoft Graph Get presence
+        call: communications-communications-presence.communicationslistpresences
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: communicationscreatepresences
+        description: Microsoft Graph Create new navigation property to presences for communications
+        call: communications-communications-presence.communicationscreatepresences
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/communications/presences/count
+      name: communications-presences-count
+      description: REST surface for communications-presences-$count.
+      operations:
+      - method: GET
+        name: communicationspresencesgetcounte4ed
+        description: Microsoft Graph Get the number of the resource
+        call: communications-communications-presence.communicationspresencesgetcounte4ed
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/communications/presences/{presence-id}
+      name: communications-presences-presence-id
+      description: REST surface for communications-presences-presence-id.
+      operations:
+      - method: GET
+        name: communicationsgetpresences
+        description: Microsoft Graph Get presence
+        call: communications-communications-presence.communicationsgetpresences
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: communicationsupdatepresences
+        description: Microsoft Graph Update the navigation property presences in communications
+        call: communications-communications-presence.communicationsupdatepresences
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: communicationsdeletepresences
+        description: Microsoft Graph Delete navigation property presences for communications
+        call: communications-communications-presence.communicationsdeletepresences
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/communications/presences/{presence-id}/clearpresence
+      name: communications-presences-presence-id-clearpresence
+      description: REST surface for communications-presences-presence-id-clearPresence.
+      operations:
+      - method: POST
+        name: communicationspresencespresenceclearpresence
+        description: Microsoft Graph Invoke action clearPresence
+        call: communications-communications-presence.communicationspresencespresenceclearpresence
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/communications/presences/{presence-id}/clearuserpreferredpresence
+      name: communications-presences-presence-id-clearuserpreferredpresence
+      description: REST surface for communications-presences-presence-id-clearUserPreferredPresence.
+      operations:
+      - method: POST
+        name: communicationspresencespresenceclearuserpreferredpresence
+        description: Microsoft Graph Invoke action clearUserPreferredPresence
+        call: communications-communications-presence.communicationspresencespresenceclearuserpreferredpresence
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/communications/presences/{presence-id}/setpresence
+      name: communications-presences-presence-id-setpresence
+      description: REST surface for communications-presences-presence-id-setPresence.
+      operations:
+      - method: POST
+        name: communicationspresencespresencesetpresence
+        description: Microsoft Graph Invoke action setPresence
+        call: communications-communications-presence.communicationspresencespresencesetpresence
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/communications/presences/{presence-id}/setstatusmessage
+      name: communications-presences-presence-id-setstatusmessage
+      description: REST surface for communications-presences-presence-id-setStatusMessage.
+      operations:
+      - method: POST
+        name: communicationspresencespresencesetstatusmessage
+        description: Microsoft Graph Invoke action setStatusMessage
+        call: communications-communications-presence.communicationspresencespresencesetstatusmessage
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/communications/presences/{presence-id}/setuserpreferredpresence
+      name: communications-presences-presence-id-setuserpreferredpresence
+      description: REST surface for communications-presences-presence-id-setUserPreferredPresence.
+      operations:
+      - method: POST
+        name: communicationspresencespresencesetuserpreferredpresence
+        description: Microsoft Graph Invoke action setUserPreferredPresence
+        call: communications-communications-presence.communicationspresencespresencesetuserpreferredpresence
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: communications-communications-presence-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Communications — Communications.presence. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-presence
+      description: Microsoft Graph Get presence
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: communications-communications-presence.communicationslistpresences
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property to presences for communications
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: communications-communications-presence.communicationscreatepresences
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: communications-communications-presence.communicationspresencesgetcounte4ed
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-presence-2
+      description: Microsoft Graph Get presence
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: communications-communications-presence.communicationsgetpresences
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property presences in communications
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: communications-communications-presence.communicationsupdatepresences
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-navigation-property
+      description: Microsoft Graph Delete navigation property presences for communications
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: communications-communications-presence.communicationsdeletepresences
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-clearpresence
+      description: Microsoft Graph Invoke action clearPresence
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: communications-communications-presence.communicationspresencespresenceclearpresence
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-clearuserpreferredpresence
+      description: Microsoft Graph Invoke action clearUserPreferredPresence
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: communications-communications-presence.communicationspresencespresenceclearuserpreferredpresence
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-setpresence
+      description: Microsoft Graph Invoke action setPresence
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: communications-communications-presence.communicationspresencespresencesetpresence
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-setstatusmessage
+      description: Microsoft Graph Invoke action setStatusMessage
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: communications-communications-presence.communicationspresencespresencesetstatusmessage
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-setuserpreferredpresence
+      description: Microsoft Graph Invoke action setUserPreferredPresence
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: communications-communications-presence.communicationspresencespresencesetuserpreferredpresence
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

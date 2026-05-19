@@ -1,0 +1,69 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — identityProviders.identityProvider.Functions
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — identityProviders.identityProvider.Functions.
+    1 operations. Lead operation: Microsoft Graph Invoke function availableProviderTypes. Self-contained Naftiko capability
+    covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - identityProviders.identityProvider.Functions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-identityproviders-identityprovider-functions
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — identityProviders.identityProvider.Functions
+      business capability. Self-contained, no shared references.
+    resources:
+    - name: identityProviders-availableProviderTypes()
+      path: /identityProviders/availableProviderTypes()
+      operations:
+      - name: identityprovidersavailableprovidertypes
+        method: GET
+        description: Microsoft Graph Invoke function availableProviderTypes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-identityproviders-identityprovider-functions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — identityProviders.identityProvider.Functions.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/identityproviders/availableprovidertypes
+      name: identityproviders-availableprovidertypes
+      description: REST surface for identityProviders-availableProviderTypes().
+      operations:
+      - method: GET
+        name: identityprovidersavailableprovidertypes
+        description: Microsoft Graph Invoke function availableProviderTypes
+        call: microsoft-graph-identityproviders-identityprovider-functions.identityprovidersavailableprovidertypes
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-identityproviders-identityprovider-functions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — identityProviders.identityProvider.Functions.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-function-availableprovidertypes
+      description: Microsoft Graph Invoke function availableProviderTypes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-identityproviders-identityprovider-functions.identityprovidersavailableprovidertypes
+      outputParameters:
+      - type: object
+        mapping: $.

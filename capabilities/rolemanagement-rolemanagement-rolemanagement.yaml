@@ -1,0 +1,118 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Rolemanagement — roleManagement.roleManagement
+  description: 'Microsoft Graph Rolemanagement — roleManagement.roleManagement. 2 operations. Lead operation: Microsoft Graph
+    Get roleManagement. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - roleManagement.roleManagement
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rolemanagement-rolemanagement-rolemanagement
+    baseUri: ''
+    description: Microsoft Graph Rolemanagement — roleManagement.roleManagement business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: roleManagement
+      path: /roleManagement
+      operations:
+      - name: rolemanagementrolemanagementgetrolemanagement
+        method: GET
+        description: Microsoft Graph Get roleManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: rolemanagementrolemanagementupdaterolemanagement
+        method: PATCH
+        description: Microsoft Graph Update roleManagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: rolemanagement-rolemanagement-rolemanagement-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Rolemanagement — roleManagement.roleManagement. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/rolemanagement
+      name: rolemanagement
+      description: REST surface for roleManagement.
+      operations:
+      - method: GET
+        name: rolemanagementrolemanagementgetrolemanagement
+        description: Microsoft Graph Get roleManagement
+        call: rolemanagement-rolemanagement-rolemanagement.rolemanagementrolemanagementgetrolemanagement
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: rolemanagementrolemanagementupdaterolemanagement
+        description: Microsoft Graph Update roleManagement
+        call: rolemanagement-rolemanagement-rolemanagement.rolemanagementrolemanagementupdaterolemanagement
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rolemanagement-rolemanagement-rolemanagement-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Rolemanagement — roleManagement.roleManagement. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-rolemanagement
+      description: Microsoft Graph Get roleManagement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rolemanagement-rolemanagement-rolemanagement.rolemanagementrolemanagementgetrolemanagement
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-rolemanagement
+      description: Microsoft Graph Update roleManagement
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: rolemanagement-rolemanagement-rolemanagement.rolemanagementrolemanagementupdaterolemanagement
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

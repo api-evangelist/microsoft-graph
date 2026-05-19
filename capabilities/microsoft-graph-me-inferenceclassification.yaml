@@ -1,0 +1,355 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — me.inferenceClassification
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — me.inferenceClassification. 8 operations. Lead
+    operation: Microsoft Graph Get inferenceClassification from me. Self-contained Naftiko capability covering one Microsoft
+    Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - me.inferenceClassification
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-me-inferenceclassification
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — me.inferenceClassification business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: me-inferenceClassification
+      path: /me/inferenceClassification
+      operations:
+      - name: megetinferenceclassification
+        method: GET
+        description: Microsoft Graph Get inferenceClassification from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: meupdateinferenceclassification
+        method: PATCH
+        description: Microsoft Graph Update the navigation property inferenceClassification in me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: me-inferenceClassification-overrides
+      path: /me/inferenceClassification/overrides
+      operations:
+      - name: meinferenceclassificationlistoverrides
+        method: GET
+        description: Microsoft Graph List overrides
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: meinferenceclassificationcreateoverrides
+        method: POST
+        description: Microsoft Graph Create inferenceClassificationOverride
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: me-inferenceClassification-overrides-$count
+      path: /me/inferenceClassification/overrides/$count
+      operations:
+      - name: meinferenceclassificationoverridesgetcount63a1
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: me-inferenceClassification-overrides-inferenceClassificationOverride-id
+      path: /me/inferenceClassification/overrides/{inferenceClassificationOverride-id}
+      operations:
+      - name: meinferenceclassificationgetoverrides
+        method: GET
+        description: Microsoft Graph Get overrides from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: meinferenceclassificationupdateoverrides
+        method: PATCH
+        description: Microsoft Graph Update inferenceclassificationoverride
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: meinferenceclassificationdeleteoverrides
+        method: DELETE
+        description: Microsoft Graph Delete inferenceClassificationOverride
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-me-inferenceclassification-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — me.inferenceClassification.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/me/inferenceclassification
+      name: me-inferenceclassification
+      description: REST surface for me-inferenceClassification.
+      operations:
+      - method: GET
+        name: megetinferenceclassification
+        description: Microsoft Graph Get inferenceClassification from me
+        call: microsoft-graph-me-inferenceclassification.megetinferenceclassification
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: meupdateinferenceclassification
+        description: Microsoft Graph Update the navigation property inferenceClassification in me
+        call: microsoft-graph-me-inferenceclassification.meupdateinferenceclassification
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/inferenceclassification/overrides
+      name: me-inferenceclassification-overrides
+      description: REST surface for me-inferenceClassification-overrides.
+      operations:
+      - method: GET
+        name: meinferenceclassificationlistoverrides
+        description: Microsoft Graph List overrides
+        call: microsoft-graph-me-inferenceclassification.meinferenceclassificationlistoverrides
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: meinferenceclassificationcreateoverrides
+        description: Microsoft Graph Create inferenceClassificationOverride
+        call: microsoft-graph-me-inferenceclassification.meinferenceclassificationcreateoverrides
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/inferenceclassification/overrides/count
+      name: me-inferenceclassification-overrides-count
+      description: REST surface for me-inferenceClassification-overrides-$count.
+      operations:
+      - method: GET
+        name: meinferenceclassificationoverridesgetcount63a1
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-me-inferenceclassification.meinferenceclassificationoverridesgetcount63a1
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/inferenceclassification/overrides/{inferenceclassificationoverride-id}
+      name: me-inferenceclassification-overrides-inferenceclassificationoverride-id
+      description: REST surface for me-inferenceClassification-overrides-inferenceClassificationOverride-id.
+      operations:
+      - method: GET
+        name: meinferenceclassificationgetoverrides
+        description: Microsoft Graph Get overrides from me
+        call: microsoft-graph-me-inferenceclassification.meinferenceclassificationgetoverrides
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: meinferenceclassificationupdateoverrides
+        description: Microsoft Graph Update inferenceclassificationoverride
+        call: microsoft-graph-me-inferenceclassification.meinferenceclassificationupdateoverrides
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: meinferenceclassificationdeleteoverrides
+        description: Microsoft Graph Delete inferenceClassificationOverride
+        call: microsoft-graph-me-inferenceclassification.meinferenceclassificationdeleteoverrides
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-me-inferenceclassification-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — me.inferenceClassification.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-inferenceclassification-me
+      description: Microsoft Graph Get inferenceClassification from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-inferenceclassification.megetinferenceclassification
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-navigation-property
+      description: Microsoft Graph Update the navigation property inferenceClassification in me
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-inferenceclassification.meupdateinferenceclassification
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-list-overrides
+      description: Microsoft Graph List overrides
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-inferenceclassification.meinferenceclassificationlistoverrides
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-inferenceclassificationoverride
+      description: Microsoft Graph Create inferenceClassificationOverride
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-me-inferenceclassification.meinferenceclassificationcreateoverrides
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-inferenceclassification.meinferenceclassificationoverridesgetcount63a1
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-overrides-me
+      description: Microsoft Graph Get overrides from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-inferenceclassification.meinferenceclassificationgetoverrides
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-inferenceclassificationoverride
+      description: Microsoft Graph Update inferenceclassificationoverride
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-inferenceclassification.meinferenceclassificationupdateoverrides
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-inferenceclassificationoverride
+      description: Microsoft Graph Delete inferenceClassificationOverride
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-me-inferenceclassification.meinferenceclassificationdeleteoverrides
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,238 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Organization — organization.certificateBasedAuthConfiguration
+  description: 'Microsoft Graph Organization — organization.certificateBasedAuthConfiguration. 5 operations. Lead operation:
+    Microsoft Graph List certificateBasedAuthConfigurations. Self-contained Naftiko capability covering one Microsoft Graph
+    business surface.'
+  tags:
+  - Microsoft Graph
+  - organization.certificateBasedAuthConfiguration
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: organization-organization-certificatebasedauthconfiguration
+    baseUri: ''
+    description: Microsoft Graph Organization — organization.certificateBasedAuthConfiguration business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: organization-organization-id-certificateBasedAuthConfiguration
+      path: /organization/{organization-id}/certificateBasedAuthConfiguration
+      operations:
+      - name: organizationlistcertificatebasedauthconfiguration
+        method: GET
+        description: Microsoft Graph List certificateBasedAuthConfigurations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: organizationcreatecertificatebasedauthconfiguration
+        method: POST
+        description: Microsoft Graph Create certificateBasedAuthConfiguration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: organization-organization-id-certificateBasedAuthConfiguration-$count
+      path: /organization/{organization-id}/certificateBasedAuthConfiguration/$count
+      operations:
+      - name: organizationcertificatebasedauthconfigurationgetcount8262
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organization-organization-id-certificateBasedAuthConfiguration-certificateBasedA
+      path: /organization/{organization-id}/certificateBasedAuthConfiguration/{certificateBasedAuthConfiguration-id}
+      operations:
+      - name: organizationgetcertificatebasedauthconfiguration
+        method: GET
+        description: Microsoft Graph Get certificateBasedAuthConfiguration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: organizationdeletecertificatebasedauthconfiguration
+        method: DELETE
+        description: Microsoft Graph Delete certificateBasedAuthConfiguration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: organization-organization-certificatebasedauthconfiguration-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Organization — organization.certificateBasedAuthConfiguration. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/organization/{organization-id}/certificatebasedauthconfiguration
+      name: organization-organization-id-certificatebasedauthconfiguration
+      description: REST surface for organization-organization-id-certificateBasedAuthConfiguration.
+      operations:
+      - method: GET
+        name: organizationlistcertificatebasedauthconfiguration
+        description: Microsoft Graph List certificateBasedAuthConfigurations
+        call: organization-organization-certificatebasedauthconfiguration.organizationlistcertificatebasedauthconfiguration
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: organizationcreatecertificatebasedauthconfiguration
+        description: Microsoft Graph Create certificateBasedAuthConfiguration
+        call: organization-organization-certificatebasedauthconfiguration.organizationcreatecertificatebasedauthconfiguration
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/organization/{organization-id}/certificatebasedauthconfiguration/count
+      name: organization-organization-id-certificatebasedauthconfiguration-count
+      description: REST surface for organization-organization-id-certificateBasedAuthConfiguration-$count.
+      operations:
+      - method: GET
+        name: organizationcertificatebasedauthconfigurationgetcount8262
+        description: Microsoft Graph Get the number of the resource
+        call: organization-organization-certificatebasedauthconfiguration.organizationcertificatebasedauthconfigurationgetcount8262
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/organization/{organization-id}/certificatebasedauthconfiguration/{certificatebasedauthconfiguration-id}
+      name: organization-organization-id-certificatebasedauthconfiguration-certificatebaseda
+      description: REST surface for organization-organization-id-certificateBasedAuthConfiguration-certificateBasedA.
+      operations:
+      - method: GET
+        name: organizationgetcertificatebasedauthconfiguration
+        description: Microsoft Graph Get certificateBasedAuthConfiguration
+        call: organization-organization-certificatebasedauthconfiguration.organizationgetcertificatebasedauthconfiguration
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: organizationdeletecertificatebasedauthconfiguration
+        description: Microsoft Graph Delete certificateBasedAuthConfiguration
+        call: organization-organization-certificatebasedauthconfiguration.organizationdeletecertificatebasedauthconfiguration
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: organization-organization-certificatebasedauthconfiguration-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Organization — organization.certificateBasedAuthConfiguration. One tool per
+      consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-certificatebasedauthconfigurations
+      description: Microsoft Graph List certificateBasedAuthConfigurations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: organization-organization-certificatebasedauthconfiguration.organizationlistcertificatebasedauthconfiguration
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-certificatebasedauthconfiguration
+      description: Microsoft Graph Create certificateBasedAuthConfiguration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: organization-organization-certificatebasedauthconfiguration.organizationcreatecertificatebasedauthconfiguration
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: organization-organization-certificatebasedauthconfiguration.organizationcertificatebasedauthconfigurationgetcount8262
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-certificatebasedauthconfiguration
+      description: Microsoft Graph Get certificateBasedAuthConfiguration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: organization-organization-certificatebasedauthconfiguration.organizationgetcertificatebasedauthconfiguration
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-certificatebasedauthconfiguration
+      description: Microsoft Graph Delete certificateBasedAuthConfiguration
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: organization-organization-certificatebasedauthconfiguration.organizationdeletecertificatebasedauthconfiguration
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

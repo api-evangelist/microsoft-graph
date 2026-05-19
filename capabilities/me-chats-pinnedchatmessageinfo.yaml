@@ -1,0 +1,82 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Me — chats.pinnedChatMessageInfo
+  description: 'Microsoft Graph Me — chats.pinnedChatMessageInfo. 1 operations. Lead operation: Microsoft Graph Get message
+    from chats. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - chats.pinnedChatMessageInfo
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: me-chats-pinnedchatmessageinfo
+    baseUri: ''
+    description: Microsoft Graph Me — chats.pinnedChatMessageInfo business capability. Self-contained, no shared references.
+    resources:
+    - name: chats-chat-id-pinnedMessages-pinnedChatMessageInfo-id-message
+      path: /chats/{chat-id}/pinnedMessages/{pinnedChatMessageInfo-id}/message
+      operations:
+      - name: chatspinnedmessagesgetmessage
+        method: GET
+        description: Microsoft Graph Get message from chats
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: me-chats-pinnedchatmessageinfo-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Me — chats.pinnedChatMessageInfo. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/chats/{chat-id}/pinnedmessages/{pinnedchatmessageinfo-id}/message
+      name: chats-chat-id-pinnedmessages-pinnedchatmessageinfo-id-message
+      description: REST surface for chats-chat-id-pinnedMessages-pinnedChatMessageInfo-id-message.
+      operations:
+      - method: GET
+        name: chatspinnedmessagesgetmessage
+        description: Microsoft Graph Get message from chats
+        call: me-chats-pinnedchatmessageinfo.chatspinnedmessagesgetmessage
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: me-chats-pinnedchatmessageinfo-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Me — chats.pinnedChatMessageInfo. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-message-chats
+      description: Microsoft Graph Get message from chats
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: me-chats-pinnedchatmessageinfo.chatspinnedmessagesgetmessage
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,251 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Me — Me.site
+  description: 'Microsoft Graph Me — Me.site. 5 operations. Lead operation: Microsoft Graph List followed sites. Self-contained
+    Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Me.site
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: me-me-site
+    baseUri: ''
+    description: Microsoft Graph Me — Me.site business capability. Self-contained, no shared references.
+    resources:
+    - name: me-followedSites
+      path: /me/followedSites
+      operations:
+      - name: melistfollowedsites
+        method: GET
+        description: Microsoft Graph List followed sites
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: me-followedSites-$count
+      path: /me/followedSites/$count
+      operations:
+      - name: mefollowedsitesgetcount389a
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: me-followedSites-add
+      path: /me/followedSites/add
+      operations:
+      - name: mefollowedsitesadd
+        method: POST
+        description: Microsoft Graph Invoke action add
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: me-followedSites-remove
+      path: /me/followedSites/remove
+      operations:
+      - name: mefollowedsitesremove
+        method: POST
+        description: Microsoft Graph Invoke action remove
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: me-followedSites-site-id
+      path: /me/followedSites/{site-id}
+      operations:
+      - name: megetfollowedsites
+        method: GET
+        description: Microsoft Graph Get followedSites from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: me-me-site-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Me — Me.site. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/me/followedsites
+      name: me-followedsites
+      description: REST surface for me-followedSites.
+      operations:
+      - method: GET
+        name: melistfollowedsites
+        description: Microsoft Graph List followed sites
+        call: me-me-site.melistfollowedsites
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/followedsites/count
+      name: me-followedsites-count
+      description: REST surface for me-followedSites-$count.
+      operations:
+      - method: GET
+        name: mefollowedsitesgetcount389a
+        description: Microsoft Graph Get the number of the resource
+        call: me-me-site.mefollowedsitesgetcount389a
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/followedsites/add
+      name: me-followedsites-add
+      description: REST surface for me-followedSites-add.
+      operations:
+      - method: POST
+        name: mefollowedsitesadd
+        description: Microsoft Graph Invoke action add
+        call: me-me-site.mefollowedsitesadd
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/followedsites/remove
+      name: me-followedsites-remove
+      description: REST surface for me-followedSites-remove.
+      operations:
+      - method: POST
+        name: mefollowedsitesremove
+        description: Microsoft Graph Invoke action remove
+        call: me-me-site.mefollowedsitesremove
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/followedsites/{site-id}
+      name: me-followedsites-site-id
+      description: REST surface for me-followedSites-site-id.
+      operations:
+      - method: GET
+        name: megetfollowedsites
+        description: Microsoft Graph Get followedSites from me
+        call: me-me-site.megetfollowedsites
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: me-me-site-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Me — Me.site. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-followed-sites
+      description: Microsoft Graph List followed sites
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: me-me-site.melistfollowedsites
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: me-me-site.mefollowedsitesgetcount389a
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-add
+      description: Microsoft Graph Invoke action add
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: me-me-site.mefollowedsitesadd
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-invoke-action-remove
+      description: Microsoft Graph Invoke action remove
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: me-me-site.mefollowedsitesremove
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-followedsites-me
+      description: Microsoft Graph Get followedSites from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: me-me-site.megetfollowedsites
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.

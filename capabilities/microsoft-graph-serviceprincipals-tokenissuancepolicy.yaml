@@ -1,0 +1,280 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.tokenIssuancePolicy
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.tokenIssuancePolicy. 6 operations.
+    Lead operation: Microsoft Graph Get tokenIssuancePolicies from servicePrincipals. Self-contained Naftiko capability covering
+    one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - servicePrincipals.tokenIssuancePolicy
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-serviceprincipals-tokenissuancepolicy
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.tokenIssuancePolicy business
+      capability. Self-contained, no shared references.
+    resources:
+    - name: servicePrincipals-servicePrincipal-id-tokenIssuancePolicies
+      path: /servicePrincipals/{servicePrincipal-id}/tokenIssuancePolicies
+      operations:
+      - name: serviceprincipalslisttokenissuancepolicies
+        method: GET
+        description: Microsoft Graph Get tokenIssuancePolicies from servicePrincipals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: servicePrincipals-servicePrincipal-id-tokenIssuancePolicies-$count
+      path: /servicePrincipals/{servicePrincipal-id}/tokenIssuancePolicies/$count
+      operations:
+      - name: serviceprincipalstokenissuancepoliciesgetcount578b
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: servicePrincipals-servicePrincipal-id-tokenIssuancePolicies-$ref
+      path: /servicePrincipals/{servicePrincipal-id}/tokenIssuancePolicies/$ref
+      operations:
+      - name: serviceprincipalslistreftokenissuancepolicies
+        method: GET
+        description: Microsoft Graph Get ref of tokenIssuancePolicies from servicePrincipals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+      - name: serviceprincipalscreatereftokenissuancepolicies
+        method: POST
+        description: Microsoft Graph Create new navigation property ref to tokenIssuancePolicies for servicePrincipals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: serviceprincipalsdeletereftokenissuancepolicies
+        method: DELETE
+        description: Microsoft Graph Delete ref of navigation property tokenIssuancePolicies for servicePrincipals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+        - name: '@id'
+          in: query
+          type: string
+          description: The delete Uri
+          required: true
+    - name: servicePrincipals-servicePrincipal-id-tokenIssuancePolicies-tokenIssuancePolicy-
+      path: /servicePrincipals/{servicePrincipal-id}/tokenIssuancePolicies/{tokenIssuancePolicy-id}/$ref
+      operations:
+      - name: serviceprincipalstokenissuancepoliciesdeletereftokenissuancepolicy
+        method: DELETE
+        description: Microsoft Graph Delete ref of navigation property tokenIssuancePolicies for servicePrincipals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-serviceprincipals-tokenissuancepolicy-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.tokenIssuancePolicy.
+      One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/tokenissuancepolicies
+      name: serviceprincipals-serviceprincipal-id-tokenissuancepolicies
+      description: REST surface for servicePrincipals-servicePrincipal-id-tokenIssuancePolicies.
+      operations:
+      - method: GET
+        name: serviceprincipalslisttokenissuancepolicies
+        description: Microsoft Graph Get tokenIssuancePolicies from servicePrincipals
+        call: microsoft-graph-serviceprincipals-tokenissuancepolicy.serviceprincipalslisttokenissuancepolicies
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/tokenissuancepolicies/count
+      name: serviceprincipals-serviceprincipal-id-tokenissuancepolicies-count
+      description: REST surface for servicePrincipals-servicePrincipal-id-tokenIssuancePolicies-$count.
+      operations:
+      - method: GET
+        name: serviceprincipalstokenissuancepoliciesgetcount578b
+        description: Microsoft Graph Get the number of the resource
+        call: microsoft-graph-serviceprincipals-tokenissuancepolicy.serviceprincipalstokenissuancepoliciesgetcount578b
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/tokenissuancepolicies/ref
+      name: serviceprincipals-serviceprincipal-id-tokenissuancepolicies-ref
+      description: REST surface for servicePrincipals-servicePrincipal-id-tokenIssuancePolicies-$ref.
+      operations:
+      - method: GET
+        name: serviceprincipalslistreftokenissuancepolicies
+        description: Microsoft Graph Get ref of tokenIssuancePolicies from servicePrincipals
+        call: microsoft-graph-serviceprincipals-tokenissuancepolicy.serviceprincipalslistreftokenissuancepolicies
+        with:
+          $orderby: rest.$orderby
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: serviceprincipalscreatereftokenissuancepolicies
+        description: Microsoft Graph Create new navigation property ref to tokenIssuancePolicies for servicePrincipals
+        call: microsoft-graph-serviceprincipals-tokenissuancepolicy.serviceprincipalscreatereftokenissuancepolicies
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: serviceprincipalsdeletereftokenissuancepolicies
+        description: Microsoft Graph Delete ref of navigation property tokenIssuancePolicies for servicePrincipals
+        call: microsoft-graph-serviceprincipals-tokenissuancepolicy.serviceprincipalsdeletereftokenissuancepolicies
+        with:
+          If-Match: rest.If-Match
+          '@id': rest.@id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/serviceprincipals/{serviceprincipal-id}/tokenissuancepolicies/{tokenissuancepolicy-id}/ref
+      name: serviceprincipals-serviceprincipal-id-tokenissuancepolicies-tokenissuancepolicy
+      description: REST surface for servicePrincipals-servicePrincipal-id-tokenIssuancePolicies-tokenIssuancePolicy-.
+      operations:
+      - method: DELETE
+        name: serviceprincipalstokenissuancepoliciesdeletereftokenissuancepolicy
+        description: Microsoft Graph Delete ref of navigation property tokenIssuancePolicies for servicePrincipals
+        call: microsoft-graph-serviceprincipals-tokenissuancepolicy.serviceprincipalstokenissuancepoliciesdeletereftokenissuancepolicy
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-serviceprincipals-tokenissuancepolicy-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — servicePrincipals.tokenIssuancePolicy.
+      One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-tokenissuancepolicies-serviceprincipals
+      description: Microsoft Graph Get tokenIssuancePolicies from servicePrincipals
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-tokenissuancepolicy.serviceprincipalslisttokenissuancepolicies
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-tokenissuancepolicy.serviceprincipalstokenissuancepoliciesgetcount578b
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-ref-tokenissuancepolicies
+      description: Microsoft Graph Get ref of tokenIssuancePolicies from servicePrincipals
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-tokenissuancepolicy.serviceprincipalslistreftokenissuancepolicies
+      with:
+        $orderby: tools.$orderby
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-new-navigation
+      description: Microsoft Graph Create new navigation property ref to tokenIssuancePolicies for servicePrincipals
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microsoft-graph-serviceprincipals-tokenissuancepolicy.serviceprincipalscreatereftokenissuancepolicies
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-ref-navigation
+      description: Microsoft Graph Delete ref of navigation property tokenIssuancePolicies for servicePrincipals
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-tokenissuancepolicy.serviceprincipalsdeletereftokenissuancepolicies
+      with:
+        If-Match: tools.If-Match
+        '@id': tools.@id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-ref-navigation-2
+      description: Microsoft Graph Delete ref of navigation property tokenIssuancePolicies for servicePrincipals
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-serviceprincipals-tokenissuancepolicy.serviceprincipalstokenissuancepoliciesdeletereftokenissuancepolicy
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

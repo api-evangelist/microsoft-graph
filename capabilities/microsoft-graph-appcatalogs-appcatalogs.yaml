@@ -1,0 +1,118 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — appCatalogs.appCatalogs
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — appCatalogs.appCatalogs. 2 operations. Lead
+    operation: Microsoft Graph Get appCatalogs. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - appCatalogs.appCatalogs
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-appcatalogs-appcatalogs
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — appCatalogs.appCatalogs business capability.
+      Self-contained, no shared references.
+    resources:
+    - name: appCatalogs
+      path: /appCatalogs
+      operations:
+      - name: appcatalogsappcatalogsgetappcatalogs
+        method: GET
+        description: Microsoft Graph Get appCatalogs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: appcatalogsappcatalogsupdateappcatalogs
+        method: PATCH
+        description: Microsoft Graph Update appCatalogs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-appcatalogs-appcatalogs-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — appCatalogs.appCatalogs. One
+      Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/appcatalogs
+      name: appcatalogs
+      description: REST surface for appCatalogs.
+      operations:
+      - method: GET
+        name: appcatalogsappcatalogsgetappcatalogs
+        description: Microsoft Graph Get appCatalogs
+        call: microsoft-graph-appcatalogs-appcatalogs.appcatalogsappcatalogsgetappcatalogs
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: appcatalogsappcatalogsupdateappcatalogs
+        description: Microsoft Graph Update appCatalogs
+        call: microsoft-graph-appcatalogs-appcatalogs.appcatalogsappcatalogsupdateappcatalogs
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-appcatalogs-appcatalogs-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — appCatalogs.appCatalogs. One
+      tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-appcatalogs
+      description: Microsoft Graph Get appCatalogs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-appcatalogs-appcatalogs.appcatalogsappcatalogsgetappcatalogs
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-appcatalogs
+      description: Microsoft Graph Update appCatalogs
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-appcatalogs-appcatalogs.appcatalogsappcatalogsupdateappcatalogs
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

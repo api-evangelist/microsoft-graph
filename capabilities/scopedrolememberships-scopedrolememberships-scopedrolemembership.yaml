@@ -1,0 +1,273 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Scopedrolememberships — scopedRoleMemberships.scopedRoleMembership
+  description: 'Microsoft Graph Scopedrolememberships — scopedRoleMemberships.scopedRoleMembership. 6 operations. Lead operation:
+    Microsoft Graph Get entities from scopedRoleMemberships. Self-contained Naftiko capability covering one Microsoft Graph
+    business surface.'
+  tags:
+  - Microsoft Graph
+  - scopedRoleMemberships.scopedRoleMembership
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: scopedrolememberships-scopedrolememberships-scopedrolemembership
+    baseUri: ''
+    description: Microsoft Graph Scopedrolememberships — scopedRoleMemberships.scopedRoleMembership business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: scopedRoleMemberships
+      path: /scopedRoleMemberships
+      operations:
+      - name: scopedrolemembershipsscopedrolemembershiplistscopedrolemembership
+        method: GET
+        description: Microsoft Graph Get entities from scopedRoleMemberships
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: scopedrolemembershipsscopedrolemembershipcreatescopedrolemembership
+        method: POST
+        description: Microsoft Graph Add new entity to scopedRoleMemberships
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: scopedRoleMemberships-$count
+      path: /scopedRoleMemberships/$count
+      operations:
+      - name: scopedrolemembershipsgetcountdcc4
+        method: GET
+        description: Microsoft Graph Get the number of the resource
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: scopedRoleMemberships-scopedRoleMembership-id
+      path: /scopedRoleMemberships/{scopedRoleMembership-id}
+      operations:
+      - name: scopedrolemembershipsscopedrolemembershipgetscopedrolemembership
+        method: GET
+        description: Microsoft Graph Get entity from scopedRoleMemberships by key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: scopedrolemembershipsscopedrolemembershipupdatescopedrolemembership
+        method: PATCH
+        description: Microsoft Graph Update entity in scopedRoleMemberships
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: scopedrolemembershipsscopedrolemembershipdeletescopedrolemembership
+        method: DELETE
+        description: Microsoft Graph Delete entity from scopedRoleMemberships
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: scopedrolememberships-scopedrolememberships-scopedrolemembership-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Scopedrolememberships — scopedRoleMemberships.scopedRoleMembership. One
+      Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/scopedrolememberships
+      name: scopedrolememberships
+      description: REST surface for scopedRoleMemberships.
+      operations:
+      - method: GET
+        name: scopedrolemembershipsscopedrolemembershiplistscopedrolemembership
+        description: Microsoft Graph Get entities from scopedRoleMemberships
+        call: scopedrolememberships-scopedrolememberships-scopedrolemembership.scopedrolemembershipsscopedrolemembershiplistscopedrolemembership
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: scopedrolemembershipsscopedrolemembershipcreatescopedrolemembership
+        description: Microsoft Graph Add new entity to scopedRoleMemberships
+        call: scopedrolememberships-scopedrolememberships-scopedrolemembership.scopedrolemembershipsscopedrolemembershipcreatescopedrolemembership
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scopedrolememberships/count
+      name: scopedrolememberships-count
+      description: REST surface for scopedRoleMemberships-$count.
+      operations:
+      - method: GET
+        name: scopedrolemembershipsgetcountdcc4
+        description: Microsoft Graph Get the number of the resource
+        call: scopedrolememberships-scopedrolememberships-scopedrolemembership.scopedrolemembershipsgetcountdcc4
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scopedrolememberships/{scopedrolemembership-id}
+      name: scopedrolememberships-scopedrolemembership-id
+      description: REST surface for scopedRoleMemberships-scopedRoleMembership-id.
+      operations:
+      - method: GET
+        name: scopedrolemembershipsscopedrolemembershipgetscopedrolemembership
+        description: Microsoft Graph Get entity from scopedRoleMemberships by key
+        call: scopedrolememberships-scopedrolememberships-scopedrolemembership.scopedrolemembershipsscopedrolemembershipgetscopedrolemembership
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: scopedrolemembershipsscopedrolemembershipupdatescopedrolemembership
+        description: Microsoft Graph Update entity in scopedRoleMemberships
+        call: scopedrolememberships-scopedrolememberships-scopedrolemembership.scopedrolemembershipsscopedrolemembershipupdatescopedrolemembership
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: scopedrolemembershipsscopedrolemembershipdeletescopedrolemembership
+        description: Microsoft Graph Delete entity from scopedRoleMemberships
+        call: scopedrolememberships-scopedrolememberships-scopedrolemembership.scopedrolemembershipsscopedrolemembershipdeletescopedrolemembership
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: scopedrolememberships-scopedrolememberships-scopedrolemembership-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Scopedrolememberships — scopedRoleMemberships.scopedRoleMembership. One tool
+      per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-entities-scopedrolememberships
+      description: Microsoft Graph Get entities from scopedRoleMemberships
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: scopedrolememberships-scopedrolememberships-scopedrolemembership.scopedrolemembershipsscopedrolemembershiplistscopedrolemembership
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-add-new-entity
+      description: Microsoft Graph Add new entity to scopedRoleMemberships
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: scopedrolememberships-scopedrolememberships-scopedrolemembership.scopedrolemembershipsscopedrolemembershipcreatescopedrolemembership
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-number-resource
+      description: Microsoft Graph Get the number of the resource
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: scopedrolememberships-scopedrolememberships-scopedrolemembership.scopedrolemembershipsgetcountdcc4
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-entity-scopedrolememberships
+      description: Microsoft Graph Get entity from scopedRoleMemberships by key
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: scopedrolememberships-scopedrolememberships-scopedrolemembership.scopedrolemembershipsscopedrolemembershipgetscopedrolemembership
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-entity-scopedrolememberships
+      description: Microsoft Graph Update entity in scopedRoleMemberships
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: scopedrolememberships-scopedrolememberships-scopedrolemembership.scopedrolemembershipsscopedrolemembershipupdatescopedrolemembership
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-entity-scopedrolememberships
+      description: Microsoft Graph Delete entity from scopedRoleMemberships
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: scopedrolememberships-scopedrolememberships-scopedrolemembership.scopedrolemembershipsscopedrolemembershipdeletescopedrolemembership
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

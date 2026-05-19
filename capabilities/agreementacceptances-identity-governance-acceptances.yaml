@@ -1,0 +1,273 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Agreement Acceptances API — Identity Governance Acceptances
+  description: 'Microsoft Graph Agreement Acceptances API — Identity Governance Acceptances. 6 operations. Lead operation:
+    Microsoft Graph List identity governance agreement acceptances. Self-contained Naftiko capability covering one Microsoft
+    Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - Identity Governance Acceptances
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: agreementacceptances-identity-governance-acceptances
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph Agreement Acceptances API — Identity Governance Acceptances business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: identityGovernance-termsOfUse-agreementAcceptances
+      path: /identityGovernance/termsOfUse/agreementAcceptances
+      operations:
+      - name: listidentitygovernanceagreementacceptances
+        method: GET
+        description: Microsoft Graph List identity governance agreement acceptances
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: createidentitygovernanceagreementacceptance
+        method: POST
+        description: Microsoft Graph Create identity governance agreement acceptance
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: identityGovernance-termsOfUse-agreementAcceptances-$count
+      path: /identityGovernance/termsOfUse/agreementAcceptances/$count
+      operations:
+      - name: countidentitygovernanceagreementacceptances
+        method: GET
+        description: Microsoft Graph Count identity governance agreement acceptances
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: identityGovernance-termsOfUse-agreementAcceptances-agreementAcceptance-id
+      path: /identityGovernance/termsOfUse/agreementAcceptances/{agreementAcceptance-id}
+      operations:
+      - name: getidentitygovernanceagreementacceptance
+        method: GET
+        description: Microsoft Graph Get identity governance agreement acceptance
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: updateidentitygovernanceagreementacceptance
+        method: PATCH
+        description: Microsoft Graph Update identity governance agreement acceptance
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteidentitygovernanceagreementacceptance
+        method: DELETE
+        description: Microsoft Graph Delete identity governance agreement acceptance
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag for optimistic concurrency control
+  exposes:
+  - type: rest
+    namespace: agreementacceptances-identity-governance-acceptances-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Agreement Acceptances API — Identity Governance Acceptances. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/identitygovernance/termsofuse/agreementacceptances
+      name: identitygovernance-termsofuse-agreementacceptances
+      description: REST surface for identityGovernance-termsOfUse-agreementAcceptances.
+      operations:
+      - method: GET
+        name: listidentitygovernanceagreementacceptances
+        description: Microsoft Graph List identity governance agreement acceptances
+        call: agreementacceptances-identity-governance-acceptances.listidentitygovernanceagreementacceptances
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createidentitygovernanceagreementacceptance
+        description: Microsoft Graph Create identity governance agreement acceptance
+        call: agreementacceptances-identity-governance-acceptances.createidentitygovernanceagreementacceptance
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/identitygovernance/termsofuse/agreementacceptances/count
+      name: identitygovernance-termsofuse-agreementacceptances-count
+      description: REST surface for identityGovernance-termsOfUse-agreementAcceptances-$count.
+      operations:
+      - method: GET
+        name: countidentitygovernanceagreementacceptances
+        description: Microsoft Graph Count identity governance agreement acceptances
+        call: agreementacceptances-identity-governance-acceptances.countidentitygovernanceagreementacceptances
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/identitygovernance/termsofuse/agreementacceptances/{agreementacceptance-id}
+      name: identitygovernance-termsofuse-agreementacceptances-agreementacceptance-id
+      description: REST surface for identityGovernance-termsOfUse-agreementAcceptances-agreementAcceptance-id.
+      operations:
+      - method: GET
+        name: getidentitygovernanceagreementacceptance
+        description: Microsoft Graph Get identity governance agreement acceptance
+        call: agreementacceptances-identity-governance-acceptances.getidentitygovernanceagreementacceptance
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateidentitygovernanceagreementacceptance
+        description: Microsoft Graph Update identity governance agreement acceptance
+        call: agreementacceptances-identity-governance-acceptances.updateidentitygovernanceagreementacceptance
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteidentitygovernanceagreementacceptance
+        description: Microsoft Graph Delete identity governance agreement acceptance
+        call: agreementacceptances-identity-governance-acceptances.deleteidentitygovernanceagreementacceptance
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: agreementacceptances-identity-governance-acceptances-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Agreement Acceptances API — Identity Governance Acceptances. One tool per
+      consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-list-identity-governance
+      description: Microsoft Graph List identity governance agreement acceptances
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agreementacceptances-identity-governance-acceptances.listidentitygovernanceagreementacceptances
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-create-identity-governance
+      description: Microsoft Graph Create identity governance agreement acceptance
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: agreementacceptances-identity-governance-acceptances.createidentitygovernanceagreementacceptance
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-count-identity-governance
+      description: Microsoft Graph Count identity governance agreement acceptances
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agreementacceptances-identity-governance-acceptances.countidentitygovernanceagreementacceptances
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-identity-governance
+      description: Microsoft Graph Get identity governance agreement acceptance
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agreementacceptances-identity-governance-acceptances.getidentitygovernanceagreementacceptance
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-identity-governance
+      description: Microsoft Graph Update identity governance agreement acceptance
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: agreementacceptances-identity-governance-acceptances.updateidentitygovernanceagreementacceptance
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-identity-governance
+      description: Microsoft Graph Delete identity governance agreement acceptance
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: agreementacceptances-identity-governance-acceptances.deleteidentitygovernanceagreementacceptance
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

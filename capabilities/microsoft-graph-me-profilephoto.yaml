@@ -1,0 +1,454 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph OData Service for namespace microsoft.graph — me.profilePhoto
+  description: 'Microsoft Graph OData Service for namespace microsoft.graph — me.profilePhoto. 11 operations. Lead operation:
+    Microsoft Graph Get profilePhoto. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - me.profilePhoto
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microsoft-graph-me-profilephoto
+    baseUri: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph OData Service for namespace microsoft.graph — me.profilePhoto business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: me-photo
+      path: /me/photo
+      operations:
+      - name: megetphoto
+        method: GET
+        description: Microsoft Graph Get profilePhoto
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+      - name: meupdatephoto
+        method: PATCH
+        description: Microsoft Graph Update profilePhoto
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: medeletephoto
+        method: DELETE
+        description: Microsoft Graph Delete profilePhoto
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: me-photo-$value
+      path: /me/photo/$value
+      operations:
+      - name: megetphotocontent
+        method: GET
+        description: Microsoft Graph Get profilePhoto
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: meupdatephotocontent
+        method: PUT
+        description: Microsoft Graph Update profilePhoto
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: medeletephotocontent
+        method: DELETE
+        description: Microsoft Graph Delete profilePhoto
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+    - name: me-photos
+      path: /me/photos
+      operations:
+      - name: melistphotos
+        method: GET
+        description: Microsoft Graph Get photos from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: me-photos-profilePhoto-id
+      path: /me/photos/{profilePhoto-id}
+      operations:
+      - name: megetphotos
+        method: GET
+        description: Microsoft Graph Get photos from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+    - name: me-photos-profilePhoto-id-$value
+      path: /me/photos/{profilePhoto-id}/$value
+      operations:
+      - name: megetphotoscontent
+        method: GET
+        description: Microsoft Graph Get media content for the navigation property photos from me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: meupdatephotoscontent
+        method: PUT
+        description: Microsoft Graph Update media content for the navigation property photos in me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: medeletephotoscontent
+        method: DELETE
+        description: Microsoft Graph Delete media content for the navigation property photos in me
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: ETag
+  exposes:
+  - type: rest
+    namespace: microsoft-graph-me-profilephoto-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph OData Service for namespace microsoft.graph — me.profilePhoto. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/me/photo
+      name: me-photo
+      description: REST surface for me-photo.
+      operations:
+      - method: GET
+        name: megetphoto
+        description: Microsoft Graph Get profilePhoto
+        call: microsoft-graph-me-profilephoto.megetphoto
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: meupdatephoto
+        description: Microsoft Graph Update profilePhoto
+        call: microsoft-graph-me-profilephoto.meupdatephoto
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: medeletephoto
+        description: Microsoft Graph Delete profilePhoto
+        call: microsoft-graph-me-profilephoto.medeletephoto
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/photo/value
+      name: me-photo-value
+      description: REST surface for me-photo-$value.
+      operations:
+      - method: GET
+        name: megetphotocontent
+        description: Microsoft Graph Get profilePhoto
+        call: microsoft-graph-me-profilephoto.megetphotocontent
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: meupdatephotocontent
+        description: Microsoft Graph Update profilePhoto
+        call: microsoft-graph-me-profilephoto.meupdatephotocontent
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: medeletephotocontent
+        description: Microsoft Graph Delete profilePhoto
+        call: microsoft-graph-me-profilephoto.medeletephotocontent
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/photos
+      name: me-photos
+      description: REST surface for me-photos.
+      operations:
+      - method: GET
+        name: melistphotos
+        description: Microsoft Graph Get photos from me
+        call: microsoft-graph-me-profilephoto.melistphotos
+        with:
+          $orderby: rest.$orderby
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/photos/{profilephoto-id}
+      name: me-photos-profilephoto-id
+      description: REST surface for me-photos-profilePhoto-id.
+      operations:
+      - method: GET
+        name: megetphotos
+        description: Microsoft Graph Get photos from me
+        call: microsoft-graph-me-profilephoto.megetphotos
+        with:
+          $select: rest.$select
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/me/photos/{profilephoto-id}/value
+      name: me-photos-profilephoto-id-value
+      description: REST surface for me-photos-profilePhoto-id-$value.
+      operations:
+      - method: GET
+        name: megetphotoscontent
+        description: Microsoft Graph Get media content for the navigation property photos from me
+        call: microsoft-graph-me-profilephoto.megetphotoscontent
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: meupdatephotoscontent
+        description: Microsoft Graph Update media content for the navigation property photos in me
+        call: microsoft-graph-me-profilephoto.meupdatephotoscontent
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: medeletephotoscontent
+        description: Microsoft Graph Delete media content for the navigation property photos in me
+        call: microsoft-graph-me-profilephoto.medeletephotoscontent
+        with:
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microsoft-graph-me-profilephoto-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph OData Service for namespace microsoft.graph — me.profilePhoto. One tool per
+      consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-get-profilephoto
+      description: Microsoft Graph Get profilePhoto
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-profilephoto.megetphoto
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-profilephoto
+      description: Microsoft Graph Update profilePhoto
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-profilephoto.meupdatephoto
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-profilephoto
+      description: Microsoft Graph Delete profilePhoto
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-me-profilephoto.medeletephoto
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-profilephoto-2
+      description: Microsoft Graph Get profilePhoto
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-profilephoto.megetphotocontent
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-profilephoto-2
+      description: Microsoft Graph Update profilePhoto
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-profilephoto.meupdatephotocontent
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-profilephoto-2
+      description: Microsoft Graph Delete profilePhoto
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-me-profilephoto.medeletephotocontent
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-photos-me
+      description: Microsoft Graph Get photos from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-profilephoto.melistphotos
+      with:
+        $orderby: tools.$orderby
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-photos-me-2
+      description: Microsoft Graph Get photos from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-profilephoto.megetphotos
+      with:
+        $select: tools.$select
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-get-media-content
+      description: Microsoft Graph Get media content for the navigation property photos from me
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-profilephoto.megetphotoscontent
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-update-media-content
+      description: Microsoft Graph Update media content for the navigation property photos in me
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: microsoft-graph-me-profilephoto.meupdatephotoscontent
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-graph-delete-media-content
+      description: Microsoft Graph Delete media content for the navigation property photos in me
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microsoft-graph-me-profilephoto.medeletephotoscontent
+      with:
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.

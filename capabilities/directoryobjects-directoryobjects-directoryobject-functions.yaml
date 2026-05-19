@@ -1,0 +1,89 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Graph Directoryobjects — directoryObjects.directoryObject.Functions
+  description: 'Microsoft Graph Directoryobjects — directoryObjects.directoryObject.Functions. 1 operations. Lead operation:
+    Microsoft Graph Invoke function delta. Self-contained Naftiko capability covering one Microsoft Graph business surface.'
+  tags:
+  - Microsoft Graph
+  - directoryObjects.directoryObject.Functions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_GRAPH_API_KEY: MICROSOFT_GRAPH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: directoryobjects-directoryobjects-directoryobject-functions
+    baseUri: ''
+    description: Microsoft Graph Directoryobjects — directoryObjects.directoryObject.Functions business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: directoryObjects-delta()
+      path: /directoryObjects/delta()
+      operations:
+      - name: directoryobjectsdelta
+        method: GET
+        description: Microsoft Graph Invoke function delta
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $select
+          in: query
+          type: array
+          description: Select properties to be returned
+        - name: $orderby
+          in: query
+          type: array
+          description: Order items by property values
+        - name: $expand
+          in: query
+          type: array
+          description: Expand related entities
+  exposes:
+  - type: rest
+    namespace: directoryobjects-directoryobjects-directoryobject-functions-rest
+    port: 8080
+    description: REST adapter for Microsoft Graph Directoryobjects — directoryObjects.directoryObject.Functions. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/directoryobjects/delta
+      name: directoryobjects-delta
+      description: REST surface for directoryObjects-delta().
+      operations:
+      - method: GET
+        name: directoryobjectsdelta
+        description: Microsoft Graph Invoke function delta
+        call: directoryobjects-directoryobjects-directoryobject-functions.directoryobjectsdelta
+        with:
+          $select: rest.$select
+          $orderby: rest.$orderby
+          $expand: rest.$expand
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: directoryobjects-directoryobjects-directoryobject-functions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Graph Directoryobjects — directoryObjects.directoryObject.Functions. One tool per
+      consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: microsoft-graph-invoke-function-delta
+      description: Microsoft Graph Invoke function delta
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: directoryobjects-directoryobjects-directoryobject-functions.directoryobjectsdelta
+      with:
+        $select: tools.$select
+        $orderby: tools.$orderby
+        $expand: tools.$expand
+      outputParameters:
+      - type: object
+        mapping: $.
