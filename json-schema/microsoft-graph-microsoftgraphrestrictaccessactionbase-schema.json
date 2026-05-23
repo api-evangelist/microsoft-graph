@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.restrictAccessActionBase",
+  "title": "microsoft.graph.restrictAccessActionBase",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.dlpActionInfo"
+    },
+    {
+      "title": "restrictAccessActionBase",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "restrictionAction": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.restrictionAction"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Action for the app to take. The possible values are: warn, audit, block."
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.restrictAccessAction": "#/components/schemas/microsoft.graph.restrictAccessAction"
+        }
+      }
+    }
+  ]
+}

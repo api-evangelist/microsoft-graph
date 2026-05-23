@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.invitationRedemptionIdentityProviderConfiguration",
+  "title": "invitationRedemptionIdentityProviderConfiguration",
+  "required": [
+    "@odata.type"
+  ],
+  "type": "object",
+  "properties": {
+    "fallbackIdentityProvider": {
+      "anyOf": [
+        {
+          "$ref": "#/components/schemas/microsoft.graph.b2bIdentityProvidersType"
+        },
+        {
+          "type": "object",
+          "nullable": true
+        }
+      ],
+      "description": "The fallback identity provider to be used in case no primary identity provider can be used for guest invitation redemption. The possible values are: defaultConfiguredIdp, emailOneTimePasscode, or microsoftAccount."
+    },
+    "primaryIdentityProviderPrecedenceOrder": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/microsoft.graph.b2bIdentityProvidersType"
+          },
+          {
+            "type": "object",
+            "nullable": true
+          }
+        ]
+      },
+      "description": "Collection of identity providers in priority order of preference to be used for guest invitation redemption. The possible values are: azureActiveDirectory, externalFederation, or socialIdentityProviders."
+    },
+    "@odata.type": {
+      "type": "string"
+    }
+  },
+  "discriminator": {
+    "propertyName": "@odata.type",
+    "mapping": {
+      "#microsoft.graph.defaultInvitationRedemptionIdentityProviderConfiguration": "#/components/schemas/microsoft.graph.defaultInvitationRedemptionIdentityProviderConfiguration"
+    }
+  }
+}

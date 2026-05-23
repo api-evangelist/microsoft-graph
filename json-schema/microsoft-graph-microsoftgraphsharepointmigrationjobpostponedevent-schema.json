@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.sharePointMigrationJobPostponedEvent",
+  "title": "microsoft.graph.sharePointMigrationJobPostponedEvent",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.sharePointMigrationEvent"
+    },
+    {
+      "title": "sharePointMigrationJobPostponedEvent",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "jobsInQueue": {
+          "type": "number",
+          "description": "The number of migration jobs in the queue of the current database. Read-only.",
+          "format": "int64"
+        },
+        "nextPickupDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "The date and time that indicate when this job is picked up next. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.",
+          "format": "date-time"
+        },
+        "reason": {
+          "type": "string",
+          "description": "The reason for the postponement. Read-only."
+        },
+        "totalRetryCount": {
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "type": "number",
+          "description": "The current retry count of the job. Read-only.",
+          "format": "int32"
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.sharePointMigrationJobPostponedEvent"
+}

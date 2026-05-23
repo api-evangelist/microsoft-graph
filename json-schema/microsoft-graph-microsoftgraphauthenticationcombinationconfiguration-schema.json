@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.authenticationCombinationConfiguration",
+  "title": "microsoft.graph.authenticationCombinationConfiguration",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "authenticationCombinationConfiguration",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "appliesToCombinations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.authenticationMethodModes"
+          },
+          "description": "Which authentication method combinations this configuration applies to. Must be an allowedCombinations object, part of the authenticationStrengthPolicy. The only possible value for fido2combinationConfigurations is 'fido2'."
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.fido2CombinationConfiguration": "#/components/schemas/microsoft.graph.fido2CombinationConfiguration",
+          "#microsoft.graph.x509CertificateCombinationConfiguration": "#/components/schemas/microsoft.graph.x509CertificateCombinationConfiguration"
+        }
+      }
+    }
+  ]
+}

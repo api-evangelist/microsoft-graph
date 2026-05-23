@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.buildingMap",
+  "title": "microsoft.graph.buildingMap",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.baseMapFeature"
+    },
+    {
+      "title": "buildingMap",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "placeId": {
+          "type": "string",
+          "description": "Identifier for the building to which this buildingMap belongs.",
+          "nullable": true
+        },
+        "footprints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.footprintMap"
+          },
+          "description": "Represents the approximate physical extent of a referenced building. It corresponds to footprint.geojson in IMDF format.",
+          "x-ms-navigationProperty": true
+        },
+        "levels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.levelMap"
+          },
+          "description": "Represents a physical floor structure within a building. It corresponds to level.geojson in IMDF format.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.buildingMap"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.buildingMap"
+}

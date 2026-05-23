@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.managedApp",
+  "title": "microsoft.graph.managedApp",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.mobileApp"
+    },
+    {
+      "title": "managedApp",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "appAvailability": {
+          "$ref": "#/components/schemas/microsoft.graph.managedAppAvailability"
+        },
+        "version": {
+          "type": "string",
+          "description": "The Application's version.",
+          "nullable": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.managedApp"
+        }
+      },
+      "description": "Abstract class that contains properties and inherited properties for apps that you can manage with an Intune app protection policy.",
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.managedAndroidStoreApp": "#/components/schemas/microsoft.graph.managedAndroidStoreApp",
+          "#microsoft.graph.managedIOSStoreApp": "#/components/schemas/microsoft.graph.managedIOSStoreApp",
+          "#microsoft.graph.managedMobileLobApp": "#/components/schemas/microsoft.graph.managedMobileLobApp",
+          "#microsoft.graph.managedAndroidLobApp": "#/components/schemas/microsoft.graph.managedAndroidLobApp",
+          "#microsoft.graph.managedIOSLobApp": "#/components/schemas/microsoft.graph.managedIOSLobApp"
+        }
+      }
+    }
+  ]
+}

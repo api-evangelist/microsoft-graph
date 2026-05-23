@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.baseEndUserNotification",
+  "title": "baseEndUserNotification",
+  "required": [
+    "@odata.type"
+  ],
+  "type": "object",
+  "properties": {
+    "defaultLanguage": {
+      "type": "string",
+      "description": "The default language for the end user notification.",
+      "nullable": true
+    },
+    "endUserNotification": {
+      "anyOf": [
+        {
+          "$ref": "#/components/schemas/microsoft.graph.endUserNotification"
+        },
+        {
+          "type": "object",
+          "nullable": true
+        }
+      ],
+      "x-ms-navigationProperty": true
+    },
+    "@odata.type": {
+      "type": "string"
+    }
+  },
+  "discriminator": {
+    "propertyName": "@odata.type",
+    "mapping": {
+      "#microsoft.graph.positiveReinforcementNotification": "#/components/schemas/microsoft.graph.positiveReinforcementNotification",
+      "#microsoft.graph.simulationNotification": "#/components/schemas/microsoft.graph.simulationNotification",
+      "#microsoft.graph.trainingReminderNotification": "#/components/schemas/microsoft.graph.trainingReminderNotification"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.callRecords.participantBase",
+  "title": "microsoft.graph.callRecords.participantBase",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "participantBase",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "administrativeUnitInfos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.callRecords.administrativeUnitInfo"
+          },
+          "description": "List of administrativeUnitInfo objects for the call participant."
+        },
+        "identity": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.communicationsIdentitySet"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The identity of the call participant."
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.callRecords.organizer": "#/components/schemas/microsoft.graph.callRecords.organizer",
+          "#microsoft.graph.callRecords.participant": "#/components/schemas/microsoft.graph.callRecords.participant"
+        }
+      }
+    }
+  ]
+}

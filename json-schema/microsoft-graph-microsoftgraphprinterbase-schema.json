@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.printerBase",
+  "title": "microsoft.graph.printerBase",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "printerBase",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "capabilities": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.printerCapabilities"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The capabilities of the printer/printerShare."
+        },
+        "defaults": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.printerDefaults"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The default print settings of printer/printerShare."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The name of the printer/printerShare."
+        },
+        "isAcceptingJobs": {
+          "type": "boolean",
+          "description": "Specifies whether the printer/printerShare is currently accepting new print jobs.",
+          "nullable": true
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.printerLocation"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The physical and/or organizational location of the printer/printerShare."
+        },
+        "manufacturer": {
+          "type": "string",
+          "description": "The manufacturer of the printer/printerShare.",
+          "nullable": true
+        },
+        "model": {
+          "type": "string",
+          "description": "The model name of the printer/printerShare.",
+          "nullable": true
+        },
+        "status": {
+          "$ref": "#/components/schemas/microsoft.graph.printerStatus"
+        },
+        "jobs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.printJob"
+          },
+          "description": "The list of jobs that are queued for printing by the printer/printerShare.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.printer": "#/components/schemas/microsoft.graph.printer",
+          "#microsoft.graph.printerShare": "#/components/schemas/microsoft.graph.printerShare"
+        }
+      }
+    }
+  ]
+}

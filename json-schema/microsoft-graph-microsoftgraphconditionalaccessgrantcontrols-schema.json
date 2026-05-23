@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.conditionalAccessGrantControls",
+  "title": "conditionalAccessGrantControls",
+  "required": [
+    "@odata.type"
+  ],
+  "type": "object",
+  "properties": {
+    "builtInControls": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/microsoft.graph.conditionalAccessGrantControl"
+      },
+      "description": "List of values of built-in controls required by the policy. Possible values: block, mfa, compliantDevice, domainJoinedDevice, approvedApplication, compliantApplication, passwordChange, unknownFutureValue."
+    },
+    "customAuthenticationFactors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of custom controls IDs required by the policy. For more information, see Custom controls."
+    },
+    "operator": {
+      "type": "string",
+      "description": "Defines the relationship of the grant controls. Possible values: AND, OR.",
+      "nullable": true
+    },
+    "termsOfUse": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of terms of use IDs required by the policy."
+    },
+    "authenticationStrength": {
+      "anyOf": [
+        {
+          "$ref": "#/components/schemas/microsoft.graph.authenticationStrengthPolicy"
+        },
+        {
+          "type": "object",
+          "nullable": true
+        }
+      ],
+      "x-ms-navigationProperty": true
+    },
+    "@odata.type": {
+      "type": "string"
+    }
+  }
+}

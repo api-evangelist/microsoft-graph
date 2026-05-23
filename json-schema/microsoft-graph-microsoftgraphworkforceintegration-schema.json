@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.workforceIntegration",
+  "title": "microsoft.graph.workforceIntegration",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.changeTrackedEntity"
+    },
+    {
+      "title": "workforceIntegration",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "type": "number",
+          "description": "API version for the callback URL. Start with 1.",
+          "format": "int32",
+          "nullable": true
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Name of the workforce integration.",
+          "nullable": true
+        },
+        "eligibilityFilteringEnabledEntities": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.eligibilityFilteringEnabledEntities"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Support to view eligibility-filtered results. The possible values are: none, swapRequest, offerShiftRequest, unknownFutureValue, timeOffReason. Use the Prefer: include-unknown-enum-members request header to get the following members in this evolvable enum: timeOffReason."
+        },
+        "encryption": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.workforceIntegrationEncryption"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The workforce integration encryption resource."
+        },
+        "isActive": {
+          "type": "boolean",
+          "description": "Indicates whether this workforce integration is currently active and available.",
+          "nullable": true
+        },
+        "supportedEntities": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.workforceIntegrationSupportedEntities"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The Shifts entities supported for synchronous change notifications. Shifts call back to the provided URL when client changes occur to the entities specified in this property. By default, no entities are supported for change notifications. The possible values are: none, shift, swapRequest, userShiftPreferences, openShift, openShiftRequest, offerShiftRequest, unknownFutureValue, timeCard, timeOffReason, timeOff, timeOffRequest. Use the Prefer: include-unknown-enum-members request header to get the following values in this evolvable enum: timeCard , timeOffReason , timeOff , timeOffRequest."
+        },
+        "url": {
+          "type": "string",
+          "description": "Workforce Integration URL for callbacks from the Shifts service.",
+          "nullable": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.workforceIntegration"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.workforceIntegration"
+}

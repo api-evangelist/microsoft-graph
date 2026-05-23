@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.dayNote",
+  "title": "microsoft.graph.dayNote",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.changeTrackedEntity"
+    },
+    {
+      "title": "dayNote",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "dayNoteDate": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",
+          "type": "string",
+          "description": "The date of the day note.",
+          "format": "date",
+          "nullable": true
+        },
+        "draftDayNote": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.itemBody"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The draft version of this day note that is viewable by managers. Only contentType text is supported."
+        },
+        "sharedDayNote": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.itemBody"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The shared version of this day note that is viewable by both employees and managers. Only contentType text is supported."
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.dayNote"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.dayNote"
+}

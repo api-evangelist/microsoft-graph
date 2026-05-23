@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.place",
+  "title": "microsoft.graph.place",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "place",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "address": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.physicalAddress"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The physical address of the place, including the street, city, state, country or region, and postal code."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The name that is associated with the place."
+        },
+        "geoCoordinates": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.outlookGeoCoordinates"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Specifies the place location in latitude, longitude, and (optionally) altitude coordinates."
+        },
+        "isWheelChairAccessible": {
+          "type": "boolean",
+          "description": "Indicates whether the place is wheelchair accessible.",
+          "nullable": true
+        },
+        "label": {
+          "type": "string",
+          "description": "User-defined description of the place.",
+          "nullable": true
+        },
+        "parentId": {
+          "type": "string",
+          "description": "The ID of a parent place.",
+          "nullable": true
+        },
+        "phone": {
+          "type": "string",
+          "description": "The phone number of the place.",
+          "nullable": true
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Custom tags that are associated with the place for categorization or filtering."
+        },
+        "checkIns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.checkInClaim"
+          },
+          "description": "A subresource of a place object that indicates the check-in status of an Outlook calendar event booked at the place.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.building": "#/components/schemas/microsoft.graph.building",
+          "#microsoft.graph.desk": "#/components/schemas/microsoft.graph.desk",
+          "#microsoft.graph.floor": "#/components/schemas/microsoft.graph.floor",
+          "#microsoft.graph.room": "#/components/schemas/microsoft.graph.room",
+          "#microsoft.graph.roomList": "#/components/schemas/microsoft.graph.roomList",
+          "#microsoft.graph.section": "#/components/schemas/microsoft.graph.section",
+          "#microsoft.graph.workspace": "#/components/schemas/microsoft.graph.workspace"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.crossTenantAccessPolicy",
+  "title": "microsoft.graph.crossTenantAccessPolicy",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.policyBase"
+    },
+    {
+      "title": "crossTenantAccessPolicy",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "allowedCloudEndpoints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Used to specify which Microsoft clouds an organization would like to collaborate with. By default, this value is empty. Supported values for this field are: microsoftonline.com, microsoftonline.us, and partner.microsoftonline.cn."
+        },
+        "default": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.crossTenantAccessPolicyConfigurationDefault"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Defines the default configuration for how your organization interacts with external Microsoft Entra organizations.",
+          "x-ms-navigationProperty": true
+        },
+        "partners": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.crossTenantAccessPolicyConfigurationPartner"
+          },
+          "description": "Defines partner-specific configurations for external Microsoft Entra organizations.",
+          "x-ms-navigationProperty": true
+        },
+        "templates": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.policyTemplate"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Represents the base policy in the directory for multitenant organization settings.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.crossTenantAccessPolicy"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.crossTenantAccessPolicy"
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.serviceHealth",
+  "title": "microsoft.graph.serviceHealth",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "serviceHealth",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "service": {
+          "type": "string",
+          "description": "The service name. Use the list healthOverviews operation to get exact string names for services subscribed by the tenant."
+        },
+        "status": {
+          "$ref": "#/components/schemas/microsoft.graph.serviceHealthStatus"
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.serviceHealthIssue"
+          },
+          "description": "A collection of issues that happened on the service, with detailed information for each issue.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.serviceHealth"
+}

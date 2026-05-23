@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.baseSitePage",
+  "title": "microsoft.graph.baseSitePage",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.baseItem"
+    },
+    {
+      "title": "baseSitePage",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "pageLayout": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.pageLayoutType"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The name of the page layout of the page. The possible values are: microsoftReserved, article, home, unknownFutureValue."
+        },
+        "publishingState": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.publicationFacet"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The publishing status and the MM.mm version of the page."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the sitePage.",
+          "nullable": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.baseSitePage"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.sitePage": "#/components/schemas/microsoft.graph.sitePage"
+        }
+      }
+    }
+  ]
+}

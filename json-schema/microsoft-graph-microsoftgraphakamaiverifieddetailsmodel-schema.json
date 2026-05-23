@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.akamaiVerifiedDetailsModel",
+  "title": "microsoft.graph.akamaiVerifiedDetailsModel",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.webApplicationFirewallVerifiedDetails"
+    },
+    {
+      "title": "akamaiVerifiedDetailsModel",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "activeAttackGroups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.akamaiAttackGroupActionModel"
+          },
+          "description": "Collection of Akamai attack groups that are currently active for the zone or host, including the action applied to each group (for example, deny, none or alert)."
+        },
+        "activeCustomRules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.akamaiCustomRuleModel"
+          },
+          "description": "Collection of Akamai custom rules that are currently enabled for the zone or host. Each entry includes rule metadata such as the rule identifier, friendly name, and the action taken when the rule matches traffic."
+        },
+        "rapidRules": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.akamaiRapidRulesModel"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Configuration for Akamai Rapid Rules, including whether Rapid Rules are enabled and the default action applied to matching traffic."
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.akamaiVerifiedDetailsModel"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.akamaiVerifiedDetailsModel"
+}

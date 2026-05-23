@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.security.kubernetesPodEvidence",
+  "title": "microsoft.graph.security.kubernetesPodEvidence",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.security.alertEvidence"
+    },
+    {
+      "title": "kubernetesPodEvidence",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "containers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.security.containerEvidence"
+          },
+          "description": "The list of pod containers which are not init or ephemeral containers."
+        },
+        "controller": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.security.kubernetesControllerEvidence"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The pod controller."
+        },
+        "ephemeralContainers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.security.containerEvidence"
+          },
+          "description": "The list of pod ephemeral containers."
+        },
+        "initContainers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.security.containerEvidence"
+          },
+          "description": "The list of pod init containers."
+        },
+        "labels": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.security.dictionary"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The pod labels."
+        },
+        "name": {
+          "type": "string",
+          "description": "The pod name.",
+          "nullable": true
+        },
+        "namespace": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.security.kubernetesNamespaceEvidence"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The pod namespace."
+        },
+        "podIp": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.security.ipEvidence"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The pod IP."
+        },
+        "serviceAccount": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.security.kubernetesServiceAccountEvidence"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The pod service account."
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.security.kubernetesPodEvidence"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.security.kubernetesPodEvidence"
+}

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.protectionPolicyBase",
+  "title": "microsoft.graph.protectionPolicyBase",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "protectionPolicyBase",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "createdBy": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.identitySet"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The identity of person who created the policy."
+        },
+        "createdDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "The time of creation of the policy.",
+          "format": "date-time",
+          "nullable": true
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The name of the policy to be created.",
+          "nullable": true
+        },
+        "lastModifiedBy": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.identitySet"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The identity of the person who last modified the policy."
+        },
+        "lastModifiedDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "The timestamp of the last modification of the policy.",
+          "format": "date-time",
+          "nullable": true
+        },
+        "retentionSettings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.retentionSetting"
+          },
+          "description": "Contains the retention setting details for the policy."
+        },
+        "status": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.protectionPolicyStatus"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The aggregated status of the protection units associated with the policy. The possible values are: inactive, activeWithErrors, updating, active, unknownFutureValue."
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.exchangeProtectionPolicy": "#/components/schemas/microsoft.graph.exchangeProtectionPolicy",
+          "#microsoft.graph.oneDriveForBusinessProtectionPolicy": "#/components/schemas/microsoft.graph.oneDriveForBusinessProtectionPolicy",
+          "#microsoft.graph.sharePointProtectionPolicy": "#/components/schemas/microsoft.graph.sharePointProtectionPolicy"
+        }
+      }
+    }
+  ]
+}

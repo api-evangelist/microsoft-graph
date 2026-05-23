@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.managedAppConfiguration",
+  "title": "microsoft.graph.managedAppConfiguration",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.managedAppPolicy"
+    },
+    {
+      "title": "managedAppConfiguration",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "customSettings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.keyValuePair"
+          },
+          "description": "A set of string key and string value pairs to be sent to apps for users to whom the configuration is scoped, unalterned by this service"
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.managedAppConfiguration"
+        }
+      },
+      "description": "Configuration used to deliver a set of custom settings as-is to apps for users to whom the configuration is scoped",
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.targetedManagedAppConfiguration": "#/components/schemas/microsoft.graph.targetedManagedAppConfiguration"
+        }
+      }
+    }
+  ]
+}

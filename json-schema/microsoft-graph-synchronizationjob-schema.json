@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SynchronizationJob",
+  "title": "SynchronizationJob",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/Entity"
+    },
+    {
+      "title": "synchronizationJob",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "schedule": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/SynchronizationSchedule"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Schedule used to run the job. Read-only."
+        },
+        "status": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/SynchronizationStatus"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Status of the job, which includes when the job was last run, current job state, and errors."
+        },
+        "synchronizationJobSettings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/KeyValuePair"
+          },
+          "description": "Settings associated with the job. Some settings are inherited from the template."
+        },
+        "templateId": {
+          "type": "string",
+          "description": "Identifier of the synchronization template this job is based on.",
+          "nullable": true
+        },
+        "bulkUpload": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/BulkUpload"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The bulk upload operation for the job.",
+          "x-ms-navigationProperty": true
+        },
+        "schema": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/SynchronizationSchema"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The synchronization schema configured for the job.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.synchronizationJob"
+}

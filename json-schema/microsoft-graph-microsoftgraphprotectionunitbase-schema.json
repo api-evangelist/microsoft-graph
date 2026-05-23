@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.protectionUnitBase",
+  "title": "microsoft.graph.protectionUnitBase",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "protectionUnitBase",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "createdBy": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.identitySet"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The identity of the person who created the protection unit."
+        },
+        "createdDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "The time of creation of the protection unit. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.",
+          "format": "date-time",
+          "nullable": true
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.publicError"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Contains error details if an error occurred while creating a protection unit."
+        },
+        "lastModifiedBy": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.identitySet"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The identity of person who last modified the protection unit."
+        },
+        "lastModifiedDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "Timestamp of the last modification of this protection unit. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.",
+          "format": "date-time",
+          "nullable": true
+        },
+        "offboardRequestedDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "The date and time when protection unit offboard was requested. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.",
+          "format": "date-time",
+          "nullable": true
+        },
+        "policyId": {
+          "type": "string",
+          "description": "The unique identifier of the protection policy based on which protection unit was created.",
+          "nullable": true
+        },
+        "protectionSources": {
+          "$ref": "#/components/schemas/microsoft.graph.protectionSource"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.protectionUnitStatus"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The status of the protection unit. The possible values are: protectRequested, protected, unprotectRequested, unprotected, removeRequested, unknownFutureValue, offboardRequested, offboarded, cancelOffboardRequested. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: offboardRequested, offboarded, cancelOffboardRequested."
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.driveProtectionUnit": "#/components/schemas/microsoft.graph.driveProtectionUnit",
+          "#microsoft.graph.mailboxProtectionUnit": "#/components/schemas/microsoft.graph.mailboxProtectionUnit",
+          "#microsoft.graph.siteProtectionUnit": "#/components/schemas/microsoft.graph.siteProtectionUnit"
+        }
+      }
+    }
+  ]
+}

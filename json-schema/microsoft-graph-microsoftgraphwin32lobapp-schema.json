@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.win32LobApp",
+  "title": "microsoft.graph.win32LobApp",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.mobileLobApp"
+    },
+    {
+      "title": "win32LobApp",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "allowedArchitectures": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.windowsArchitecture"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Indicates the Windows architecture(s) this app should be installed on. The app will be treated as not applicable for devices with architectures not matching the selected value. When a non-null value is provided for the allowedArchitectures property, the value of the applicableArchitectures property is set to none. The possible values are: null, x86, x64, arm64. The possible values are: none, x86, x64, arm, neutral."
+        },
+        "applicableArchitectures": {
+          "$ref": "#/components/schemas/microsoft.graph.windowsArchitecture"
+        },
+        "installCommandLine": {
+          "type": "string",
+          "description": "Indicates the command line to install this app. Used to install the Win32 app. Example: msiexec /i 'Orca.Msi' /qn.",
+          "nullable": true
+        },
+        "installExperience": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.win32LobAppInstallExperience"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Indicates the install experience for this app."
+        },
+        "minimumCpuSpeedInMHz": {
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "type": "number",
+          "description": "Indicates the value for the minimum CPU speed which is required to install this app. Allowed range from 0 to clock speed from WMI helper.",
+          "format": "int32",
+          "nullable": true
+        },
+        "minimumFreeDiskSpaceInMB": {
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "type": "number",
+          "description": "Indicates the value for the minimum free disk space which is required to install this app. Allowed range from 0 to driver's maximum available free space.",
+          "format": "int32",
+          "nullable": true
+        },
+        "minimumMemoryInMB": {
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "type": "number",
+          "description": "Indicates the value for the minimum physical memory which is required to install this app. Allowed range from 0 to total physical memory from WMI helper.",
+          "format": "int32",
+          "nullable": true
+        },
+        "minimumNumberOfProcessors": {
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "type": "number",
+          "description": "Indicates the value for the minimum number of processors which is required to install this app. Minimum value is 0.",
+          "format": "int32",
+          "nullable": true
+        },
+        "minimumSupportedWindowsRelease": {
+          "type": "string",
+          "description": "Indicates the value for the minimum supported windows release. Example: Windows11_23H2.",
+          "nullable": true
+        },
+        "msiInformation": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.win32LobAppMsiInformation"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Indicates the MSI details if this Win32 app is an MSI app."
+        },
+        "returnCodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.win32LobAppReturnCode"
+          },
+          "description": "Indicates the return codes for post installation behavior."
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.win32LobAppRule"
+          },
+          "description": "Indicates the detection and requirement rules for this app. The possible values are: Win32LobAppFileSystemRule, Win32LobAppPowerShellScriptRule, Win32LobAppProductCodeRule, Win32LobAppRegistryRule."
+        },
+        "setupFilePath": {
+          "type": "string",
+          "description": "Indicates the relative path of the setup file in the encrypted Win32LobApp package. Example: Intel-SA-00075 Detection and Mitigation Tool.msi.",
+          "nullable": true
+        },
+        "uninstallCommandLine": {
+          "type": "string",
+          "description": "Indicates the command line to uninstall this app. Used to uninstall the app. Example: msiexec /x '{85F4CBCB-9BBC-4B50-A7D8-E1106771498D}' /qn.",
+          "nullable": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.win32LobApp"
+        }
+      },
+      "description": "Contains properties and inherited properties for Win32 apps."
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.win32LobApp"
+}

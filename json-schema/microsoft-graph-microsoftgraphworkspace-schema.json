@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.workspace",
+  "title": "microsoft.graph.workspace",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.place"
+    },
+    {
+      "title": "workspace",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "capacity": {
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "type": "number",
+          "description": "The maximum number of individual desks within a workspace.",
+          "format": "int32",
+          "nullable": true
+        },
+        "displayDeviceName": {
+          "type": "string",
+          "description": "The name of the display device (for example, monitor or projector) that is available in the workspace.",
+          "nullable": true
+        },
+        "emailAddress": {
+          "type": "string",
+          "description": "The email address that is associated with the workspace. This email address is used for booking.",
+          "nullable": true
+        },
+        "mode": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.placeMode"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The mode for a workspace. The supported modes are:reservablePlaceMode - Workspaces that can be booked in advance using desk pool reservation tools.dropInPlaceMode - First come, first served desks. When you plug into a peripheral on one of these desks in the workspace, the desk is booked for you, assuming that the peripheral has been associated with the desk in the Microsoft Teams Rooms Pro management portal."
+        },
+        "nickname": {
+          "type": "string",
+          "description": "A short, friendly name for the workspace, often used for easier identification or display in the UI."
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.workspace"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.workspace"
+}

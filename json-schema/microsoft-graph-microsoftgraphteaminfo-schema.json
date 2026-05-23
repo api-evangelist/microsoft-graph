@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.teamInfo",
+  "title": "microsoft.graph.teamInfo",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "teamInfo",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "description": "The name of the team.",
+          "nullable": true
+        },
+        "tenantId": {
+          "type": "string",
+          "description": "The ID of the Microsoft Entra tenant.",
+          "nullable": true
+        },
+        "team": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.team"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.associatedTeamInfo": "#/components/schemas/microsoft.graph.associatedTeamInfo",
+          "#microsoft.graph.sharedWithChannelTeamInfo": "#/components/schemas/microsoft.graph.sharedWithChannelTeamInfo"
+        }
+      }
+    }
+  ]
+}

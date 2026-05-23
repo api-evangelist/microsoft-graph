@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.authenticationMethodTarget",
+  "title": "microsoft.graph.authenticationMethodTarget",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "authenticationMethodTarget",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "isRegistrationRequired": {
+          "type": "boolean",
+          "description": "Determines if the user is enforced to register the authentication method."
+        },
+        "targetType": {
+          "$ref": "#/components/schemas/microsoft.graph.authenticationMethodTargetType"
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.microsoftAuthenticatorAuthenticationMethodTarget": "#/components/schemas/microsoft.graph.microsoftAuthenticatorAuthenticationMethodTarget",
+          "#microsoft.graph.smsAuthenticationMethodTarget": "#/components/schemas/microsoft.graph.smsAuthenticationMethodTarget"
+        }
+      }
+    }
+  ]
+}

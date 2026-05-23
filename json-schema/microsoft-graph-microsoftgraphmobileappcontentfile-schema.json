@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.mobileAppContentFile",
+  "title": "microsoft.graph.mobileAppContentFile",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "mobileAppContentFile",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "azureStorageUri": {
+          "type": "string",
+          "description": "Indicates the Azure Storage URI that the file is uploaded to. Created by the service upon receiving a valid mobileAppContentFile. Read-only. This property is read-only.",
+          "nullable": true,
+          "readOnly": true
+        },
+        "azureStorageUriExpirationDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "Indicates the date and time when the Azure storage URI expires, in ISO 8601 format. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only. This property is read-only.",
+          "format": "date-time",
+          "nullable": true,
+          "readOnly": true
+        },
+        "createdDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "Indicates created date and time associated with app content file, in ISO 8601 format. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only. This property is read-only.",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "isCommitted": {
+          "type": "boolean",
+          "description": "A value indicating whether the file is committed. A committed app content file has been fully uploaded and validated by the Intune service. TRUE means that app content file is committed, FALSE means that app content file is not committed. Defaults to FALSE. Read-only. This property is read-only.",
+          "readOnly": true
+        },
+        "isDependency": {
+          "type": "boolean",
+          "description": "Indicates whether this content file is a dependency for the main content file. TRUE means that the content file is a dependency, FALSE means that the content file is not a dependency and is the main content file. Defaults to FALSE."
+        },
+        "manifest": {
+          "type": "string",
+          "description": "Indicates the manifest information, containing file metadata.",
+          "format": "base64url",
+          "nullable": true
+        },
+        "name": {
+          "type": "string",
+          "description": "Indicates the name of the file.",
+          "nullable": true
+        },
+        "size": {
+          "type": "number",
+          "description": "Indicates the original size of the file, in bytes.",
+          "format": "int64"
+        },
+        "sizeEncrypted": {
+          "type": "number",
+          "description": "Indicates the size of the file after encryption, in bytes.",
+          "format": "int64"
+        },
+        "uploadState": {
+          "$ref": "#/components/schemas/microsoft.graph.mobileAppContentFileUploadState"
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "description": "Contains properties for a single installer file that is associated with a given mobileAppContent version."
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.mobileAppContentFile"
+}

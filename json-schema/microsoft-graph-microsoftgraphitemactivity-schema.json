@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.itemActivity",
+  "title": "microsoft.graph.itemActivity",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "itemActivity",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "access": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.accessAction"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "An item was accessed."
+        },
+        "activityDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "Details about when the activity took place. Read-only.",
+          "format": "date-time",
+          "nullable": true
+        },
+        "actor": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.identitySet"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Identity of who performed the action. Read-only."
+        },
+        "driveItem": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.driveItem"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Exposes the driveItem that was the target of this activity.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.itemActivity"
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.policyScopeBase",
+  "title": "policyScopeBase",
+  "required": [
+    "@odata.type"
+  ],
+  "type": "object",
+  "properties": {
+    "activities": {
+      "$ref": "#/components/schemas/microsoft.graph.userActivityTypes"
+    },
+    "executionMode": {
+      "$ref": "#/components/schemas/microsoft.graph.executionMode"
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/microsoft.graph.policyLocation"
+      },
+      "description": "The locations (like domains or URLs) to be protected. Required."
+    },
+    "policyActions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/microsoft.graph.dlpActionInfo"
+      },
+      "description": "The enforcement actions to take if the policy conditions are met within this scope. Required."
+    },
+    "@odata.type": {
+      "type": "string"
+    }
+  },
+  "discriminator": {
+    "propertyName": "@odata.type",
+    "mapping": {
+      "#microsoft.graph.policyTenantScope": "#/components/schemas/microsoft.graph.policyTenantScope",
+      "#microsoft.graph.policyUserScope": "#/components/schemas/microsoft.graph.policyUserScope"
+    }
+  }
+}

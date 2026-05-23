@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.classifcationErrorBase",
+  "title": "classifcationErrorBase",
+  "required": [
+    "@odata.type"
+  ],
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string",
+      "description": "A service-defined error code string.",
+      "nullable": true
+    },
+    "innerError": {
+      "anyOf": [
+        {
+          "$ref": "#/components/schemas/microsoft.graph.classificationInnerError"
+        },
+        {
+          "type": "object",
+          "nullable": true
+        }
+      ],
+      "description": "Contains more specific, potentially internal error details."
+    },
+    "message": {
+      "type": "string",
+      "description": "A human-readable representation of the error.",
+      "nullable": true
+    },
+    "target": {
+      "type": "string",
+      "description": "The target of the error (for example, the specific property or item causing the issue).",
+      "nullable": true
+    },
+    "@odata.type": {
+      "type": "string"
+    }
+  },
+  "discriminator": {
+    "propertyName": "@odata.type",
+    "mapping": {
+      "#microsoft.graph.classificationError": "#/components/schemas/microsoft.graph.classificationError",
+      "#microsoft.graph.processingError": "#/components/schemas/microsoft.graph.processingError"
+    }
+  }
+}

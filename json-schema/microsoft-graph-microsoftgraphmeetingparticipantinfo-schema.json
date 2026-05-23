@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.meetingParticipantInfo",
+  "title": "meetingParticipantInfo",
+  "required": [
+    "@odata.type"
+  ],
+  "type": "object",
+  "properties": {
+    "identity": {
+      "anyOf": [
+        {
+          "$ref": "#/components/schemas/microsoft.graph.identitySet"
+        },
+        {
+          "type": "object",
+          "nullable": true
+        }
+      ],
+      "description": "Identity information of the participant."
+    },
+    "role": {
+      "anyOf": [
+        {
+          "$ref": "#/components/schemas/microsoft.graph.onlineMeetingRole"
+        },
+        {
+          "type": "object",
+          "nullable": true
+        }
+      ],
+      "description": "Specifies the participant's role in the meeting."
+    },
+    "upn": {
+      "type": "string",
+      "description": "User principal name of the participant.",
+      "nullable": true
+    },
+    "@odata.type": {
+      "type": "string"
+    }
+  },
+  "discriminator": {
+    "propertyName": "@odata.type",
+    "mapping": {
+      "#microsoft.graph.virtualEventPresenterInfo": "#/components/schemas/microsoft.graph.virtualEventPresenterInfo"
+    }
+  }
+}

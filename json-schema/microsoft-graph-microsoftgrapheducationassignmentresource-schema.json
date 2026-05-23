@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.educationAssignmentResource",
+  "title": "microsoft.graph.educationAssignmentResource",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "educationAssignmentResource",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "distributeForStudentWork": {
+          "type": "boolean",
+          "description": "Indicates whether this resource should be copied to each student submission for modification and submission. Required",
+          "nullable": true
+        },
+        "resource": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.educationResource"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Resource object that has been associated with this assignment."
+        },
+        "dependentResources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.educationAssignmentResource"
+          },
+          "description": "A collection of assignment resources that depend on the parent educationAssignmentResource.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.educationAssignmentResource"
+}

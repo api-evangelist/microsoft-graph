@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.appManagementConfiguration",
+  "title": "appManagementConfiguration",
+  "required": [
+    "@odata.type"
+  ],
+  "type": "object",
+  "properties": {
+    "keyCredentials": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/microsoft.graph.keyCredentialConfiguration"
+      },
+      "description": "Collection of keyCredential restrictions settings to be applied to an application or service principal."
+    },
+    "passwordCredentials": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/microsoft.graph.passwordCredentialConfiguration"
+      },
+      "description": "Collection of password restrictions settings to be applied to an application or service principal."
+    },
+    "@odata.type": {
+      "type": "string"
+    }
+  },
+  "discriminator": {
+    "propertyName": "@odata.type",
+    "mapping": {
+      "#microsoft.graph.appManagementApplicationConfiguration": "#/components/schemas/microsoft.graph.appManagementApplicationConfiguration",
+      "#microsoft.graph.appManagementServicePrincipalConfiguration": "#/components/schemas/microsoft.graph.appManagementServicePrincipalConfiguration",
+      "#microsoft.graph.customAppManagementConfiguration": "#/components/schemas/microsoft.graph.customAppManagementConfiguration"
+    }
+  }
+}

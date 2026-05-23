@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.participant",
+  "title": "microsoft.graph.participant",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "participant",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/components/schemas/microsoft.graph.participantInfo"
+        },
+        "isInLobby": {
+          "type": "boolean",
+          "description": "true if the participant is in lobby."
+        },
+        "isMuted": {
+          "type": "boolean",
+          "description": "true if the participant is muted (client or server muted)."
+        },
+        "mediaStreams": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.mediaStream"
+          },
+          "description": "The list of media streams."
+        },
+        "metadata": {
+          "type": "string",
+          "description": "A blob of data provided by the participant in the roster.",
+          "nullable": true
+        },
+        "recordingInfo": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.recordingInfo"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Information about whether the participant has recording capability."
+        },
+        "removedState": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.removedState"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Indicates the reason why the participant was removed from the roster."
+        },
+        "restrictedExperience": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.onlineMeetingRestricted"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Indicates the reason or reasons media content from this participant is restricted."
+        },
+        "rosterSequenceNumber": {
+          "type": "number",
+          "description": "Indicates the roster sequence number in which the participant was last updated.",
+          "format": "int64",
+          "nullable": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.participant"
+}

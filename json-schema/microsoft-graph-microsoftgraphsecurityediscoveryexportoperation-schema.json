@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.security.ediscoveryExportOperation",
+  "title": "microsoft.graph.security.ediscoveryExportOperation",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.security.caseOperation"
+    },
+    {
+      "title": "ediscoveryExportOperation",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "The description provided for the export.",
+          "nullable": true
+        },
+        "exportFileMetadata": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.security.exportFileMetadata"
+          },
+          "description": "Contains the properties for an export file metadata, including downloadUrl, fileName, and size."
+        },
+        "exportOptions": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.security.exportOptions"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The options provided for the export. For more information, see reviewSet: export. The possible values are: originalFiles, text, pdfReplacement, tags, unknownFutureValue, splitSource, includeFolderAndPath, friendlyName, condensePaths. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: splitSource, includeFolderAndPath, friendlyName, condensePaths."
+        },
+        "exportStructure": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.security.exportFileStructure"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The options that specify the structure of the export. For more information, see reviewSet: export. The possible values are: none, directory (deprecated), pst, unknownFutureValue, msg. Use the Prefer: include-unknown-enum-members request header to get the following members from this evolvable enum: msg. The directory member is deprecated. It remains in v1.0 for backward compatibility. Going forward, use either pst or msg."
+        },
+        "outputName": {
+          "type": "string",
+          "description": "The name provided for the export.",
+          "nullable": true
+        },
+        "reviewSet": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.security.ediscoveryReviewSet"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Review set from where documents are exported.",
+          "x-ms-navigationProperty": true
+        },
+        "reviewSetQuery": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.security.ediscoveryReviewSetQuery"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The review set query that is used to filter the documents for export.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.security.ediscoveryExportOperation"
+}

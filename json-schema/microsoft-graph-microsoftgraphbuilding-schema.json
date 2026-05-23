@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.building",
+  "title": "microsoft.graph.building",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.place"
+    },
+    {
+      "title": "building",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "resourceLinks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.resourceLink"
+          },
+          "description": "A set of links to external resources that are associated with the building. Inherited from place."
+        },
+        "map": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.buildingMap"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Map file associated with a building in Places. This object is the IMDF-format representation of building.geojson.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.building"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.building"
+}

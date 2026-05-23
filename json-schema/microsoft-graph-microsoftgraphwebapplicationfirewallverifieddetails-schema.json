@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.webApplicationFirewallVerifiedDetails",
+  "title": "webApplicationFirewallVerifiedDetails",
+  "required": [
+    "@odata.type"
+  ],
+  "type": "object",
+  "properties": {
+    "dnsConfiguration": {
+      "anyOf": [
+        {
+          "$ref": "#/components/schemas/microsoft.graph.webApplicationFirewallDnsConfiguration"
+        },
+        {
+          "type": "object",
+          "nullable": true
+        }
+      ],
+      "description": "DNS-related details discovered during verification for the host, such as the DNS record name, record type, record value, whether the record is proxied through the provider, and whether the domain is verified."
+    },
+    "@odata.type": {
+      "type": "string"
+    }
+  },
+  "discriminator": {
+    "propertyName": "@odata.type",
+    "mapping": {
+      "#microsoft.graph.akamaiVerifiedDetailsModel": "#/components/schemas/microsoft.graph.akamaiVerifiedDetailsModel",
+      "#microsoft.graph.cloudFlareVerifiedDetailsModel": "#/components/schemas/microsoft.graph.cloudFlareVerifiedDetailsModel"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.educationOrganization",
+  "title": "microsoft.graph.educationOrganization",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "educationOrganization",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Organization description.",
+          "nullable": true
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Organization display name."
+        },
+        "externalSource": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.educationExternalSource"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Source where this organization was created from. The possible values are: sis, manual."
+        },
+        "externalSourceDetail": {
+          "type": "string",
+          "description": "The name of the external source this resource was generated from.",
+          "nullable": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.educationSchool": "#/components/schemas/microsoft.graph.educationSchool"
+        }
+      }
+    }
+  ]
+}

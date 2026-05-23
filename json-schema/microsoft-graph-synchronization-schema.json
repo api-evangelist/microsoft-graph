@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Synchronization",
+  "title": "Synchronization",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/Entity"
+    },
+    {
+      "title": "synchronization",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "secrets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/SynchronizationSecretKeyStringValuePair"
+          },
+          "description": "Represents a collection of credentials to access provisioned cloud applications."
+        },
+        "jobs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/SynchronizationJob"
+          },
+          "description": "Performs synchronization by periodically running in the background, polling for changes in one directory, and pushing them to another directory.",
+          "x-ms-navigationProperty": true
+        },
+        "templates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/SynchronizationTemplate"
+          },
+          "description": "Preconfigured synchronization settings for a particular application.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.synchronization"
+}

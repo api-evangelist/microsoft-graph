@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.engagementConversationMessage",
+  "title": "microsoft.graph.engagementConversationMessage",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "engagementConversationMessage",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "body": {
+          "$ref": "#/components/schemas/microsoft.graph.itemBody"
+        },
+        "createdDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "The date and time when the message was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "creationMode": {
+          "$ref": "#/components/schemas/microsoft.graph.engagementCreationMode"
+        },
+        "from": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.engagementIdentitySet"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Identity of the sender of the message."
+        },
+        "lastModifiedDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "The date and time when message was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "replyToId": {
+          "type": "string",
+          "description": "The ID of the parent message to which this message is a reply, if applicable.",
+          "nullable": true
+        },
+        "conversation": {
+          "$ref": "#/components/schemas/microsoft.graph.engagementConversation"
+        },
+        "reactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.engagementConversationMessageReaction"
+          },
+          "description": "A collection of reactions (such as like and smile) that users have applied to this message.",
+          "x-ms-navigationProperty": true
+        },
+        "replies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.engagementConversationMessage"
+          },
+          "description": "A collection of messages that are replies to this message and form a threaded discussion.",
+          "x-ms-navigationProperty": true
+        },
+        "replyTo": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.engagementConversationMessage"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The parent message to which this message is a reply, if it is part of a reply chain.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "description": "A Viva Engage conversation message.",
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.engagementConversationDiscussionMessage": "#/components/schemas/microsoft.graph.engagementConversationDiscussionMessage",
+          "#microsoft.graph.engagementConversationQuestionMessage": "#/components/schemas/microsoft.graph.engagementConversationQuestionMessage",
+          "#microsoft.graph.engagementConversationSystemMessage": "#/components/schemas/microsoft.graph.engagementConversationSystemMessage"
+        }
+      }
+    }
+  ]
+}

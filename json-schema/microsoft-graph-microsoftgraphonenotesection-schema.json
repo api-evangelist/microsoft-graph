@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.onenoteSection",
+  "title": "microsoft.graph.onenoteSection",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.onenoteEntityHierarchyModel"
+    },
+    {
+      "title": "onenoteSection",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "isDefault": {
+          "type": "boolean",
+          "description": "Indicates whether this is the user's default section. Read-only.",
+          "nullable": true
+        },
+        "links": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.sectionLinks"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Links for opening the section. The oneNoteClientURL link opens the section in the OneNote native client if it's installed. The oneNoteWebURL link opens the section in OneNote on the web."
+        },
+        "pagesUrl": {
+          "type": "string",
+          "description": "The pages endpoint where you can get details for all the pages in the section. Read-only.",
+          "nullable": true
+        },
+        "pages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.onenotePage"
+          },
+          "description": "The collection of pages in the section.  Read-only. Nullable.",
+          "x-ms-navigationProperty": true
+        },
+        "parentNotebook": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.notebook"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The notebook that contains the section.  Read-only.",
+          "x-ms-navigationProperty": true
+        },
+        "parentSectionGroup": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.sectionGroup"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The section group that contains the section.  Read-only.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.onenoteSection"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.onenoteSection"
+}

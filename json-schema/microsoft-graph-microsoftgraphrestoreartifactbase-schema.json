@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.restoreArtifactBase",
+  "title": "microsoft.graph.restoreArtifactBase",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "restoreArtifactBase",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "completionDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "The time when restoration of restore artifact is completed.",
+          "format": "date-time",
+          "nullable": true
+        },
+        "destinationType": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.destinationType"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Indicates the restoration destination. The possible values are: new, inPlace, unknownFutureValue."
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.publicError"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Contains error details if the restore session fails or completes with an error."
+        },
+        "startDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "The time when restoration of restore artifact is started.",
+          "format": "date-time",
+          "nullable": true
+        },
+        "status": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.artifactRestoreStatus"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The individual restoration status of the restore artifact. The possible values are: added, scheduling, scheduled, inProgress, succeeded, failed, unknownFutureValue."
+        },
+        "restorePoint": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.restorePoint"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Represents the date and time when an artifact is protected by a protectionPolicy and can be restored.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.driveRestoreArtifact": "#/components/schemas/microsoft.graph.driveRestoreArtifact",
+          "#microsoft.graph.mailboxRestoreArtifact": "#/components/schemas/microsoft.graph.mailboxRestoreArtifact",
+          "#microsoft.graph.granularMailboxRestoreArtifact": "#/components/schemas/microsoft.graph.granularMailboxRestoreArtifact",
+          "#microsoft.graph.siteRestoreArtifact": "#/components/schemas/microsoft.graph.siteRestoreArtifact"
+        }
+      }
+    }
+  ]
+}

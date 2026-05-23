@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.educationModule",
+  "title": "microsoft.graph.educationModule",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "educationModule",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "createdBy": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.identitySet"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The display name of the user that created the module.",
+          "readOnly": true
+        },
+        "createdDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "Date time the module was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z",
+          "format": "date-time",
+          "nullable": true,
+          "readOnly": true
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the module.",
+          "nullable": true
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Name of the module.",
+          "nullable": true
+        },
+        "isPinned": {
+          "type": "boolean",
+          "description": "Indicates whether the module is pinned or not.",
+          "nullable": true
+        },
+        "lastModifiedBy": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.identitySet"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The last user that modified the module.",
+          "readOnly": true
+        },
+        "lastModifiedDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "Date time the module was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z",
+          "format": "date-time",
+          "nullable": true,
+          "readOnly": true
+        },
+        "resourcesFolderUrl": {
+          "type": "string",
+          "description": "Folder URL where all the file resources for this module are stored.",
+          "nullable": true,
+          "readOnly": true
+        },
+        "status": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.educationModuleStatus"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Status of the module. You can't use a PATCH operation to update this value. The possible values are: draft and published.",
+          "readOnly": true
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.educationModuleResource"
+          },
+          "description": "Learning objects that are associated with this module. Only teachers can modify this list. Nullable.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.educationModule"
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.shiftItem",
+  "title": "microsoft.graph.shiftItem",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.scheduleEntity"
+    },
+    {
+      "title": "shiftItem",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "activities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.shiftActivity"
+          },
+          "description": "An incremental part of a shift which can cover details of when and where an employee is during their shift. For example, an assignment or a scheduled break or lunch. Required."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The shift label of the shiftItem.",
+          "nullable": true
+        },
+        "notes": {
+          "type": "string",
+          "description": "The shift notes for the shiftItem.",
+          "nullable": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.openShiftItem": "#/components/schemas/microsoft.graph.openShiftItem"
+        }
+      }
+    }
+  ]
+}

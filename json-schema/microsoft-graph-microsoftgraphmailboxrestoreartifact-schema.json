@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.mailboxRestoreArtifact",
+  "title": "microsoft.graph.mailboxRestoreArtifact",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.restoreArtifactBase"
+    },
+    {
+      "title": "mailboxRestoreArtifact",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "restoredFolderId": {
+          "type": "string",
+          "description": "The new restored folder identifier for the user.",
+          "nullable": true
+        },
+        "restoredFolderName": {
+          "type": "string",
+          "description": "The new restored folder name.",
+          "nullable": true,
+          "readOnly": true
+        },
+        "restoredItemCount": {
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "type": "number",
+          "description": "The number of items that are being restored in the folder.",
+          "format": "int32",
+          "nullable": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.granularMailboxRestoreArtifact": "#/components/schemas/microsoft.graph.granularMailboxRestoreArtifact"
+        }
+      }
+    }
+  ]
+}

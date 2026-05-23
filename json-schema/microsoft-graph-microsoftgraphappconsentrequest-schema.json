@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.appConsentRequest",
+  "title": "microsoft.graph.appConsentRequest",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "appConsentRequest",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "appDisplayName": {
+          "type": "string",
+          "description": "The display name of the app for which consent is requested. Required. Supports $filter (eq only) and $orderby.",
+          "nullable": true
+        },
+        "appId": {
+          "type": "string",
+          "description": "The identifier of the application. Required. Supports $filter (eq only) and $orderby."
+        },
+        "pendingScopes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.appConsentRequestScope"
+          },
+          "description": "A list of pending scopes waiting for approval. Required."
+        },
+        "userConsentRequests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.userConsentRequest"
+          },
+          "description": "A list of pending user consent requests. Supports $filter (eq).",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.appConsentRequest"
+}

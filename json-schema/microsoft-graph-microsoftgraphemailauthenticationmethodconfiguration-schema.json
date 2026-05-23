@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.emailAuthenticationMethodConfiguration",
+  "title": "microsoft.graph.emailAuthenticationMethodConfiguration",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.authenticationMethodConfiguration"
+    },
+    {
+      "title": "emailAuthenticationMethodConfiguration",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "allowExternalIdToUseEmailOtp": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.externalEmailOtpState"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Determines whether email OTP is usable by external users for authentication. The possible values are: default, enabled, disabled, unknownFutureValue. Tenants in the default state who didn't use public preview have email OTP enabled beginning in October 2021."
+        },
+        "includeTargets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.authenticationMethodTarget"
+          },
+          "description": "A collection of groups that are enabled to use the authentication method.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.emailAuthenticationMethodConfiguration"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.emailAuthenticationMethodConfiguration"
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.engagementConversation",
+  "title": "microsoft.graph.engagementConversation",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "engagementConversation",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "creationMode": {
+          "$ref": "#/components/schemas/microsoft.graph.engagementCreationMode"
+        },
+        "starterId": {
+          "type": "string",
+          "description": "The unique ID of the first message in a Viva Engage conversation."
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.engagementConversationMessage"
+          },
+          "description": "The messages in a Viva Engage conversation.",
+          "x-ms-navigationProperty": true
+        },
+        "starter": {
+          "$ref": "#/components/schemas/microsoft.graph.engagementConversationMessage"
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "description": "Represents a conversation in Viva Engage.",
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.onlineMeetingEngagementConversation": "#/components/schemas/microsoft.graph.onlineMeetingEngagementConversation"
+        }
+      }
+    }
+  ]
+}

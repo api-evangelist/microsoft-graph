@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.licenseDetails",
+  "title": "microsoft.graph.licenseDetails",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "licenseDetails",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "servicePlans": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.servicePlanInfo"
+          },
+          "description": "Information about the service plans assigned with the license. Read-only. Not nullable."
+        },
+        "skuId": {
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+          "type": "string",
+          "description": "Unique identifier (GUID) for the service SKU. Equal to the skuId property on the related subscribedSku object. Read-only.",
+          "format": "uuid",
+          "nullable": true
+        },
+        "skuPartNumber": {
+          "type": "string",
+          "description": "Unique SKU display name. Equal to the skuPartNumber on the related subscribedSku object; for example, AAD_Premium. Read-only.",
+          "nullable": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.licenseDetails"
+}

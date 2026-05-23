@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.trainingSetting",
+  "title": "trainingSetting",
+  "required": [
+    "@odata.type"
+  ],
+  "type": "object",
+  "properties": {
+    "settingType": {
+      "anyOf": [
+        {
+          "$ref": "#/components/schemas/microsoft.graph.trainingSettingType"
+        },
+        {
+          "type": "object",
+          "nullable": true
+        }
+      ],
+      "description": "Type of setting. The possible values are: microsoftCustom, microsoftManaged, noTraining, custom, unknownFutureValue."
+    },
+    "@odata.type": {
+      "type": "string"
+    }
+  },
+  "discriminator": {
+    "propertyName": "@odata.type",
+    "mapping": {
+      "#microsoft.graph.customTrainingSetting": "#/components/schemas/microsoft.graph.customTrainingSetting",
+      "#microsoft.graph.microsoftCustomTrainingSetting": "#/components/schemas/microsoft.graph.microsoftCustomTrainingSetting",
+      "#microsoft.graph.microsoftManagedTrainingSetting": "#/components/schemas/microsoft.graph.microsoftManagedTrainingSetting",
+      "#microsoft.graph.microsoftTrainingAssignmentMapping": "#/components/schemas/microsoft.graph.microsoftTrainingAssignmentMapping",
+      "#microsoft.graph.noTrainingSetting": "#/components/schemas/microsoft.graph.noTrainingSetting"
+    }
+  }
+}

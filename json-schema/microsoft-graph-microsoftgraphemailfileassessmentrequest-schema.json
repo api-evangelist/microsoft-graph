@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.emailFileAssessmentRequest",
+  "title": "microsoft.graph.emailFileAssessmentRequest",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.threatAssessmentRequest"
+    },
+    {
+      "title": "emailFileAssessmentRequest",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "contentData": {
+          "type": "string",
+          "description": "Base64 encoded .eml email file content. The file content can't fetch back because it isn't stored."
+        },
+        "destinationRoutingReason": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.mailDestinationRoutingReason"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The reason for mail routed to its destination. The possible values are: none, mailFlowRule, safeSender, blockedSender, advancedSpamFiltering, domainAllowList, domainBlockList, notInAddressBook, firstTimeSender, autoPurgeToInbox, autoPurgeToJunk, autoPurgeToDeleted, outbound, notJunk, junk."
+        },
+        "recipientEmail": {
+          "type": "string",
+          "description": "The mail recipient whose policies are used to assess the mail."
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.emailFileAssessmentRequest"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.emailFileAssessmentRequest"
+}

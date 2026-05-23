@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.mobileLobApp",
+  "title": "microsoft.graph.mobileLobApp",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.mobileApp"
+    },
+    {
+      "title": "mobileLobApp",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "committedContentVersion": {
+          "type": "string",
+          "description": "The internal committed content version.",
+          "nullable": true
+        },
+        "fileName": {
+          "type": "string",
+          "description": "The name of the main Lob application file.",
+          "nullable": true
+        },
+        "size": {
+          "type": "number",
+          "description": "The total size, including all uploaded files. This property is read-only.",
+          "format": "int64",
+          "readOnly": true
+        },
+        "contentVersions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.mobileAppContent"
+          },
+          "description": "The list of content versions for this app. This property is read-only.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.mobileLobApp"
+        }
+      },
+      "description": "An abstract base class containing properties for all mobile line-of-business apps.",
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.androidLobApp": "#/components/schemas/microsoft.graph.androidLobApp",
+          "#microsoft.graph.iosLobApp": "#/components/schemas/microsoft.graph.iosLobApp",
+          "#microsoft.graph.macOSDmgApp": "#/components/schemas/microsoft.graph.macOSDmgApp",
+          "#microsoft.graph.macOSLobApp": "#/components/schemas/microsoft.graph.macOSLobApp",
+          "#microsoft.graph.win32LobApp": "#/components/schemas/microsoft.graph.win32LobApp",
+          "#microsoft.graph.windowsAppX": "#/components/schemas/microsoft.graph.windowsAppX",
+          "#microsoft.graph.windowsMobileMSI": "#/components/schemas/microsoft.graph.windowsMobileMSI",
+          "#microsoft.graph.windowsUniversalAppX": "#/components/schemas/microsoft.graph.windowsUniversalAppX"
+        }
+      }
+    }
+  ]
+}

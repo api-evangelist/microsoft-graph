@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.authenticationEventsFlow",
+  "title": "microsoft.graph.authenticationEventsFlow",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "authenticationEventsFlow",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.authenticationConditions"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The conditions representing the context of the authentication request that's used to decide whether the events policy is invoked.  Supports $filter (eq). See support for filtering on user flows for syntax information."
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of the events policy.",
+          "nullable": true
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Required. The display name for the events policy."
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.externalUsersSelfServiceSignUpEventsFlow": "#/components/schemas/microsoft.graph.externalUsersSelfServiceSignUpEventsFlow"
+        }
+      }
+    }
+  ]
+}

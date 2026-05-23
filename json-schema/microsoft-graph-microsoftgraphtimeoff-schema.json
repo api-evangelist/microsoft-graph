@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.timeOff",
+  "title": "microsoft.graph.timeOff",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.changeTrackedEntity"
+    },
+    {
+      "title": "timeOff",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "draftTimeOff": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.timeOffItem"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The draft version of this timeOff item that is viewable by managers. It must be shared before it's visible to team members. Required."
+        },
+        "isStagedForDeletion": {
+          "type": "boolean",
+          "description": "The timeOff is marked for deletion, a process that is finalized when the schedule is shared.",
+          "nullable": true
+        },
+        "sharedTimeOff": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.timeOffItem"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The shared version of this timeOff that is viewable by both employees and managers. Updates to the sharedTimeOff property send notifications to users in the Teams client. Required."
+        },
+        "userId": {
+          "type": "string",
+          "description": "ID of the user assigned to the timeOff. Required.",
+          "nullable": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.timeOff"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.timeOff"
+}

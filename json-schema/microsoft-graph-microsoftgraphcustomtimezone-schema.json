@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.customTimeZone",
+  "title": "microsoft.graph.customTimeZone",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.timeZoneBase"
+    },
+    {
+      "title": "customTimeZone",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "bias": {
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "type": "number",
+          "description": "The time offset of the time zone from Coordinated Universal Time (UTC). This value is in minutes.\u00a0Time zones that are ahead of UTC have a positive offset; time zones that are behind UTC have a negative offset.",
+          "format": "int32",
+          "nullable": true
+        },
+        "daylightOffset": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.daylightTimeZoneOffset"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Specifies when the time zone switches from standard time to daylight saving time."
+        },
+        "standardOffset": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.standardTimeZoneOffset"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Specifies when the time zone switches from daylight saving time to standard time."
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.customTimeZone"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.customTimeZone"
+}

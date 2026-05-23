@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.certificateAuthorityDetail",
+  "title": "microsoft.graph.certificateAuthorityDetail",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.directoryObject"
+    },
+    {
+      "title": "certificateAuthorityDetail",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "certificate": {
+          "type": "string",
+          "description": "The public key of the certificate authority.",
+          "format": "base64url"
+        },
+        "certificateAuthorityType": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.certificateAuthorityType"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The type of certificate authority. The possible values are: root, intermediate, unknownFutureValue. Supports $filter (eq)."
+        },
+        "certificateRevocationListUrl": {
+          "type": "string",
+          "description": "The URL to check if the certificate is revoked.",
+          "nullable": true
+        },
+        "createdDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "The date and time when the certificate authority was created.",
+          "format": "date-time",
+          "nullable": true
+        },
+        "deltaCertificateRevocationListUrl": {
+          "type": "string",
+          "nullable": true
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The display name of the certificate authority.",
+          "nullable": true
+        },
+        "expirationDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "The date and time when the certificate authority expires. Supports $filter (eq) and $orderby.",
+          "format": "date-time"
+        },
+        "isIssuerHintEnabled": {
+          "type": "boolean",
+          "description": "Indicates whether the certificate picker presents the certificate authority to the user to use for authentication. Default value is false. Optional.",
+          "nullable": true
+        },
+        "issuer": {
+          "type": "string",
+          "description": "The issuer of the certificate authority.",
+          "nullable": true
+        },
+        "issuerSubjectKeyIdentifier": {
+          "type": "string",
+          "description": "The subject key identifier of certificate authority.",
+          "nullable": true
+        },
+        "thumbprint": {
+          "type": "string",
+          "description": "The thumbprint of certificate authority certificate. Supports $filter (eq, startswith)."
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.certificateAuthorityDetail"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.certificateAuthorityDetail"
+}

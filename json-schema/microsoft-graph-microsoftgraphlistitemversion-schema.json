@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.listItemVersion",
+  "title": "microsoft.graph.listItemVersion",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.baseItemVersion"
+    },
+    {
+      "title": "listItemVersion",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "fields": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.fieldValueSet"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "A collection of the fields and values for this version of the list item.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.listItemVersion"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.documentSetVersion": "#/components/schemas/microsoft.graph.documentSetVersion"
+        }
+      }
+    }
+  ]
+}

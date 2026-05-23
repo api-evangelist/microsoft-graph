@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.customAuthenticationExtension",
+  "title": "microsoft.graph.customAuthenticationExtension",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.customCalloutExtension"
+    },
+    {
+      "title": "customAuthenticationExtension",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "behaviorOnError": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.customExtensionBehaviorOnError"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The behaviour on error for the custom authentication extension."
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.customAuthenticationExtension"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.onAttributeCollectionStartCustomExtension": "#/components/schemas/microsoft.graph.onAttributeCollectionStartCustomExtension",
+          "#microsoft.graph.onAttributeCollectionSubmitCustomExtension": "#/components/schemas/microsoft.graph.onAttributeCollectionSubmitCustomExtension",
+          "#microsoft.graph.onOtpSendCustomExtension": "#/components/schemas/microsoft.graph.onOtpSendCustomExtension",
+          "#microsoft.graph.onTokenIssuanceStartCustomExtension": "#/components/schemas/microsoft.graph.onTokenIssuanceStartCustomExtension"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.educationSubmissionResource",
+  "title": "microsoft.graph.educationSubmissionResource",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "educationSubmissionResource",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "assignmentResourceUrl": {
+          "type": "string",
+          "description": "Pointer to the assignment from which the resource was copied. If the value is null, the student uploaded the resource.",
+          "nullable": true
+        },
+        "resource": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.educationResource"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "Resource object."
+        },
+        "dependentResources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.educationSubmissionResource"
+          },
+          "description": "A collection of submission resources that depend on the parent educationSubmissionResource.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.educationSubmissionResource"
+}

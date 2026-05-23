@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.identityProviderBase",
+  "title": "microsoft.graph.identityProviderBase",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "identityProviderBase",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "description": "The display name of the identity provider.",
+          "nullable": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.appleManagedIdentityProvider": "#/components/schemas/microsoft.graph.appleManagedIdentityProvider",
+          "#microsoft.graph.builtInIdentityProvider": "#/components/schemas/microsoft.graph.builtInIdentityProvider",
+          "#microsoft.graph.samlOrWsFedProvider": "#/components/schemas/microsoft.graph.samlOrWsFedProvider",
+          "#microsoft.graph.internalDomainFederation": "#/components/schemas/microsoft.graph.internalDomainFederation",
+          "#microsoft.graph.samlOrWsFedExternalDomainFederation": "#/components/schemas/microsoft.graph.samlOrWsFedExternalDomainFederation",
+          "#microsoft.graph.socialIdentityProvider": "#/components/schemas/microsoft.graph.socialIdentityProvider"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.teamsAppInstallation",
+  "title": "microsoft.graph.teamsAppInstallation",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.entity"
+    },
+    {
+      "title": "teamsAppInstallation",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "consentedPermissionSet": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.teamsAppPermissionSet"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The set of resource-specific permissions consented to while installing or upgrading the teamsApp."
+        },
+        "teamsApp": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.teamsApp"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The app that is installed.",
+          "x-ms-navigationProperty": true
+        },
+        "teamsAppDefinition": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.teamsAppDefinition"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The details of this version of the app.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.userScopeTeamsAppInstallation": "#/components/schemas/microsoft.graph.userScopeTeamsAppInstallation"
+        }
+      }
+    }
+  ]
+}

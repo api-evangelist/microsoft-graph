@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.attendeeBase",
+  "title": "microsoft.graph.attendeeBase",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.recipient"
+    },
+    {
+      "title": "attendeeBase",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.attendeeType"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The type of attendee. The possible values are: required, optional, resource. Currently if the attendee is a person, findMeetingTimes always considers the person is of the Required type."
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.attendeeBase"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.attendee": "#/components/schemas/microsoft.graph.attendee"
+        }
+      }
+    }
+  ]
+}

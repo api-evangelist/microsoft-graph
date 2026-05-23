@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.security.teamsMessageEvidence",
+  "title": "microsoft.graph.security.teamsMessageEvidence",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.security.alertEvidence"
+    },
+    {
+      "title": "teamsMessageEvidence",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "campaignId": {
+          "type": "string",
+          "description": "The identifier of the campaign that this Teams message is part of.",
+          "nullable": true
+        },
+        "channelId": {
+          "type": "string",
+          "description": "The channel ID associated with this Teams message.",
+          "nullable": true
+        },
+        "deliveryAction": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.security.teamsMessageDeliveryAction"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The delivery action of this Teams message. The possible values are: unknown, deliveredAsSpam, delivered, blocked, replaced, unknownFutureValue."
+        },
+        "deliveryLocation": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.security.teamsDeliveryLocation"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The delivery location of this Teams message. The possible values are: unknown, teams, quarantine, failed, unknownFutureValue."
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.security.fileEvidence"
+          },
+          "description": "The list of file entities that are attached to this Teams message."
+        },
+        "groupId": {
+          "type": "string",
+          "description": "The identifier of the team or group that this message is part of.",
+          "nullable": true
+        },
+        "isExternal": {
+          "type": "boolean",
+          "description": "Indicates whether the message is owned by the organization that reported the security detection alert.",
+          "nullable": true
+        },
+        "isOwned": {
+          "type": "boolean",
+          "description": "Indicates whether the message is owned by your organization.",
+          "nullable": true
+        },
+        "lastModifiedDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "Date and time when the message was last edited. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.",
+          "format": "date-time",
+          "nullable": true
+        },
+        "messageDirection": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.security.antispamTeamsDirection"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The direction of the Teams message. The possible values are: unknown, inbound, outbound, intraorg, unknownFutureValue."
+        },
+        "messageId": {
+          "type": "string",
+          "description": "Message identifier unique within the thread.",
+          "nullable": true
+        },
+        "owningTenantId": {
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+          "type": "string",
+          "description": "Tenant ID (GUID) of the owner of the message.",
+          "format": "uuid",
+          "nullable": true
+        },
+        "parentMessageId": {
+          "type": "string",
+          "description": "Identifier of the message to which the current message is a reply; otherwise, it's the same as the messageId.",
+          "nullable": true
+        },
+        "receivedDateTime": {
+          "pattern": "^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$",
+          "type": "string",
+          "description": "The received date of this message. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.",
+          "format": "date-time",
+          "nullable": true
+        },
+        "recipients": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": "The recipients of this Teams message."
+        },
+        "senderFromAddress": {
+          "type": "string",
+          "description": "The SMTP format address of the sender.",
+          "nullable": true
+        },
+        "senderIP": {
+          "type": "string",
+          "description": "The IP address of the sender.",
+          "nullable": true
+        },
+        "sourceAppName": {
+          "type": "string",
+          "description": "Source of the message; for example, desktop and mobile.",
+          "nullable": true
+        },
+        "sourceId": {
+          "type": "string",
+          "description": "The source ID of this Teams message.",
+          "nullable": true
+        },
+        "subject": {
+          "type": "string",
+          "description": "The subject of this Teams message.",
+          "nullable": true
+        },
+        "suspiciousRecipients": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": "The list of recipients who were detected as suspicious."
+        },
+        "threadId": {
+          "type": "string",
+          "description": "Identifier of the channel or chat that this message is part of.",
+          "nullable": true
+        },
+        "threadType": {
+          "type": "string",
+          "description": "The Teams message type. Supported values are: Chat, Topic, Space, and Meeting.",
+          "nullable": true
+        },
+        "urls": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.security.urlEvidence"
+          },
+          "description": "The URLs contained in this Teams message."
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.security.teamsMessageEvidence"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.security.teamsMessageEvidence"
+}

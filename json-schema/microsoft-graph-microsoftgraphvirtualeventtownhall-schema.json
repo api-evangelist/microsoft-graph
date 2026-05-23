@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.virtualEventTownhall",
+  "title": "microsoft.graph.virtualEventTownhall",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.virtualEvent"
+    },
+    {
+      "title": "virtualEventTownhall",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "audience": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.meetingAudience"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The audience to whom the town hall is visible. The possible values are: everyone, organization, and unknownFutureValue."
+        },
+        "coOrganizers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.communicationsUserIdentity"
+          },
+          "description": "Identity information of the coorganizers of the town hall."
+        },
+        "invitedAttendees": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/microsoft.graph.identity"
+          },
+          "description": "The attendees invited to the town hall. The supported identities are: communicationsUserIdentity and communicationsGuestIdentity."
+        },
+        "isInviteOnly": {
+          "type": "boolean",
+          "description": "Indicates whether the town hall is only open to invited people and groups within your organization. The isInviteOnly property can only be true if the value of the audience property is set to organization.",
+          "nullable": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.virtualEventTownhall"
+        }
+      }
+    }
+  ],
+  "x-ms-discriminator-value": "#microsoft.graph.virtualEventTownhall"
+}

@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/microsoft.graph.eventMessage",
+  "title": "microsoft.graph.eventMessage",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/microsoft.graph.message"
+    },
+    {
+      "title": "eventMessage",
+      "required": [
+        "@odata.type"
+      ],
+      "type": "object",
+      "properties": {
+        "endDateTime": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.dateTimeTimeZone"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ]
+        },
+        "isAllDay": {
+          "type": "boolean",
+          "nullable": true
+        },
+        "isDelegated": {
+          "type": "boolean",
+          "description": "True if this meeting request is accessible to a delegate, false otherwise. The default is false.",
+          "nullable": true
+        },
+        "isOutOfDate": {
+          "type": "boolean",
+          "nullable": true
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.location"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ]
+        },
+        "meetingMessageType": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.meetingMessageType"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The type of event message: none, meetingRequest, meetingCancelled, meetingAccepted, meetingTenativelyAccepted, meetingDeclined."
+        },
+        "recurrence": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.patternedRecurrence"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ]
+        },
+        "startDateTime": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.dateTimeTimeZone"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ]
+        },
+        "type": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.eventType"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ]
+        },
+        "event": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/microsoft.graph.event"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ],
+          "description": "The event associated with the event message. The assumption for attendees or room resources is that the Calendar Attendant is set to automatically update the calendar with an event when meeting request event messages arrive. Navigation property. Read-only.",
+          "x-ms-navigationProperty": true
+        },
+        "@odata.type": {
+          "type": "string",
+          "default": "#microsoft.graph.eventMessage"
+        }
+      },
+      "discriminator": {
+        "propertyName": "@odata.type",
+        "mapping": {
+          "#microsoft.graph.eventMessageRequest": "#/components/schemas/microsoft.graph.eventMessageRequest",
+          "#microsoft.graph.eventMessageResponse": "#/components/schemas/microsoft.graph.eventMessageResponse"
+        }
+      }
+    }
+  ]
+}
