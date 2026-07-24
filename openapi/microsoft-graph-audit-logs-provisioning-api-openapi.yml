@@ -1,0 +1,522 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Graph Admin Admin.admin Audit Logs Provisioning API
+  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
+
+    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
+
+    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
+
+    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
+  version: 1.0.0
+  contact:
+    name: Microsoft Graph API Support
+    url: https://developer.microsoft.com/graph
+servers:
+- url: https://graph.microsoft.com/v1.0
+  description: Microsoft Graph API v1.0 endpoint
+tags:
+- name: Audit Logs Provisioning
+  description: Operations for accessing audit log data
+paths:
+  /auditLogs/provisioning:
+    description: Provides operations to manage the provisioning property of the microsoft.graph.auditLogRoot entity.
+    get:
+      tags:
+      - Audit Logs Provisioning
+      summary: Microsoft Graph List provisioningObjectSummary
+      description: 'Get all provisioning events that occurred in your tenant, such as the deletion of a group in a target application or the creation of a user when provisioning user accounts from your HR system. '
+      operationId: provisionAuditLogsProvisioning
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/provisioningobjectsummary-list?view=graph-rest-1.0
+      parameters:
+      - $ref: '#/components/parameters/Top'
+      - $ref: '#/components/parameters/Skip'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/Count'
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          $ref: '#/components/responses/ProvisioningObjectSummaryCollectionResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    post:
+      tags:
+      - Audit Logs Provisioning
+      summary: Microsoft Graph Create Provisioning
+      description: Performs POST operation on /auditLogs/provisioning
+      operationId: provisionAuditLogsProvisioning1
+      requestBody:
+        description: New navigation property
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisioningObjectSummary'
+            examples:
+              ProvisioningObjectSummaryRequestExample:
+                $ref: '#/components/examples/ProvisioningObjectSummaryRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Created navigation property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningObjectSummary'
+              examples:
+                ProvisioningObjectSummaryExample:
+                  $ref: '#/components/examples/ProvisioningObjectSummaryExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+  /auditLogs/provisioning/{provisioningObjectSummary-id}:
+    description: Provides operations to manage the provisioning property of the microsoft.graph.auditLogRoot entity.
+    parameters:
+    - name: provisioningObjectSummary-id
+      in: path
+      description: The unique identifier of provisioningObjectSummary
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: provisioningObjectSummary
+    get:
+      tags:
+      - Audit Logs Provisioning
+      summary: Microsoft Graph Get provisioning from auditLogs
+      description: Performs GET operation on /auditLogs/provisioning/{provisioningObjectSummary-id}
+      operationId: provisionAuditLogsProvisioning2
+      parameters:
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningObjectSummary'
+              examples:
+                ProvisioningObjectSummaryExample:
+                  $ref: '#/components/examples/ProvisioningObjectSummaryExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+      - Audit Logs Provisioning
+      summary: Microsoft Graph Update Provisioning
+      description: Performs PATCH operation on /auditLogs/provisioning/{provisioningObjectSummary-id}
+      operationId: provisionAuditLogsProvisioning3
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisioningObjectSummary'
+            examples:
+              ProvisioningObjectSummaryRequestExample:
+                $ref: '#/components/examples/ProvisioningObjectSummaryRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningObjectSummary'
+              examples:
+                ProvisioningObjectSummaryExample:
+                  $ref: '#/components/examples/ProvisioningObjectSummaryExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+      - Audit Logs Provisioning
+      summary: Microsoft Graph Delete Provisioning
+      description: Performs DELETE operation on /auditLogs/provisioning/{provisioningObjectSummary-id}
+      operationId: provisionAuditLogsProvisioning4
+      parameters:
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: operation
+  /auditLogs/provisioning/$count:
+    description: Provides operations to count the resources in the collection.
+    get:
+      tags:
+      - Audit Logs Provisioning
+      summary: Microsoft Graph Get the number of the resource
+      description: Performs GET operation on /auditLogs/provisioning/$count
+      operationId: provisionAuditLogsProvisioning5
+      parameters:
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+components:
+  parameters:
+    Top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    Skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    Count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    Filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+  responses:
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+          examples:
+            ODataCountResponseExample:
+              $ref: '#/components/examples/ODataCountResponseExample'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+          examples:
+            ODataErrorExample:
+              $ref: '#/components/examples/ODataErrorExample'
+  schemas:
+    InnerError:
+      title: InnerError
+      type: object
+      properties:
+        request-id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        client-request-id:
+          type: string
+    ProvisioningObjectSummary:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: provisioningObjectSummary
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          activityDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.  SUpports $filter (eq, gt, lt) and orderby.
+            format: date-time
+          changeId:
+            type: string
+            description: Unique ID of this change in this cycle. Supports $filter (eq, contains).
+            nullable: true
+          cycleId:
+            type: string
+            description: Unique ID per job iteration. Supports $filter (eq, contains).
+            nullable: true
+          durationInMilliseconds:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: Indicates how long this provisioning action took to finish. Measured in milliseconds.
+            format: int32
+            nullable: true
+          initiatedBy:
+            anyOf:
+            - $ref: '#/components/schemas/Initiator'
+            - type: object
+              nullable: true
+            description: Details of who initiated this provisioning. Supports $filter (eq, contains).
+          jobId:
+            type: string
+            description: The unique ID for the whole provisioning job. Supports $filter (eq, contains).
+            nullable: true
+          modifiedProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/ModifiedProperty'
+            description: Details of each property that was modified in this provisioning action on this object.
+          provisioningAction:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisioningAction'
+            - type: object
+              nullable: true
+            description: 'Indicates the activity name or the operation name. The possible values are: create, update, delete, stageddelete, disable, other and unknownFutureValue. For a list of activities logged, refer to Microsoft Entra activity list. Supports $filter (eq, contains).'
+          provisioningStatusInfo:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisioningStatusInfo'
+            - type: object
+              nullable: true
+            description: Details of provisioning status.
+          provisioningSteps:
+            type: array
+            items:
+              $ref: '#/components/schemas/ProvisioningStep'
+            description: Details of each step in provisioning.
+          servicePrincipal:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisioningServicePrincipal'
+            - type: object
+              nullable: true
+            description: Represents the service principal used for provisioning. Supports $filter (eq) for id and name.
+          sourceIdentity:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisionedIdentity'
+            - type: object
+              nullable: true
+            description: Details of source object being provisioned. Supports $filter (eq, contains) for identityType, id, and displayName.
+          sourceSystem:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisioningSystem'
+            - type: object
+              nullable: true
+            description: Details of source system of the object being provisioned. Supports $filter (eq, contains) for displayName.
+          targetIdentity:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisionedIdentity'
+            - type: object
+              nullable: true
+            description: Details of target object being provisioned. Supports $filter (eq, contains) for identityType, id, and displayName.
+          targetSystem:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisioningSystem'
+            - type: object
+              nullable: true
+            description: Details of target system of the object being provisioned. Supports $filter (eq, contains) for displayName.
+          tenantId:
+            type: string
+            description: Unique Microsoft Entra tenant ID. Supports $filter (eq, contains).
+            nullable: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.provisioningObjectSummary'
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the entity.
+    ODataCountResponse:
+      title: ODataCountResponse
+      type: integer
+      format: int32
+      description: The count of entities
+    ODataError:
+      title: ODataError
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    ErrorDetail:
+      title: ErrorDetail
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    MainError:
+      title: MainError
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        target:
+          type: string
+          description: Target of the error
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+  examples:
+    ODataErrorExample:
+      value:
+        error:
+          code: BadRequest
+          message: The request is invalid.
+          target: /resource
+          details:
+          - code: InvalidParameter
+            message: Parameter value is invalid.
+            target: parameterName
+          innerError:
+            request-id: 00000000-0000-0000-0000-000000000001
+            date: '2024-01-15T10:30:00Z'
+            client-request-id: 00000000-0000-0000-0000-000000000002
+    ProvisioningObjectSummaryRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        activityDateTime: '2024-01-15T10:30:00Z'
+        changeId: 00000000-0000-0000-0000-000000000001
+        cycleId: 00000000-0000-0000-0000-000000000001
+        durationInMilliseconds: 0.0
+        initiatedBy: {}
+        jobId: 00000000-0000-0000-0000-000000000001
+        '@odata.type': '#microsoft.graph.provisioningobjectsummary'
+    ProvisioningObjectSummaryExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        activityDateTime: '2024-01-15T10:30:00Z'
+        changeId: 00000000-0000-0000-0000-000000000001
+        cycleId: 00000000-0000-0000-0000-000000000001
+        durationInMilliseconds: 0.0
+        initiatedBy: {}
+        jobId: 00000000-0000-0000-0000-000000000001
+        '@odata.type': '#microsoft.graph.provisioningobjectsummary'
+    ODataCountResponseExample:
+      value: 42

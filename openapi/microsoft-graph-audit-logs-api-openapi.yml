@@ -1,0 +1,518 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Graph Admin Admin.admin Audit Logs API
+  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
+
+    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
+
+    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
+
+    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
+  version: 1.0.0
+  contact:
+    name: Microsoft Graph API Support
+    url: https://developer.microsoft.com/graph
+servers:
+- url: https://graph.microsoft.com/v1.0
+  description: Microsoft Graph API v1.0 endpoint
+tags:
+- name: Audit Logs
+  description: Operations for accessing audit log data
+paths:
+  /auditLogs:
+    description: Provides operations to manage the auditLogRoot singleton.
+    get:
+      tags:
+      - Audit Logs
+      summary: Microsoft Graph Get auditLogs
+      description: Performs GET operation on /auditLogs
+      operationId: listAuditLogs
+      parameters:
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Retrieved entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditLogRoot'
+              examples:
+                AuditLogRootExample:
+                  $ref: '#/components/examples/AuditLogRootExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+      - Audit Logs
+      summary: Microsoft Graph Update auditLogs
+      description: Performs PATCH operation on /auditLogs
+      operationId: updateAuditLogs
+      requestBody:
+        description: New property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuditLogRoot'
+            examples:
+              AuditLogRootRequestExample:
+                $ref: '#/components/examples/AuditLogRootRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditLogRoot'
+              examples:
+                AuditLogRootExample:
+                  $ref: '#/components/examples/AuditLogRootExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+components:
+  examples:
+    AuditLogRootExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        directoryAudits:
+        - '@odata.type': '#microsoft.graph.directoryaudit'
+        provisioning:
+        - '@odata.type': '#microsoft.graph.provisioningobjectsummary'
+        signIns:
+        - '@odata.type': '#microsoft.graph.signin'
+        '@odata.type': '#microsoft.graph.auditlogroot'
+    ODataErrorExample:
+      value:
+        error:
+          code: BadRequest
+          message: The request is invalid.
+          target: /resource
+          details:
+          - code: InvalidParameter
+            message: Parameter value is invalid.
+            target: parameterName
+          innerError:
+            request-id: 00000000-0000-0000-0000-000000000001
+            date: '2024-01-15T10:30:00Z'
+            client-request-id: 00000000-0000-0000-0000-000000000002
+    AuditLogRootRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        directoryAudits:
+        - '@odata.type': '#microsoft.graph.directoryaudit'
+        provisioning:
+        - '@odata.type': '#microsoft.graph.provisioningobjectsummary'
+        signIns:
+        - '@odata.type': '#microsoft.graph.signin'
+        '@odata.type': '#microsoft.graph.auditlogroot'
+  schemas:
+    InnerError:
+      title: InnerError
+      type: object
+      properties:
+        request-id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        client-request-id:
+          type: string
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the entity.
+    ProvisioningObjectSummary:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: provisioningObjectSummary
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          activityDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.  SUpports $filter (eq, gt, lt) and orderby.
+            format: date-time
+          changeId:
+            type: string
+            description: Unique ID of this change in this cycle. Supports $filter (eq, contains).
+            nullable: true
+          cycleId:
+            type: string
+            description: Unique ID per job iteration. Supports $filter (eq, contains).
+            nullable: true
+          durationInMilliseconds:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: Indicates how long this provisioning action took to finish. Measured in milliseconds.
+            format: int32
+            nullable: true
+          initiatedBy:
+            anyOf:
+            - $ref: '#/components/schemas/Initiator'
+            - type: object
+              nullable: true
+            description: Details of who initiated this provisioning. Supports $filter (eq, contains).
+          jobId:
+            type: string
+            description: The unique ID for the whole provisioning job. Supports $filter (eq, contains).
+            nullable: true
+          modifiedProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/ModifiedProperty'
+            description: Details of each property that was modified in this provisioning action on this object.
+          provisioningAction:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisioningAction'
+            - type: object
+              nullable: true
+            description: 'Indicates the activity name or the operation name. The possible values are: create, update, delete, stageddelete, disable, other and unknownFutureValue. For a list of activities logged, refer to Microsoft Entra activity list. Supports $filter (eq, contains).'
+          provisioningStatusInfo:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisioningStatusInfo'
+            - type: object
+              nullable: true
+            description: Details of provisioning status.
+          provisioningSteps:
+            type: array
+            items:
+              $ref: '#/components/schemas/ProvisioningStep'
+            description: Details of each step in provisioning.
+          servicePrincipal:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisioningServicePrincipal'
+            - type: object
+              nullable: true
+            description: Represents the service principal used for provisioning. Supports $filter (eq) for id and name.
+          sourceIdentity:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisionedIdentity'
+            - type: object
+              nullable: true
+            description: Details of source object being provisioned. Supports $filter (eq, contains) for identityType, id, and displayName.
+          sourceSystem:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisioningSystem'
+            - type: object
+              nullable: true
+            description: Details of source system of the object being provisioned. Supports $filter (eq, contains) for displayName.
+          targetIdentity:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisionedIdentity'
+            - type: object
+              nullable: true
+            description: Details of target object being provisioned. Supports $filter (eq, contains) for identityType, id, and displayName.
+          targetSystem:
+            anyOf:
+            - $ref: '#/components/schemas/ProvisioningSystem'
+            - type: object
+              nullable: true
+            description: Details of target system of the object being provisioned. Supports $filter (eq, contains) for displayName.
+          tenantId:
+            type: string
+            description: Unique Microsoft Entra tenant ID. Supports $filter (eq, contains).
+            nullable: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.provisioningObjectSummary'
+    SignIn:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: signIn
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          appDisplayName:
+            type: string
+            description: App name displayed in the Microsoft Entra admin center.  Supports $filter (eq, startsWith).
+            nullable: true
+          appId:
+            type: string
+            description: Unique GUID that represents the app ID in the Microsoft Entra ID.  Supports $filter (eq).
+            nullable: true
+          appliedConditionalAccessPolicies:
+            type: array
+            items:
+              $ref: '#/components/schemas/AppliedConditionalAccessPolicy'
+            description: Provides a list of conditional access policies that the corresponding sign-in activity triggers. Apps need more Conditional Access-related privileges to read the details of this property. For more information, see Permissions for viewing applied conditional access (CA) policies in sign-ins.
+          clientAppUsed:
+            type: string
+            description: Identifies the client used for the sign-in activity. Modern authentication clients include Browser, modern clients. Legacy authentication clients include Exchange ActiveSync, IMAP, MAPI, SMTP, POP, and other clients.  Supports $filter (eq).
+            nullable: true
+          conditionalAccessStatus:
+            anyOf:
+            - $ref: '#/components/schemas/ConditionalAccessStatus'
+            - type: object
+              nullable: true
+            description: 'Reports status of an activated conditional access policy. The possible values are: success, failure, notApplied, and unknownFutureValue.  Supports $filter (eq).'
+          correlationId:
+            type: string
+            description: The request ID sent from the client when the sign-in is initiated. Used to troubleshoot sign-in activity.  Supports $filter (eq).
+            nullable: true
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: 'Date and time (UTC) the sign-in was initiated. Example: midnight on Jan 1, 2014 is reported as 2014-01-01T00:00:00Z.  Supports $orderby, $filter (eq, le, and ge).'
+            format: date-time
+          deviceDetail:
+            anyOf:
+            - $ref: '#/components/schemas/DeviceDetail'
+            - type: object
+              nullable: true
+            description: Device information from where the sign-in occurred; includes device ID, operating system, and browser.  Supports $filter (eq, startsWith) on browser and operatingSytem properties.
+          ipAddress:
+            type: string
+            description: IP address of the client used to sign in.  Supports $filter (eq, startsWith).
+            nullable: true
+          isInteractive:
+            type: boolean
+            description: Indicates whether a sign-in is interactive.
+            nullable: true
+          location:
+            anyOf:
+            - $ref: '#/components/schemas/SignInLocation'
+            - type: object
+              nullable: true
+            description: Provides the city, state, and country code where the sign-in originated.  Supports $filter (eq, startsWith) on city, state, and countryOrRegion properties.
+          resourceDisplayName:
+            type: string
+            description: Name of the resource the user signed into.  Supports $filter (eq).
+            nullable: true
+          resourceId:
+            type: string
+            description: ID of the resource that the user signed into.  Supports $filter (eq).
+            nullable: true
+          riskDetail:
+            anyOf:
+            - $ref: '#/components/schemas/RiskDetail'
+            - type: object
+              nullable: true
+            description: 'The reason behind a specific state of a risky user, sign-in, or a risk event. The value none means that Microsoft Entra risk detection did not flag the user or the sign-in as a risky event so far.  Supports $filter (eq). Note: Details for this property are only available for Microsoft Entra ID P2 customers. All other customers are returned hidden.'
+          riskEventTypes:
+            type: array
+            items:
+              anyOf:
+              - $ref: '#/components/schemas/RiskEventType'
+              - type: object
+                nullable: true
+          riskEventTypes_v2:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: 'The list of risk event types associated with the sign-in. Possible values: unlikelyTravel, anonymizedIPAddress, maliciousIPAddress, unfamiliarFeatures, malwareInfectedIPAddress, suspiciousIPAddress, leakedCredentials, investigationsThreatIntelligence, generic, or unknownFutureValue.  Supports $filter (eq, startsWith).'
+          riskLevelAggregated:
+            anyOf:
+            - $ref: '#/components/schemas/RiskLevel'
+            - type: object
+              nullable: true
+            description: 'Aggregated risk level. The possible values are: none, low, medium, high, hidden, and unknownFutureValue. The value hidden means the user or sign-in wasn''t enabled for Microsoft Entra ID Protection.  Supports $filter (eq).  Note: Details for this property are only available for Microsoft Entra ID P2 customers. All other customers are returned hidden.'
+          riskLevelDuringSignIn:
+            anyOf:
+            - $ref: '#/components/schemas/RiskLevel'
+            - type: object
+              nullable: true
+            description: 'Risk level during sign-in. The possible values are: none, low, medium, high, hidden, and unknownFutureValue. The value hidden means the user or sign-in wasn''t enabled for Microsoft Entra ID Protection.  Supports $filter (eq). Note: Details for this property are only available for Microsoft Entra ID P2 customers. All other customers are returned hidden.'
+          riskState:
+            anyOf:
+            - $ref: '#/components/schemas/RiskState'
+            - type: object
+              nullable: true
+            description: 'Reports status of the risky user, sign-in, or a risk event. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue.  Supports $filter (eq).'
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/SignInStatus'
+            - type: object
+              nullable: true
+            description: Sign-in status. Includes the error code and description of the error (if a sign-in failure occurs).  Supports $filter (eq) on errorCode property.
+          userDisplayName:
+            type: string
+            description: Display name of the user that initiated the sign-in.  Supports $filter (eq, startsWith).
+            nullable: true
+          userId:
+            type: string
+            description: ID of the user that initiated the sign-in.  Supports $filter (eq).
+          userPrincipalName:
+            type: string
+            description: 'User principal name of the user that initiated the sign-in. This value is always in lowercase. For guest users whose values in the user object typically contain #EXT# before the domain part, this property stores the value in both lowercase and the ''true'' format. For example, while the user object stores AdeleVance_fabrikam.com#EXT#@contoso.com, the sign-in logs store adelevance@fabrikam.com. Supports $filter (eq, startsWith).'
+            nullable: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.signIn'
+    DirectoryAudit:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: directoryAudit
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          activityDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Indicates the date and time the activity was performed. The Timestamp type is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Supports $filter (eq, ge, le) and $orderby.
+            format: date-time
+          activityDisplayName:
+            type: string
+            description: 'Indicates the activity name or the operation name (examples: ''Create User'' and ''Add member to group''). For a list of activities logged, refer to Microsoft Entra audit log categories and activities. Supports $filter (eq, startswith).'
+          additionalDetails:
+            type: array
+            items:
+              $ref: '#/components/schemas/KeyValue'
+            description: Indicates additional details on the activity.
+          category:
+            type: string
+            description: 'Indicates which resource category that''s targeted by the activity. For example: UserManagement, GroupManagement, ApplicationManagement, RoleManagement. For a list of categories for activities logged, refer to Microsoft Entra audit log categories and activities.'
+          correlationId:
+            type: string
+            description: Indicates a unique ID that helps correlate activities that span across various services. Can be used to trace logs across services. Supports $filter (eq).
+            nullable: true
+          initiatedBy:
+            $ref: '#/components/schemas/AuditActivityInitiator'
+          loggedByService:
+            type: string
+            description: 'Indicates information on which service initiated the activity (For example: Self-service Password Management, Core Directory, B2C, Invited Users, Microsoft Identity Manager, Privileged Identity Management. Supports $filter (eq).'
+            nullable: true
+          operationType:
+            type: string
+            description: 'Indicates the type of operation that was performed. The possible values include but are not limited to the following: Add, Assign, Update, Unassign, and Delete.'
+            nullable: true
+          result:
+            anyOf:
+            - $ref: '#/components/schemas/OperationResult'
+            - type: object
+              nullable: true
+            description: 'Indicates the result of the activity. The possible values are: success, failure, timeout, unknownFutureValue.'
+          resultReason:
+            type: string
+            description: Indicates the reason for failure if the result is failure or timeout.
+            nullable: true
+          targetResources:
+            type: array
+            items:
+              $ref: '#/components/schemas/TargetResource'
+            description: Indicates information on which resource was changed due to the activity. Target Resource Type can be User, Device, Directory, App, Role, Group, Policy or Other. Supports $filter (eq) for id and displayName; and $filter (startswith) for displayName.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.directoryAudit'
+    AuditLogRoot:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: auditLogRoot
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          directoryAudits:
+            type: array
+            items:
+              $ref: '#/components/schemas/DirectoryAudit'
+            x-ms-navigationProperty: true
+          provisioning:
+            type: array
+            items:
+              $ref: '#/components/schemas/ProvisioningObjectSummary'
+            x-ms-navigationProperty: true
+          signIns:
+            type: array
+            items:
+              $ref: '#/components/schemas/SignIn'
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.auditLogRoot'
+    ODataError:
+      title: ODataError
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    ErrorDetail:
+      title: ErrorDetail
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    MainError:
+      title: MainError
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        target:
+          type: string
+          description: Target of the error
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+          examples:
+            ODataErrorExample:
+              $ref: '#/components/examples/ODataErrorExample'

@@ -1,0 +1,324 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Graph Admin Admin.admin App Catalogs API
+  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
+
+    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
+
+    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
+
+    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
+  version: 1.0.0
+  contact:
+    name: Microsoft Graph API Support
+    url: https://developer.microsoft.com/graph
+servers:
+- url: https://graph.microsoft.com/v1.0
+  description: Microsoft Graph API v1.0 endpoint
+tags:
+- name: App Catalogs
+  description: Operations for managing the Microsoft Teams app catalog
+paths:
+  /appCatalogs:
+    description: Provides operations to manage the appCatalogs singleton.
+    get:
+      tags:
+      - App Catalogs
+      summary: Microsoft Graph Get appCatalogs
+      description: Performs GET operation on /appCatalogs
+      operationId: listAppCatalogs
+      parameters:
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Retrieved entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppCatalogs'
+              examples:
+                AppCatalogsExample:
+                  $ref: '#/components/examples/AppCatalogsExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+      - App Catalogs
+      summary: Microsoft Graph Update appCatalogs
+      description: Performs PATCH operation on /appCatalogs
+      operationId: updateAppCatalogs
+      requestBody:
+        description: New property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppCatalogs'
+            examples:
+              AppCatalogsRequestExample:
+                $ref: '#/components/examples/AppCatalogsRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppCatalogs'
+              examples:
+                AppCatalogsExample:
+                  $ref: '#/components/examples/AppCatalogsExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+components:
+  schemas:
+    InnerError:
+      title: InnerError
+      type: object
+      properties:
+        request-id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        client-request-id:
+          type: string
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the entity.
+    TeamworkBot:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: teamworkBot
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.teamworkBot'
+    TeamsAppDefinition:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: teamsAppDefinition
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          authorization:
+            anyOf:
+            - $ref: '#/components/schemas/TeamsAppAuthorization'
+            - type: object
+              nullable: true
+            description: Authorization requirements specified in the Teams app manifest.
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/IdentitySet'
+            - type: object
+              nullable: true
+          description:
+            type: string
+            description: Verbose description of the application.
+            nullable: true
+          displayName:
+            type: string
+            description: The name of the app provided by the app developer.
+            nullable: true
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            format: date-time
+            nullable: true
+          publishingState:
+            anyOf:
+            - $ref: '#/components/schemas/TeamsAppPublishingState'
+            - type: object
+              nullable: true
+            description: The published status of a specific version of a Teams app. The possible values are:submitted—The specific version of the Teams app was submitted and is under review.published—The request to publish the specific version of the Teams app was approved by the admin and the app is published.rejected—The admin rejected the request to publish the specific version of the Teams app.
+          shortDescription:
+            type: string
+            description: Short description of the application.
+            nullable: true
+          teamsAppId:
+            type: string
+            description: The ID from the Teams app manifest.
+            nullable: true
+          version:
+            type: string
+            description: The version number of the application.
+            nullable: true
+          bot:
+            anyOf:
+            - $ref: '#/components/schemas/TeamworkBot'
+            - type: object
+              nullable: true
+            description: The details of the bot specified in the Teams app manifest.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.teamsAppDefinition'
+    TeamsApp:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: teamsApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          displayName:
+            type: string
+            description: The name of the catalog app provided by the app developer in the Microsoft Teams zip app package.
+            nullable: true
+          distributionMethod:
+            anyOf:
+            - $ref: '#/components/schemas/TeamsAppDistributionMethod'
+            - type: object
+              nullable: true
+            description: The method of distribution for the app. Read-only.
+          externalId:
+            type: string
+            description: The ID of the catalog provided by the app developer in the Microsoft Teams zip app package.
+            nullable: true
+          appDefinitions:
+            type: array
+            items:
+              $ref: '#/components/schemas/TeamsAppDefinition'
+            description: The details for each version of the app.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.teamsApp'
+    AppCatalogs:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: appCatalogs
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          teamsApps:
+            type: array
+            items:
+              $ref: '#/components/schemas/TeamsApp'
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.appCatalogs'
+    ODataError:
+      title: ODataError
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    ErrorDetail:
+      title: ErrorDetail
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    MainError:
+      title: MainError
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        target:
+          type: string
+          description: Target of the error
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+  examples:
+    ODataErrorExample:
+      value:
+        error:
+          code: BadRequest
+          message: The request is invalid.
+          target: /resource
+          details:
+          - code: InvalidParameter
+            message: Parameter value is invalid.
+            target: parameterName
+          innerError:
+            request-id: 00000000-0000-0000-0000-000000000001
+            date: '2024-01-15T10:30:00Z'
+            client-request-id: 00000000-0000-0000-0000-000000000002
+    AppCatalogsRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        teamsApps:
+        - '@odata.type': '#microsoft.graph.teamsapp'
+        '@odata.type': '#microsoft.graph.appcatalogs'
+    AppCatalogsExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        teamsApps:
+        - '@odata.type': '#microsoft.graph.teamsapp'
+        '@odata.type': '#microsoft.graph.appcatalogs'
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+          examples:
+            ODataErrorExample:
+              $ref: '#/components/examples/ODataErrorExample'

@@ -1,0 +1,102 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Graph Admin Admin.admin Copilot Administration API
+  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
+
+    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
+
+    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
+
+    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
+  version: 1.0.0
+  contact:
+    name: Microsoft Graph API Support
+    url: https://developer.microsoft.com/graph
+servers:
+- url: https://graph.microsoft.com/v1.0
+  description: Microsoft Graph API v1.0 endpoint
+tags:
+- name: Copilot Administration
+  description: Operations for managing Microsoft Copilot settings
+paths:
+  /copilot/admin:
+    description: Provides operations to manage Copilot administration settings.
+    get:
+      tags:
+      - Copilot Administration
+      summary: Microsoft Graph Get Copilot admin settings
+      description: Retrieve the Microsoft Copilot administration settings.
+      operationId: getCopilotAdmin
+      responses:
+        2XX:
+          description: Retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CopilotAdmin'
+              examples:
+                GetCopilotAdminResponse:
+                  $ref: '#/components/examples/GetCopilotAdminResponse'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-ms-docs-operation-type: operation
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: default
+components:
+  examples:
+    GetCopilotAdminResponse:
+      summary: Example response for getting Copilot admin settings
+      value:
+        id: copilotAdmin
+        '@odata.type': '#microsoft.graph.copilotAdmin'
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+  schemas:
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity.
+        '@odata.type':
+          type: string
+    ODataError:
+      title: ODataError
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    CopilotAdmin:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: CopilotAdmin
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+    MainError:
+      title: MainError
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true

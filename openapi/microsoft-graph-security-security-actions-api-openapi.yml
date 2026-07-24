@@ -1,0 +1,171 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Graph Admin Admin.admin security.security.Actions API
+  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
+
+    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
+
+    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
+
+    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
+  version: 1.0.0
+  contact:
+    name: Microsoft Graph API Support
+    url: https://developer.microsoft.com/graph
+servers:
+- url: https://graph.microsoft.com/v1.0
+  description: Microsoft Graph API v1.0 endpoint
+tags:
+- name: security.security.Actions
+  x-ms-docs-toc-type: container
+paths:
+  /security/microsoft.graph.security.runHuntingQuery:
+    description: Provides operations to call the runHuntingQuery method.
+    post:
+      tags:
+      - security.security.Actions
+      summary: Microsoft Graph Invoke action runHuntingQuery
+      description: Queries a specified set of event, activity, or entity data supported by Microsoft 365 Defender to proactively look for specific threats in your environment. This method is for advanced hunting in Microsoft 365 Defender. This method includes a query in Kusto Query Language (KQL). It specifies a data table in the advanced hunting schema and a piped sequence of operators to filter or search that data, and format the query output in specific ways.  Find out more about hunting for threats across devices, emails, apps, and identities. Learn about KQL. For information on using advanced hunting in the Microsoft 365 Defender portal, see Proactively hunt for threats with advanced hunting in Microsoft 365 Defender.
+      operationId: security.runHuntingQuery
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  nullable: true
+                timespan:
+                  type: string
+                  nullable: true
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/microsoft.graph.security.huntingQueryResults'
+                - type: object
+                  nullable: true
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+components:
+  schemas:
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.security.singlePropertySchema:
+      title: singlePropertySchema
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the property.
+          nullable: true
+        type:
+          type: string
+          description: The type of the property.
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    microsoft.graph.security.huntingRowResult:
+      title: huntingRowResult
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type: string
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
+          type: string
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.security.huntingQueryResults:
+      title: huntingQueryResults
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.security.huntingRowResult'
+          description: The results of the hunting query.
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.security.singlePropertySchema'
+          description: The schema for the response.
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

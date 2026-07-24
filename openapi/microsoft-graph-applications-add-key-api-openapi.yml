@@ -1,0 +1,281 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Graph Admin Admin.admin Applications Add Key API
+  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
+
+    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
+
+    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
+
+    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
+  version: 1.0.0
+  contact:
+    name: Microsoft Graph API Support
+    url: https://developer.microsoft.com/graph
+servers:
+- url: https://graph.microsoft.com/v1.0
+  description: Microsoft Graph API v1.0 endpoint
+tags:
+- name: Applications Add Key
+  description: Operations for managing application registrations
+paths:
+  /applications/{application-id}/addKey:
+    description: Provides operations to call the addKey method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    post:
+      tags:
+      - Applications Add Key
+      summary: Microsoft Graph Create Add Key
+      description: Add a key credential to an application. This method, along with removeKey can be used by an application to automate rolling its expiring keys. As part of the request validation for this method, a proof of possession of an existing key is verified before the action can be performed.  Applications that don't have any existing valid certificates (no certificates have been added yet, or all certificates have expired), won't be able to use this service action. You can use the Update application operation to perform an update instead.
+      operationId: addKeyApplications
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/application-addkey?view=graph-rest-1.0
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                keyCredential:
+                  $ref: '#/components/schemas/KeyCredential'
+                passwordCredential:
+                  anyOf:
+                  - $ref: '#/components/schemas/PasswordCredential'
+                  - type: object
+                    nullable: true
+                proof:
+                  type: string
+            examples:
+              addKeyApplicationsRequestExample:
+                $ref: '#/components/examples/addKeyApplicationsRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyCredential'
+              examples:
+                KeyCredentialExample:
+                  $ref: '#/components/examples/KeyCredentialExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: action
+components:
+  examples:
+    KeyCredentialExample:
+      value:
+        customKeyIdentifier: 00000000-0000-0000-0000-000000000001
+        displayName: Example Display Name
+        endDateTime: '2024-01-15T10:30:00Z'
+        key: string-value
+        keyId: 00000000-0000-0000-0000-000000000001
+        startDateTime: '2024-01-15T10:30:00Z'
+        '@odata.type': '#microsoft.graph.keycredential'
+    addKeyApplicationsRequestExample:
+      value:
+        keyCredential:
+          customKeyIdentifier: 00000000-0000-0000-0000-000000000001
+          displayName: Example Display Name
+          endDateTime: '2024-01-15T10:30:00Z'
+          key: string-value
+          keyId: 00000000-0000-0000-0000-000000000001
+          startDateTime: '2024-01-15T10:30:00Z'
+          '@odata.type': '#microsoft.graph.keycredential'
+        passwordCredential:
+          customKeyIdentifier: 00000000-0000-0000-0000-000000000001
+          displayName: Example Display Name
+          endDateTime: '2024-01-15T10:30:00Z'
+          hint: string-value
+          keyId: 00000000-0000-0000-0000-000000000001
+          secretText: string-value
+          '@odata.type': '#microsoft.graph.passwordcredential'
+        proof: string-value
+    ODataErrorExample:
+      value:
+        error:
+          code: BadRequest
+          message: The request is invalid.
+          target: /resource
+          details:
+          - code: InvalidParameter
+            message: Parameter value is invalid.
+            target: parameterName
+          innerError:
+            request-id: 00000000-0000-0000-0000-000000000001
+            date: '2024-01-15T10:30:00Z'
+            client-request-id: 00000000-0000-0000-0000-000000000002
+  schemas:
+    InnerError:
+      title: InnerError
+      type: object
+      properties:
+        request-id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        client-request-id:
+          type: string
+    PasswordCredential:
+      title: passwordCredential
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        customKeyIdentifier:
+          type: string
+          description: Do not use.
+          format: base64url
+          nullable: true
+        displayName:
+          type: string
+          description: Friendly name for the password. Optional.
+          nullable: true
+        endDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The date and time at which the password expires represented using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Optional.
+          format: date-time
+          nullable: true
+        hint:
+          type: string
+          description: Contains the first three characters of the password. Read-only.
+          nullable: true
+        keyId:
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          description: The unique identifier for the password.
+          format: uuid
+          nullable: true
+        secretText:
+          type: string
+          description: Read-only; Contains the strong passwords generated by Microsoft Entra ID that are 16-64 characters in length. The generated password value is only returned during the initial POST request to addPassword. There is no way to retrieve this password in the future.
+          nullable: true
+        startDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The date and time at which the password becomes valid. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Optional.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
+    ODataError:
+      title: ODataError
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    KeyCredential:
+      title: keyCredential
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        customKeyIdentifier:
+          type: string
+          description: A 40-character binary type that can be used to identify the credential. Optional. When not provided in the payload, defaults to the thumbprint of the certificate.
+          format: base64url
+          nullable: true
+        displayName:
+          type: string
+          description: The friendly name for the key, with a maximum length of 90 characters. Longer values are accepted but shortened. Optional.
+          nullable: true
+        endDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The date and time at which the credential expires. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
+          nullable: true
+        key:
+          type: string
+          description: The certificate's raw data in byte array converted to Base64 string. Returned only on $select for a single object, that is, GET applications/{applicationId}?$select=keyCredentials or GET servicePrincipals/{servicePrincipalId}?$select=keyCredentials; otherwise, it's always null.  From a .cer certificate, you can read the key using the Convert.ToBase64String() method. For more information, see Get the certificate key.
+          format: base64url
+          nullable: true
+        keyId:
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          description: The unique identifier (GUID) for the key.
+          format: uuid
+          nullable: true
+        startDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The date and time at which the credential becomes valid.The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
+          nullable: true
+        type:
+          type: string
+          description: The type of key credential; for example, Symmetric, AsymmetricX509Cert.
+          nullable: true
+        usage:
+          type: string
+          description: A string that describes the purpose for which the key can be used; for example, Verify.
+          nullable: true
+        '@odata.type':
+          type: string
+    ErrorDetail:
+      title: ErrorDetail
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    MainError:
+      title: MainError
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        target:
+          type: string
+          description: Target of the error
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+          examples:
+            ODataErrorExample:
+              $ref: '#/components/examples/ODataErrorExample'

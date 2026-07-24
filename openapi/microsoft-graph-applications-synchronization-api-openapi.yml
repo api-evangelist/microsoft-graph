@@ -1,0 +1,3310 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Graph Admin Admin.admin Applications Synchronization API
+  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
+
+    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
+
+    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
+
+    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
+  version: 1.0.0
+  contact:
+    name: Microsoft Graph API Support
+    url: https://developer.microsoft.com/graph
+servers:
+- url: https://graph.microsoft.com/v1.0
+  description: Microsoft Graph API v1.0 endpoint
+tags:
+- name: Applications Synchronization
+  description: Operations for managing application registrations
+paths:
+  /applications/{application-id}/synchronization:
+    description: Provides operations to manage the synchronization property of the microsoft.graph.application entity.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get synchronization from applications
+      description: Represents the capability for Microsoft Entra identity synchronization through the Microsoft Graph API.
+      operationId: getApplicationsSynchronization
+      parameters:
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Synchronization'
+              examples:
+                SynchronizationExample:
+                  $ref: '#/components/examples/SynchronizationExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    put:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Replace Synchronization
+      description: Performs PUT operation on /applications/{application-id}/synchronization
+      operationId: replaceApplicationsSynchronization
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Synchronization'
+            examples:
+              SynchronizationRequestExample:
+                $ref: '#/components/examples/SynchronizationRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Synchronization'
+              examples:
+                SynchronizationExample:
+                  $ref: '#/components/examples/SynchronizationExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Delete Synchronization
+      description: Performs DELETE operation on /applications/{application-id}/synchronization
+      operationId: deleteApplicationsSynchronization
+      parameters:
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: operation
+  /applications/{application-id}/synchronization/jobs:
+    description: Provides operations to manage the jobs property of the microsoft.graph.synchronization entity.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get jobs from applications
+      description: Performs synchronization by periodically running in the background, polling for changes in one directory, and pushing them to another directory.
+      operationId: getApplicationsSynchronizationJobs
+      parameters:
+      - $ref: '#/components/parameters/Top'
+      - $ref: '#/components/parameters/Skip'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/Count'
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          $ref: '#/components/responses/SynchronizationJobCollectionResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Jobs
+      description: Performs POST operation on /applications/{application-id}/synchronization/jobs
+      operationId: createApplicationsSynchronizationJobs
+      requestBody:
+        description: New navigation property
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SynchronizationJob'
+            examples:
+              SynchronizationJobRequestExample:
+                $ref: '#/components/examples/SynchronizationJobRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Created navigation property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynchronizationJob'
+              examples:
+                SynchronizationJobExample:
+                  $ref: '#/components/examples/SynchronizationJobExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}:
+    description: Provides operations to manage the jobs property of the microsoft.graph.synchronization entity.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get jobs from applications
+      description: Performs synchronization by periodically running in the background, polling for changes in one directory, and pushing them to another directory.
+      operationId: getApplicationsSynchronizationJobs1
+      parameters:
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynchronizationJob'
+              examples:
+                SynchronizationJobExample:
+                  $ref: '#/components/examples/SynchronizationJobExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Update Jobs
+      description: Performs PATCH operation on /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}
+      operationId: updateApplicationsSynchronizationJobs
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SynchronizationJob'
+            examples:
+              SynchronizationJobRequestExample:
+                $ref: '#/components/examples/SynchronizationJobRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynchronizationJob'
+              examples:
+                SynchronizationJobExample:
+                  $ref: '#/components/examples/SynchronizationJobExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Delete Jobs
+      description: Performs DELETE operation on /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}
+      operationId: deleteApplicationsSynchronizationJobs
+      parameters:
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: operation
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/bulkUpload:
+    description: Provides operations to manage the bulkUpload property of the microsoft.graph.synchronizationJob entity.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get bulkUpload from applications
+      description: The bulk upload operation for the job.
+      operationId: getApplicationsSynchronizationJobsBulkUpload
+      parameters:
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkUpload'
+              examples:
+                BulkUploadExample:
+                  $ref: '#/components/examples/BulkUploadExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Update Bulk Upload
+      description: Performs PATCH operation on /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/bulkUpload
+      operationId: updateApplicationsSynchronizationJobsBulkUpload
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkUpload'
+            examples:
+              BulkUploadRequestExample:
+                $ref: '#/components/examples/BulkUploadRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkUpload'
+              examples:
+                BulkUploadExample:
+                  $ref: '#/components/examples/BulkUploadExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Delete Bulk Upload
+      description: Performs DELETE operation on /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/bulkUpload
+      operationId: deleteApplicationsSynchronizationJobsBulkUpload
+      parameters:
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: operation
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/bulkUpload/$value:
+    description: Provides operations to manage the media for the application entity.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get Bulk Upload
+      description: The bulk upload operation for the job.
+      operationId: getApplicationsSynchronizationJobsBulkUpload1
+      responses:
+        2XX:
+          description: Retrieved media content
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+    put:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Replace Bulk Upload
+      description: The bulk upload operation for the job.
+      operationId: replaceApplicationsSynchronizationJobsBulkUpload
+      requestBody:
+        description: New media content.
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+        required: true
+      responses:
+        2XX:
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+    delete:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Delete Bulk Upload
+      description: The bulk upload operation for the job.
+      operationId: deleteApplicationsSynchronizationJobsBulkUpload1
+      parameters:
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/pause:
+    description: Provides operations to call the pause method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Pause
+      description: Temporarily stop a running synchronization job. All the progress, including job state, is persisted, and the job will continue from where it left off when a start call is made.
+      operationId: pauseApplicationsSynchronizationJobs
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-synchronizationjob-pause?view=graph-rest-1.0
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: action
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/provisionOnDemand:
+    description: Provides operations to call the provisionOnDemand method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Provision On Demand
+      description: Select a user and provision the account on-demand. The rate limit for this API is 5 requests per 10 seconds.
+      operationId: provisionApplicationsSynchronizationJobsProvisionOnDemand
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-synchronizationjob-provisionondemand?view=graph-rest-1.0
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                parameters:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/SynchronizationJobApplicationParameters'
+            examples:
+              provisionApplicationsSynchronizationJobsProvisionOnDemandRequestExample:
+                $ref: '#/components/examples/provisionApplicationsSynchronizationJobsProvisionOnDemandRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StringKeyStringValuePair'
+              examples:
+                StringKeyStringValuePairExample:
+                  $ref: '#/components/examples/StringKeyStringValuePairExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: action
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/restart:
+    description: Provides operations to call the restart method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Restart
+      description: Restart a stopped synchronization job, forcing it to reprocess all the objects in the directory. Optionally clears existing the synchronization state and previous errors.
+      operationId: restartApplicationsSynchronizationJobs
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-synchronizationjob-restart?view=graph-rest-1.0
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                criteria:
+                  anyOf:
+                  - $ref: '#/components/schemas/SynchronizationJobRestartCriteria'
+                  - type: object
+                    nullable: true
+            examples:
+              restartApplicationsSynchronizationJobsRequestExample:
+                $ref: '#/components/examples/restartApplicationsSynchronizationJobsRequestExample'
+        required: true
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: action
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/start:
+    description: Provides operations to call the start method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Start
+      description: 'Start an existing synchronization job. If the job is in a paused state, it continues processing changes from the point where it was paused. If the job is in quarantine, the quarantine status is cleared. Don''t create scripts to call the start job continuously while it''s running because that can cause the service to stop running. Use the start job only when the job is currently paused or in quarantine. '
+      operationId: startApplicationsSynchronizationJobs
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-synchronizationjob-start?view=graph-rest-1.0
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: action
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/validateCredentials:
+    description: Provides operations to call the validateCredentials method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/jobs/validateCredentials
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Validate Credentials
+      description: Validate that the credentials are valid in the tenant.
+      operationId: validateCredentialsApplicationsSynchronizationJobs
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-synchronizationjob-validatecredentials?view=graph-rest-1.0
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                applicationIdentifier:
+                  type: string
+                  nullable: true
+                templateId:
+                  type: string
+                  nullable: true
+                useSavedCredentials:
+                  type: boolean
+                  default: false
+                  nullable: true
+                credentials:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/SynchronizationSecretKeyStringValuePair'
+            examples:
+              validateCredentialsApplicationsSynchronizationJobsRequestExample:
+                $ref: '#/components/examples/validateCredentialsApplicationsSynchronizationJobsRequestExample'
+        required: true
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: action
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema:
+    description: Provides operations to manage the schema property of the microsoft.graph.synchronizationJob entity.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get schema from applications
+      description: The synchronization schema configured for the job.
+      operationId: getApplicationsSynchronizationJobsSchema
+      parameters:
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynchronizationSchema'
+              examples:
+                SynchronizationSchemaExample:
+                  $ref: '#/components/examples/SynchronizationSchemaExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Update Schema
+      description: Performs PATCH operation on /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema
+      operationId: updateApplicationsSynchronizationJobsSchema
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SynchronizationSchema'
+            examples:
+              SynchronizationSchemaRequestExample:
+                $ref: '#/components/examples/SynchronizationSchemaRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynchronizationSchema'
+              examples:
+                SynchronizationSchemaExample:
+                  $ref: '#/components/examples/SynchronizationSchemaExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Delete Schema
+      description: Performs DELETE operation on /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema
+      operationId: deleteApplicationsSynchronizationJobsSchema
+      parameters:
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: operation
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/directories:
+    description: Provides operations to manage the directories property of the microsoft.graph.synchronizationSchema entity.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/directories
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get directories from applications
+      description: Contains the collection of directories and all of their objects.
+      operationId: getApplicationsSynchronizationJobsSchemaDirectories
+      parameters:
+      - $ref: '#/components/parameters/Top'
+      - $ref: '#/components/parameters/Skip'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/Count'
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          $ref: '#/components/responses/DirectoryDefinitionCollectionResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Directories
+      description: Performs POST operation on /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/directories
+      operationId: createApplicationsSynchronizationJobsSchemaDirectories
+      requestBody:
+        description: New navigation property
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DirectoryDefinition'
+            examples:
+              DirectoryDefinitionRequestExample:
+                $ref: '#/components/examples/DirectoryDefinitionRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Created navigation property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectoryDefinition'
+              examples:
+                DirectoryDefinitionExample:
+                  $ref: '#/components/examples/DirectoryDefinitionExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/directories/{directoryDefinition-id}:
+    description: Provides operations to manage the directories property of the microsoft.graph.synchronizationSchema entity.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    - name: directoryDefinition-id
+      in: path
+      description: The unique identifier of directoryDefinition
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: directoryDefinition
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/directories/{directoryDefinition-id}
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get directories from applications
+      description: Contains the collection of directories and all of their objects.
+      operationId: getApplicationsSynchronizationJobsSchemaDirectories1
+      parameters:
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectoryDefinition'
+              examples:
+                DirectoryDefinitionExample:
+                  $ref: '#/components/examples/DirectoryDefinitionExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Update Directories
+      description: Performs PATCH operation on /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/directories/{directoryDefinition-id}
+      operationId: updateApplicationsSynchronizationJobsSchemaDirectories
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DirectoryDefinition'
+            examples:
+              DirectoryDefinitionRequestExample:
+                $ref: '#/components/examples/DirectoryDefinitionRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectoryDefinition'
+              examples:
+                DirectoryDefinitionExample:
+                  $ref: '#/components/examples/DirectoryDefinitionExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Delete Directories
+      description: Performs DELETE operation on /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/directories/{directoryDefinition-id}
+      operationId: deleteApplicationsSynchronizationJobsSchemaDirectories
+      parameters:
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: operation
+  ? /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/directories/{directoryDefinition-id}/discover
+  : description: Provides operations to call the discover method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    - name: directoryDefinition-id
+      in: path
+      description: The unique identifier of directoryDefinition
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: directoryDefinition
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/directories/{directoryDefinition-id}/discover
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Discover
+      description: 'Discover the latest schema definition for provisioning to an application. '
+      operationId: createApplicationsSynchronizationJobsSchemaDirectoriesDiscover
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-directorydefinition-discover?view=graph-rest-1.0
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/DirectoryDefinition'
+                - type: object
+                  nullable: true
+              examples:
+                DirectoryDefinitionExample:
+                  $ref: '#/components/examples/DirectoryDefinitionExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: action
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/directories/$count:
+    description: Provides operations to count the resources in the collection.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get the number of the resource
+      description: Performs GET operation on /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/directories/$count
+      operationId: countApplicationsSynchronizationJobsSchemaDirectories
+      parameters:
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/filterOperators():
+    description: Provides operations to call the filterOperators method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/filterOperators()
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get Filter Operators()
+      description: List all operators supported in the scoping filters.
+      operationId: getApplicationsSynchronizationJobsSchemaFilterOperators()
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-synchronizationschema-filteroperators?view=graph-rest-1.0
+      parameters:
+      - $ref: '#/components/parameters/Top'
+      - $ref: '#/components/parameters/Skip'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/Count'
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of filterOperatorSchema
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                - type: object
+                  properties:
+                    value:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/FilterOperatorSchema'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/functions():
+    description: Provides operations to call the functions method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/functions()
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get Functions()
+      description: List all the functions currently supported in the attributeMappingSource.
+      operationId: getApplicationsSynchronizationJobsSchemaFunctions()
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-synchronizationschema-functions?view=graph-rest-1.0
+      parameters:
+      - $ref: '#/components/parameters/Top'
+      - $ref: '#/components/parameters/Skip'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/Count'
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of attributeMappingFunctionSchema
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                - type: object
+                  properties:
+                    value:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/AttributeMappingFunctionSchema'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+  /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/parseExpression:
+    description: Provides operations to call the parseExpression method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationJob-id
+      in: path
+      description: The unique identifier of synchronizationJob
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationJob
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/parseExpression
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Parse Expression
+      description: Parse a given string expression into an attributeMappingSource object. For more information about expressions, see Writing Expressions for Attribute Mappings in Microsoft Entra ID.
+      operationId: createApplicationsSynchronizationJobsSchemaParseExpression
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-synchronizationschema-parseexpression?view=graph-rest-1.0
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                expression:
+                  type: string
+                  nullable: true
+                testInputObject:
+                  anyOf:
+                  - $ref: '#/components/schemas/ExpressionInputObject'
+                  - type: object
+                    nullable: true
+                targetAttributeDefinition:
+                  anyOf:
+                  - $ref: '#/components/schemas/AttributeDefinition'
+                  - type: object
+                    nullable: true
+            examples:
+              createApplicationsSynchronizationJobsSchemaParseExpressionRequestExample:
+                $ref: '#/components/examples/createApplicationsSynchronizationJobsSchemaParseExpressionRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/ParseExpressionResponse'
+                - type: object
+                  nullable: true
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: action
+  /applications/{application-id}/synchronization/jobs/$count:
+    description: Provides operations to count the resources in the collection.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get the number of the resource
+      description: Performs GET operation on /applications/{application-id}/synchronization/jobs/$count
+      operationId: countApplicationsSynchronizationJobs
+      parameters:
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+  /applications/{application-id}/synchronization/jobs/validateCredentials:
+    description: Provides operations to call the validateCredentials method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/validateCredentials
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Validate Credentials
+      description: Performs POST operation on /applications/{application-id}/synchronization/jobs/validateCredentials
+      operationId: validateCredentialsApplicationsSynchronizationJobs1
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                applicationIdentifier:
+                  type: string
+                  nullable: true
+                templateId:
+                  type: string
+                  nullable: true
+                useSavedCredentials:
+                  type: boolean
+                  default: false
+                  nullable: true
+                credentials:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/SynchronizationSecretKeyStringValuePair'
+            examples:
+              validateCredentialsApplicationsSynchronizationJobs1RequestExample:
+                $ref: '#/components/examples/validateCredentialsApplicationsSynchronizationJobs1RequestExample'
+        required: true
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: action
+  /applications/{application-id}/synchronization/acquireAccessToken:
+    description: Provides operations to call the acquireAccessToken method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Acquire Access Token
+      description: Acquire an OAuth access token to authorize the Microsoft Entra provisioning service to provision users into an application.
+      operationId: acquireAccessTokenApplicationsSynchronization
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-synchronization-acquireaccesstoken?view=graph-rest-1.0
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                credentials:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/SynchronizationSecretKeyStringValuePair'
+            examples:
+              acquireAccessTokenApplicationsSynchronizationRequestExample:
+                $ref: '#/components/examples/acquireAccessTokenApplicationsSynchronizationRequestExample'
+        required: true
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: action
+  /applications/{application-id}/synchronization/secrets:
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    put:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Update property secrets value.
+      description: Performs PUT operation on /applications/{application-id}/synchronization/secrets
+      operationId: replaceApplicationsSynchronizationSecrets
+      requestBody:
+        description: New property values
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                value:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/SynchronizationSecretKeyStringValuePair'
+            examples:
+              replaceApplicationsSynchronizationSecretsRequestExample:
+                $ref: '#/components/examples/replaceApplicationsSynchronizationSecretsRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SynchronizationSecretKeyStringValuePair'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+  /applications/{application-id}/synchronization/secrets/$count:
+    description: Provides operations to count the resources in the collection.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get the number of the resource
+      description: Performs GET operation on /applications/{application-id}/synchronization/secrets/$count
+      operationId: countApplicationsSynchronizationSecrets
+      parameters:
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+  /applications/{application-id}/synchronization/templates:
+    description: Provides operations to manage the templates property of the microsoft.graph.synchronization entity.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get templates from applications
+      description: Preconfigured synchronization settings for a particular application.
+      operationId: getApplicationsSynchronizationTemplates
+      parameters:
+      - $ref: '#/components/parameters/Top'
+      - $ref: '#/components/parameters/Skip'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/Count'
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          $ref: '#/components/responses/SynchronizationTemplateCollectionResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Templates
+      description: Performs POST operation on /applications/{application-id}/synchronization/templates
+      operationId: createApplicationsSynchronizationTemplates
+      requestBody:
+        description: New navigation property
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SynchronizationTemplate'
+            examples:
+              SynchronizationTemplateRequestExample:
+                $ref: '#/components/examples/SynchronizationTemplateRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Created navigation property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynchronizationTemplate'
+              examples:
+                SynchronizationTemplateExample:
+                  $ref: '#/components/examples/SynchronizationTemplateExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+  /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}:
+    description: Provides operations to manage the templates property of the microsoft.graph.synchronization entity.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationTemplate-id
+      in: path
+      description: The unique identifier of synchronizationTemplate
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationTemplate
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get templates from applications
+      description: Preconfigured synchronization settings for a particular application.
+      operationId: getApplicationsSynchronizationTemplates1
+      parameters:
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynchronizationTemplate'
+              examples:
+                SynchronizationTemplateExample:
+                  $ref: '#/components/examples/SynchronizationTemplateExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Update synchronizationTemplate
+      description: Update (override) the synchronization template associated with a given application.
+      operationId: updateApplicationsSynchronizationTemplates
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-synchronizationtemplate-update?view=graph-rest-1.0
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SynchronizationTemplate'
+            examples:
+              SynchronizationTemplateRequestExample:
+                $ref: '#/components/examples/SynchronizationTemplateRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynchronizationTemplate'
+              examples:
+                SynchronizationTemplateExample:
+                  $ref: '#/components/examples/SynchronizationTemplateExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Delete Templates
+      description: Performs DELETE operation on /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}
+      operationId: deleteApplicationsSynchronizationTemplates
+      parameters:
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: operation
+  /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema:
+    description: Provides operations to manage the schema property of the microsoft.graph.synchronizationTemplate entity.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationTemplate-id
+      in: path
+      description: The unique identifier of synchronizationTemplate
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationTemplate
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get schema from applications
+      description: Default synchronization schema for the jobs based on this template.
+      operationId: getApplicationsSynchronizationTemplatesSchema
+      parameters:
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynchronizationSchema'
+              examples:
+                SynchronizationSchemaExample:
+                  $ref: '#/components/examples/SynchronizationSchemaExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Update Schema
+      description: Performs PATCH operation on /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema
+      operationId: updateApplicationsSynchronizationTemplatesSchema
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SynchronizationSchema'
+            examples:
+              SynchronizationSchemaRequestExample:
+                $ref: '#/components/examples/SynchronizationSchemaRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynchronizationSchema'
+              examples:
+                SynchronizationSchemaExample:
+                  $ref: '#/components/examples/SynchronizationSchemaExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Delete Schema
+      description: Performs DELETE operation on /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema
+      operationId: deleteApplicationsSynchronizationTemplatesSchema
+      parameters:
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: operation
+  /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/directories:
+    description: Provides operations to manage the directories property of the microsoft.graph.synchronizationSchema entity.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationTemplate-id
+      in: path
+      description: The unique identifier of synchronizationTemplate
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationTemplate
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/directories
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get directories from applications
+      description: Contains the collection of directories and all of their objects.
+      operationId: getApplicationsSynchronizationTemplatesSchemaDirectories
+      parameters:
+      - $ref: '#/components/parameters/Top'
+      - $ref: '#/components/parameters/Skip'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/Count'
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          $ref: '#/components/responses/DirectoryDefinitionCollectionResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Directories
+      description: Performs POST operation on /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/directories
+      operationId: createApplicationsSynchronizationTemplatesSchemaDirectories
+      requestBody:
+        description: New navigation property
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DirectoryDefinition'
+            examples:
+              DirectoryDefinitionRequestExample:
+                $ref: '#/components/examples/DirectoryDefinitionRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Created navigation property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectoryDefinition'
+              examples:
+                DirectoryDefinitionExample:
+                  $ref: '#/components/examples/DirectoryDefinitionExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+  ? /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/directories/{directoryDefinition-id}
+  : description: Provides operations to manage the directories property of the microsoft.graph.synchronizationSchema entity.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationTemplate-id
+      in: path
+      description: The unique identifier of synchronizationTemplate
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationTemplate
+    - name: directoryDefinition-id
+      in: path
+      description: The unique identifier of directoryDefinition
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: directoryDefinition
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/directories/{directoryDefinition-id}
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get directories from applications
+      description: Contains the collection of directories and all of their objects.
+      operationId: getApplicationsSynchronizationTemplatesSchemaDirectories1
+      parameters:
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectoryDefinition'
+              examples:
+                DirectoryDefinitionExample:
+                  $ref: '#/components/examples/DirectoryDefinitionExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Update Directories
+      description: Performs PATCH operation on /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/directories/{directoryDefinition-id}
+      operationId: updateApplicationsSynchronizationTemplatesSchemaDirectories
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DirectoryDefinition'
+            examples:
+              DirectoryDefinitionRequestExample:
+                $ref: '#/components/examples/DirectoryDefinitionRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectoryDefinition'
+              examples:
+                DirectoryDefinitionExample:
+                  $ref: '#/components/examples/DirectoryDefinitionExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Delete Directories
+      description: Performs DELETE operation on /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/directories/{directoryDefinition-id}
+      operationId: deleteApplicationsSynchronizationTemplatesSchemaDirectories
+      parameters:
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: '204'
+      x-ms-docs-operation-type: operation
+  ? /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/directories/{directoryDefinition-id}/discover
+  : description: Provides operations to call the discover method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationTemplate-id
+      in: path
+      description: The unique identifier of synchronizationTemplate
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationTemplate
+    - name: directoryDefinition-id
+      in: path
+      description: The unique identifier of directoryDefinition
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: directoryDefinition
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/directories/{directoryDefinition-id}/discover
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Discover
+      description: 'Discover the latest schema definition for provisioning to an application. '
+      operationId: createApplicationsSynchronizationTemplatesSchemaDirectoriesDiscover
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-directorydefinition-discover?view=graph-rest-1.0
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/DirectoryDefinition'
+                - type: object
+                  nullable: true
+              examples:
+                DirectoryDefinitionExample:
+                  $ref: '#/components/examples/DirectoryDefinitionExample'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: action
+  /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/directories/$count:
+    description: Provides operations to count the resources in the collection.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationTemplate-id
+      in: path
+      description: The unique identifier of synchronizationTemplate
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationTemplate
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get the number of the resource
+      description: Performs GET operation on /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/directories/$count
+      operationId: countApplicationsSynchronizationTemplatesSchemaDirectories
+      parameters:
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+  /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/filterOperators():
+    description: Provides operations to call the filterOperators method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationTemplate-id
+      in: path
+      description: The unique identifier of synchronizationTemplate
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationTemplate
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/filterOperators()
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get Filter Operators()
+      description: List all operators supported in the scoping filters.
+      operationId: getApplicationsSynchronizationTemplatesSchemaFilterOperators()
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-synchronizationschema-filteroperators?view=graph-rest-1.0
+      parameters:
+      - $ref: '#/components/parameters/Top'
+      - $ref: '#/components/parameters/Skip'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/Count'
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of filterOperatorSchema
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                - type: object
+                  properties:
+                    value:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/FilterOperatorSchema'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+  /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/functions():
+    description: Provides operations to call the functions method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationTemplate-id
+      in: path
+      description: The unique identifier of synchronizationTemplate
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationTemplate
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/functions()
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get Functions()
+      description: List all the functions currently supported in the attributeMappingSource.
+      operationId: getApplicationsSynchronizationTemplatesSchemaFunctions()
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-synchronizationschema-functions?view=graph-rest-1.0
+      parameters:
+      - $ref: '#/components/parameters/Top'
+      - $ref: '#/components/parameters/Skip'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/Count'
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of attributeMappingFunctionSchema
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                - type: object
+                  properties:
+                    value:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/AttributeMappingFunctionSchema'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+  /applications/{application-id}/synchronization/templates/{synchronizationTemplate-id}/schema/parseExpression:
+    description: Provides operations to call the parseExpression method.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    - name: synchronizationTemplate-id
+      in: path
+      description: The unique identifier of synchronizationTemplate
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: synchronizationTemplate
+    x-ms-docs-grouped-path:
+    - /applications/{application-id}/synchronization/jobs/{synchronizationJob-id}/schema/parseExpression
+    post:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Create Parse Expression
+      description: Parse a given string expression into an attributeMappingSource object. For more information about expressions, see Writing Expressions for Attribute Mappings in Microsoft Entra ID.
+      operationId: createApplicationsSynchronizationTemplatesSchemaParseExpression
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/synchronization-synchronizationschema-parseexpression?view=graph-rest-1.0
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                expression:
+                  type: string
+                  nullable: true
+                testInputObject:
+                  anyOf:
+                  - $ref: '#/components/schemas/ExpressionInputObject'
+                  - type: object
+                    nullable: true
+                targetAttributeDefinition:
+                  anyOf:
+                  - $ref: '#/components/schemas/AttributeDefinition'
+                  - type: object
+                    nullable: true
+            examples:
+              createApplicationsSynchronizationTemplatesSchemaParseExpressionRequestExample:
+                $ref: '#/components/examples/createApplicationsSynchronizationTemplatesSchemaParseExpressionRequestExample'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/ParseExpressionResponse'
+                - type: object
+                  nullable: true
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+      x-ms-docs-operation-type: action
+  /applications/{application-id}/synchronization/templates/$count:
+    description: Provides operations to count the resources in the collection.
+    parameters:
+    - name: application-id
+      in: path
+      description: The unique identifier of application
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: application
+    get:
+      tags:
+      - Applications Synchronization
+      summary: Microsoft Graph Get the number of the resource
+      description: Performs GET operation on /applications/{application-id}/synchronization/templates/$count
+      operationId: countApplicationsSynchronizationTemplates
+      parameters:
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-microcks-operation:
+        delay: 100
+        dispatcher: FALLBACK
+        dispatcherRules: 2XX
+components:
+  examples:
+    SynchronizationSchemaExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        synchronizationRules:
+        - {}
+        version: 1.0.0
+        directories:
+        - '@odata.type': '#microsoft.graph.directorydefinition'
+        '@odata.type': '#microsoft.graph.synchronizationschema'
+    restartApplicationsSynchronizationJobsRequestExample:
+      value:
+        criteria: {}
+    SynchronizationTemplateRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        applicationId: 00000000-0000-0000-0000-000000000001
+        default: true
+        description: This is an example description.
+        discoverable: true
+        factoryTag: string-value
+        metadata:
+        - {}
+        '@odata.type': '#microsoft.graph.synchronizationtemplate'
+    provisionApplicationsSynchronizationJobsProvisionOnDemandRequestExample:
+      value:
+        parameters:
+        - {}
+    validateCredentialsApplicationsSynchronizationJobs1RequestExample:
+      value:
+        applicationIdentifier: 00000000-0000-0000-0000-000000000001
+        templateId: 00000000-0000-0000-0000-000000000001
+        useSavedCredentials: true
+        credentials:
+        - {}
+    SynchronizationExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        secrets:
+        - {}
+        jobs:
+        - '@odata.type': '#microsoft.graph.synchronizationjob'
+        templates:
+        - '@odata.type': '#microsoft.graph.synchronizationtemplate'
+        '@odata.type': '#microsoft.graph.synchronization'
+    SynchronizationRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        secrets:
+        - {}
+        jobs:
+        - '@odata.type': '#microsoft.graph.synchronizationjob'
+        templates:
+        - '@odata.type': '#microsoft.graph.synchronizationtemplate'
+        '@odata.type': '#microsoft.graph.synchronization'
+    BulkUploadRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        '@odata.type': '#microsoft.graph.bulkupload'
+    createApplicationsSynchronizationTemplatesSchemaParseExpressionRequestExample:
+      value:
+        expression: string-value
+        testInputObject: {}
+        targetAttributeDefinition:
+          anchor: true
+          apiExpressions:
+          - '@odata.type': '#microsoft.graph.stringkeystringvaluepair'
+          caseExact: true
+          defaultValue: string-value
+          flowNullValues: true
+          metadata:
+          - {}
+          '@odata.type': '#microsoft.graph.attributedefinition'
+    replaceApplicationsSynchronizationSecretsRequestExample:
+      value:
+        value:
+        - {}
+    SynchronizationJobRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        schedule: {}
+        status: {}
+        synchronizationJobSettings:
+        - {}
+        templateId: 00000000-0000-0000-0000-000000000001
+        bulkUpload:
+          '@odata.type': '#microsoft.graph.bulkupload'
+        schema:
+          '@odata.type': '#microsoft.graph.synchronizationschema'
+        '@odata.type': '#microsoft.graph.synchronizationjob'
+    validateCredentialsApplicationsSynchronizationJobsRequestExample:
+      value:
+        applicationIdentifier: 00000000-0000-0000-0000-000000000001
+        templateId: 00000000-0000-0000-0000-000000000001
+        useSavedCredentials: true
+        credentials:
+        - {}
+    ODataCountResponseExample:
+      value: 42
+    createApplicationsSynchronizationJobsSchemaParseExpressionRequestExample:
+      value:
+        expression: string-value
+        testInputObject: {}
+        targetAttributeDefinition:
+          anchor: true
+          apiExpressions:
+          - '@odata.type': '#microsoft.graph.stringkeystringvaluepair'
+          caseExact: true
+          defaultValue: string-value
+          flowNullValues: true
+          metadata:
+          - {}
+          '@odata.type': '#microsoft.graph.attributedefinition'
+    DirectoryDefinitionRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        discoverabilities: {}
+        discoveryDateTime: '2024-01-15T10:30:00Z'
+        name: example-name
+        objects:
+        - {}
+        readOnly: true
+        version: 1.0.0
+        '@odata.type': '#microsoft.graph.directorydefinition'
+    SynchronizationTemplateExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        applicationId: 00000000-0000-0000-0000-000000000001
+        default: true
+        description: This is an example description.
+        discoverable: true
+        factoryTag: string-value
+        metadata:
+        - {}
+        '@odata.type': '#microsoft.graph.synchronizationtemplate'
+    SynchronizationSchemaRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        synchronizationRules:
+        - {}
+        version: 1.0.0
+        directories:
+        - '@odata.type': '#microsoft.graph.directorydefinition'
+        '@odata.type': '#microsoft.graph.synchronizationschema'
+    BulkUploadExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        '@odata.type': '#microsoft.graph.bulkupload'
+    DirectoryDefinitionExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        discoverabilities: {}
+        discoveryDateTime: '2024-01-15T10:30:00Z'
+        name: example-name
+        objects:
+        - {}
+        readOnly: true
+        version: 1.0.0
+        '@odata.type': '#microsoft.graph.directorydefinition'
+    ODataErrorExample:
+      value:
+        error:
+          code: BadRequest
+          message: The request is invalid.
+          target: /resource
+          details:
+          - code: InvalidParameter
+            message: Parameter value is invalid.
+            target: parameterName
+          innerError:
+            request-id: 00000000-0000-0000-0000-000000000001
+            date: '2024-01-15T10:30:00Z'
+            client-request-id: 00000000-0000-0000-0000-000000000002
+    acquireAccessTokenApplicationsSynchronizationRequestExample:
+      value:
+        credentials:
+        - {}
+    SynchronizationJobExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        schedule: {}
+        status: {}
+        synchronizationJobSettings:
+        - {}
+        templateId: 00000000-0000-0000-0000-000000000001
+        bulkUpload:
+          '@odata.type': '#microsoft.graph.bulkupload'
+        schema:
+          '@odata.type': '#microsoft.graph.synchronizationschema'
+        '@odata.type': '#microsoft.graph.synchronizationjob'
+    StringKeyStringValuePairExample:
+      value:
+        key: string-value
+        value: string-value
+        '@odata.type': '#microsoft.graph.stringkeystringvaluepair'
+  responses:
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+          examples:
+            ODataCountResponseExample:
+              $ref: '#/components/examples/ODataCountResponseExample'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+          examples:
+            ODataErrorExample:
+              $ref: '#/components/examples/ODataErrorExample'
+  schemas:
+    AttributeDefinition:
+      title: attributeDefinition
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        anchor:
+          type: boolean
+          description: true if the attribute should be used as the anchor for the object. Anchor attributes must have a unique value identifying an object, and must be immutable. Default is false. One, and only one, of the object's attributes must be designated as the anchor to support synchronization.
+        apiExpressions:
+          type: array
+          items:
+            $ref: '#/components/schemas/StringKeyStringValuePair'
+        caseExact:
+          type: boolean
+          description: true if value of this attribute should be treated as case-sensitive. This setting affects how the synchronization engine detects changes for the attribute.
+        defaultValue:
+          type: string
+          description: The default value of the attribute.
+          nullable: true
+        flowNullValues:
+          type: boolean
+          description: '''true'' to allow null values for attributes.'
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeDefinitionMetadataEntry'
+          description: Metadata for the given object.
+        multivalued:
+          type: boolean
+          description: true if an attribute can have multiple values. Default is false.
+        mutability:
+          $ref: '#/components/schemas/Mutability'
+        name:
+          type: string
+          description: Name of the attribute. Must be unique within the object definition. Not nullable.
+          nullable: true
+        referencedObjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferencedObject'
+          description: For attributes with reference type, lists referenced objects (for example, the manager attribute would list User as the referenced object).
+        required:
+          type: boolean
+          description: true if attribute is required. Object can not be created if any of the required attributes are missing. If during synchronization, the required attribute has no value, the default value will be used. If default the value was not set, synchronization will record an error.
+        type:
+          $ref: '#/components/schemas/AttributeType'
+        '@odata.type':
+          type: string
+    Synchronization:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: synchronization
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          secrets:
+            type: array
+            items:
+              $ref: '#/components/schemas/SynchronizationSecretKeyStringValuePair'
+            description: Represents a collection of credentials to access provisioned cloud applications.
+          jobs:
+            type: array
+            items:
+              $ref: '#/components/schemas/SynchronizationJob'
+            description: Performs synchronization by periodically running in the background, polling for changes in one directory, and pushing them to another directory.
+            x-ms-navigationProperty: true
+          templates:
+            type: array
+            items:
+              $ref: '#/components/schemas/SynchronizationTemplate'
+            description: Preconfigured synchronization settings for a particular application.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.synchronization'
+    ErrorDetail:
+      title: ErrorDetail
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    MainError:
+      title: MainError
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        target:
+          type: string
+          description: Target of the error
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+    InnerError:
+      title: InnerError
+      type: object
+      properties:
+        request-id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        client-request-id:
+          type: string
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the entity.
+    DirectoryDefinition:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: directoryDefinition
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          discoverabilities:
+            $ref: '#/components/schemas/DirectoryDefinitionDiscoverabilities'
+          discoveryDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Represents the discovery date and time using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            nullable: true
+          name:
+            type: string
+            description: Name of the directory. Must be unique within the synchronization schema. Not nullable.
+            nullable: true
+          objects:
+            type: array
+            items:
+              $ref: '#/components/schemas/ObjectDefinition'
+            description: Collection of objects supported by the directory.
+          readOnly:
+            type: boolean
+            description: Whether this object is read-only.
+          version:
+            type: string
+            description: Read only value that indicates version discovered. null if discovery hasn't yet occurred.
+            nullable: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.directoryDefinition'
+    SynchronizationSchema:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: synchronizationSchema
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          synchronizationRules:
+            type: array
+            items:
+              $ref: '#/components/schemas/SynchronizationRule'
+            description: A collection of synchronization rules configured for the synchronizationJob or synchronizationTemplate.
+          version:
+            type: string
+            description: The version of the schema, updated automatically with every schema change.
+            nullable: true
+          directories:
+            type: array
+            items:
+              $ref: '#/components/schemas/DirectoryDefinition'
+            description: Contains the collection of directories and all of their objects.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.synchronizationSchema'
+    SynchronizationTemplate:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: synchronizationTemplate
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          applicationId:
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+            type: string
+            description: Identifier of the application this template belongs to.
+            format: uuid
+          default:
+            type: boolean
+            description: true if this template is recommended to be the default for the application.
+          description:
+            type: string
+            description: Description of the template.
+            nullable: true
+          discoverable:
+            type: boolean
+            description: true if this template should appear in the collection of templates available for the application instance (service principal).
+          factoryTag:
+            type: string
+            description: One of the well-known factory tags supported by the synchronization engine. The factoryTag tells the synchronization engine which implementation to use when processing jobs based on this template.
+            nullable: true
+          metadata:
+            type: array
+            items:
+              $ref: '#/components/schemas/SynchronizationMetadataEntry'
+            description: Additional extension properties. Unless mentioned explicitly, metadata values should not be changed.
+          schema:
+            anyOf:
+            - $ref: '#/components/schemas/SynchronizationSchema'
+            - type: object
+              nullable: true
+            description: Default synchronization schema for the jobs based on this template.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.synchronizationTemplate'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type: integer
+          format: int64
+          nullable: true
+        '@odata.nextLink':
+          type: string
+          nullable: true
+    SynchronizationJob:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: synchronizationJob
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          schedule:
+            anyOf:
+            - $ref: '#/components/schemas/SynchronizationSchedule'
+            - type: object
+              nullable: true
+            description: Schedule used to run the job. Read-only.
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/SynchronizationStatus'
+            - type: object
+              nullable: true
+            description: Status of the job, which includes when the job was last run, current job state, and errors.
+          synchronizationJobSettings:
+            type: array
+            items:
+              $ref: '#/components/schemas/KeyValuePair'
+            description: Settings associated with the job. Some settings are inherited from the template.
+          templateId:
+            type: string
+            description: Identifier of the synchronization template this job is based on.
+            nullable: true
+          bulkUpload:
+            anyOf:
+            - $ref: '#/components/schemas/BulkUpload'
+            - type: object
+              nullable: true
+            description: The bulk upload operation for the job.
+            x-ms-navigationProperty: true
+          schema:
+            anyOf:
+            - $ref: '#/components/schemas/SynchronizationSchema'
+            - type: object
+              nullable: true
+            description: The synchronization schema configured for the job.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.synchronizationJob'
+    BulkUpload:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: bulkUpload
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.bulkUpload'
+    ODataCountResponse:
+      title: ODataCountResponse
+      type: integer
+      format: int32
+      description: The count of entities
+    ODataError:
+      title: ODataError
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    StringKeyStringValuePair:
+      title: stringKeyStringValuePair
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        key:
+          type: string
+          description: Key.
+          nullable: true
+        value:
+          type: string
+          description: Value.
+          nullable: true
+        '@odata.type':
+          type: string
+  parameters:
+    Filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    Top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    Skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    Count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
