@@ -1,0 +1,1434 @@
+slug: microsoft-graph
+provider: Microsoft Graph
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Banking & Capital Markets
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 143
+edges:
+- tag: Security.alert
+  spec_file: microsoft-graph-security-alert-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.92
+  evidence: GET /security/alerts_v2 security.ListAlerts_v2; microsoft.graph.security.alertDetermination,
+    microsoft.graph.security.investigationState
+  reason: Security alerts with severity, determination and investigation state are SOC/SIEM threat detection
+    and response artefacts — not financial-crime alerting.
+- tag: Security.incident
+  spec_file: microsoft-graph-security-incident-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.92
+  evidence: GET /security/incidents security.ListIncidents; microsoft.graph.security.incidentStatus, microsoft.graph.security.alertEvidence,
+    microsoft.graph.security.detectionSource
+  reason: Security incidents aggregating alerts with evidence and detection source are SOC incident response,
+    mapping to threat detection & response rather than IT service incidents.
+- tag: Users.authentication
+  spec_file: microsoft-graph-users-authentication-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.92
+  evidence: '"Invoke action resetPassword", "Create emailMethod", schemas microsoft.graph.fido2AuthenticationMethodCollectionResponse,
+    microsoft.graph.temporaryAccessPassAuthenticationMethod'
+  reason: Operations manage per-user authentication methods (FIDO2, phone, email, software OATH, temporary
+    access pass) and password reset — squarely Identity & Access Management.
+- tag: policies.conditionalAccessPolicy
+  spec_file: microsoft-graph-policies-conditionalaccesspolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.92
+  evidence: GET /policies/conditionalAccessPolicies; schemas microsoft.graph.conditionalAccessPolicyState,
+    microsoft.graph.signInFrequencySessionControl
+  reason: CRUD over Conditional Access policies governing sign-in conditions and session controls — core
+    identity and access management.
+- tag: Applications Federated Identity Credentials
+  spec_file: microsoft-graph-applications-federated-identity-credentials-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.9
+  evidence: '"Create federatedIdentityCredential", "Delete federatedIdentityCredential"; schema FederatedIdentityCredential'
+  reason: Manages federated identity credentials on Entra ID application registrations — workload identity
+    federation, squarely IAM/federation.
+- tag: Applications Federated Identity Credentials(name='{name}')
+  spec_file: microsoft-graph-applications-federated-identity-credentials-name-name-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.9
+  evidence: '"Get federatedIdentityCredential", "Upsert federatedIdentityCredential", "Delete federatedIdentityCredential"'
+  reason: Same federated-credential lifecycle addressed by name; federation credential issuance and stewardship
+    is identity and access management.
+- tag: applications.federatedIdentityCredential
+  spec_file: microsoft-graph-applications-federatedidentitycredential-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.9
+  evidence: applications.CreateFederatedIdentityCredentials  Microsoft Graph Create federatedIdentityCredential
+  reason: Lifecycle of federated identity credentials on app registrations (workload identity federation)
+    — squarely IAM federation and credential management.
+- tag: domains.internalDomainFederation
+  spec_file: microsoft-graph-domains-internaldomainfederation-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.9
+  evidence: GET /domains/{domain-id}/federationConfiguration 'List internalDomainFederations'; schemas
+    microsoft.graph.samlOrWsFedProvider, microsoft.graph.federatedIdpMfaBehavior, microsoft.graph.promptLoginBehavior
+  reason: Full lifecycle management of internal domain federation configuration — SAML/WS-Fed identity
+    provider settings, federated IdP MFA behaviour, signing certificates. This is squarely identity federation,
+    an Identity & Access Management capability.
+- tag: groups.appRoleAssignment
+  spec_file: microsoft-graph-groups-approleassignment-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.9
+  evidence: POST /groups/{group-id}/appRoleAssignments  "Grant an appRoleAssignment to a group"
+  reason: Granting, listing and revoking application role assignments for directory groups is unambiguously
+    access-rights administration in Entra ID — identity & access management.
+- tag: policies.authenticationMethodsPolicy
+  spec_file: microsoft-graph-policies-authenticationmethodspolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.9
+  evidence: GET /policies/authenticationMethodsPolicy/authenticationMethodConfigurations; schemas microsoft.graph.authenticationMethodsPolicy,
+    microsoft.graph.authenticationMethodsRegistrationCampaign
+  reason: Operations manage which authentication methods (MFA/passwordless) tenants may register and use
+    in Microsoft Entra ID — squarely identity and access management configuration, not a business-domain
+    policy.
+- tag: privacy.subjectRightsRequest
+  spec_file: microsoft-graph-privacy-subjectrightsrequest-api-openapi.yml
+  capability_id: BC-130.50
+  capability_id_l1: BC-130
+  capability_name: Privacy & Data Protection Management
+  confidence: 0.9
+  evidence: List subjectRightsRequests; Create subjectRightsRequest; microsoft.graph.subjectRightsRequestStageDetail
+    with approvers
+  reason: Manages GDPR-style data subject rights requests with workflow stages and approvers — privacy
+    and data protection management.
+- tag: roleManagement.rbacApplication
+  spec_file: microsoft-graph-rolemanagement-rbacapplication-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.9
+  evidence: microsoft.graph.unifiedRoleAssignment, microsoft.graph.unifiedRoleEligibilityScheduleRequest,
+    roleManagement.directory.ListResourceNamespaces
+  reason: RBAC role definitions, role assignments, eligibility/assignment schedules (privileged identity
+    management) in Entra ID — squarely identity and access management.
+- tag: security.attackSimulationRoot
+  spec_file: microsoft-graph-security-attacksimulationroot-api-openapi.yml
+  capability_id: BC-620.60
+  capability_id_l1: BC-620
+  capability_name: Security Awareness Management
+  confidence: 0.9
+  evidence: GET /security/attackSimulation/endUserNotifications ... schemas microsoft.graph.simulation,
+    microsoft.graph.training, microsoft.graph.assignedTrainingInfo
+  reason: Attack (phishing) simulation campaigns with assigned end-user training and notifications — security
+    awareness training and simulation programme management.
+- tag: identity.conditionalAccessRoot
+  spec_file: microsoft-graph-identity-conditionalaccessroot-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.88
+  evidence: microsoft.graph.conditionalAccessPolicy, microsoft.graph.authenticationStrengthPolicy, GET
+    /identity/conditionalAccess/authenticationStrength/authenticationMethodModes
+  reason: Conditional access policies, named locations, authentication strength and method modes are access-control
+    policy administration — core identity and access management.
+- tag: oauth2PermissionGrants.oAuth2PermissionGrant
+  spec_file: microsoft-graph-oauth2permissiongrants-oauth2permissiongrant-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.88
+  evidence: POST /oauth2PermissionGrants  Create oAuth2PermissionGrant (a delegated permission grant)
+  reason: CRUD over delegated OAuth2 permission grants is directly the administration of application access
+    rights in the identity directory — Identity & Access Management.
+- tag: policies.authenticationStrengthPolicy
+  spec_file: microsoft-graph-policies-authenticationstrengthpolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.88
+  evidence: POST /policies/authenticationStrengthPolicies ... 'Invoke action updateAllowedCombinations';
+    schemas microsoft.graph.authenticationStrengthPolicyType, microsoft.graph.authenticationCombinationConfiguration
+  reason: Defines allowed authentication method combinations (auth strength) used by conditional access
+    — access control / IAM policy administration.
+- tag: servicePrincipals.appRoleAssignment
+  spec_file: microsoft-graph-serviceprincipals-approleassignment-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.88
+  evidence: POST /servicePrincipals/{servicePrincipal-id}/appRoleAssignedTo — "Grant an appRoleAssignment
+    for a service principal"
+  reason: Operations grant, list and revoke application role assignments for Entra ID service principals
+    — directly access-rights administration for identities, i.e. Identity & Access Management.
+- tag: servicePrincipals.federatedIdentityCredential
+  spec_file: microsoft-graph-serviceprincipals-federatedidentitycredential-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.88
+  evidence: POST /servicePrincipals/{servicePrincipal-id}/federatedIdentityCredentials — "Create new navigation
+    property to federatedIdentityCredentials"
+  reason: Manages workload identity federation credentials for service principals — credential and federation
+    lifecycle, squarely Identity & Access Management.
+- tag: servicePrincipals.oAuth2PermissionGrant
+  spec_file: microsoft-graph-serviceprincipals-oauth2permissiongrant-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.88
+  evidence: GET /servicePrincipals/{servicePrincipal-id}/oauth2PermissionGrants — "List oauth2PermissionGrants
+    granted to a service principal"
+  reason: Lists OAuth2 delegated permission (consent) grants for an application identity — access-grant
+    visibility within IAM.
+- tag: servicePrincipals.servicePrincipal
+  spec_file: microsoft-graph-serviceprincipals-serviceprincipal-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.88
+  evidence: POST /servicePrincipals — "Create servicePrincipal"; DELETE /servicePrincipals/{servicePrincipal-id}
+    — "Delete servicePrincipal"
+  reason: Full lifecycle CRUD of Entra ID service principals (application identities) — core Identity
+    & Access Management directory administration.
+- tag: applications.homeRealmDiscoveryPolicy
+  spec_file: microsoft-graph-applications-homerealmdiscoverypolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: GET /applications/{application-id}/homeRealmDiscoveryPolicies  Microsoft Graph Get homeRealmDiscoveryPolicies
+    from applications
+  reason: Home Realm Discovery policies control which identity provider authenticates users for an application
+    — an authentication/federation policy, hence Identity & Access Management.
+- tag: applications.tokenIssuancePolicy
+  spec_file: microsoft-graph-applications-tokenissuancepolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: applications.CreateRefTokenIssuancePolicies  Microsoft Graph Assign tokenIssuancePolicy
+  reason: Assigns and removes STS token issuance policies on application registrations. This is authentication
+    token governance in Entra ID, i.e. IAM — not corporate policy management.
+- tag: applications.tokenLifetimePolicy
+  spec_file: microsoft-graph-applications-tokenlifetimepolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: applications.CreateRefTokenLifetimePolicies  Microsoft Graph Assign tokenLifetimePolicy
+  reason: Assigns token lifetime (session/credential validity) policies to applications via the Entra
+    ID STS policy model — Identity & Access Management.
+- tag: directoryRoles.directoryObject
+  spec_file: microsoft-graph-directoryroles-directoryobject-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: '''List members of a directory role''; POST /directoryRoles/{directoryRole-id}/members/$ref
+    ''Add directory role member'''
+  reason: Operations add, list and remove members of administrative directory roles — role assignment
+    for users, groups and service principals, squarely Identity & Access Management.
+- tag: directoryRoles.directoryRole
+  spec_file: microsoft-graph-directoryroles-directoryrole-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /directoryRoles 'Activate directoryRole'; GET /directoryRoles(roleTemplateId='{roleTemplateId}')
+    'Get directoryRole'
+  reason: Lifecycle of Entra ID administrative directory roles (activate, read, update, delete) — privileged
+    role administration under Identity & Access Management.
+- tag: directoryRoles.scopedRoleMembership
+  spec_file: microsoft-graph-directoryroles-scopedrolemembership-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: GET /directoryRoles/{directoryRole-id}/scopedMembers  'List scopedMembers for a directory
+    role'; POST ... 'Create new navigation property to scopedMembers'
+  reason: Operations create, read, update and delete scoped role memberships for administrative directory
+    roles in Entra ID — i.e. assigning administrative privileges to principals. That is Identity & Access
+    Management (role/privilege administration), not a business-domain capability.
+- tag: identity.identityProviderBase
+  spec_file: microsoft-graph-identity-identityproviderbase-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /identity/identityProviders  Microsoft Graph Create identityProvider
+  reason: CRUD over federated identity providers in Entra ID — identity federation, squarely Identity
+    & Access Management.
+- tag: identityGovernance.accessReviewSet
+  spec_file: microsoft-graph-identitygovernance-accessreviewset-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: GET /identityGovernance/accessReviews/definitions ... microsoft.graph.accessReviewScheduleDefinition,
+    microsoft.graph.accessReviewInstanceDecisionItem
+  reason: Scheduling and adjudicating access reviews over directory entitlements — access certification,
+    a core Identity & Access Management function.
+- tag: identityGovernance.entitlementManagement
+  spec_file: microsoft-graph-identitygovernance-entitlementmanagement-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: GET /identityGovernance/entitlementManagement/accessPackageAssignmentApprovals  Microsoft
+    Graph Get approval; microsoft.graph.accessPackageCollectionResponse
+  reason: Access package assignment, approvals and connected organisations — entitlement/access governance,
+    i.e. Identity & Access Management.
+- tag: identityGovernance.privilegedAccessRoot
+  spec_file: microsoft-graph-identitygovernance-privilegedaccessroot-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: microsoft.graph.privilegedAccessGroupAssignmentScheduleRequestCollectionResponse; GET /identityGovernance/privilegedAccess/group/assignmentApprovals
+  reason: Privileged Identity Management — time-bound privileged role/group assignment with approvals,
+    explicitly PAM within IAM.
+- tag: me.appRoleAssignment
+  spec_file: microsoft-graph-me-approleassignment-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /me/appRoleAssignments 'Create new navigation property to appRoleAssignments for me';
+    microsoft.graph.appRoleAssignment
+  reason: Assignment of application roles to the signed-in identity — directory entitlement/authorisation
+    management, i.e. Identity & Access Management.
+- tag: organization.certificateBasedAuthConfiguration
+  spec_file: microsoft-graph-organization-certificatebasedauthconfiguration-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /organization/{organization-id}/certificateBasedAuthConfiguration  Create certificateBasedAuthConfiguration
+  reason: Managing certificate authorities used for certificate-based user authentication in the tenant
+    directory is authentication/identity administration.
+- tag: policies.authorizationPolicy
+  spec_file: microsoft-graph-policies-authorizationpolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: GET/PATCH /policies/authorizationPolicy; schemas microsoft.graph.defaultUserRolePermissions,
+    microsoft.graph.allowInvitesFrom
+  reason: Manages tenant-wide default user role permissions and guest invitation rights in Entra ID —
+    authorization/IAM configuration.
+- tag: policies.permissionGrantPolicy
+  spec_file: microsoft-graph-policies-permissiongrantpolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: Create permissionGrantConditionSet in excludes collection of permissionGrantPolicy; schemas
+    microsoft.graph.permissionGrantPolicy, microsoft.graph.permissionType
+  reason: Governs which application permission grants (user/admin consent) are allowed via include/exclude
+    condition sets — application access governance within IAM.
+- tag: scopedRoleMemberships.scopedRoleMembership
+  spec_file: microsoft-graph-scopedrolememberships-scopedrolemembership-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /scopedRoleMemberships  scopedRoleMemberships.scopedRoleMembership.CreateScopedRoleMembership
+  reason: Creating and managing scoped (administrative-unit-limited) directory role memberships — administration
+    of privileged access rights, i.e. identity & access management.
+- tag: security.security.Actions
+  spec_file: microsoft-graph-security-security-actions-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.85
+  evidence: POST /security/microsoft.graph.security.runHuntingQuery; schema microsoft.graph.security.huntingQueryResults
+  reason: Advanced hunting query execution over security telemetry is SOC threat detection and investigation.
+- tag: security.subjectRightsRequest
+  spec_file: microsoft-graph-security-subjectrightsrequest-api-openapi.yml
+  capability_id: BC-130.50
+  capability_id_l1: BC-130
+  capability_name: Privacy & Data Protection Management
+  confidence: 0.85
+  evidence: GET /security/subjectRightsRequests; schema microsoft.graph.subjectRightsRequestStageDetail;
+    'Get approvers from security'
+  reason: Subject rights requests are data-subject access/erasure requests under GDPR-equivalent privacy
+    regimes, with approval workflow — privacy and data protection management.
+- tag: servicePrincipals.servicePrincipal.Actions
+  spec_file: microsoft-graph-serviceprincipals-serviceprincipal-actions-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST .../addPassword, .../addTokenSigningCertificate, .../checkMemberGroups; schemas microsoft.graph.passwordCredential,
+    microsoft.graph.keyCredential
+  reason: Actions add/remove keys, passwords and token signing certificates and check group membership
+    for an application identity — credential and access management.
+- tag: users.appRoleAssignment
+  spec_file: microsoft-graph-users-approleassignment-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: '''Grant an appRoleAssignment to a user'', ''List appRoleAssignments granted to a user'',
+    ''Delete appRoleAssignment'''
+  reason: Granting, listing and revoking application role assignments for directory users is squarely
+    identity and access management.
+- tag: Applications Synchronization
+  spec_file: microsoft-graph-applications-synchronization-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: GET /applications/{application-id}/synchronization/jobs; schemas SynchronizationJob, SynchronizationSchema,
+    DirectoryDefinition, BulkUpload
+  reason: Entra ID application provisioning/synchronisation jobs and schema (SCIM-style directory provisioning
+    of accounts to apps) — squarely identity provisioning and access management.
+- tag: Applications.application
+  spec_file: microsoft-graph-applications-application-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: GET /applications 'List applications'; POST /applications 'Create application'; schemas microsoft.graph.keyCredential,
+    microsoft.graph.appManagementPolicy, microsoft.graph.directoryObject
+  reason: Core lifecycle of Entra ID application registrations (create, read, update, delete, logo, app
+    management policies) — directory-based application identity administration, i.e. IAM.
+- tag: authenticationMethodConfigurations.authenticationMethodConfiguration
+  spec_file: microsoft-graph-authenticationmethodconfigurations-authenticationmethodconfiguration-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: GET/POST /authenticationMethodConfigurations; schemas microsoft.graph.authenticationMethodConfiguration,
+    microsoft.graph.authenticationMethodState, microsoft.graph.authenticationMethodTargetType
+  reason: CRUD over which authentication methods (MFA factors) are enabled and to whom they are targeted
+    in the directory — squarely Identity & Access Management configuration.
+- tag: authenticationMethodsPolicy.authenticationMethodConfiguration
+  spec_file: microsoft-graph-authenticationmethodspolicy-authenticationmethodconfiguration-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: GET /authenticationMethodsPolicy/authenticationMethodConfigurations — 'Get authenticationMethodConfigurations
+    from authenticationMethodsPolicy'; microsoft.graph.excludeTarget, microsoft.graph.authenticationMethodState
+  reason: Management of the tenant authentication-methods policy and its per-method configuration/targeting
+    — authentication policy administration under Identity & Access Management.
+- tag: deviceManagement.roleDefinition
+  spec_file: microsoft-graph-devicemanagement-roledefinition-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: deviceManagement.ListRoleDefinitions ... roleDefinitions.CreateRoleAssignments ... microsoft.graph.rolePermission
+  reason: Definition of administrative roles, permissions and role assignments — role-based access control
+    administration, squarely Identity & Access Management.
+- tag: me.oAuth2PermissionGrant
+  spec_file: microsoft-graph-me-oauth2permissiongrant-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: GET /me/oauth2PermissionGrants ... microsoft.graph.oAuth2PermissionGrant
+  reason: Read of delegated OAuth2 permission grants (consented application access) for the user — access/consent
+    administration, squarely Identity & Access Management.
+- tag: permissionGrants.resourceSpecificPermissionGrant
+  spec_file: microsoft-graph-permissiongrants-resourcespecificpermissiongrant-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: POST /permissionGrants  permissionGrants.resourceSpecificPermissionGrant.CreateResourceSpecificPermissionGrant  Add
+    new entity to permissionGrants
+  reason: CRUD over resource-specific permission grants governs what applications may access which resources
+    — access-rights administration in the identity platform.
+- tag: policies.claimsMappingPolicy
+  spec_file: microsoft-graph-policies-claimsmappingpolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: Create claimsMappingPolicy; schemas microsoft.graph.claimsMappingPolicy, microsoft.graph.stsPolicy,
+    appliesTo directoryObject
+  reason: Controls the claims issued in security tokens by the Entra ID STS for applications — token/federation
+    configuration within identity and access management.
+- tag: policies.crossTenantAccessPolicy
+  spec_file: microsoft-graph-policies-crosstenantaccesspolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: policies.crossTenantAccessPolicy.partners.GetIdentitySynchronization 'Get crossTenantIdentitySyncPolicyPartner';
+    schema microsoft.graph.crossTenantAccessPolicyB2BSetting
+  reason: Governs B2B collaboration trust settings and cross-tenant user/identity synchronisation between
+    Entra tenants — identity federation and access governance.
+- tag: policies.homeRealmDiscoveryPolicy
+  spec_file: microsoft-graph-policies-homerealmdiscoverypolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: Create homeRealmDiscoveryPolicy; schemas microsoft.graph.homeRealmDiscoveryPolicy, microsoft.graph.stsPolicy,
+    appliesTo directoryObject
+  reason: Controls how sign-in requests are routed to federated identity providers for applications —
+    authentication/federation configuration in IAM.
+- tag: policies.identitySecurityDefaultsEnforcementPolicy
+  spec_file: microsoft-graph-policies-identitysecuritydefaultsenforcementpolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: GET/PATCH /policies/identitySecurityDefaultsEnforcementPolicy; schema microsoft.graph.identitySecurityDefaultsEnforcementPolicy
+  reason: Enables/disables Entra ID security defaults (baseline MFA and sign-in protections) for the tenant
+    — identity and access management control.
+- tag: servicePrincipals.claimsMappingPolicy
+  spec_file: microsoft-graph-serviceprincipals-claimsmappingpolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: '"Assign claimsMappingPolicy" / "Remove claimsMappingPolicy", schema microsoft.graph.stsPolicy'
+  reason: Assigning/removing token claims-mapping (STS) policies to a service principal configures how
+    identity tokens are issued — federation/IAM configuration, not a business policy-management capability.
+- tag: servicePrincipals.delegatedPermissionClassification
+  spec_file: microsoft-graph-serviceprincipals-delegatedpermissionclassification-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: '"List delegatedPermissionClassifications collection of servicePrincipal", schema microsoft.graph.permissionClassificationType'
+  reason: Classifying delegated permissions governs which app permissions users may consent to — access
+    permission governance within IAM.
+- tag: servicePrincipals.homeRealmDiscoveryPolicy
+  spec_file: microsoft-graph-serviceprincipals-homerealmdiscoverypolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: '"Assign homeRealmDiscoveryPolicy" / "Remove homeRealmDiscoveryPolicy", schema microsoft.graph.stsPolicy'
+  reason: Home realm discovery policies control sign-in/federation routing for an application identity
+    — IAM federation configuration.
+- tag: Applications
+  spec_file: microsoft-graph-applications-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '''Create application'', ''Get application'', schemas Application, PasswordCredential, KeyCredential,
+    FederatedIdentityCredential, HomeRealmDiscoveryPolicy'
+  reason: CRUD over Entra ID application registrations including credentials and federated identity —
+    directory identity object management, squarely Identity & Access Management.
+- tag: Applications Add Key
+  spec_file: microsoft-graph-applications-add-key-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: POST /applications/{application-id}/addKey; schemas KeyCredential, PasswordCredential
+  reason: Adding certificate/key credentials to an application registration is credential lifecycle management
+    within IAM.
+- tag: Applications Add Password
+  spec_file: microsoft-graph-applications-add-password-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: POST /applications/{application-id}/addPassword; schema PasswordCredential
+  reason: Issuing a client secret for an application registration — credential management under Identity
+    & Access Management.
+- tag: Applications Home Realm Discovery Policies
+  spec_file: microsoft-graph-applications-home-realm-discovery-policies-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '"Get homeRealmDiscoveryPolicies from applications"; schema HomeRealmDiscoveryPolicy'
+  reason: Home realm discovery policies control sign-in/federation routing for an application — authentication
+    and federation configuration, i.e. identity and access management.
+- tag: Identity Authentication Events Flows
+  spec_file: microsoft-graph-identity-authentication-events-flows-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: GET /identity/authenticationEventsFlows/{id}/conditions/applications/includeApplications  List
+    includeApplications (for a user flow); .../graph.externalUsersSelfServiceSignUpEventsFlow/...
+  reason: Configuration of Entra External ID authentication user flows and which applications they apply
+    to, including external-user self-service sign-up. This is authentication/identity lifecycle configuration,
+    squarely Identity & Access Management.
+- tag: Users.user
+  spec_file: microsoft-graph-users-user-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: POST /users  users.user.CreateUser  Microsoft Graph Create User; DELETE /users/{user-id}  Delete
+    a user; GET /users(userPrincipalName='{userPrincipalName}')
+  reason: Full create/read/update/delete lifecycle of directory user accounts in Microsoft Entra ID, keyed
+    by userPrincipalName — this is identity account provisioning and de-provisioning (joiners-movers-leavers),
+    the core of Identity & Access Management rather than HR employee records.
+- tag: applications.directoryObject
+  spec_file: microsoft-graph-applications-directoryobject-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: applications.ListOwners  Microsoft Graph List owners of an application; POST /applications/{application-id}/owners/$ref  Add
+    owner
+  reason: Manages ownership relationships of Entra ID application registrations against directory objects
+    (users, service principals). This is directory/identity and access administration, not application
+    portfolio management.
+- tag: authenticationMethodsPolicy.authenticationMethodsPolicy
+  spec_file: microsoft-graph-authenticationmethodspolicy-authenticationmethodspolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: GET/PATCH /authenticationMethodsPolicy ... schemas microsoft.graph.authenticationMethodConfiguration,
+    microsoft.graph.registrationEnforcement, microsoft.graph.authenticationMethodsRegistrationCampaign
+    — 'managing administrative resources in Microsoft Entra ID'
+  reason: The operations read and update the tenant-wide policy governing which authentication methods
+    (MFA) users may register and use in Entra ID. That is directory identity and access administration,
+    i.e. Identity & Access Management, not a generic auth handshake for this API itself.
+- tag: deviceAppManagement.mobileApp
+  spec_file: microsoft-graph-deviceappmanagement-mobileapp-api-openapi.yml
+  capability_id: BC-600.60
+  capability_id_l1: BC-600
+  capability_name: IT Application Management
+  confidence: 0.8
+  evidence: GET /deviceAppManagement/mobileApps ... /assignments ... /categories; schemas microsoft.graph.mobileAppContentFileCollectionResponse,
+    microsoft.graph.win32LobApp, microsoft.graph.iosVppAppCollectionResponse
+  reason: 'Full lifecycle of enterprise mobile/LOB application packages: catalogue, content upload, categories,
+    licence types and assignment to users and devices. This is corporate IT application management (application
+    lifecycle and deployment), not a software product being sold.'
+- tag: deviceManagement.windowsMalwareInformation
+  spec_file: microsoft-graph-devicemanagement-windowsmalwareinformation-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.8
+  evidence: microsoft.graph.windowsMalwareSeverity, microsoft.graph.windowsMalwareThreatState, microsoft.graph.malwareStateForWindowsDevice;
+    GET /deviceManagement/windowsMalwareInformation/{id}/deviceMalwareStates
+  reason: Operations expose detected malware, its severity/threat/execution state and the per-device malware
+    state — endpoint threat detection and response reporting. Maps to Threat Detection & Response Management.
+- tag: directory.identityProviderBase
+  spec_file: microsoft-graph-directory-identityproviderbase-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: GET /directory/federationConfigurations ... 'Delete samlOrWsFedExternalDomainFederation';
+    schema microsoft.graph.identityProviderBase
+  reason: Operations manage SAML/WS-Fed external domain federation configurations for the Entra ID directory
+    — identity federation setup, which is Identity & Access Management (federation).
+- tag: employeeExperience.learningCourseActivity
+  spec_file: microsoft-graph-employeeexperience-learningcourseactivity-api-openapi.yml
+  capability_id: BC-300.40
+  capability_id_l1: BC-300
+  capability_name: Learning & Development Management
+  confidence: 0.8
+  evidence: GET /employeeExperience/learningCourseActivities — 'Get learningCourseActivity'; schema microsoft.graph.courseStatus
+  reason: Viva Learning course activity records (assigned/self-initiated course status and completion
+    for employees). This is corporate training/learning record tracking, which realises Learning & Development
+    Management.
+- tag: employeeExperience.learningProvider
+  spec_file: microsoft-graph-employeeexperience-learningprovider-api-openapi.yml
+  capability_id: BC-300.40
+  capability_id_l1: BC-300
+  capability_name: Learning & Development Management
+  confidence: 0.8
+  evidence: '''Create learningProvider''; ''List learningContents''; schema microsoft.graph.learningContent'
+  reason: Registration of learning content providers and their learning content catalogue in Viva Learning,
+    plus associated course activities. This is corporate training content and provider management under
+    Learning & Development Management.
+- tag: identity.identityContainer
+  spec_file: microsoft-graph-identity-identitycontainer-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: 'GET /identity ... schemas: microsoft.graph.conditionalAccessPolicyState, microsoft.graph.authenticationStrengthPolicyType,
+    microsoft.graph.b2xIdentityUserFlow'
+  reason: Entra ID identity container exposing conditional access policies, authentication strength and
+    identity user flows — identity and access management configuration, a Cross-Industry cybersecurity/IAM
+    capability.
+- tag: identityGovernance.appConsentApprovalRoute
+  spec_file: microsoft-graph-identitygovernance-appconsentapprovalroute-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: GET /identityGovernance/appConsent/appConsentRequests  Microsoft Graph List appConsentRequests;
+    microsoft.graph.approvalStage
+  reason: Admin consent request/approval workflow for applications accessing directory data — access request
+    approval within IAM.
+- tag: identityProviders.identityProvider
+  spec_file: microsoft-graph-identityproviders-identityprovider-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: POST /identityProviders 'Create identityProvider (deprecated)'; microsoft.graph.identityProvider
+  reason: CRUD over federated identity provider configuration in the directory — identity federation setup,
+    squarely Identity & Access Management.
+- tag: me.scopedRoleMembership
+  spec_file: microsoft-graph-me-scopedrolemembership-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: GET /me/scopedRoleMemberOf  Get scopedRoleMemberOf from me; microsoft.graph.scopedRoleMembership
+  reason: Directory role memberships scoped to administrative units for the signed-in user — administrative
+    role assignment, i.e. privileged access/role management within IAM.
+- tag: policies.unifiedRoleManagementPolicy
+  spec_file: microsoft-graph-policies-unifiedrolemanagementpolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: List roleManagementPolicies; List rules (for a role management policy); microsoft.graph.unifiedRoleManagementPolicyRule
+  reason: Privileged Identity Management role activation/assignment rules — squarely IAM/PAM governance.
+- tag: policies.unifiedRoleManagementPolicyAssignment
+  spec_file: microsoft-graph-policies-unifiedrolemanagementpolicyassignment-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: List roleManagementPolicyAssignments; microsoft.graph.unifiedRoleManagementPolicyAssignment
+  reason: Binds role management (PIM) policies to role scopes — privileged access management configuration.
+- tag: reports.securityReportsRoot
+  spec_file: microsoft-graph-reports-securityreportsroot-api-openapi.yml
+  capability_id: BC-620.60
+  capability_id_l1: BC-620
+  capability_name: Security Awareness Management
+  confidence: 0.8
+  evidence: GET /reports/security/getAttackSimulationTrainingUserCoverage ... microsoft.graph.attackSimulationRepeatOffender
+  reason: Reporting on phishing attack-simulation coverage, training coverage and repeat offenders — measurement
+    of the security awareness training programme.
+- tag: roleManagement.roleManagement
+  spec_file: microsoft-graph-rolemanagement-rolemanagement-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: GET /roleManagement  roleManagement.roleManagement.GetRoleManagement; schemas microsoft.graph.unifiedRoleDefinition,
+    microsoft.graph.unifiedRoleAssignment
+  reason: Root of the directory role-management surface exposing role definitions, permissions and assignments
+    — access management. Slightly lower confidence as the tag itself only exposes get/patch of the container.
+- tag: security.threatIntelligence
+  spec_file: microsoft-graph-security-threatintelligence-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.8
+  evidence: '''List articles''; schemas microsoft.graph.security.intelligenceProfile, microsoft.graph.security.hostReputationRule,
+    microsoft.graph.security.vulnerability'
+  reason: Threat intelligence articles, indicators, intelligence profiles and host reputation feed SOC
+    detection and response. Some overlap with vulnerability management, hence L2 chosen at 0.8.
+- tag: servicePrincipals.directoryObject
+  spec_file: microsoft-graph-serviceprincipals-directoryobject-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: GET /servicePrincipals/{servicePrincipal-id}/memberOf — "List servicePrincipal memberOf" ...
+    graph.directoryRole, graph.group
+  reason: Reads directory group/role/administrative-unit memberships of a service principal in Entra ID
+    — directory identity and access membership data.
+- tag: users.directoryObject
+  spec_file: microsoft-graph-users-directoryobject-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: GET /users/{user-id}/memberOf/{directoryObject-id}/graph.directoryRole — "Get the item of
+    type microsoft.graph.directoryObject as microsoft.graph.directoryRole"; "List a user's direct memberships"
+  reason: Operations read a user's directory group, administrative-unit and directory-role memberships
+    in Microsoft Entra ID — i.e. identity and access administration. Maps to Identity & Access Management;
+    some chance it should be read as generic directory/master data, hence 0.8.
+- tag: Applications Token Issuance Policies
+  spec_file: microsoft-graph-applications-token-issuance-policies-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: POST /applications/{application-id}/tokenIssuancePolicies/$ref  'Assign tokenIssuancePolicy'
+  reason: Assigns/removes SAML/OIDC token issuance policies on an application registration — federation
+    and authentication token policy, part of Identity & Access Management.
+- tag: Applications Token Lifetime Policies
+  spec_file: microsoft-graph-applications-token-lifetime-policies-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: POST /applications/{application-id}/tokenLifetimePolicies/$ref  'Assign tokenLifetimePolicy'
+  reason: Assigns token lifetime policies to application registrations — authentication token governance
+    within Entra ID identity and access management.
+- tag: Applications(app Id='{app Id}')
+  spec_file: microsoft-graph-applications-app-id-app-id-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: GET /applications(appId='{appId}') 'Get application'; schemas Application, KeyCredential,
+    PasswordCredential, FederatedIdentityCredential
+  reason: CRUD on Entra ID application registrations addressed by appId, including key/password/federated
+    identity credentials — application identity administration under IAM.
+- tag: Applications(unique Name='{unique Name}')
+  spec_file: microsoft-graph-applications-unique-name-unique-name-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: PATCH /applications(uniqueName='{uniqueName}') 'Upsert application'; schemas Application,
+    PasswordCredential, FederatedIdentityCredential
+  reason: Same Entra ID application-registration CRUD surface addressed by uniqueName; management of application
+    identities and their credentials is Identity & Access Management.
+- tag: Me.authentication
+  spec_file: microsoft-graph-me-authentication-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: GET /me/authentication/emailMethods  me.authentication.ListEmailMethods; microsoft.graph.fido2AuthenticationMethodCollectionResponse;
+    microsoft.graph.temporaryAccessPassAuthenticationMethod
+  reason: Operations register, list and delete a user's authentication methods (email, FIDO2, phone, software
+    OATH, temporary access pass) in Microsoft Entra ID — this is credential/authenticator lifecycle for
+    identity, i.e. Identity & Access Management. Not a business-domain capability of any industry; confidence
+    held below 0.8 because it is arguably pure IAM plumbing rather than a managed business capability.
+- tag: directoryRoleTemplates.directoryRoleTemplate
+  spec_file: microsoft-graph-directoryroletemplates-directoryroletemplate-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: GET /directoryRoleTemplates 'List directoryRoleTemplates'; schema microsoft.graph.directoryRoleTemplate
+  reason: Manages the catalogue of administrative role templates in Entra ID from which directory roles
+    are activated — role definition, part of Identity & Access Management.
+- tag: groups.directoryObject
+  spec_file: microsoft-graph-groups-directoryobject-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: GET /groups/{group-id}/memberOf  "List memberOf" ... GET /groups/{group-id}/acceptedSenders
+  reason: Operations traverse and mutate directory group membership and ownership relationships in Entra
+    ID, which is identity & access management (group-based access administration). Some endpoints (acceptedSenders)
+    are mail-flow related, so not maximal confidence.
+- tag: identity.b2xIdentityUserFlow
+  spec_file: microsoft-graph-identity-b2xidentityuserflow-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: GET /identity/b2xUserFlows  Microsoft Graph List b2xIdentityUserFlows ... microsoft.graph.identityUserFlowAttributeAssignment,
+    microsoft.graph.identityProviderCollectionResponse
+  reason: Manages external-identity user flows, their identity providers and user-flow attribute assignments
+    — authentication/identity federation configuration, squarely identity and access management.
+- tag: me.resourceSpecificPermissionGrant
+  spec_file: microsoft-graph-me-resourcespecificpermissiongrant-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: GET /me/permissionGrants ... microsoft.graph.resourceSpecificPermissionGrantCollectionResponse
+  reason: CRUD over resource-specific permission grants (application access granted to resources for this
+    principal) — authorisation/consent administration under Identity & Access Management.
+- tag: servicePrincipals.synchronization
+  spec_file: microsoft-graph-serviceprincipals-synchronization-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: GET /servicePrincipals/{servicePrincipal-id}/synchronization/jobs — 'List synchronization
+    jobs'; schemas microsoft.graph.attributeMapping, microsoft.graph.directoryDefinitionCollectionResponse,
+    microsoft.graph.synchronizationSchedule
+  reason: Entra ID service-principal provisioning/synchronization jobs, schemas and attribute mappings
+    — directory-to-application identity provisioning, i.e. identity and access management plumbing rather
+    than any industry business capability.
+- tag: Applications Owners
+  spec_file: microsoft-graph-applications-owners-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: '"List owners of an application", "Add owner", "Remove application owner"; schemas ServicePrincipal,
+    User, AppRoleAssignment'
+  reason: Assigns and revokes ownership (users, service principals, app role assignments) over Entra ID
+    application registrations — directory privilege/access administration.
+- tag: Invitations.invitation
+  spec_file: microsoft-graph-invitations-invitation-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: POST /invitations  invitations.invitation.CreateInvitation  Microsoft Graph Create invitation
+  reason: Entra B2B guest invitation creation — provisioning external identities into the directory with
+    access to tenant resources. This is external identity lifecycle, part of Identity & Access Management.
+- tag: deviceManagement.virtualEndpoint
+  spec_file: microsoft-graph-devicemanagement-virtualendpoint-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: GET /deviceManagement/virtualEndpoint/cloudPCs  deviceManagement.virtualEndpoint.ListCloudPCs
+  reason: 'Windows 365 Cloud PC administration: provisioning and managing virtual desktops plus audit
+    events. This is management of compute infrastructure for end users, an IT Infrastructure capability.'
+- tag: directory.onPremisesDirectorySynchronization
+  spec_file: microsoft-graph-directory-onpremisesdirectorysynchronization-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: GET /directory/onPremisesSynchronization 'Get onPremisesDirectorySynchronization'; schema
+    microsoft.graph.onPremisesDirectorySynchronizationConfiguration
+  reason: Configures synchronisation of on-premises directory identities into Entra ID (including accidental
+    deletion prevention) — identity directory management, i.e. IAM. Not business data integration.
+- tag: groups.resourceSpecificPermissionGrant
+  spec_file: microsoft-graph-groups-resourcespecificpermissiongrant-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: GET /groups/{group-id}/permissionGrants  Microsoft Graph List permissionGrants of a group
+    ... microsoft.graph.resourceSpecificPermissionGrant
+  reason: Manages resource-specific permission grants (application access consented to a group's resources)
+    — directly access-rights administration, i.e. identity and access management.
+- tag: identity.authenticationEventsFlow
+  spec_file: microsoft-graph-identity-authenticationeventsflow-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: POST /identity/authenticationEventsFlows  Microsoft Graph Create authenticationEventsFlow
+    ... onAuthenticationMethodLoadStartExternalUsersSelfServiceSignUp, onAttributeCollectionHandler
+  reason: Defines sign-up/sign-in user flows including authentication method load and attribute collection
+    for external users' self-service sign-up — identity lifecycle and authentication configuration under
+    IAM.
+- tag: identity.customAuthenticationExtension
+  spec_file: microsoft-graph-identity-customauthenticationextension-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: POST /identity/customAuthenticationExtensions  Microsoft Graph Create customAuthenticationExtension
+    ... validateAuthenticationConfiguration
+  reason: Creates and validates custom authentication extensions with endpoint and authentication configuration
+    in Entra ID — authentication configuration under identity and access management.
+- tag: identityGovernance.lifecycleWorkflowsContainer
+  spec_file: microsoft-graph-identitygovernance-lifecycleworkflowscontainer-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: GET /identityGovernance/lifecycleWorkflows/customTaskExtensions  Microsoft Graph List customTaskExtensions;
+    microsoft.graph.identityGovernance.taskDefinitionCollectionResponse
+  reason: Entra Lifecycle Workflows automate joiner-mover-leaver identity tasks; that maps to Identity
+    & Access Management (joiners-movers-leavers) rather than HR systems of record.
+- tag: informationProtection.threatAssessmentRequest
+  spec_file: microsoft-graph-informationprotection-threatassessmentrequest-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.75
+  evidence: POST /informationProtection/threatAssessmentRequests 'Create threatAssessmentRequest'; microsoft.graph.threatCategory,
+    microsoft.graph.threatAssessmentResult
+  reason: Submission and tracking of threat assessments (mail/URL/file) with categories and results —
+    security threat detection and response workflow.
+- tag: policies.tenantAppManagementPolicy
+  spec_file: microsoft-graph-policies-tenantappmanagementpolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: Get/Update tenantAppManagementPolicy; schemas microsoft.graph.keyCredentialConfiguration,
+    microsoft.graph.passwordCredentialConfiguration, microsoft.graph.appManagementServicePrincipalConfiguration
+  reason: Entra ID policy governing app/service-principal credential restrictions — identity and access
+    management control configuration, not a business capability of another domain.
+- tag: policies.tokenIssuancePolicy
+  spec_file: microsoft-graph-policies-tokenissuancepolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: List tokenIssuancePolicy / Create tokenIssuancePolicy; schema microsoft.graph.stsPolicy applied
+    to directoryObject via appliesTo
+  reason: Configures SAML/token issuance behaviour of the identity provider for applications — federation/IAM
+    configuration.
+- tag: policies.tokenLifetimePolicy
+  spec_file: microsoft-graph-policies-tokenlifetimepolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: Create tokenLifetimePolicy; microsoft.graph.tokenLifetimePolicy, microsoft.graph.stsPolicy,
+    appliesTo directoryObject
+  reason: Controls lifetime of authentication tokens issued by Entra ID — identity and access management
+    policy.
+- tag: reports.authenticationMethodsRoot
+  spec_file: microsoft-graph-reports-authenticationmethodsroot-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: Invoke function usersRegisteredByMethod; List userRegistrationDetails; microsoft.graph.userDefaultAuthenticationMethod
+  reason: Reporting on user registration for MFA/authentication methods — identity and access management
+    reporting within Entra ID.
+- tag: servicePrincipals.tokenIssuancePolicy
+  spec_file: microsoft-graph-serviceprincipals-tokenissuancepolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: POST /servicePrincipals/{servicePrincipal-id}/tokenIssuancePolicies/$ref — 'Create new navigation
+    property ref to tokenIssuancePolicies'; schema microsoft.graph.tokenIssuancePolicy / microsoft.graph.stsPolicy
+  reason: Assignment of security-token-service issuance policies to application service principals — authentication/authorisation
+    policy configuration in the identity platform, mapped to Identity & Access Management. Not enterprise
+    Policy Management (BC-130.20), which concerns corporate policy documents.
+- tag: servicePrincipals.tokenLifetimePolicy
+  spec_file: microsoft-graph-serviceprincipals-tokenlifetimepolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: GET /servicePrincipals/{servicePrincipal-id}/tokenLifetimePolicies — 'List assigned tokenLifetimePolicies';
+    POST ... 'Add tokenLifetimePolicy'; schema microsoft.graph.stsPolicy
+  reason: Managing token lifetime (session/credential validity) policies assigned to application identities
+    — identity and access management configuration, not business policy governance.
+- tag: users.oAuth2PermissionGrant
+  spec_file: microsoft-graph-users-oauth2permissiongrant-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: GET /users/{user-id}/oauth2PermissionGrants — "List a user's oauth2PermissionGrants" (microsoft.graph.oAuth2PermissionGrant)
+  reason: Lists delegated permission grants (user consent to applications) in Microsoft Entra ID — access-rights
+    administration for identities. Fits Identity & Access Management; read-only and narrow, so confidence
+    moderate rather than high.
+- tag: users.resourceSpecificPermissionGrant
+  spec_file: microsoft-graph-users-resourcespecificpermissiongrant-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: GET /users/{user-id}/permissionGrants  List permissionGrants of a user; microsoft.graph.resourceSpecificPermissionGrant
+  reason: Operations list, create, update and delete resource-specific permission grants held by a user
+    — application consent/authorisation records. This is access-rights administration, mapping to Identity
+    & Access Management.
+- tag: users.scopedRoleMembership
+  spec_file: microsoft-graph-users-scopedrolemembership-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: POST /users/{user-id}/scopedRoleMemberOf  Create new navigation property to scopedRoleMemberOf;
+    microsoft.graph.scopedRoleMembership
+  reason: Manages a user's scoped administrative role memberships (role assignments limited to administrative
+    units) — directory role/privilege administration, i.e. Identity & Access Management.
+- tag: Admin Consent Policy
+  spec_file: microsoft-graph-admin-consent-policy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: GET /policies/adminConsentRequestPolicy  Get admin consent request policy; schema AdminConsentRequestPolicy
+  reason: Configures the Entra ID policy governing how users request, and admins grant, consent for application
+    access — an access-governance control, i.e. Identity & Access Management. Thin surface (two operations)
+    so confidence is moderate.
+- tag: Administrative Units
+  spec_file: microsoft-graph-administrative-units-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: POST /directory/administrativeUnits  createAdministrativeUnit; schema AdministrativeUnit
+  reason: CRUD over Entra ID directory administrative units, the scoping construct for delegated directory
+    administration — directory/access administration. Mapped to Identity & Access Management; could also
+    be read as generic directory data management, so moderate confidence.
+- tag: Applications Remove Key
+  spec_file: microsoft-graph-applications-remove-key-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: POST /applications/{application-id}/removeKey — 'Microsoft Graph Create Remove Key'; API 'for
+    managing administrative resources in Microsoft Entra ID'
+  reason: Removes a key credential from an Entra ID application registration — management of application
+    identity credentials, i.e. identity & access management, not a business-domain capability.
+- tag: Applications Remove Password
+  spec_file: microsoft-graph-applications-remove-password-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: POST /applications/{application-id}/removePassword  removePasswordApplications
+  reason: Removes a client secret (password credential) from an Entra ID app registration; credential
+    lifecycle for application identities falls under Identity & Access Management.
+- tag: Places.place
+  spec_file: microsoft-graph-places-place-api-openapi.yml
+  capability_id: BC-700.40
+  capability_id_l1: BC-700
+  capability_name: Space Management
+  confidence: 0.72
+  evidence: GET /places/{place-id}/graph.building ... graph.desk ... graph.floor ... graph.room ... graph.workspace  Microsoft
+    Graph List place objects
+  reason: Manages the physical workplace hierarchy — buildings, floors, sections, rooms, desks, workspaces
+    with addresses and geo coordinates — which is workplace space/occupancy modelling rather than any
+    IT-technical object.
+- tag: certificateBasedAuthConfiguration.certificateBasedAuthConfiguration
+  spec_file: microsoft-graph-certificatebasedauthconfiguration-certificatebasedauthconfiguration-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: POST /certificateBasedAuthConfiguration 'Add new entity to certificateBasedAuthConfiguration';
+    schema microsoft.graph.certificateAuthority
+  reason: CRUD over the tenant's trusted certificate authorities used for certificate-based user sign-in
+    in Entra ID — configuration of an authentication mechanism for directory identities, which sits in
+    Identity & Access Management. Slightly lower confidence because the surface is thin, generic-entity
+    CRUD.
+- tag: deviceManagement.deviceAndAppManagementRoleAssignment
+  spec_file: microsoft-graph-devicemanagement-deviceandappmanagementroleassignment-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: GET /deviceManagement/roleAssignments/{deviceAndAppManagementRoleAssignment-id}/roleDefinition
+    ... schema microsoft.graph.rolePermission, microsoft.graph.resourceAction
+  reason: 'Role-based access control: assignment of role definitions and permissions to administrators,
+    which is Identity & Access Management. Scoped to Intune admin RBAC, hence 0.72 rather than higher.'
+- tag: deviceManagement.onPremisesConditionalAccessSettings
+  spec_file: microsoft-graph-devicemanagement-onpremisesconditionalaccesssettings-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: GET /deviceManagement/conditionalAccessSettings ... microsoft.graph.onPremisesConditionalAccessSettings
+  reason: Conditional access settings govern which devices/users may access on-premises resources — access
+    management. Single settings singleton so evidence is thin, moderate confidence.
+- tag: permissionGrants.resourceSpecificPermissionGrant.Actions
+  spec_file: microsoft-graph-permissiongrants-resourcespecificpermissiongrant-actions-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: POST /permissionGrants/{resourceSpecificPermissionGrant-id}/checkMemberGroups ... microsoft.graph.directoryObject
+  reason: Actions over Entra ID resource-specific permission grants and directory group membership checks
+    — identity and access administration. Confidence tempered because the surface is largely generic directory-object
+    utility actions (getByIds, validateProperties, restore).
+- tag: planner.plannerTask
+  spec_file: microsoft-graph-planner-plannertask-api-openapi.yml
+  capability_id: BC-900.30
+  capability_id_l1: BC-900
+  capability_name: Project Management
+  confidence: 0.72
+  evidence: GET /planner/tasks planner.ListTasks ... Create plannerTask; schemas microsoft.graph.plannerTaskDetails,
+    plannerBucketTaskBoardTaskFormat, plannerAssignments
+  reason: Microsoft Planner task CRUD with buckets, assignments and checklists is lightweight work/task
+    planning — closest honest fit is Project Management under Project & Portfolio Management, though it
+    is generic collaborative task tracking rather than formal PM.
+- tag: policies.authenticationFlowsPolicy
+  spec_file: microsoft-graph-policies-authenticationflowspolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: Get authenticationFlowsPolicy; schema microsoft.graph.selfServiceSignUpAuthenticationFlowConfiguration
+  reason: Configures tenant self-service sign-up authentication flows — directly an authentication/identity
+    control under Identity & Access Management.
+- tag: security.identityContainer
+  spec_file: microsoft-graph-security-identitycontainer-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.72
+  evidence: security.identities.ListHealthIssues 'List healthIssues'; schemas microsoft.graph.security.sensor,
+    microsoft.graph.security.identityAccounts
+  reason: 'Defender-for-Identity style surface: sensors, sensor deployment and identity health issues
+    over directory accounts. Clearly cybersecurity management; ambiguous between identity security posture
+    and threat detection, so no L2 asserted.'
+- tag: servicePrincipals.appManagementPolicy
+  spec_file: microsoft-graph-serviceprincipals-appmanagementpolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: GET /servicePrincipals/{servicePrincipal-id}/appManagementPolicies; schemas microsoft.graph.keyCredentialConfiguration,
+    microsoft.graph.passwordCredentialConfiguration, microsoft.graph.appCredentialRestrictionType
+  reason: Read-only exposure of credential-restriction policies applied to directory service principals
+    — identity and access management (application identity credential governance).
+- tag: users.cloudPC
+  spec_file: microsoft-graph-users-cloudpc-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.72
+  evidence: '''Invoke action reboot'', ''Invoke action resize'', ''Invoke action restore'', ''Invoke action
+    troubleshoot'' on /users/{user-id}/cloudPCs/{cloudPC-id}'
+  reason: Lifecycle and operational actions on Cloud PCs (Windows 365 virtual desktops) assigned to users
+    — provisioning, resizing and restoring cloud compute for end users, which is IT infrastructure management.
+    Could also be argued as IT operations, hence not maximal confidence.
+- tag: Groups.group
+  spec_file: microsoft-graph-groups-group-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: POST /groups  groups.group.CreateGroup  Microsoft Graph Create group; DELETE /groups/{group-id}  Delete
+    group
+  reason: Lifecycle CRUD over Microsoft Entra ID directory groups, which are the primary construct for
+    group-based access assignment. Directory group administration sits within Identity & Access Management.
+    Moderate confidence because groups also serve as collaboration containers (Teams/SharePoint), not
+    only security principals.
+- tag: deviceAppManagement.managedDeviceMobileAppConfiguration
+  spec_file: microsoft-graph-deviceappmanagement-manageddevicemobileappconfiguration-api-openapi.yml
+  capability_id: BC-600.60
+  capability_id_l1: BC-600
+  capability_name: IT Application Management
+  confidence: 0.7
+  evidence: GET /deviceAppManagement/mobileAppConfigurations/{managedDeviceMobileAppConfiguration-id}/assignments;
+    schema microsoft.graph.managedDeviceMobileAppConfigurationDeviceStatus
+  reason: Creation, assignment and per-device/user status tracking of mobile app configuration policies
+    pushed to managed devices — enterprise application deployment and configuration management within
+    IT.
+- tag: deviceAppManagement.mdmWindowsInformationProtectionPolicy
+  spec_file: microsoft-graph-deviceappmanagement-mdmwindowsinformationprotectionpolicy-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.7
+  evidence: GET /deviceAppManagement/mdmWindowsInformationProtectionPolicies; schemas microsoft.graph.windowsInformationProtectionEnforcementLevel,
+    microsoft.graph.windowsInformationProtectionDataRecoveryCertificate
+  reason: Windows Information Protection policies — enterprise data-loss-prevention enforcement levels,
+    exempt AppLocker files and data-recovery certificates. Clearly a cybersecurity data-protection control;
+    no L2 in the list covers endpoint DLP precisely.
+- tag: deviceManagement.managedDevice
+  spec_file: microsoft-graph-devicemanagement-manageddevice-api-openapi.yml
+  capability_id: BC-600
+  capability_id_l1: BC-600
+  capability_name: Information Technology Management
+  confidence: 0.7
+  evidence: GET /deviceManagement/managedDevices ... GET /deviceManagement/managedDevices/{managedDevice-id}/deviceCompliancePolicyStates
+  reason: 'Inventory and lifecycle of enterprise-managed endpoint devices with compliance policy state
+    — IT management (endpoint/MDM). No single L2 is clearly named: it straddles IT operations, infrastructure
+    and security, so only L1 asserted.'
+- tag: deviceManagement.mobileThreatDefenseConnector
+  spec_file: microsoft-graph-devicemanagement-mobilethreatdefenseconnector-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.7
+  evidence: GET /deviceManagement/mobileThreatDefenseConnectors ... microsoft.graph.mobileThreatPartnerTenantState
+  reason: Configuration of connectors to mobile threat defence partners feeding device threat signals
+    into management — security threat detection integration. Connector config nature keeps confidence
+    moderate.
+- tag: deviceManagement.userExperienceAnalyticsDevicePerformance
+  spec_file: microsoft-graph-devicemanagement-userexperienceanalyticsdeviceperformance-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.7
+  evidence: Invoke function summarizeDevicePerformanceDevices ... microsoft.graph.userExperienceAnalyticsHealthState
+  reason: Device performance summarisation and health state for managed endpoints — IT operations monitoring,
+    not a vertical business capability.
+- tag: deviceManagement.userExperienceAnalyticsDeviceStartupHistory
+  spec_file: microsoft-graph-devicemanagement-userexperienceanalyticsdevicestartuphistory-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.7
+  evidence: GET /deviceManagement/userExperienceAnalyticsDeviceStartupHistory ... microsoft.graph.userExperienceAnalyticsOperatingSystemRestartCategory
+  reason: 'Intune endpoint analytics: historical device boot/restart telemetry for managed devices. This
+    is IT endpoint monitoring/operations, not product telemetry of a SaaS offering. Mapped to IT Operations
+    Management (monitoring); sub-capability choice carries some uncertainty vs IT Infrastructure Management.'
+- tag: deviceManagement.userExperienceAnalyticsDeviceStartupProcess
+  spec_file: microsoft-graph-devicemanagement-userexperienceanalyticsdevicestartupprocess-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.7
+  evidence: deviceManagement.ListUserExperienceAnalyticsDeviceStartupProcesses
+  reason: Lists startup processes on managed endpoints as part of Intune endpoint analytics — day-to-day
+    IT monitoring of device estate. Not a business-domain capability.
+- tag: deviceManagement.userExperienceAnalyticsDeviceStartupProcessPerformance
+  spec_file: microsoft-graph-devicemanagement-userexperienceanalyticsdevicestartupprocessperformance-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.7
+  evidence: deviceManagement.ListUserExperienceAnalyticsDeviceStartupProcessPerformance
+  reason: Startup process performance metrics for managed devices — IT operations monitoring of the endpoint
+    fleet.
+- tag: directory.deviceLocalCredentialInfo
+  spec_file: microsoft-graph-directory-devicelocalcredentialinfo-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: GET /directory/deviceLocalCredentials 'List deviceLocalCredentialInfo'; microsoft.graph.deviceLocalCredential
+  reason: Device local administrator credential (LAPS) information stored in the directory — issuance
+    and retrieval of privileged local credentials, which falls under Identity & Access Management including
+    PAM.
+- tag: directory.publicKeyInfrastructureRoot
+  spec_file: microsoft-graph-directory-publickeyinfrastructureroot-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: List certificateBasedAuthPki objects; 'Create certificateAuthorityDetail'; schema microsoft.graph.certificateBasedAuthPki
+  reason: Manages certificate-based authentication PKI and certificate authorities used to authenticate
+    directory identities — an authentication/credential trust control under Identity & Access Management.
+- tag: identity.authenticationEventListener
+  spec_file: microsoft-graph-identity-authenticationeventlistener-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: POST /identity/authenticationEventListeners  Microsoft Graph Create authenticationEventListener
+    ... microsoft.graph.authenticationConditionApplication
+  reason: Configures listeners that hook into Entra ID authentication events with application conditions
+    — authentication/identity configuration, i.e. identity and access management. Extensibility flavour
+    tempers confidence slightly.
+- tag: identity.identityUserFlowAttribute
+  spec_file: microsoft-graph-identity-identityuserflowattribute-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: POST /identity/userFlowAttributes  Microsoft Graph Create identityUserFlowAttribute
+  reason: Configures attributes collected during sign-up/sign-in user flows in Entra External ID — configuration
+    of identity onboarding flows, still within IAM; somewhat generic so moderate confidence.
+- tag: identityProtection.identityProtectionRoot
+  spec_file: microsoft-graph-identityprotection-identityprotectionroot-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.7
+  evidence: microsoft.graph.riskyUser, microsoft.graph.riskDetection, microsoft.graph.riskLevel, microsoft.graph.servicePrincipalRiskDetection
+  reason: Entra Identity Protection surfaces risky users, risky service principals and risk detections
+    — security threat detection on identities, not enterprise or credit risk management. Only two root
+    operations, hence moderate confidence on the sub-capability.
+- tag: identityProtection.riskDetection
+  spec_file: microsoft-graph-identityprotection-riskdetection-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.7
+  evidence: GET /identityProtection/riskDetections — 'List riskDetections'; schemas microsoft.graph.riskLevel,
+    microsoft.graph.riskState, microsoft.graph.signInLocation
+  reason: 'Entra ID Identity Protection risk detections: security signals about risky sign-ins with risk
+    level/state, i.e. threat detection and response over identity, not any financial-crime or enterprise-risk
+    process.'
+- tag: identityProtection.riskyUser
+  spec_file: microsoft-graph-identityprotection-riskyuser-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.7
+  evidence: GET /identityProtection/riskyUsers 'List riskyUsers'; microsoft.graph.riskUserActivity, microsoft.graph.riskState
+  reason: Entra Identity Protection risky-user records and risk history — security detection/remediation
+    of compromised accounts; homograph with enterprise risk management is not the meaning here.
+- tag: identityProtection.servicePrincipalRiskDetection
+  spec_file: microsoft-graph-identityprotection-serviceprincipalriskdetection-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.7
+  evidence: GET /identityProtection/servicePrincipalRiskDetections 'List servicePrincipalRiskDetections';
+    microsoft.graph.riskDetectionTimingType, microsoft.graph.signInLocation
+  reason: Detections of risky workload-identity sign-in activity produced by Identity Protection — security
+    threat detection telemetry.
+- tag: me.cloudPC
+  spec_file: microsoft-graph-me-cloudpc-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: GET /me/cloudPCs  me.ListCloudPCs  Microsoft Graph List cloudPCs for user; POST .../reboot,
+    /resize, /restore, /troubleshoot
+  reason: Operations provision and operate Cloud PC (Windows 365) virtual desktops — reboot, resize, restore,
+    troubleshoot — which is management of end-user compute infrastructure, i.e. IT Infrastructure Management.
+    Moderate confidence as it could also be read as IT Operations Management.
+- tag: me.directoryObject
+  spec_file: microsoft-graph-me-directoryobject-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: GET /me/createdObjects ... AsServicePrincipal; GET /me/directReports  me.ListDirectReports;
+    microsoft.graph.oAuth2PermissionGrant, microsoft.graph.scopedRoleMembership
+  reason: Reads Entra ID directory objects related to the signed-in user (createdObjects, directReports,
+    service principals, role memberships, OAuth2 permission grants). This is corporate directory/identity
+    data, mapping to Identity & Access Management rather than HR org management.
+- tag: me.managedDevice
+  spec_file: microsoft-graph-me-manageddevice-api-openapi.yml
+  capability_id: BC-600
+  capability_id_l1: BC-600
+  capability_name: Information Technology Management
+  confidence: 0.7
+  evidence: GET /me/managedDevices/{managedDevice-id}/deviceCompliancePolicyStates  Get deviceCompliancePolicyStates
+    from me
+  reason: Managed (Intune-enrolled) device inventory, device categories and compliance policy states —
+    enterprise endpoint/device management, i.e. IT management. L2 left blank because endpoint management
+    straddles IT Operations and IT Infrastructure in this taxonomy.
+- tag: policies.activityBasedTimeoutPolicy
+  spec_file: microsoft-graph-policies-activitybasedtimeoutpolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: List activityBasedTimeoutPolicies ... schemas microsoft.graph.stsPolicy, microsoft.graph.policyBase,
+    microsoft.graph.directoryObject
+  reason: Entra ID sign-in session timeout policy applied to directory objects — an identity/session control,
+    mapping to Identity & Access Management. Not enterprise Policy Management (BC-130.20), which concerns
+    corporate policy documents.
+- tag: policies.adminConsentRequestPolicy
+  spec_file: microsoft-graph-policies-adminconsentrequestpolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: Get adminConsentRequestPolicy / Update adminConsentRequestPolicy; schema microsoft.graph.accessReviewReviewerScope
+  reason: Governs how users request admin consent for application access and who reviews it — an access-governance/consent
+    control in Entra ID, i.e. Identity & Access Management.
+- tag: policies.deviceRegistrationPolicy
+  spec_file: microsoft-graph-policies-deviceregistrationpolicy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: GET /policies/deviceRegistrationPolicy; schemas microsoft.graph.azureADJoinPolicy, microsoft.graph.multiFactorAuthConfiguration,
+    microsoft.graph.localAdminPasswordSettings
+  reason: Read-only exposure of the tenant policy governing who may join/register devices to Entra ID,
+    including MFA requirement and local admin password settings — access control policy; single GET makes
+    the surface thin.
+- tag: policies.policyRoot
+  spec_file: microsoft-graph-policies-policyroot-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: GET /policies 'Get policies'; schemas microsoft.graph.authenticationFlowsPolicy, microsoft.graph.conditionalAccessPolicyState,
+    microsoft.graph.appManagementPolicy
+  reason: Container/root endpoint aggregating Entra ID identity policies (conditional access, authentication
+    flows, app management), so it belongs to IAM administration, though it is largely a navigation root.
