@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Applications Remove Key API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -88,20 +88,6 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/MainError'
-    ErrorDetail:
-      title: ErrorDetail
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
     MainError:
       title: MainError
       type: object
@@ -125,7 +111,25 @@ components:
             $ref: '#/components/schemas/ErrorDetail'
         innerError:
           $ref: '#/components/schemas/InnerError'
+    ErrorDetail:
+      title: ErrorDetail
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
   examples:
+    removeKeyApplicationsRequestExample:
+      value:
+        keyId: 00000000-0000-0000-0000-000000000001
+        proof: string-value
     ODataErrorExample:
       value:
         error:
@@ -140,10 +144,6 @@ components:
             request-id: 00000000-0000-0000-0000-000000000001
             date: '2024-01-15T10:30:00Z'
             client-request-id: 00000000-0000-0000-0000-000000000002
-    removeKeyApplicationsRequestExample:
-      value:
-        keyId: 00000000-0000-0000-0000-000000000001
-        proof: string-value
   responses:
     error:
       description: error

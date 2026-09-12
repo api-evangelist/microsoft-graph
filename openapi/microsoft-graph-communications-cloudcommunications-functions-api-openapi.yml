@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin communications.cloudCommunications.Functions API
+  title: Microsoft Graph Admin Admin.admin Communications.cloud Communications.Functions API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -24,7 +24,21 @@ paths:
       tags:
       - communications.cloudCommunications.Functions
       summary: Microsoft Graph Invoke function getAllOnlineMeetingMessages
-      description: "Get all Teams question and answer (Q&A) conversation messages in a tenant. This function returns a snapshot of all Q&A activity in JSON format. The export includes:\r\n- The original question or discussion text\r\n- The user who posted the message\r\n- All replies and responders\r\n- Vote counts\r\n- Moderation status (pending or dismissed)\r\n- Private replies\r\n- The meeting ID and organizer ID that are used for mapping to meeting metadata."
+      description: 'Get all Teams question and answer (Q&A) conversation messages in a tenant. This function returns a snapshot of all Q&A activity in JSON format. The export includes:
+
+        - The original question or discussion text
+
+        - The user who posted the message
+
+        - All replies and responders
+
+        - Vote counts
+
+        - Moderation status (pending or dismissed)
+
+        - Private replies
+
+        - The meeting ID and organizer ID that are used for mapping to meeting metadata.'
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/cloudcommunications-getallonlinemeetingmessages?view=graph-rest-1.0
@@ -91,6 +105,126 @@ paths:
         operationName: listMore
 components:
   schemas:
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    microsoft.graph.identity:
+      title: identity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
+          nullable: true
+        id:
+          type: string
+          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
+          nullable: true
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
+          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
+          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
+          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
+          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
+          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
+          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
+          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
+          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
+          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
+          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
+          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
+          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
+          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
+          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
+          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
+          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
+          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
+          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
+          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
+    microsoft.graph.engagementConversation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: engagementConversation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          creationMode:
+            $ref: '#/components/schemas/microsoft.graph.engagementCreationMode'
+          starterId:
+            type: string
+            description: The unique ID of the first message in a Viva Engage conversation.
+          messages:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
+            description: The messages in a Viva Engage conversation.
+            x-ms-navigationProperty: true
+          starter:
+            $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
+          '@odata.type':
+            type: string
+        description: Represents a conversation in Viva Engage.
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.onlineMeetingEngagementConversation': '#/components/schemas/microsoft.graph.onlineMeetingEngagementConversation'
+    microsoft.graph.itemBody:
+      title: itemBody
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        content:
+          type: string
+          description: The content of the item.
+          nullable: true
+        contentType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.bodyType'
+          - type: object
+            nullable: true
+          description: The type of the content. Possible values are text and html.
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type: string
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
+          type: string
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
     microsoft.graph.engagementCreationMode:
       title: engagementCreationMode
       enum:
@@ -112,6 +246,330 @@ components:
         - value: unknownFutureValue
           description: A marker value for members added after the release of this API.
           name: unknownFutureValue
+    microsoft.graph.engagementConversationMessageReactionType:
+      title: engagementConversationMessageReactionType
+      enum:
+      - like
+      - love
+      - celebrate
+      - thank
+      - laugh
+      - sad
+      - happy
+      - excited
+      - smile
+      - silly
+      - intenseLaugh
+      - starStruck
+      - goofy
+      - thinking
+      - surprised
+      - mindBlown
+      - scared
+      - crying
+      - shocked
+      - angry
+      - agree
+      - praise
+      - takingNotes
+      - heartBroken
+      - support
+      - confirmed
+      - watching
+      - brain
+      - medal
+      - bullseye
+      - unknownFutureValue
+      type: string
+      description: Types of reactions to conversation messages.
+      x-ms-enum:
+        name: engagementConversationMessageReactionType
+        modelAsString: false
+        values:
+        - value: like
+          description: Like reaction, represented as a thumbs-up hand. A positive sentiment.
+          name: like
+        - value: love
+          description: Love reaction, represented as a solid heart shape. A very positive sentiment.
+          name: love
+        - value: celebrate
+          description: Celebrate reaction, represented as a party hat. A positive sentiment.
+          name: celebrate
+        - value: thank
+          description: Thank reaction, represented as applauding hands. A positive sentiment.
+          name: thank
+        - value: laugh
+          description: Laugh reaction, represented as a grinning face. A positive sentiment.
+          name: laugh
+        - value: sad
+          description: Sad reaction, represented as a frowning face. A sympathetic sentiment.
+          name: sad
+        - value: happy
+          description: Happy reaction, represented as an open mouth smile face. A very positive sentiment.
+          name: happy
+        - value: excited
+          description: Excited reaction, represented as a face with closed eyes and a big smile. A very positive sentiment.
+          name: excited
+        - value: smile
+          description: Smiling reaction, represented as a face with a small smile. A positive sentiment.
+          name: smile
+        - value: silly
+          description: Silly reaction, represented as an upside down smiling face. A positive sentiment.
+          name: silly
+        - value: intenseLaugh
+          description: Intense laughter reaction, represented as a crying laughing face. A very positive sentiment.
+          name: intenseLaugh
+        - value: starStruck
+          description: Star struck reaction, represented as a face with stars for eyes. A very positive sentiment.
+          name: starStruck
+        - value: goofy
+          description: Goofy reaction, represented as a face with tongue sticking out of mouth. A positive sentiment.
+          name: goofy
+        - value: thinking
+          description: Thinking reaction, represented as a face with a hand on the chin. A neutral sentiment.
+          name: thinking
+        - value: surprised
+          description: Surprised reaction, represented as a face with its mouth open. A neutral sentiment.
+          name: surprised
+        - value: mindBlown
+          description: Mind blown reaction, represented as a face with its head covered in an exploding cloud. A positive sentiment.
+          name: mindBlown
+        - value: scared
+          description: Scared reaction, represented as a face with fearful look. A negative sentiment.
+          name: scared
+        - value: crying
+          description: Crying reaction, represented as a face with tears streaming down. A negative sentiment.
+          name: crying
+        - value: shocked
+          description: Shocked reaction, represented as a face with two hands against cheeks and mouth open. A negative sentiment.
+          name: shocked
+        - value: angry
+          description: Angry reaction, represented as a face with furrowed eyebrows and sad mouth. A very negative sentiment.
+          name: angry
+        - value: agree
+          description: Agree reaction, represented as a hand pointing upward. A positive sentiment.
+          name: agree
+        - value: praise
+          description: Praise reaction, represented as two hands facing outward. A positive sentiment.
+          name: praise
+        - value: takingNotes
+          description: Taking notes reaction, represented as a hand holding a pen. A neutral sentiment.
+          name: takingNotes
+        - value: heartBroken
+          description: Heart broken reaction, represented as a broken heart. A negative sentiment.
+          name: heartBroken
+        - value: support
+          description: Support reaction, represented as red numbers showing 100. A positive sentiment.
+          name: support
+        - value: confirmed
+          description: Confirmed reaction, represented as a green check mark. A neutral sentiment.
+          name: confirmed
+        - value: watching
+          description: Watching reaction, represented as two eyeballs. A neutral sentiment.
+          name: watching
+        - value: brain
+          description: Brain reaction, represented as a brain. A neutral sentiment.
+          name: brain
+        - value: medal
+          description: Medal reaction, represented as a medal hanging from a sash. A positive sentiment.
+          name: medal
+        - value: bullseye
+          description: Bullseye reaction, represented as a target with an arrow in the middle. A positive sentiment.
+          name: bullseye
+        - value: unknownFutureValue
+          description: A marker value for members added after the release of this API.
+          name: unknownFutureValue
+    microsoft.graph.engagementIdentitySet:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.identitySet'
+      - title: engagementIdentitySet
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          audience:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identity'
+            - type: object
+              nullable: true
+            description: Optional. The audience associated with this action.
+          group:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identity'
+            - type: object
+              nullable: true
+            description: Optional. The group associated with this action.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.engagementIdentitySet'
+        description: The Viva Engage identities.
+      x-ms-discriminator-value: '#microsoft.graph.engagementIdentitySet'
+    microsoft.graph.bodyType:
+      title: bodyType
+      enum:
+      - text
+      - html
+      type: string
+    microsoft.graph.engagementConversationMessageReaction:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: engagementConversationMessageReaction
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Date and time when the reaction was added. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            readOnly: true
+          reactionBy:
+            $ref: '#/components/schemas/microsoft.graph.engagementIdentitySet'
+          reactionType:
+            $ref: '#/components/schemas/microsoft.graph.engagementConversationMessageReactionType'
+          '@odata.type':
+            type: string
+        description: A reaction to a conversation message.
+      x-ms-discriminator-value: '#microsoft.graph.engagementConversationMessageReaction'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.engagementConversationMessage:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: engagementConversationMessage
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          body:
+            $ref: '#/components/schemas/microsoft.graph.itemBody'
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when the message was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            readOnly: true
+          creationMode:
+            $ref: '#/components/schemas/microsoft.graph.engagementCreationMode'
+          from:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.engagementIdentitySet'
+            - type: object
+              nullable: true
+            description: Identity of the sender of the message.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when message was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            readOnly: true
+          replyToId:
+            type: string
+            description: The ID of the parent message to which this message is a reply, if applicable.
+            nullable: true
+          conversation:
+            $ref: '#/components/schemas/microsoft.graph.engagementConversation'
+          reactions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessageReaction'
+            description: A collection of reactions (such as like and smile) that users have applied to this message.
+            x-ms-navigationProperty: true
+          replies:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
+            description: A collection of messages that are replies to this message and form a threaded discussion.
+            x-ms-navigationProperty: true
+          replyTo:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
+            - type: object
+              nullable: true
+            description: The parent message to which this message is a reply, if it is part of a reply chain.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+        description: A Viva Engage conversation message.
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.engagementConversationDiscussionMessage': '#/components/schemas/microsoft.graph.engagementConversationDiscussionMessage'
+            '#microsoft.graph.engagementConversationQuestionMessage': '#/components/schemas/microsoft.graph.engagementConversationQuestionMessage'
+            '#microsoft.graph.engagementConversationSystemMessage': '#/components/schemas/microsoft.graph.engagementConversationSystemMessage'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type: integer
+          format: int64
+          nullable: true
+        '@odata.nextLink':
+          type: string
+          nullable: true
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.identitySet:
+      title: identitySet
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        application:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type: object
+            nullable: true
+          description: Optional. The application associated with this action.
+        device:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type: object
+            nullable: true
+          description: Optional. The device associated with this action.
+        user:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type: object
+            nullable: true
+          description: Optional. The user associated with this action.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.aiInteractionMentionedIdentitySet': '#/components/schemas/microsoft.graph.aiInteractionMentionedIdentitySet'
+          '#microsoft.graph.chatMessageFromIdentitySet': '#/components/schemas/microsoft.graph.chatMessageFromIdentitySet'
+          '#microsoft.graph.chatMessageMentionedIdentitySet': '#/components/schemas/microsoft.graph.chatMessageMentionedIdentitySet'
+          '#microsoft.graph.chatMessageReactionIdentitySet': '#/components/schemas/microsoft.graph.chatMessageReactionIdentitySet'
+          '#microsoft.graph.communicationsIdentitySet': '#/components/schemas/microsoft.graph.communicationsIdentitySet'
+          '#microsoft.graph.engagementIdentitySet': '#/components/schemas/microsoft.graph.engagementIdentitySet'
+          '#microsoft.graph.sharePointIdentitySet': '#/components/schemas/microsoft.graph.sharePointIdentitySet'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1181,463 +1639,18 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.engagementConversationMessageReactionType:
-      title: engagementConversationMessageReactionType
-      enum:
-      - like
-      - love
-      - celebrate
-      - thank
-      - laugh
-      - sad
-      - happy
-      - excited
-      - smile
-      - silly
-      - intenseLaugh
-      - starStruck
-      - goofy
-      - thinking
-      - surprised
-      - mindBlown
-      - scared
-      - crying
-      - shocked
-      - angry
-      - agree
-      - praise
-      - takingNotes
-      - heartBroken
-      - support
-      - confirmed
-      - watching
-      - brain
-      - medal
-      - bullseye
-      - unknownFutureValue
-      type: string
-      description: Types of reactions to conversation messages.
-      x-ms-enum:
-        name: engagementConversationMessageReactionType
-        modelAsString: false
-        values:
-        - value: like
-          description: Like reaction, represented as a thumbs-up hand. A positive sentiment.
-          name: like
-        - value: love
-          description: Love reaction, represented as a solid heart shape. A very positive sentiment.
-          name: love
-        - value: celebrate
-          description: Celebrate reaction, represented as a party hat. A positive sentiment.
-          name: celebrate
-        - value: thank
-          description: Thank reaction, represented as applauding hands. A positive sentiment.
-          name: thank
-        - value: laugh
-          description: Laugh reaction, represented as a grinning face. A positive sentiment.
-          name: laugh
-        - value: sad
-          description: Sad reaction, represented as a frowning face. A sympathetic sentiment.
-          name: sad
-        - value: happy
-          description: Happy reaction, represented as an open mouth smile face. A very positive sentiment.
-          name: happy
-        - value: excited
-          description: Excited reaction, represented as a face with closed eyes and a big smile. A very positive sentiment.
-          name: excited
-        - value: smile
-          description: Smiling reaction, represented as a face with a small smile. A positive sentiment.
-          name: smile
-        - value: silly
-          description: Silly reaction, represented as an upside down smiling face. A positive sentiment.
-          name: silly
-        - value: intenseLaugh
-          description: Intense laughter reaction, represented as a crying laughing face. A very positive sentiment.
-          name: intenseLaugh
-        - value: starStruck
-          description: Star struck reaction, represented as a face with stars for eyes. A very positive sentiment.
-          name: starStruck
-        - value: goofy
-          description: Goofy reaction, represented as a face with tongue sticking out of mouth. A positive sentiment.
-          name: goofy
-        - value: thinking
-          description: Thinking reaction, represented as a face with a hand on the chin. A neutral sentiment.
-          name: thinking
-        - value: surprised
-          description: Surprised reaction, represented as a face with its mouth open. A neutral sentiment.
-          name: surprised
-        - value: mindBlown
-          description: Mind blown reaction, represented as a face with its head covered in an exploding cloud. A positive sentiment.
-          name: mindBlown
-        - value: scared
-          description: Scared reaction, represented as a face with fearful look. A negative sentiment.
-          name: scared
-        - value: crying
-          description: Crying reaction, represented as a face with tears streaming down. A negative sentiment.
-          name: crying
-        - value: shocked
-          description: Shocked reaction, represented as a face with two hands against cheeks and mouth open. A negative sentiment.
-          name: shocked
-        - value: angry
-          description: Angry reaction, represented as a face with furrowed eyebrows and sad mouth. A very negative sentiment.
-          name: angry
-        - value: agree
-          description: Agree reaction, represented as a hand pointing upward. A positive sentiment.
-          name: agree
-        - value: praise
-          description: Praise reaction, represented as two hands facing outward. A positive sentiment.
-          name: praise
-        - value: takingNotes
-          description: Taking notes reaction, represented as a hand holding a pen. A neutral sentiment.
-          name: takingNotes
-        - value: heartBroken
-          description: Heart broken reaction, represented as a broken heart. A negative sentiment.
-          name: heartBroken
-        - value: support
-          description: Support reaction, represented as red numbers showing 100. A positive sentiment.
-          name: support
-        - value: confirmed
-          description: Confirmed reaction, represented as a green check mark. A neutral sentiment.
-          name: confirmed
-        - value: watching
-          description: Watching reaction, represented as two eyeballs. A neutral sentiment.
-          name: watching
-        - value: brain
-          description: Brain reaction, represented as a brain. A neutral sentiment.
-          name: brain
-        - value: medal
-          description: Medal reaction, represented as a medal hanging from a sash. A positive sentiment.
-          name: medal
-        - value: bullseye
-          description: Bullseye reaction, represented as a target with an arrow in the middle. A positive sentiment.
-          name: bullseye
-        - value: unknownFutureValue
-          description: A marker value for members added after the release of this API.
-          name: unknownFutureValue
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.engagementIdentitySet:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.identitySet'
-      - title: engagementIdentitySet
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          audience:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identity'
-            - type: object
-              nullable: true
-            description: Optional. The audience associated with this action.
-          group:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identity'
-            - type: object
-              nullable: true
-            description: Optional. The group associated with this action.
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.engagementIdentitySet'
-        description: The Viva Engage identities.
-      x-ms-discriminator-value: '#microsoft.graph.engagementIdentitySet'
-    microsoft.graph.engagementConversationMessage:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: engagementConversationMessage
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          body:
-            $ref: '#/components/schemas/microsoft.graph.itemBody'
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when the message was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            readOnly: true
-          creationMode:
-            $ref: '#/components/schemas/microsoft.graph.engagementCreationMode'
-          from:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.engagementIdentitySet'
-            - type: object
-              nullable: true
-            description: Identity of the sender of the message.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when message was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            readOnly: true
-          replyToId:
-            type: string
-            description: The ID of the parent message to which this message is a reply, if applicable.
-            nullable: true
-          conversation:
-            $ref: '#/components/schemas/microsoft.graph.engagementConversation'
-          reactions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessageReaction'
-            description: A collection of reactions (such as like and smile) that users have applied to this message.
-            x-ms-navigationProperty: true
-          replies:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
-            description: A collection of messages that are replies to this message and form a threaded discussion.
-            x-ms-navigationProperty: true
-          replyTo:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
-            - type: object
-              nullable: true
-            description: The parent message to which this message is a reply, if it is part of a reply chain.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-        description: A Viva Engage conversation message.
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.engagementConversationDiscussionMessage': '#/components/schemas/microsoft.graph.engagementConversationDiscussionMessage'
-            '#microsoft.graph.engagementConversationQuestionMessage': '#/components/schemas/microsoft.graph.engagementConversationQuestionMessage'
-            '#microsoft.graph.engagementConversationSystemMessage': '#/components/schemas/microsoft.graph.engagementConversationSystemMessage'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.identity:
-      title: identity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
-          nullable: true
-        id:
-          type: string
-          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
-          nullable: true
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
-          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
-          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
-          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
-          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
-          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
-          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
-          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
-          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
-          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
-          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
-          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
-          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
-          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
-          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
-          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
-          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
-          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
-          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
-          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
-    microsoft.graph.identitySet:
-      title: identitySet
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        application:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
-          description: Optional. The application associated with this action.
-        device:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
-          description: Optional. The device associated with this action.
-        user:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
-          description: Optional. The user associated with this action.
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.aiInteractionMentionedIdentitySet': '#/components/schemas/microsoft.graph.aiInteractionMentionedIdentitySet'
-          '#microsoft.graph.chatMessageFromIdentitySet': '#/components/schemas/microsoft.graph.chatMessageFromIdentitySet'
-          '#microsoft.graph.chatMessageMentionedIdentitySet': '#/components/schemas/microsoft.graph.chatMessageMentionedIdentitySet'
-          '#microsoft.graph.chatMessageReactionIdentitySet': '#/components/schemas/microsoft.graph.chatMessageReactionIdentitySet'
-          '#microsoft.graph.communicationsIdentitySet': '#/components/schemas/microsoft.graph.communicationsIdentitySet'
-          '#microsoft.graph.engagementIdentitySet': '#/components/schemas/microsoft.graph.engagementIdentitySet'
-          '#microsoft.graph.sharePointIdentitySet': '#/components/schemas/microsoft.graph.sharePointIdentitySet'
-    microsoft.graph.bodyType:
-      title: bodyType
-      enum:
-      - text
-      - html
-      type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.engagementConversation:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: engagementConversation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          creationMode:
-            $ref: '#/components/schemas/microsoft.graph.engagementCreationMode'
-          starterId:
-            type: string
-            description: The unique ID of the first message in a Viva Engage conversation.
-          messages:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
-            description: The messages in a Viva Engage conversation.
-            x-ms-navigationProperty: true
-          starter:
-            $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
-          '@odata.type':
-            type: string
-        description: Represents a conversation in Viva Engage.
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.onlineMeetingEngagementConversation': '#/components/schemas/microsoft.graph.onlineMeetingEngagementConversation'
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.itemBody:
-      title: itemBody
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        content:
-          type: string
-          description: The content of the item.
-          nullable: true
-        contentType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.bodyType'
-          - type: object
-            nullable: true
-          description: The type of the content. Possible values are text and html.
-        '@odata.type':
-          type: string
-    microsoft.graph.engagementConversationMessageReaction:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: engagementConversationMessageReaction
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the reaction was added. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            readOnly: true
-          reactionBy:
-            $ref: '#/components/schemas/microsoft.graph.engagementIdentitySet'
-          reactionType:
-            $ref: '#/components/schemas/microsoft.graph.engagementConversationMessageReactionType'
-          '@odata.type':
-            type: string
-        description: A reaction to a conversation message.
-      x-ms-discriminator-value: '#microsoft.graph.engagementConversationMessageReaction'
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   parameters:
-    count:
-      name: $count
+    filter:
+      name: $filter
       in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
+      description: Filter items by property values
       style: form
       explode: false
       schema:
@@ -1652,6 +1665,14 @@ components:
         minimum: 0
         type: integer
       example: 50
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     skip:
       name: $skip
       in: query
@@ -1661,18 +1682,11 @@ components:
       schema:
         minimum: 0
         type: integer
-    filter:
-      name: $filter
+    search:
+      name: $search
       in: query
-      description: Filter items by property values
+      description: Search items by search phrases
       style: form
       explode: false
       schema:
         type: string
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

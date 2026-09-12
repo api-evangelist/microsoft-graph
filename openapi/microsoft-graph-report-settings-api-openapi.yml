@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Report Settings API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -82,25 +82,18 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: default
 components:
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
   examples:
-    GetReportSettingsResponse:
-      summary: Example response for getting report settings
-      value:
-        id: reportSettings
-        displayConcealedNames: false
-        '@odata.type': '#microsoft.graph.adminReportSettings'
     UpdateReportSettingsResponse:
       summary: Example response for updated report settings
       value:
         id: reportSettings
         displayConcealedNames: true
+        '@odata.type': '#microsoft.graph.adminReportSettings'
+    GetReportSettingsResponse:
+      summary: Example response for getting report settings
+      value:
+        id: reportSettings
+        displayConcealedNames: false
         '@odata.type': '#microsoft.graph.adminReportSettings'
     UpdateReportSettingsRequest:
       summary: Example request for updating report settings
@@ -108,25 +101,6 @@ components:
         displayConcealedNames: true
         '@odata.type': '#microsoft.graph.adminReportSettings'
   schemas:
-    AdminReportSettings:
-      allOf:
-      - $ref: '#/components/schemas/Entity'
-      - title: AdminReportSettings
-        type: object
-        properties:
-          displayConcealedNames:
-            type: boolean
-          '@odata.type':
-            type: string
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for an entity.
-        '@odata.type':
-          type: string
     ODataError:
       title: ODataError
       required:
@@ -149,3 +123,29 @@ components:
         target:
           type: string
           nullable: true
+    AdminReportSettings:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: AdminReportSettings
+        type: object
+        properties:
+          displayConcealedNames:
+            type: boolean
+          '@odata.type':
+            type: string
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity.
+        '@odata.type':
+          type: string
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'

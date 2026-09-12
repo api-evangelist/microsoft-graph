@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Agreement File Localizations API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -322,20 +322,22 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: default
 components:
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
-    AgreementFileLocalizationCollectionResponse:
-      description: Retrieved collection of agreement file localizations
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AgreementFileLocalizationCollectionResponse'
   examples:
+    UpdateAgreementFileLocalizationRequest:
+      summary: Example request to update an agreement file localization
+      value:
+        displayName: Updated Terms of Use - Spanish
+        isMajorVersion: false
+        '@odata.type': '#microsoft.graph.agreementFileLocalization'
+    CreateAgreementFileLocalizationRequest:
+      summary: Example request to create an agreement file localization
+      value:
+        displayName: Terms of Use - Spanish
+        fileName: terms-of-use-es.pdf
+        language: es-ES
+        isDefault: false
+        isMajorVersion: true
+        '@odata.type': '#microsoft.graph.agreementFileLocalization'
     UpdateAgreementFileLocalizationResponse:
       summary: Example response for updated agreement file localization
       value:
@@ -347,8 +349,8 @@ components:
         isMajorVersion: false
         createdDateTime: '2024-01-15T10:30:00Z'
         '@odata.type': '#microsoft.graph.agreementFileLocalization'
-    GetAgreementFileLocalizationResponse:
-      summary: Example response for getting an agreement file localization
+    CreateAgreementFileLocalizationResponse:
+      summary: Example response for created agreement file localization
       value:
         id: 00000000-0000-0000-0000-000000000006
         displayName: Terms of Use - Spanish
@@ -358,23 +360,8 @@ components:
         isMajorVersion: true
         createdDateTime: '2024-01-15T10:30:00Z'
         '@odata.type': '#microsoft.graph.agreementFileLocalization'
-    CreateAgreementFileLocalizationRequest:
-      summary: Example request to create an agreement file localization
-      value:
-        displayName: Terms of Use - Spanish
-        fileName: terms-of-use-es.pdf
-        language: es-ES
-        isDefault: false
-        isMajorVersion: true
-        '@odata.type': '#microsoft.graph.agreementFileLocalization'
-    UpdateAgreementFileLocalizationRequest:
-      summary: Example request to update an agreement file localization
-      value:
-        displayName: Updated Terms of Use - Spanish
-        isMajorVersion: false
-        '@odata.type': '#microsoft.graph.agreementFileLocalization'
-    CreateAgreementFileLocalizationResponse:
-      summary: Example response for created agreement file localization
+    GetAgreementFileLocalizationResponse:
+      summary: Example response for getting an agreement file localization
       value:
         id: 00000000-0000-0000-0000-000000000006
         displayName: Terms of Use - Spanish
@@ -399,76 +386,6 @@ components:
         '@odata.count':
           type: integer
           format: int32
-    ErrorDetail:
-      title: ErrorDetail
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    MainError:
-      title: MainError
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        innerError:
-          $ref: '#/components/schemas/InnerError'
-    InnerError:
-      title: InnerError
-      type: object
-      description: The structure of this object is service-specific
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for an entity. Read-only.
-        '@odata.type':
-          type: string
-    AgreementFileVersion:
-      allOf:
-      - $ref: '#/components/schemas/AgreementFileProperties'
-      - title: AgreementFileVersion
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
-    AgreementFileData:
-      title: AgreementFileData
-      type: object
-      properties:
-        data:
-          type: string
-          description: Data that represents the terms of use PDF document. Read-only.
-          format: base64url
-          nullable: true
-        '@odata.type':
-          type: string
     AgreementFileLocalization:
       allOf:
       - $ref: '#/components/schemas/AgreementFileProperties'
@@ -486,6 +403,29 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementFileLocalization'
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity. Read-only.
+        '@odata.type':
+          type: string
+    ErrorDetail:
+      title: ErrorDetail
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
     ODataError:
       title: ODataError
       required:
@@ -494,6 +434,21 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/MainError'
+    AgreementFileData:
+      title: AgreementFileData
+      type: object
+      properties:
+        data:
+          type: string
+          description: Data that represents the terms of use PDF document. Read-only.
+          format: base64url
+          nullable: true
+        '@odata.type':
+          type: string
+    InnerError:
+      title: InnerError
+      type: object
+      description: The structure of this object is service-specific
     AgreementFileProperties:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -534,7 +489,77 @@ components:
             nullable: true
           '@odata.type':
             type: string
+    AgreementFileVersion:
+      allOf:
+      - $ref: '#/components/schemas/AgreementFileProperties'
+      - title: AgreementFileVersion
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
+    MainError:
+      title: MainError
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+    AgreementFileLocalizationCollectionResponse:
+      description: Retrieved collection of agreement file localizations
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgreementFileLocalizationCollectionResponse'
   parameters:
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    Skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    AgreementFileLocalizationId:
+      name: agreementFileLocalization-id
+      in: path
+      description: The unique identifier of the agreement file localization
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreementFileLocalization
     Filter:
       name: $filter
       in: query
@@ -543,6 +568,14 @@ components:
       explode: false
       schema:
         type: string
+    AgreementId:
+      name: agreement-id
+      in: path
+      description: The unique identifier of the agreement
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreement
     Top:
       name: $top
       in: query
@@ -553,23 +586,6 @@ components:
         minimum: 0
         type: integer
       example: 50
-    Skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    AgreementId:
-      name: agreement-id
-      in: path
-      description: The unique identifier of the agreement
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreement
     Count:
       name: $count
       in: query
@@ -578,19 +594,3 @@ components:
       explode: false
       schema:
         type: boolean
-    AgreementFileLocalizationId:
-      name: agreementFileLocalization-id
-      in: path
-      description: The unique identifier of the agreement file localization
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreementFileLocalization
-    Search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string

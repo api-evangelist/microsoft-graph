@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Application Templates API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -163,69 +163,6 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: 2XX
 components:
-  parameters:
-    Top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-    Skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    Count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    Search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    Filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-  responses:
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-          examples:
-            ODataCountResponseExample:
-              $ref: '#/components/examples/ODataCountResponseExample'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
-          examples:
-            ODataErrorExample:
-              $ref: '#/components/examples/ODataErrorExample'
   schemas:
     InnerError:
       title: InnerError
@@ -238,6 +175,49 @@ components:
           format: date-time
         client-request-id:
           type: string
+    ODataCountResponse:
+      title: ODataCountResponse
+      type: integer
+      format: int32
+      description: The count of entities
+    ODataError:
+      title: ODataError
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    MainError:
+      title: MainError
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        target:
+          type: string
+          description: Target of the error
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the entity.
     ApplicationTemplate:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -287,26 +267,6 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.applicationTemplate'
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the entity.
-    ODataCountResponse:
-      title: ODataCountResponse
-      type: integer
-      format: int32
-      description: The count of entities
-    ODataError:
-      title: ODataError
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
     ErrorDetail:
       title: ErrorDetail
       type: object
@@ -321,30 +281,20 @@ components:
         target:
           type: string
           nullable: true
-    MainError:
-      title: MainError
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Error message
-        target:
-          type: string
-          description: Target of the error
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        innerError:
-          $ref: '#/components/schemas/InnerError'
   examples:
+    ApplicationTemplateExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        categories:
+        - string-value
+        description: This is an example description.
+        displayName: Example Display Name
+        homePageUrl: https://example.com/resource
+        logoUrl: https://example.com/resource
+        publisher: string-value
+        '@odata.type': '#microsoft.graph.applicationtemplate'
+    ODataCountResponseExample:
+      value: 42
     ODataErrorExample:
       value:
         error:
@@ -359,16 +309,66 @@ components:
             request-id: 00000000-0000-0000-0000-000000000001
             date: '2024-01-15T10:30:00Z'
             client-request-id: 00000000-0000-0000-0000-000000000002
-    ODataCountResponseExample:
-      value: 42
-    ApplicationTemplateExample:
-      value:
-        id: 00000000-0000-0000-0000-000000000001
-        categories:
-        - string-value
-        description: This is an example description.
-        displayName: Example Display Name
-        homePageUrl: https://example.com/resource
-        logoUrl: https://example.com/resource
-        publisher: string-value
-        '@odata.type': '#microsoft.graph.applicationtemplate'
+  responses:
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+          examples:
+            ODataCountResponseExample:
+              $ref: '#/components/examples/ODataCountResponseExample'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+          examples:
+            ODataErrorExample:
+              $ref: '#/components/examples/ODataErrorExample'
+  parameters:
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    Top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    Skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    Count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    Filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string

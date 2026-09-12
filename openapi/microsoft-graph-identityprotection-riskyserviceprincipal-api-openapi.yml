@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin identityProtection.riskyServicePrincipal API
+  title: Microsoft Graph Admin Admin.admin Identity Protection.risky Service Principal API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -495,32 +495,56 @@ paths:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
 components:
-  responses:
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.riskyServicePrincipalCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalCollectionResponse'
-    microsoft.graph.riskyServicePrincipalHistoryItemCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItemCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   schemas:
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    microsoft.graph.riskState:
+      title: riskState
+      enum:
+      - none
+      - confirmedSafe
+      - remediated
+      - dismissed
+      - atRisk
+      - confirmedCompromised
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type: string
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
+          type: string
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
     microsoft.graph.riskyServicePrincipalHistoryItemCollectionResponse:
       title: Collection of riskyServicePrincipalHistoryItem
       type: object
@@ -532,6 +556,17 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItem'
+    microsoft.graph.riskyServicePrincipalCollectionResponse:
+      title: Collection of riskyServicePrincipal
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipal'
     microsoft.graph.riskyServicePrincipalHistoryItem:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipal'
@@ -553,6 +588,160 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.riskyServicePrincipalHistoryItem'
+    microsoft.graph.riskyServicePrincipal:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: riskyServicePrincipal
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          appId:
+            type: string
+            description: The globally unique identifier for the associated application (its appId property), if any.
+            nullable: true
+          displayName:
+            type: string
+            description: The display name for the service principal.
+            nullable: true
+          isEnabled:
+            type: boolean
+            description: true if the service principal account is enabled; otherwise, false.
+            nullable: true
+          isProcessing:
+            type: boolean
+            description: Indicates whether Microsoft Entra ID is currently processing the service principal's risky state.
+            nullable: true
+          riskDetail:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskDetail'
+            - type: object
+              nullable: true
+            description: 'Details of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden.'
+          riskLastUpdatedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time that the risk state was last updated. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2021 is 2021-01-01T00:00:00Z. Supports $filter (eq).
+            format: date-time
+            nullable: true
+          riskLevel:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskLevel'
+            - type: object
+              nullable: true
+            description: 'Level of the detected risky workload identity. The possible values are: low, medium, high, hidden, none, unknownFutureValue. Supports $filter (eq).'
+          riskState:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskState'
+            - type: object
+              nullable: true
+            description: 'State of the service principal''s risk. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue.'
+          servicePrincipalType:
+            type: string
+            description: Identifies whether the service principal represents an Application, a ManagedIdentity, or a legacy application (socialIdp). This is set by Microsoft Entra ID internally and is inherited from servicePrincipal.
+            nullable: true
+          history:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItem'
+            description: Represents the risk history of Microsoft Entra service principals.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.riskyServicePrincipalHistoryItem': '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItem'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.riskDetail:
+      title: riskDetail
+      enum:
+      - none
+      - adminGeneratedTemporaryPassword
+      - userPerformedSecuredPasswordChange
+      - userPerformedSecuredPasswordReset
+      - adminConfirmedSigninSafe
+      - aiConfirmedSigninSafe
+      - userPassedMFADrivenByRiskBasedPolicy
+      - adminDismissedAllRiskForUser
+      - adminConfirmedSigninCompromised
+      - hidden
+      - adminConfirmedUserCompromised
+      - unknownFutureValue
+      - m365DAdminDismissedDetection
+      - adminConfirmedServicePrincipalCompromised
+      - adminDismissedAllRiskForServicePrincipal
+      - userChangedPasswordOnPremises
+      - adminDismissedRiskForSignIn
+      - adminConfirmedAccountSafe
+      type: string
+    microsoft.graph.riskLevel:
+      title: riskLevel
+      enum:
+      - low
+      - medium
+      - high
+      - hidden
+      - none
+      - unknownFutureValue
+      type: string
+    microsoft.graph.riskServicePrincipalActivity:
+      title: riskServicePrincipalActivity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        detail:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.riskDetail'
+          - type: object
+            nullable: true
+          description: 'Details of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden.'
+        riskEventTypes:
+          type: array
+          items:
+            type: string
+            nullable: true
+          description: 'The type of risk event detected. The possible values are: investigationsThreatIntelligence, generic, adminConfirmedServicePrincipalCompromised, suspiciousSignins, leakedCredentials, anomalousServicePrincipalActivity, maliciousApplication, suspiciousApplication.'
+        '@odata.type':
+          type: string
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type: integer
+          format: int64
+          nullable: true
+        '@odata.nextLink':
+          type: string
+          nullable: true
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1622,233 +1811,36 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.riskLevel:
-      title: riskLevel
-      enum:
-      - low
-      - medium
-      - high
-      - hidden
-      - none
-      - unknownFutureValue
-      type: string
-    microsoft.graph.riskDetail:
-      title: riskDetail
-      enum:
-      - none
-      - adminGeneratedTemporaryPassword
-      - userPerformedSecuredPasswordChange
-      - userPerformedSecuredPasswordReset
-      - adminConfirmedSigninSafe
-      - aiConfirmedSigninSafe
-      - userPassedMFADrivenByRiskBasedPolicy
-      - adminDismissedAllRiskForUser
-      - adminConfirmedSigninCompromised
-      - hidden
-      - adminConfirmedUserCompromised
-      - unknownFutureValue
-      - m365DAdminDismissedDetection
-      - adminConfirmedServicePrincipalCompromised
-      - adminDismissedAllRiskForServicePrincipal
-      - userChangedPasswordOnPremises
-      - adminDismissedRiskForSignIn
-      - adminConfirmedAccountSafe
-      type: string
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.riskServicePrincipalActivity:
-      title: riskServicePrincipalActivity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        detail:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.riskDetail'
-          - type: object
-            nullable: true
-          description: 'Details of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden.'
-        riskEventTypes:
-          type: array
-          items:
-            type: string
-            nullable: true
-          description: 'The type of risk event detected. The possible values are: investigationsThreatIntelligence, generic, adminConfirmedServicePrincipalCompromised, suspiciousSignins, leakedCredentials, anomalousServicePrincipalActivity, maliciousApplication, suspiciousApplication.'
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.riskState:
-      title: riskState
-      enum:
-      - none
-      - confirmedSafe
-      - remediated
-      - dismissed
-      - atRisk
-      - confirmedCompromised
-      - unknownFutureValue
-      type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.riskyServicePrincipal:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: riskyServicePrincipal
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          appId:
-            type: string
-            description: The globally unique identifier for the associated application (its appId property), if any.
-            nullable: true
-          displayName:
-            type: string
-            description: The display name for the service principal.
-            nullable: true
-          isEnabled:
-            type: boolean
-            description: true if the service principal account is enabled; otherwise, false.
-            nullable: true
-          isProcessing:
-            type: boolean
-            description: Indicates whether Microsoft Entra ID is currently processing the service principal's risky state.
-            nullable: true
-          riskDetail:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskDetail'
-            - type: object
-              nullable: true
-            description: 'Details of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden.'
-          riskLastUpdatedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time that the risk state was last updated. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2021 is 2021-01-01T00:00:00Z. Supports $filter (eq).
-            format: date-time
-            nullable: true
-          riskLevel:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskLevel'
-            - type: object
-              nullable: true
-            description: 'Level of the detected risky workload identity. The possible values are: low, medium, high, hidden, none, unknownFutureValue. Supports $filter (eq).'
-          riskState:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskState'
-            - type: object
-              nullable: true
-            description: 'State of the service principal''s risk. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue.'
-          servicePrincipalType:
-            type: string
-            description: Identifies whether the service principal represents an Application, a ManagedIdentity, or a legacy application (socialIdp). This is set by Microsoft Entra ID internally and is inherited from servicePrincipal.
-            nullable: true
-          history:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItem'
-            description: Represents the risk history of Microsoft Entra service principals.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.riskyServicePrincipalHistoryItem': '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItem'
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.riskyServicePrincipalHistoryItemCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItemCollectionResponse'
     ODataCountResponse:
-      type: integer
-      format: int32
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
     microsoft.graph.riskyServicePrincipalCollectionResponse:
-      title: Collection of riskyServicePrincipal
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipal'
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalCollectionResponse'
   parameters:
-    count:
-      name: $count
+    filter:
+      name: $filter
       in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
+      description: Filter items by property values
       style: form
       explode: false
       schema:
@@ -1863,6 +1855,14 @@ components:
         minimum: 0
         type: integer
       example: 50
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     skip:
       name: $skip
       in: query
@@ -1872,10 +1872,10 @@ components:
       schema:
         minimum: 0
         type: integer
-    filter:
-      name: $filter
+    search:
+      name: $search
       in: query
-      description: Filter items by property values
+      description: Search items by search phrases
       style: form
       explode: false
       schema:

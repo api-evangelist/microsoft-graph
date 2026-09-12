@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Agreement Files API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -129,56 +129,19 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: default
 components:
-  parameters:
-    AgreementId:
-      name: agreement-id
-      in: path
-      description: The unique identifier of the agreement
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreement
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
-  examples:
-    UpdateAgreementFileResponse:
-      summary: Example response for updated agreement file
-      value:
-        id: 00000000-0000-0000-0000-000000000002
-        displayName: Updated Terms of Use - English
-        fileName: terms-of-use.pdf
-        language: en-US
-        isDefault: true
-        isMajorVersion: true
-        createdDateTime: '2024-01-01T00:00:00Z'
-        '@odata.type': '#microsoft.graph.agreementFile'
-    UpdateAgreementFileRequest:
-      summary: Example request to update an agreement file
-      value:
-        displayName: Updated Terms of Use - English
-        isDefault: true
-        '@odata.type': '#microsoft.graph.agreementFile'
-    GetAgreementFileResponse:
-      summary: Example response for getting an agreement file
-      value:
-        id: 00000000-0000-0000-0000-000000000002
-        displayName: Terms of Use - English
-        fileName: terms-of-use.pdf
-        language: en-US
-        isDefault: true
-        isMajorVersion: true
-        createdDateTime: '2024-01-01T00:00:00Z'
-        '@odata.type': '#microsoft.graph.agreementFile'
   schemas:
     InnerError:
       title: InnerError
       type: object
       description: The structure of this object is service-specific
+    ODataError:
+      title: ODataError
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
     AgreementFile:
       allOf:
       - $ref: '#/components/schemas/AgreementFileProperties'
@@ -196,40 +159,6 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementFile'
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for an entity. Read-only.
-        '@odata.type':
-          type: string
-    AgreementFileLocalization:
-      allOf:
-      - $ref: '#/components/schemas/AgreementFileProperties'
-      - title: AgreementFileLocalization
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          versions:
-            type: array
-            items:
-              $ref: '#/components/schemas/AgreementFileVersion'
-            description: Read-only. Customized versions of the terms of use agreement in the Microsoft Entra tenant.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.agreementFileLocalization'
-    ODataError:
-      title: ODataError
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
     AgreementFileProperties:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -270,20 +199,17 @@ components:
             nullable: true
           '@odata.type':
             type: string
-    ErrorDetail:
-      title: ErrorDetail
-      required:
-      - code
-      - message
+    AgreementFileData:
+      title: AgreementFileData
       type: object
       properties:
-        code:
+        data:
           type: string
-        message:
-          type: string
-        target:
-          type: string
+          description: Data that represents the terms of use PDF document. Read-only.
+          format: base64url
           nullable: true
+        '@odata.type':
+          type: string
     MainError:
       title: MainError
       required:
@@ -305,17 +231,6 @@ components:
             $ref: '#/components/schemas/ErrorDetail'
         innerError:
           $ref: '#/components/schemas/InnerError'
-    AgreementFileData:
-      title: AgreementFileData
-      type: object
-      properties:
-        data:
-          type: string
-          description: Data that represents the terms of use PDF document. Read-only.
-          format: base64url
-          nullable: true
-        '@odata.type':
-          type: string
     AgreementFileVersion:
       allOf:
       - $ref: '#/components/schemas/AgreementFileProperties'
@@ -327,3 +242,88 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity. Read-only.
+        '@odata.type':
+          type: string
+    AgreementFileLocalization:
+      allOf:
+      - $ref: '#/components/schemas/AgreementFileProperties'
+      - title: AgreementFileLocalization
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          versions:
+            type: array
+            items:
+              $ref: '#/components/schemas/AgreementFileVersion'
+            description: Read-only. Customized versions of the terms of use agreement in the Microsoft Entra tenant.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.agreementFileLocalization'
+    ErrorDetail:
+      title: ErrorDetail
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+  examples:
+    UpdateAgreementFileRequest:
+      summary: Example request to update an agreement file
+      value:
+        displayName: Updated Terms of Use - English
+        isDefault: true
+        '@odata.type': '#microsoft.graph.agreementFile'
+    UpdateAgreementFileResponse:
+      summary: Example response for updated agreement file
+      value:
+        id: 00000000-0000-0000-0000-000000000002
+        displayName: Updated Terms of Use - English
+        fileName: terms-of-use.pdf
+        language: en-US
+        isDefault: true
+        isMajorVersion: true
+        createdDateTime: '2024-01-01T00:00:00Z'
+        '@odata.type': '#microsoft.graph.agreementFile'
+    GetAgreementFileResponse:
+      summary: Example response for getting an agreement file
+      value:
+        id: 00000000-0000-0000-0000-000000000002
+        displayName: Terms of Use - English
+        fileName: terms-of-use.pdf
+        language: en-US
+        isDefault: true
+        isMajorVersion: true
+        createdDateTime: '2024-01-01T00:00:00Z'
+        '@odata.type': '#microsoft.graph.agreementFile'
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+  parameters:
+    AgreementId:
+      name: agreement-id
+      in: path
+      description: The unique identifier of the agreement
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreement

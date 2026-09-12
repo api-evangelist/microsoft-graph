@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Administration API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -103,29 +103,23 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: default
 components:
-  examples:
-    GetAdminResponse:
-      summary: Example response for getting admin singleton
-      value:
-        id: admin
-        '@odata.type': '#microsoft.graph.admin'
-    UpdateAdminRequest:
-      summary: Example request for updating admin singleton
-      value:
-        '@odata.type': '#microsoft.graph.admin'
-    UpdateAdminResponse:
-      summary: Example response for updated admin singleton
-      value:
-        id: admin
-        '@odata.type': '#microsoft.graph.admin'
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
   schemas:
+    SharePoint:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: SharePoint
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+    ODataError:
+      title: ODataError
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
     InternetExplorerMode:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -136,6 +130,46 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/BrowserSiteList'
+          '@odata.type':
+            type: string
+    MainError:
+      title: MainError
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    Admin:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: Admin
+        type: object
+        properties:
+          edge:
+            $ref: '#/components/schemas/Edge'
+          microsoft365Apps:
+            $ref: '#/components/schemas/AdminMicrosoft365Apps'
+          reportSettings:
+            $ref: '#/components/schemas/AdminReportSettings'
+          serviceAnnouncement:
+            $ref: '#/components/schemas/ServiceAnnouncement'
+          sharepoint:
+            $ref: '#/components/schemas/SharePoint'
+          '@odata.type':
+            type: string
+    AdminMicrosoft365Apps:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: AdminMicrosoft365Apps
+        type: object
+        properties:
           '@odata.type':
             type: string
     AdminReportSettings:
@@ -157,74 +191,6 @@ components:
           description: The unique identifier for an entity.
         '@odata.type':
           type: string
-    BrowserSiteListStatus:
-      title: BrowserSiteListStatus
-      type: string
-      enum:
-      - draft
-      - published
-      - pending
-      - unknownFutureValue
-    AdminMicrosoft365Apps:
-      allOf:
-      - $ref: '#/components/schemas/Entity'
-      - title: AdminMicrosoft365Apps
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-    Edge:
-      allOf:
-      - $ref: '#/components/schemas/Entity'
-      - title: Edge
-        type: object
-        properties:
-          internetExplorerMode:
-            $ref: '#/components/schemas/InternetExplorerMode'
-          '@odata.type':
-            type: string
-    Admin:
-      allOf:
-      - $ref: '#/components/schemas/Entity'
-      - title: Admin
-        type: object
-        properties:
-          edge:
-            $ref: '#/components/schemas/Edge'
-          microsoft365Apps:
-            $ref: '#/components/schemas/AdminMicrosoft365Apps'
-          reportSettings:
-            $ref: '#/components/schemas/AdminReportSettings'
-          serviceAnnouncement:
-            $ref: '#/components/schemas/ServiceAnnouncement'
-          sharepoint:
-            $ref: '#/components/schemas/SharePoint'
-          '@odata.type':
-            type: string
-    SharePoint:
-      allOf:
-      - $ref: '#/components/schemas/Entity'
-      - title: SharePoint
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-    ServiceAnnouncement:
-      allOf:
-      - $ref: '#/components/schemas/Entity'
-      - title: ServiceAnnouncement
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-    ODataError:
-      title: ODataError
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
     BrowserSiteList:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -245,17 +211,51 @@ components:
             $ref: '#/components/schemas/BrowserSiteListStatus'
           '@odata.type':
             type: string
-    MainError:
-      title: MainError
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
+    BrowserSiteListStatus:
+      title: BrowserSiteListStatus
+      type: string
+      enum:
+      - draft
+      - published
+      - pending
+      - unknownFutureValue
+    Edge:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: Edge
+        type: object
+        properties:
+          internetExplorerMode:
+            $ref: '#/components/schemas/InternetExplorerMode'
+          '@odata.type':
+            type: string
+    ServiceAnnouncement:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: ServiceAnnouncement
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+  examples:
+    GetAdminResponse:
+      summary: Example response for getting admin singleton
+      value:
+        id: admin
+        '@odata.type': '#microsoft.graph.admin'
+    UpdateAdminResponse:
+      summary: Example response for updated admin singleton
+      value:
+        id: admin
+        '@odata.type': '#microsoft.graph.admin'
+    UpdateAdminRequest:
+      summary: Example request for updating admin singleton
+      value:
+        '@odata.type': '#microsoft.graph.admin'

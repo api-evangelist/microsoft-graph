@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Admin Consent Policy API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -83,15 +83,11 @@ paths:
         dispatcherRules: default
 components:
   examples:
-    UpdateAdminConsentRequestPolicyResponse:
-      summary: Example response for updated admin consent request policy
+    UpdateAdminConsentRequestPolicyRequest:
+      summary: Example request for updating admin consent request policy
       value:
-        id: adminConsentRequestPolicy
         isEnabled: true
         notifyReviewers: false
-        remindersEnabled: true
-        requestDurationInDays: 30
-        version: 2
         '@odata.type': '#microsoft.graph.adminConsentRequestPolicy'
     GetAdminConsentRequestPolicyResponse:
       summary: Example response for getting admin consent request policy
@@ -103,42 +99,17 @@ components:
         requestDurationInDays: 30
         version: 1
         '@odata.type': '#microsoft.graph.adminConsentRequestPolicy'
-    UpdateAdminConsentRequestPolicyRequest:
-      summary: Example request for updating admin consent request policy
+    UpdateAdminConsentRequestPolicyResponse:
+      summary: Example response for updated admin consent request policy
       value:
+        id: adminConsentRequestPolicy
         isEnabled: true
         notifyReviewers: false
+        remindersEnabled: true
+        requestDurationInDays: 30
+        version: 2
         '@odata.type': '#microsoft.graph.adminConsentRequestPolicy'
   schemas:
-    AdminConsentRequestPolicy:
-      allOf:
-      - $ref: '#/components/schemas/Entity'
-      - title: AdminConsentRequestPolicy
-        type: object
-        properties:
-          isEnabled:
-            type: boolean
-          notifyReviewers:
-            type: boolean
-          remindersEnabled:
-            type: boolean
-          requestDurationInDays:
-            type: integer
-            format: int32
-          version:
-            type: integer
-            format: int32
-          '@odata.type':
-            type: string
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for an entity.
-        '@odata.type':
-          type: string
     ODataError:
       title: ODataError
       required:
@@ -161,6 +132,35 @@ components:
         target:
           type: string
           nullable: true
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity.
+        '@odata.type':
+          type: string
+    AdminConsentRequestPolicy:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: AdminConsentRequestPolicy
+        type: object
+        properties:
+          isEnabled:
+            type: boolean
+          notifyReviewers:
+            type: boolean
+          remindersEnabled:
+            type: boolean
+          requestDurationInDays:
+            type: integer
+            format: int32
+          version:
+            type: integer
+            format: int32
+          '@odata.type':
+            type: string
   responses:
     ErrorResponse:
       description: Error response

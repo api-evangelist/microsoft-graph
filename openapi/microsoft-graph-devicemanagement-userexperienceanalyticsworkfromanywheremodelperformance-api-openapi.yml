@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin deviceManagement.userExperienceAnalyticsWorkFromAnywhereModelPerformance API
+  title: Microsoft Graph Admin Admin.admin Device Management.user Experience Analytics Work From Anywhere Model Performance API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -207,33 +207,34 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
-  responses:
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.userExperienceAnalyticsWorkFromAnywhereModelPerformanceCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsWorkFromAnywhereModelPerformanceCollectionResponse'
   schemas:
-    ReferenceNumeric:
-      enum:
-      - -INF
-      - INF
-      - NaN
-      type: string
-      nullable: true
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    microsoft.graph.userExperienceAnalyticsWorkFromAnywhereModelPerformanceCollectionResponse:
+      title: Collection of userExperienceAnalyticsWorkFromAnywhereModelPerformance
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsWorkFromAnywhereModelPerformance'
     microsoft.graph.userExperienceAnalyticsWorkFromAnywhereModelPerformance:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -307,17 +308,101 @@ components:
             type: string
         description: The user experience analytics work from anywhere model performance.
       x-ms-discriminator-value: '#microsoft.graph.userExperienceAnalyticsWorkFromAnywhereModelPerformance'
-    microsoft.graph.userExperienceAnalyticsWorkFromAnywhereModelPerformanceCollectionResponse:
-      title: Collection of userExperienceAnalyticsWorkFromAnywhereModelPerformance
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
       type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsWorkFromAnywhereModelPerformance'
+      properties:
+        request-id:
+          type: string
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
+          type: string
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
+    ReferenceNumeric:
+      enum:
+      - -INF
+      - INF
+      - NaN
+      type: string
+      nullable: true
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.userExperienceAnalyticsHealthState:
+      title: userExperienceAnalyticsHealthState
+      enum:
+      - unknown
+      - insufficientData
+      - needsAttention
+      - meetingGoals
+      - unknownFutureValue
+      type: string
+      x-ms-enum:
+        name: userExperienceAnalyticsHealthState
+        modelAsString: false
+        values:
+        - value: unknown
+          description: Indicates that the health state is unknown.
+          name: unknown
+        - value: insufficientData
+          description: Indicates that the health state is insufficient data.
+          name: insufficientData
+        - value: needsAttention
+          description: Indicates that the health state needs attention.
+          name: needsAttention
+        - value: meetingGoals
+          description: Indicates that the health state is meeting goals.
+          name: meetingGoals
+        - value: unknownFutureValue
+          description: Evolvable enumeration sentinel value. Do not use.
+          name: unknownFutureValue
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type: integer
+          format: int64
+          nullable: true
+        '@odata.nextLink':
+          type: string
+          nullable: true
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1387,123 +1472,30 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.userExperienceAnalyticsHealthState:
-      title: userExperienceAnalyticsHealthState
-      enum:
-      - unknown
-      - insufficientData
-      - needsAttention
-      - meetingGoals
-      - unknownFutureValue
-      type: string
-      x-ms-enum:
-        name: userExperienceAnalyticsHealthState
-        modelAsString: false
-        values:
-        - value: unknown
-          description: Indicates that the health state is unknown.
-          name: unknown
-        - value: insufficientData
-          description: Indicates that the health state is insufficient data.
-          name: insufficientData
-        - value: needsAttention
-          description: Indicates that the health state needs attention.
-          name: needsAttention
-        - value: meetingGoals
-          description: Indicates that the health state is meeting goals.
-          name: meetingGoals
-        - value: unknownFutureValue
-          description: Evolvable enumeration sentinel value. Do not use.
-          name: unknownFutureValue
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+  responses:
+    microsoft.graph.userExperienceAnalyticsWorkFromAnywhereModelPerformanceCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsWorkFromAnywhereModelPerformanceCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
     ODataCountResponse:
-      type: integer
-      format: int32
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
   parameters:
-    count:
-      name: $count
+    filter:
+      name: $filter
       in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
+      description: Filter items by property values
       style: form
       explode: false
       schema:
@@ -1518,6 +1510,14 @@ components:
         minimum: 0
         type: integer
       example: 50
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     skip:
       name: $skip
       in: query
@@ -1527,10 +1527,10 @@ components:
       schema:
         minimum: 0
         type: integer
-    filter:
-      name: $filter
+    search:
+      name: $search
       in: query
-      description: Filter items by property values
+      description: Search items by search phrases
       style: form
       explode: false
       schema:

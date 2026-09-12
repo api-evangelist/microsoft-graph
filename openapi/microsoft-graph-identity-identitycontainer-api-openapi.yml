@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin identity.identityContainer API
+  title: Microsoft Graph Admin Admin.admin Identity.identity Container API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -84,437 +84,6 @@ paths:
       x-ms-docs-operation-type: operation
 components:
   schemas:
-    microsoft.graph.filterMode:
-      title: filterMode
-      enum:
-      - include
-      - exclude
-      type: string
-    microsoft.graph.authenticationStrengthRoot:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: authenticationStrengthRoot
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          combinations:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationMethodModes'
-          authenticationMethodModes:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationMethodModeDetail'
-            description: Names and descriptions of all valid authentication method modes in the system.
-            x-ms-navigationProperty: true
-          policies:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationStrengthPolicy'
-            description: A collection of authentication strength policies that exist for this tenant, including both built-in and custom policies.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.authenticationStrengthRoot'
-    ReferenceNumeric:
-      enum:
-      - -INF
-      - INF
-      - NaN
-      type: string
-      nullable: true
-    microsoft.graph.identityUserFlowAttributeDataType:
-      title: identityUserFlowAttributeDataType
-      enum:
-      - string
-      - boolean
-      - int64
-      - stringCollection
-      - dateTime
-      - unknownFutureValue
-      type: string
-    microsoft.graph.authenticationConditions:
-      title: authenticationConditions
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        applications:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.authenticationConditionsApplications'
-          - type: object
-            nullable: true
-          description: Applications which trigger a custom authentication extension.
-        '@odata.type':
-          type: string
-    microsoft.graph.conditionalAccessPolicyState:
-      title: conditionalAccessPolicyState
-      enum:
-      - enabled
-      - disabled
-      - enabledForReportingButNotEnforced
-      type: string
-    microsoft.graph.conditionalAccessGrantControl:
-      title: conditionalAccessGrantControl
-      enum:
-      - block
-      - mfa
-      - compliantDevice
-      - domainJoinedDevice
-      - approvedApplication
-      - compliantApplication
-      - passwordChange
-      - unknownFutureValue
-      type: string
-    microsoft.graph.webApplicationFirewallVerificationStatus:
-      title: webApplicationFirewallVerificationStatus
-      enum:
-      - success
-      - warning
-      - failure
-      - unknownFutureValue
-      type: string
-    microsoft.graph.conditionalAccessDevicePlatform:
-      title: conditionalAccessDevicePlatform
-      enum:
-      - android
-      - iOS
-      - windows
-      - windowsPhone
-      - macOS
-      - all
-      - unknownFutureValue
-      - linux
-      type: string
-    microsoft.graph.conditionalAccessExternalTenantsMembershipKind:
-      title: conditionalAccessExternalTenantsMembershipKind
-      enum:
-      - all
-      - enumerated
-      - unknownFutureValue
-      type: string
-    microsoft.graph.conditionalAccessInsiderRiskLevels:
-      title: conditionalAccessInsiderRiskLevels
-      enum:
-      - minor
-      - moderate
-      - elevated
-      - unknownFutureValue
-      type: string
-      x-ms-enum-flags:
-        isFlags: true
-    microsoft.graph.signInFrequencySessionControl:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.conditionalAccessSessionControl'
-      - title: signInFrequencySessionControl
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          authenticationType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.signInFrequencyAuthenticationType'
-            - type: object
-              nullable: true
-            description: The possible values are primaryAndSecondaryAuthentication, secondaryAuthentication, unknownFutureValue. This property isn't required when using frequencyInterval with the value of timeBased.
-          frequencyInterval:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.signInFrequencyInterval'
-            - type: object
-              nullable: true
-            description: The possible values are timeBased, everyTime, unknownFutureValue. Sign-in frequency of everyTime is available for risky users, risky sign-ins, and Intune device enrollment. For more information, see Require reauthentication every time.
-          type:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.signinFrequencyType'
-            - type: object
-              nullable: true
-            description: 'The possible values are: days, hours.'
-          value:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The number of days or hours.
-            format: int32
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.signInFrequencySessionControl'
-      x-ms-discriminator-value: '#microsoft.graph.signInFrequencySessionControl'
-    microsoft.graph.userFlowType:
-      title: userFlowType
-      enum:
-      - signUp
-      - signIn
-      - signUpOrSignIn
-      - passwordReset
-      - profileUpdate
-      - resourceOwner
-      - unknownFutureValue
-      type: string
-    microsoft.graph.webApplicationFirewallVerifiedDetails:
-      title: webApplicationFirewallVerifiedDetails
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        dnsConfiguration:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallDnsConfiguration'
-          - type: object
-            nullable: true
-          description: DNS-related details discovered during verification for the host, such as the DNS record name, record type, record value, whether the record is proxied through the provider, and whether the domain is verified.
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.akamaiVerifiedDetailsModel': '#/components/schemas/microsoft.graph.akamaiVerifiedDetailsModel'
-          '#microsoft.graph.cloudFlareVerifiedDetailsModel': '#/components/schemas/microsoft.graph.cloudFlareVerifiedDetailsModel'
-    microsoft.graph.baseAuthenticationMethod:
-      title: baseAuthenticationMethod
-      enum:
-      - password
-      - voice
-      - hardwareOath
-      - softwareOath
-      - sms
-      - fido2
-      - windowsHelloForBusiness
-      - microsoftAuthenticator
-      - temporaryAccessPass
-      - email
-      - x509Certificate
-      - federation
-      - unknownFutureValue
-      type: string
-    microsoft.graph.identityContainer:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityContainer
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          apiConnectors:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.identityApiConnector'
-            description: Represents entry point for API connectors.
-            x-ms-navigationProperty: true
-          authenticationEventListeners:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationEventListener'
-            description: Represents listeners for custom authentication extension events in Azure AD for workforce and customers.
-            x-ms-navigationProperty: true
-          authenticationEventsFlows:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationEventsFlow'
-            description: Represents the entry point for self-service sign-up and sign-in user flows in both Microsoft Entra workforce and external tenants.
-            x-ms-navigationProperty: true
-          b2xUserFlows:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.b2xIdentityUserFlow'
-            description: Represents entry point for B2X/self-service sign-up identity userflows.
-            x-ms-navigationProperty: true
-          conditionalAccess:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.conditionalAccessRoot'
-            - type: object
-              nullable: true
-            description: the entry point for the Conditional Access (CA) object model.
-            x-ms-navigationProperty: true
-          customAuthenticationExtensions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.customAuthenticationExtension'
-            description: Represents custom extensions to authentication flows in Azure AD for workforce and customers.
-            x-ms-navigationProperty: true
-          identityProviders:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.identityProviderBase'
-            x-ms-navigationProperty: true
-          riskPrevention:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskPreventionContainer'
-            - type: object
-              nullable: true
-            description: Represents the entry point for fraud and risk prevention configurations in Microsoft Entra External ID, including third-party provider settings.
-            x-ms-navigationProperty: true
-          userFlowAttributes:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttribute'
-            description: Represents entry point for identity userflow attributes.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.identityContainer'
-    microsoft.graph.webApplicationFirewallDnsRecordType:
-      title: webApplicationFirewallDnsRecordType
-      enum:
-      - cname
-      - unknownFutureValue
-      type: string
-    microsoft.graph.authenticationEventListener:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: authenticationEventListener
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          authenticationEventsFlowId:
-            type: string
-            description: The identifier of the authenticationEventsFlow object.
-            nullable: true
-          conditions:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.authenticationConditions'
-            - type: object
-              nullable: true
-            description: The conditions on which this authenticationEventListener should trigger.
-          displayName:
-            type: string
-            description: The display name of the listener.
-            nullable: true
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.onAttributeCollectionListener': '#/components/schemas/microsoft.graph.onAttributeCollectionListener'
-            '#microsoft.graph.onAttributeCollectionStartListener': '#/components/schemas/microsoft.graph.onAttributeCollectionStartListener'
-            '#microsoft.graph.onAttributeCollectionSubmitListener': '#/components/schemas/microsoft.graph.onAttributeCollectionSubmitListener'
-            '#microsoft.graph.onAuthenticationMethodLoadStartListener': '#/components/schemas/microsoft.graph.onAuthenticationMethodLoadStartListener'
-            '#microsoft.graph.onEmailOtpSendListener': '#/components/schemas/microsoft.graph.onEmailOtpSendListener'
-            '#microsoft.graph.onFraudProtectionLoadStartListener': '#/components/schemas/microsoft.graph.onFraudProtectionLoadStartListener'
-            '#microsoft.graph.onInteractiveAuthFlowStartListener': '#/components/schemas/microsoft.graph.onInteractiveAuthFlowStartListener'
-            '#microsoft.graph.onTokenIssuanceStartListener': '#/components/schemas/microsoft.graph.onTokenIssuanceStartListener'
-            '#microsoft.graph.onUserCreateStartListener': '#/components/schemas/microsoft.graph.onUserCreateStartListener'
-    microsoft.graph.conditionalAccessTransferMethods:
-      title: conditionalAccessTransferMethods
-      enum:
-      - none
-      - deviceCodeFlow
-      - authenticationTransfer
-      - unknownFutureValue
-      type: string
-      x-ms-enum-flags:
-        isFlags: true
-    microsoft.graph.conditionalAccessConditionSet:
-      title: conditionalAccessConditionSet
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        applications:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessApplications'
-          - type: object
-            nullable: true
-          description: Applications and user actions included in and excluded from the policy. Required.
-        authenticationFlows:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessAuthenticationFlows'
-          - type: object
-            nullable: true
-          description: Authentication flows included in the policy scope.
-        clientApplications:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessClientApplications'
-          - type: object
-            nullable: true
-          description: Client applications (service principals and workload identities) included in and excluded from the policy. Either users or clientApplications is required.
-        clientAppTypes:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.conditionalAccessClientApp'
-          description: 'Client application types included in the policy. The possible values are: all, browser, mobileAppsAndDesktopClients, exchangeActiveSync, easSupported, other. Required.  The easUnsupported enumeration member will be deprecated in favor of exchangeActiveSync, which includes EAS supported and unsupported platforms.'
-        devices:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessDevices'
-          - type: object
-            nullable: true
-          description: Devices in the policy.
-        insiderRiskLevels:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessInsiderRiskLevels'
-          - type: object
-            nullable: true
-          description: 'Insider risk levels included in the policy. The possible values are: minor, moderate, elevated, unknownFutureValue.'
-        locations:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessLocations'
-          - type: object
-            nullable: true
-          description: Locations included in and excluded from the policy.
-        platforms:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessPlatforms'
-          - type: object
-            nullable: true
-          description: Platforms included in and excluded from the policy.
-        servicePrincipalRiskLevels:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.riskLevel'
-          description: 'Service principal risk levels included in the policy. The possible values are: low, medium, high, none, unknownFutureValue.'
-        signInRiskLevels:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.riskLevel'
-          description: 'Sign-in risk levels included in the policy. The possible values are: low, medium, high, hidden, none, unknownFutureValue. Required.'
-        userRiskLevels:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.riskLevel'
-          description: 'User risk levels included in the policy. The possible values are: low, medium, high, hidden, none, unknownFutureValue. Required.'
-        users:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessUsers'
-          - type: object
-            nullable: true
-          description: Users, groups, and roles included in and excluded from the policy. Either users or clientApplications is required.
-        '@odata.type':
-          type: string
-    microsoft.graph.conditionalAccessGuestOrExternalUserTypes:
-      title: conditionalAccessGuestOrExternalUserTypes
-      enum:
-      - none
-      - internalGuest
-      - b2bCollaborationGuest
-      - b2bCollaborationMember
-      - b2bDirectConnectUser
-      - otherExternalUser
-      - serviceProvider
-      - unknownFutureValue
-      type: string
-      x-ms-enum-flags:
-        isFlags: true
-    microsoft.graph.userAttributeValuesItem:
-      title: userAttributeValuesItem
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        isDefault:
-          type: boolean
-          description: Determines whether the value is set as the default.
-        name:
-          type: string
-          description: The display name of the property displayed to the user in the user flow.
-          nullable: true
-        value:
-          type: string
-          description: The value that is set when this item is selected.
-          nullable: true
-        '@odata.type':
-          type: string
     microsoft.graph.userFlowApiConnectorConfiguration:
       title: userFlowApiConnectorConfiguration
       required:
@@ -535,65 +104,257 @@ components:
           x-ms-navigationProperty: true
         '@odata.type':
           type: string
-    microsoft.graph.templateScenarios:
-      title: templateScenarios
+    microsoft.graph.conditionalAccessLocations:
+      title: conditionalAccessLocations
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        excludeLocations:
+          type: array
+          items:
+            type: string
+          description: Location IDs excluded from scope of policy.
+        includeLocations:
+          type: array
+          items:
+            type: string
+          description: Location IDs in scope of policy unless explicitly excluded, All, or AllTrusted.
+        '@odata.type':
+          type: string
+    microsoft.graph.authenticationConditionsApplications:
+      title: authenticationConditionsApplications
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        includeApplications:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.authenticationConditionApplication'
+          x-ms-navigationProperty: true
+        '@odata.type':
+          type: string
+    microsoft.graph.conditionalAccessGuestsOrExternalUsers:
+      title: conditionalAccessGuestsOrExternalUsers
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        externalTenants:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessExternalTenants'
+          - type: object
+            nullable: true
+          description: The tenant IDs of the selected types of external users. Either all B2B tenant or a collection of tenant IDs. External tenants can be specified only when the property guestOrExternalUserTypes isn't null or an empty String.
+        guestOrExternalUserTypes:
+          $ref: '#/components/schemas/microsoft.graph.conditionalAccessGuestOrExternalUserTypes'
+        '@odata.type':
+          type: string
+    microsoft.graph.authenticationStrengthPolicyType:
+      title: authenticationStrengthPolicyType
       enum:
-      - new
-      - secureFoundation
-      - zeroTrust
-      - remoteWork
-      - protectAdmins
-      - emergingThreats
+      - builtIn
+      - custom
       - unknownFutureValue
       type: string
-      x-ms-enum-flags:
-        isFlags: true
-    microsoft.graph.conditionalAccessTemplate:
+    microsoft.graph.apiAuthenticationConfigurationBase:
+      title: apiAuthenticationConfigurationBase
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.basicAuthentication': '#/components/schemas/microsoft.graph.basicAuthentication'
+          '#microsoft.graph.clientCertificateAuthentication': '#/components/schemas/microsoft.graph.clientCertificateAuthentication'
+          '#microsoft.graph.pkcs12Certificate': '#/components/schemas/microsoft.graph.pkcs12Certificate'
+    microsoft.graph.conditionalAccessAuthenticationFlows:
+      title: conditionalAccessAuthenticationFlows
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        transferMethods:
+          $ref: '#/components/schemas/microsoft.graph.conditionalAccessTransferMethods'
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type: string
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
+          type: string
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.identityUserFlowAttribute:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: conditionalAccessTemplate
+      - title: identityUserFlowAttribute
         required:
         - '@odata.type'
         type: object
         properties:
+          dataType:
+            $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeDataType'
           description:
             type: string
-            description: The user-friendly name of the template.
-          details:
-            $ref: '#/components/schemas/microsoft.graph.conditionalAccessPolicyDetail'
-          name:
-            type: string
-            description: The user-friendly name of the template.
-          scenarios:
-            $ref: '#/components/schemas/microsoft.graph.templateScenarios'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.conditionalAccessTemplate'
-    microsoft.graph.webApplicationFirewallProvider:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: webApplicationFirewallProvider
-        required:
-        - '@odata.type'
-        type: object
-        properties:
+            description: The description of the user flow attribute that's shown to the user at the time of sign up.
+            nullable: true
           displayName:
             type: string
-            description: The display name of the WAF provider.
+            description: The display name of the user flow attribute.  Supports $filter (eq, ne).
+            nullable: true
+          userFlowAttributeType:
+            $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeType'
           '@odata.type':
             type: string
         discriminator:
           propertyName: '@odata.type'
           mapping:
-            '#microsoft.graph.akamaiWebApplicationFirewallProvider': '#/components/schemas/microsoft.graph.akamaiWebApplicationFirewallProvider'
-            '#microsoft.graph.cloudFlareWebApplicationFirewallProvider': '#/components/schemas/microsoft.graph.cloudFlareWebApplicationFirewallProvider'
-    microsoft.graph.identityUserFlowAttributeType:
-      title: identityUserFlowAttributeType
+            '#microsoft.graph.identityBuiltInUserFlowAttribute': '#/components/schemas/microsoft.graph.identityBuiltInUserFlowAttribute'
+            '#microsoft.graph.identityCustomUserFlowAttribute': '#/components/schemas/microsoft.graph.identityCustomUserFlowAttribute'
+    microsoft.graph.identityUserFlow:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: identityUserFlow
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          userFlowType:
+            $ref: '#/components/schemas/microsoft.graph.userFlowType'
+          userFlowTypeVersion:
+            oneOf:
+            - type: number
+              format: float
+              nullable: true
+            - type: string
+              nullable: true
+            - $ref: '#/components/schemas/ReferenceNumeric'
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.b2xIdentityUserFlow': '#/components/schemas/microsoft.graph.b2xIdentityUserFlow'
+    microsoft.graph.signInFrequencyInterval:
+      title: signInFrequencyInterval
       enum:
-      - builtIn
-      - custom
-      - required
+      - timeBased
+      - everyTime
       - unknownFutureValue
+      type: string
+    microsoft.graph.customExtensionClientConfiguration:
+      title: customExtensionClientConfiguration
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        maximumRetries:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: The max number of retries that Microsoft Entra ID makes to the external API. Values of 0 or 1 are supported. If null, the default for the service applies.
+          format: int32
+          nullable: true
+        timeoutInMilliseconds:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: The max duration in milliseconds that Microsoft Entra ID waits for a response from the external app before it shuts down the connection. The valid range is between 200 and 2000 milliseconds. Default duration is 1000.
+          format: int32
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.conditionalAccessSessionControls:
+      title: conditionalAccessSessionControls
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        applicationEnforcedRestrictions:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.applicationEnforcedRestrictionsSessionControl'
+          - type: object
+            nullable: true
+          description: Session control to enforce application restrictions. Only Exchange Online and Sharepoint Online support this session control.
+        cloudAppSecurity:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.cloudAppSecuritySessionControl'
+          - type: object
+            nullable: true
+          description: Session control to apply cloud app security.
+        disableResilienceDefaults:
+          type: boolean
+          description: Session control that determines whether it is acceptable for Microsoft Entra ID to extend existing sessions based on information collected prior to an outage or not.
+          nullable: true
+        persistentBrowser:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.persistentBrowserSessionControl'
+          - type: object
+            nullable: true
+          description: Session control to define whether to persist cookies or not. All apps should be selected for this session control to work correctly.
+        secureSignInSession:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.secureSignInSessionControl'
+          - type: object
+            nullable: true
+        signInFrequency:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.signInFrequencySessionControl'
+          - type: object
+            nullable: true
+          description: Session control to enforce signin frequency.
+        '@odata.type':
+          type: string
+    microsoft.graph.webApplicationFirewallVerificationResult:
+      title: webApplicationFirewallVerificationResult
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.genericError'
+          description: List of errors encountered during the verification process.
+        status:
+          $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallVerificationStatus'
+        verifiedOnDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: UTC timestamp when the verification was performed or last updated. This indicates when the verification result was produced.
+          format: date-time
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.genericError'
+          description: List of warnings produced during verification.
+        '@odata.type':
+          type: string
+    microsoft.graph.persistentBrowserSessionMode:
+      title: persistentBrowserSessionMode
+      enum:
+      - always
+      - never
       type: string
     microsoft.graph.b2xIdentityUserFlow:
       allOf:
@@ -635,6 +396,122 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.b2xIdentityUserFlow'
+    microsoft.graph.conditionalAccessPolicyState:
+      title: conditionalAccessPolicyState
+      enum:
+      - enabled
+      - disabled
+      - enabledForReportingButNotEnforced
+      type: string
+    microsoft.graph.webApplicationFirewallProviderType:
+      title: webApplicationFirewallProviderType
+      enum:
+      - akamai
+      - cloudflare
+      - unknownFutureValue
+      type: string
+    microsoft.graph.webApplicationFirewallDnsRecordType:
+      title: webApplicationFirewallDnsRecordType
+      enum:
+      - cname
+      - unknownFutureValue
+      type: string
+    microsoft.graph.namedLocation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: namedLocation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The Timestamp type represents creation date and time of the location using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
+            format: date-time
+            nullable: true
+          displayName:
+            type: string
+            description: Human-readable name of the location.
+          modifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The Timestamp type represents last modified date and time of the location using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
+            format: date-time
+            nullable: true
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.countryNamedLocation': '#/components/schemas/microsoft.graph.countryNamedLocation'
+            '#microsoft.graph.ipNamedLocation': '#/components/schemas/microsoft.graph.ipNamedLocation'
+    microsoft.graph.conditionalAccessFilter:
+      title: conditionalAccessFilter
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/microsoft.graph.filterMode'
+        rule:
+          type: string
+          description: Rule syntax is similar to that used for membership rules for groups in Microsoft Entra ID. For details, see rules with multiple expressions
+        '@odata.type':
+          type: string
+    microsoft.graph.authenticationStrengthPolicy:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: authenticationStrengthPolicy
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          allowedCombinations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.authenticationMethodModes'
+            description: A collection of authentication method modes that are required be used to satify this authentication strength.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The datetime when this policy was created.
+            format: date-time
+          description:
+            type: string
+            description: The human-readable description of this policy.
+            nullable: true
+          displayName:
+            type: string
+            description: The human-readable display name of this policy. Supports $filter (eq, ne, not , and in).
+          modifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The datetime when this policy was last modified.
+            format: date-time
+          policyType:
+            $ref: '#/components/schemas/microsoft.graph.authenticationStrengthPolicyType'
+          requirementsSatisfied:
+            $ref: '#/components/schemas/microsoft.graph.authenticationStrengthRequirements'
+          combinationConfigurations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.authenticationCombinationConfiguration'
+            description: Settings that may be used to require specific types or instances of an authentication method to be used when authenticating with a specified combination of authentication methods.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.authenticationStrengthPolicy'
+    microsoft.graph.riskLevel:
+      title: riskLevel
+      enum:
+      - low
+      - medium
+      - high
+      - hidden
+      - none
+      - unknownFutureValue
+      type: string
     microsoft.graph.conditionalAccessPolicy:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -687,283 +564,47 @@ components:
           propertyName: '@odata.type'
           mapping:
             '#microsoft.graph.whatIfAnalysisResult': '#/components/schemas/microsoft.graph.whatIfAnalysisResult'
-    microsoft.graph.identityApiConnector:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityApiConnector
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          authenticationConfiguration:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.apiAuthenticationConfigurationBase'
-            - type: object
-              nullable: true
-            description: The object which describes the authentication configuration details for calling the API. Basic and PKCS 12 client certificate are supported.
-          displayName:
-            type: string
-            description: The name of the API connector.
-            nullable: true
-          targetUrl:
-            type: string
-            description: The URL of the API endpoint to call.
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.identityApiConnector'
-    microsoft.graph.signInFrequencyInterval:
-      title: signInFrequencyInterval
+    microsoft.graph.identityUserFlowAttributeType:
+      title: identityUserFlowAttributeType
       enum:
-      - timeBased
-      - everyTime
+      - builtIn
+      - custom
+      - required
       - unknownFutureValue
       type: string
-    microsoft.graph.conditionalAccessFilter:
-      title: conditionalAccessFilter
+    microsoft.graph.conditionalAccessPlatforms:
+      title: conditionalAccessPlatforms
       required:
       - '@odata.type'
       type: object
       properties:
-        mode:
-          $ref: '#/components/schemas/microsoft.graph.filterMode'
-        rule:
-          type: string
-          description: Rule syntax is similar to that used for membership rules for groups in Microsoft Entra ID. For details, see rules with multiple expressions
+        excludePlatforms:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.conditionalAccessDevicePlatform'
+          description: 'The possible values are: android, iOS, windows, windowsPhone, macOS, linux, all, unknownFutureValue.'
+        includePlatforms:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.conditionalAccessDevicePlatform'
+          description: 'The possible values are: android, iOS, windows, windowsPhone, macOS, linux, all, unknownFutureValue.'
         '@odata.type':
           type: string
-    microsoft.graph.conditionalAccessPolicyDetail:
-      title: conditionalAccessPolicyDetail
+    microsoft.graph.ODataErrors.ErrorDetails:
       required:
-      - '@odata.type'
-      type: object
-      properties:
-        conditions:
-          $ref: '#/components/schemas/microsoft.graph.conditionalAccessConditionSet'
-        grantControls:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessGrantControls'
-          - type: object
-            nullable: true
-          description: Represents grant controls that must be fulfilled for the policy.
-        sessionControls:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessSessionControls'
-          - type: object
-            nullable: true
-          description: Represents a complex type of session controls that is enforced after sign-in.
-        '@odata.type':
-          type: string
-    microsoft.graph.customCalloutExtension:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: customCalloutExtension
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          authenticationConfiguration:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.customExtensionAuthenticationConfiguration'
-            - type: object
-              nullable: true
-            description: Configuration for securing the API call to the logic app. For example, using OAuth client credentials flow.
-          clientConfiguration:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.customExtensionClientConfiguration'
-            - type: object
-              nullable: true
-            description: HTTP connection settings that define how long Microsoft Entra ID can wait for a connection to a logic app, how many times you can retry a timed-out connection and the exception scenarios when retries are allowed.
-          description:
-            type: string
-            description: Description for the customCalloutExtension object.
-            nullable: true
-          displayName:
-            type: string
-            description: Display name for the customCalloutExtension object.
-            nullable: true
-          endpointConfiguration:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.customExtensionEndpointConfiguration'
-            - type: object
-              nullable: true
-            description: The type and details for configuring the endpoint to call the logic app's workflow.
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.accessPackageAssignmentRequestWorkflowExtension': '#/components/schemas/microsoft.graph.accessPackageAssignmentRequestWorkflowExtension'
-            '#microsoft.graph.accessPackageAssignmentWorkflowExtension': '#/components/schemas/microsoft.graph.accessPackageAssignmentWorkflowExtension'
-            '#microsoft.graph.customAuthenticationExtension': '#/components/schemas/microsoft.graph.customAuthenticationExtension'
-            '#microsoft.graph.onAttributeCollectionStartCustomExtension': '#/components/schemas/microsoft.graph.onAttributeCollectionStartCustomExtension'
-            '#microsoft.graph.onAttributeCollectionSubmitCustomExtension': '#/components/schemas/microsoft.graph.onAttributeCollectionSubmitCustomExtension'
-            '#microsoft.graph.onOtpSendCustomExtension': '#/components/schemas/microsoft.graph.onOtpSendCustomExtension'
-            '#microsoft.graph.onTokenIssuanceStartCustomExtension': '#/components/schemas/microsoft.graph.onTokenIssuanceStartCustomExtension'
-            '#microsoft.graph.identityGovernance.customTaskExtension': '#/components/schemas/microsoft.graph.identityGovernance.customTaskExtension'
-    microsoft.graph.genericError:
-      title: genericError
-      required:
-      - '@odata.type'
+      - code
+      - message
       type: object
       properties:
         code:
           type: string
-          description: The error code.
-          nullable: true
         message:
           type: string
-          description: The error message.
-          nullable: true
-        '@odata.type':
+        target:
           type: string
-    microsoft.graph.conditionalAccessClientApp:
-      title: conditionalAccessClientApp
-      enum:
-      - all
-      - browser
-      - mobileAppsAndDesktopClients
-      - exchangeActiveSync
-      - easSupported
-      - other
-      - unknownFutureValue
-      type: string
-    microsoft.graph.identityProviderBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityProviderBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          displayName:
-            type: string
-            description: The display name of the identity provider.
-            nullable: true
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.appleManagedIdentityProvider': '#/components/schemas/microsoft.graph.appleManagedIdentityProvider'
-            '#microsoft.graph.builtInIdentityProvider': '#/components/schemas/microsoft.graph.builtInIdentityProvider'
-            '#microsoft.graph.samlOrWsFedProvider': '#/components/schemas/microsoft.graph.samlOrWsFedProvider'
-            '#microsoft.graph.internalDomainFederation': '#/components/schemas/microsoft.graph.internalDomainFederation'
-            '#microsoft.graph.samlOrWsFedExternalDomainFederation': '#/components/schemas/microsoft.graph.samlOrWsFedExternalDomainFederation'
-            '#microsoft.graph.socialIdentityProvider': '#/components/schemas/microsoft.graph.socialIdentityProvider'
-    microsoft.graph.namedLocation:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: namedLocation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The Timestamp type represents creation date and time of the location using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
-            format: date-time
-            nullable: true
-          displayName:
-            type: string
-            description: Human-readable name of the location.
-          modifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The Timestamp type represents last modified date and time of the location using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
-            format: date-time
-            nullable: true
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.countryNamedLocation': '#/components/schemas/microsoft.graph.countryNamedLocation'
-            '#microsoft.graph.ipNamedLocation': '#/components/schemas/microsoft.graph.ipNamedLocation'
-    microsoft.graph.cloudAppSecuritySessionControlType:
-      title: cloudAppSecuritySessionControlType
-      enum:
-      - mcasConfigured
-      - monitorOnly
-      - blockDownloads
-      - unknownFutureValue
-      type: string
-    microsoft.graph.secureSignInSessionControl:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.conditionalAccessSessionControl'
-      - title: secureSignInSessionControl
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.secureSignInSessionControl'
-      x-ms-discriminator-value: '#microsoft.graph.secureSignInSessionControl'
-    microsoft.graph.authenticationContextClassReference:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: authenticationContextClassReference
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          description:
-            type: string
-            description: A short explanation of the policies that are enforced by authenticationContextClassReference. This value should be used to provide secondary text to describe the authentication context class reference when building user-facing admin experiences. For example, a selection UX.
-            nullable: true
-          displayName:
-            type: string
-            description: The display name is the friendly name of the authenticationContextClassReference object. This value should be used to identify the authentication context class reference when building user-facing admin experiences. For example, a selection UX.
-            nullable: true
-          isAvailable:
-            type: boolean
-            description: Indicates whether the authenticationContextClassReference has been published by the security admin and is ready for use by apps. When it's set to false, it shouldn't be shown in authentication context selection UX, or used to protect app resources. It's shown and available for Conditional Access policy authoring. The default value is false.  Supports $filter (eq).
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.authenticationContextClassReference'
-    microsoft.graph.userFlowLanguagePage:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: userFlowLanguagePage
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.userFlowLanguagePage'
-    microsoft.graph.identityProvider:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityProvider
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          clientId:
-            type: string
-            description: The client ID for the application. This is the client ID obtained when registering the application with the identity provider. Required. Not nullable.
-            nullable: true
-          clientSecret:
-            type: string
-            description: The client secret for the application. This is the client secret obtained when registering the application with the identity provider. This is write-only. A read operation will return .  Required. Not nullable.
-            nullable: true
-          name:
-            type: string
-            description: The display name of the identity provider. Not nullable.
-            nullable: true
-          type:
-            type: string
-            description: 'The identity provider type is a required field. For B2B scenario: Google, Facebook. For B2C scenario: Microsoft, Google, Amazon, LinkedIn, Facebook, GitHub, Twitter, Weibo, QQ, WeChat, OpenIDConnect. Not nullable.'
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.identityProvider'
-    microsoft.graph.customExtensionBehaviorOnError:
-      title: customExtensionBehaviorOnError
+          nullable: true
+    microsoft.graph.customExtensionEndpointConfiguration:
+      title: customExtensionEndpointConfiguration
       required:
       - '@odata.type'
       type: object
@@ -973,7 +614,8 @@ components:
       discriminator:
         propertyName: '@odata.type'
         mapping:
-          '#microsoft.graph.fallbackToMicrosoftProviderOnError': '#/components/schemas/microsoft.graph.fallbackToMicrosoftProviderOnError'
+          '#microsoft.graph.httpRequestEndpoint': '#/components/schemas/microsoft.graph.httpRequestEndpoint'
+          '#microsoft.graph.logicAppTriggerEndpointConfiguration': '#/components/schemas/microsoft.graph.logicAppTriggerEndpointConfiguration'
     microsoft.graph.userFlowLanguageConfiguration:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -1004,57 +646,223 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.userFlowLanguageConfiguration'
-    microsoft.graph.persistentBrowserSessionControl:
+    microsoft.graph.identityUserFlowAttributeDataType:
+      title: identityUserFlowAttributeDataType
+      enum:
+      - string
+      - boolean
+      - int64
+      - stringCollection
+      - dateTime
+      - unknownFutureValue
+      type: string
+    microsoft.graph.signInFrequencySessionControl:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.conditionalAccessSessionControl'
-      - title: persistentBrowserSessionControl
+      - title: signInFrequencySessionControl
         required:
         - '@odata.type'
         type: object
         properties:
-          mode:
+          authenticationType:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.persistentBrowserSessionMode'
+            - $ref: '#/components/schemas/microsoft.graph.signInFrequencyAuthenticationType'
             - type: object
               nullable: true
-            description: 'The possible values are: always, never.'
+            description: The possible values are primaryAndSecondaryAuthentication, secondaryAuthentication, unknownFutureValue. This property isn't required when using frequencyInterval with the value of timeBased.
+          frequencyInterval:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.signInFrequencyInterval'
+            - type: object
+              nullable: true
+            description: The possible values are timeBased, everyTime, unknownFutureValue. Sign-in frequency of everyTime is available for risky users, risky sign-ins, and Intune device enrollment. For more information, see Require reauthentication every time.
+          type:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.signinFrequencyType'
+            - type: object
+              nullable: true
+            description: 'The possible values are: days, hours.'
+          value:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The number of days or hours.
+            format: int32
+            nullable: true
           '@odata.type':
             type: string
-            default: '#microsoft.graph.persistentBrowserSessionControl'
-      x-ms-discriminator-value: '#microsoft.graph.persistentBrowserSessionControl'
-    microsoft.graph.signinFrequencyType:
-      title: signinFrequencyType
-      enum:
-      - days
-      - hours
-      type: string
-    microsoft.graph.authenticationEventsFlow:
+            default: '#microsoft.graph.signInFrequencySessionControl'
+      x-ms-discriminator-value: '#microsoft.graph.signInFrequencySessionControl'
+    microsoft.graph.riskPreventionContainer:
+      title: riskPreventionContainer
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        fraudProtectionProviders:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.fraudProtectionProvider'
+          description: Represents entry point for fraud protection provider configurations for Microsoft Entra External ID tenants.
+          x-ms-navigationProperty: true
+        webApplicationFirewallProviders:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallProvider'
+          description: Collection of WAF provider configurations registered in the External ID tenant.
+          x-ms-navigationProperty: true
+        webApplicationFirewallVerifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallVerificationModel'
+          description: Collection of verification operations performed for domains or hosts with WAF providers registered in the External ID tenant.
+          x-ms-navigationProperty: true
+        '@odata.type':
+          type: string
+    microsoft.graph.authenticationConditions:
+      title: authenticationConditions
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        applications:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.authenticationConditionsApplications'
+          - type: object
+            nullable: true
+          description: Applications which trigger a custom authentication extension.
+        '@odata.type':
+          type: string
+    microsoft.graph.identityUserFlowAttributeAssignment:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: authenticationEventsFlow
+      - title: identityUserFlowAttributeAssignment
         required:
         - '@odata.type'
         type: object
         properties:
-          conditions:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.authenticationConditions'
-            - type: object
-              nullable: true
-            description: The conditions representing the context of the authentication request that's used to decide whether the events policy is invoked.  Supports $filter (eq). See support for filtering on user flows for syntax information.
-          description:
-            type: string
-            description: The description of the events policy.
-            nullable: true
           displayName:
             type: string
-            description: Required. The display name for the events policy.
+            description: The display name of the identityUserFlowAttribute within a user flow.
+            nullable: true
+          isOptional:
+            type: boolean
+            description: Determines whether the identityUserFlowAttribute is optional. true means the user doesn't have to provide a value. false means the user can't complete sign-up without providing a value.
+          requiresVerification:
+            type: boolean
+            description: Determines whether the identityUserFlowAttribute requires verification, and is only used for verifying the user's phone number or email address.
+          userAttributeValues:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.userAttributeValuesItem'
+            description: The input options for the user flow attribute. Only applicable when the userInputType is radioSingleSelect, dropdownSingleSelect, or checkboxMultiSelect.
+          userInputType:
+            $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeInputType'
+          userAttribute:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttribute'
+            - type: object
+              nullable: true
+            description: The user attribute that you want to add to your user flow.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.identityUserFlowAttributeAssignment'
+    microsoft.graph.conditionalAccessInsiderRiskLevels:
+      title: conditionalAccessInsiderRiskLevels
+      enum:
+      - minor
+      - moderate
+      - elevated
+      - unknownFutureValue
+      type: string
+      x-ms-enum-flags:
+        isFlags: true
+    microsoft.graph.conditionalAccessSessionControl:
+      title: conditionalAccessSessionControl
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        isEnabled:
+          type: boolean
+          description: Specifies whether the session control is enabled.
+          nullable: true
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.applicationEnforcedRestrictionsSessionControl': '#/components/schemas/microsoft.graph.applicationEnforcedRestrictionsSessionControl'
+          '#microsoft.graph.cloudAppSecuritySessionControl': '#/components/schemas/microsoft.graph.cloudAppSecuritySessionControl'
+          '#microsoft.graph.persistentBrowserSessionControl': '#/components/schemas/microsoft.graph.persistentBrowserSessionControl'
+          '#microsoft.graph.secureSignInSessionControl': '#/components/schemas/microsoft.graph.secureSignInSessionControl'
+          '#microsoft.graph.signInFrequencySessionControl': '#/components/schemas/microsoft.graph.signInFrequencySessionControl'
+    microsoft.graph.authenticationCombinationConfiguration:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: authenticationCombinationConfiguration
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          appliesToCombinations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.authenticationMethodModes'
+            description: Which authentication method combinations this configuration applies to. Must be an allowedCombinations object, part of the authenticationStrengthPolicy. The only possible value for fido2combinationConfigurations is 'fido2'.
           '@odata.type':
             type: string
         discriminator:
           propertyName: '@odata.type'
           mapping:
-            '#microsoft.graph.externalUsersSelfServiceSignUpEventsFlow': '#/components/schemas/microsoft.graph.externalUsersSelfServiceSignUpEventsFlow'
+            '#microsoft.graph.fido2CombinationConfiguration': '#/components/schemas/microsoft.graph.fido2CombinationConfiguration'
+            '#microsoft.graph.x509CertificateCombinationConfiguration': '#/components/schemas/microsoft.graph.x509CertificateCombinationConfiguration'
+    microsoft.graph.secureSignInSessionControl:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.conditionalAccessSessionControl'
+      - title: secureSignInSessionControl
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.secureSignInSessionControl'
+      x-ms-discriminator-value: '#microsoft.graph.secureSignInSessionControl'
+    microsoft.graph.conditionalAccessApplications:
+      title: conditionalAccessApplications
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        applicationFilter:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessFilter'
+          - type: object
+            nullable: true
+          description: Filter that defines the dynamic-application-syntax rule to include/exclude cloud applications. A filter can use custom security attributes to include/exclude applications.
+        excludeApplications:
+          type: array
+          items:
+            type: string
+          description: 'Can be one of the following:  The list of client IDs (appId) explicitly excluded from the policy. Office365 - For the list of apps included in Office365, see Apps included in Conditional Access Office 365 app suite  MicrosoftAdminPortals - For more information, see Conditional Access Target resources: Microsoft Admin Portals'
+        includeApplications:
+          type: array
+          items:
+            type: string
+          description: 'Can be one of the following:  The list of client IDs (appId) the policy applies to, unless explicitly excluded (in excludeApplications)  All  Office365 - For the list of apps included in Office365, see Apps included in Conditional Access Office 365 app suite  MicrosoftAdminPortals - For more information, see Conditional Access Target resources: Microsoft Admin Portals'
+        includeAuthenticationContextClassReferences:
+          type: array
+          items:
+            type: string
+        includeUserActions:
+          type: array
+          items:
+            type: string
+          description: User actions to include. Supported values are urn:user:registersecurityinfo and urn:user:registerdevice
+        '@odata.type':
+          type: string
     microsoft.graph.authenticationMethodModes:
       title: authenticationMethodModes
       enum:
@@ -1078,6 +886,234 @@ components:
       type: string
       x-ms-enum-flags:
         isFlags: true
+    microsoft.graph.authenticationStrengthRoot:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: authenticationStrengthRoot
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          combinations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.authenticationMethodModes'
+          authenticationMethodModes:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.authenticationMethodModeDetail'
+            description: Names and descriptions of all valid authentication method modes in the system.
+            x-ms-navigationProperty: true
+          policies:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.authenticationStrengthPolicy'
+            description: A collection of authentication strength policies that exist for this tenant, including both built-in and custom policies.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.authenticationStrengthRoot'
+    microsoft.graph.conditionalAccessUsers:
+      title: conditionalAccessUsers
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        excludeGroups:
+          type: array
+          items:
+            type: string
+          description: Group IDs excluded from scope of policy.
+        excludeGuestsOrExternalUsers:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessGuestsOrExternalUsers'
+          - type: object
+            nullable: true
+          description: Internal guests or external users excluded from the policy scope. Optionally populated.
+        excludeRoles:
+          type: array
+          items:
+            type: string
+          description: Role IDs excluded from scope of policy.
+        excludeUsers:
+          type: array
+          items:
+            type: string
+          description: User IDs excluded from scope of policy and/or GuestsOrExternalUsers.
+        includeGroups:
+          type: array
+          items:
+            type: string
+          description: Group IDs in scope of policy unless explicitly excluded.
+        includeGuestsOrExternalUsers:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessGuestsOrExternalUsers'
+          - type: object
+            nullable: true
+          description: Internal guests or external users included in the policy scope. Optionally populated.
+        includeRoles:
+          type: array
+          items:
+            type: string
+          description: Role IDs in scope of policy unless explicitly excluded.
+        includeUsers:
+          type: array
+          items:
+            type: string
+          description: User IDs in scope of policy unless explicitly excluded, None, All, or GuestsOrExternalUsers.
+        '@odata.type':
+          type: string
+    microsoft.graph.conditionalAccessGrantControl:
+      title: conditionalAccessGrantControl
+      enum:
+      - block
+      - mfa
+      - compliantDevice
+      - domainJoinedDevice
+      - approvedApplication
+      - compliantApplication
+      - passwordChange
+      - unknownFutureValue
+      type: string
+    microsoft.graph.conditionalAccessTransferMethods:
+      title: conditionalAccessTransferMethods
+      enum:
+      - none
+      - deviceCodeFlow
+      - authenticationTransfer
+      - unknownFutureValue
+      type: string
+      x-ms-enum-flags:
+        isFlags: true
+    ReferenceNumeric:
+      enum:
+      - -INF
+      - INF
+      - NaN
+      type: string
+      nullable: true
+    microsoft.graph.signinFrequencyType:
+      title: signinFrequencyType
+      enum:
+      - days
+      - hours
+      type: string
+    microsoft.graph.authenticationMethodModeDetail:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: authenticationMethodModeDetail
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          authenticationMethod:
+            $ref: '#/components/schemas/microsoft.graph.baseAuthenticationMethod'
+          displayName:
+            type: string
+            description: The display name of this mode
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.authenticationMethodModeDetail'
+    microsoft.graph.baseAuthenticationMethod:
+      title: baseAuthenticationMethod
+      enum:
+      - password
+      - voice
+      - hardwareOath
+      - softwareOath
+      - sms
+      - fido2
+      - windowsHelloForBusiness
+      - microsoftAuthenticator
+      - temporaryAccessPass
+      - email
+      - x509Certificate
+      - federation
+      - unknownFutureValue
+      type: string
+    microsoft.graph.conditionalAccessRoot:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: conditionalAccessRoot
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          authenticationContextClassReferences:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.authenticationContextClassReference'
+            description: Read-only. Nullable. Returns a collection of the specified authentication context class references.
+            x-ms-navigationProperty: true
+          authenticationStrength:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.authenticationStrengthRoot'
+            - type: object
+              nullable: true
+            x-ms-navigationProperty: true
+          namedLocations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.namedLocation'
+            description: Read-only. Nullable. Returns a collection of the specified named locations.
+            x-ms-navigationProperty: true
+          policies:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.conditionalAccessPolicy'
+            description: Read-only. Nullable. Returns a collection of the specified Conditional Access (CA) policies.
+            x-ms-navigationProperty: true
+          templates:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.conditionalAccessTemplate'
+            description: Read-only. Nullable. Returns a collection of the specified Conditional Access templates.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.conditionalAccessRoot'
+    microsoft.graph.conditionalAccessExternalTenantsMembershipKind:
+      title: conditionalAccessExternalTenantsMembershipKind
+      enum:
+      - all
+      - enumerated
+      - unknownFutureValue
+      type: string
+    microsoft.graph.conditionalAccessDevicePlatform:
+      title: conditionalAccessDevicePlatform
+      enum:
+      - android
+      - iOS
+      - windows
+      - windowsPhone
+      - macOS
+      - all
+      - unknownFutureValue
+      - linux
+      type: string
+    microsoft.graph.identityProviderBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: identityProviderBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          displayName:
+            type: string
+            description: The display name of the identity provider.
+            nullable: true
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.appleManagedIdentityProvider': '#/components/schemas/microsoft.graph.appleManagedIdentityProvider'
+            '#microsoft.graph.builtInIdentityProvider': '#/components/schemas/microsoft.graph.builtInIdentityProvider'
+            '#microsoft.graph.samlOrWsFedProvider': '#/components/schemas/microsoft.graph.samlOrWsFedProvider'
+            '#microsoft.graph.internalDomainFederation': '#/components/schemas/microsoft.graph.internalDomainFederation'
+            '#microsoft.graph.samlOrWsFedExternalDomainFederation': '#/components/schemas/microsoft.graph.samlOrWsFedExternalDomainFederation'
+            '#microsoft.graph.socialIdentityProvider': '#/components/schemas/microsoft.graph.socialIdentityProvider'
     microsoft.graph.entity:
       title: entity
       required:
@@ -2147,168 +2183,72 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.authenticationStrengthPolicy:
+    microsoft.graph.identityUserFlowAttributeInputType:
+      title: identityUserFlowAttributeInputType
+      enum:
+      - textBox
+      - dateTimeDropdown
+      - radioSingleSelect
+      - dropdownSingleSelect
+      - emailBox
+      - checkboxMultiSelect
+      type: string
+    microsoft.graph.userFlowLanguagePage:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: authenticationStrengthPolicy
+      - title: userFlowLanguagePage
         required:
         - '@odata.type'
         type: object
         properties:
-          allowedCombinations:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationMethodModes'
-            description: A collection of authentication method modes that are required be used to satify this authentication strength.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The datetime when this policy was created.
-            format: date-time
-          description:
-            type: string
-            description: The human-readable description of this policy.
-            nullable: true
-          displayName:
-            type: string
-            description: The human-readable display name of this policy. Supports $filter (eq, ne, not , and in).
-          modifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The datetime when this policy was last modified.
-            format: date-time
-          policyType:
-            $ref: '#/components/schemas/microsoft.graph.authenticationStrengthPolicyType'
-          requirementsSatisfied:
-            $ref: '#/components/schemas/microsoft.graph.authenticationStrengthRequirements'
-          combinationConfigurations:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationCombinationConfiguration'
-            description: Settings that may be used to require specific types or instances of an authentication method to be used when authenticating with a specified combination of authentication methods.
-            x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.authenticationStrengthPolicy'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.webApplicationFirewallVerificationModel:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: webApplicationFirewallVerificationModel
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          providerType:
-            $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallProviderType'
-          verificationResult:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallVerificationResult'
-            - type: object
-              nullable: true
-            description: An object describing the outcome of the verification operation, including status, errors or warnings
-          verifiedDetails:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallVerifiedDetails'
-            - type: object
-              nullable: true
-            description: Details of DNS configuration
-          verifiedHost:
-            type: string
-            description: The host (domain or subdomain) that was verified as part of this verification operation.
-            nullable: true
-          provider:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallProvider'
-            - type: object
-              nullable: true
-            description: Reference to a provider resource associated with this verification model. Represents a WAF provider that can be used to verify or manage the host.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.webApplicationFirewallVerificationModel'
-    microsoft.graph.webApplicationFirewallDnsConfiguration:
-      title: webApplicationFirewallDnsConfiguration
+      x-ms-discriminator-value: '#microsoft.graph.userFlowLanguagePage'
+    microsoft.graph.cloudAppSecuritySessionControlType:
+      title: cloudAppSecuritySessionControlType
+      enum:
+      - mcasConfigured
+      - monitorOnly
+      - blockDownloads
+      - unknownFutureValue
+      type: string
+    microsoft.graph.webApplicationFirewallVerifiedDetails:
+      title: webApplicationFirewallVerifiedDetails
       required:
       - '@odata.type'
       type: object
       properties:
-        isDomainVerified:
-          type: boolean
-          description: Indicates whether the domain owning this DNS record has been verified by the WAF provider.
-        isProxied:
-          type: boolean
-          description: Indicates whether traffic for this DNS record is proxied through the WAF provider's network (for example, using a CDN or reverse proxy).
-        name:
-          type: string
-          description: The DNS record name (for example, www.contoso.com or contoso.com). This is the host or zone name to which the configuration applies.
-          nullable: true
-        recordType:
-          $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallDnsRecordType'
-        value:
-          type: string
-          description: The value of the DNS record.
-          nullable: true
+        dnsConfiguration:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallDnsConfiguration'
+          - type: object
+            nullable: true
+          description: DNS-related details discovered during verification for the host, such as the DNS record name, record type, record value, whether the record is proxied through the provider, and whether the domain is verified.
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.customAuthenticationExtension:
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.akamaiVerifiedDetailsModel': '#/components/schemas/microsoft.graph.akamaiVerifiedDetailsModel'
+          '#microsoft.graph.cloudFlareVerifiedDetailsModel': '#/components/schemas/microsoft.graph.cloudFlareVerifiedDetailsModel'
+    microsoft.graph.cloudAppSecuritySessionControl:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.customCalloutExtension'
-      - title: customAuthenticationExtension
+      - $ref: '#/components/schemas/microsoft.graph.conditionalAccessSessionControl'
+      - title: cloudAppSecuritySessionControl
         required:
         - '@odata.type'
         type: object
         properties:
-          behaviorOnError:
+          cloudAppSecurityType:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.customExtensionBehaviorOnError'
+            - $ref: '#/components/schemas/microsoft.graph.cloudAppSecuritySessionControlType'
             - type: object
               nullable: true
-            description: The behaviour on error for the custom authentication extension.
+            description: 'The possible values are: mcasConfigured, monitorOnly, blockDownloads, unknownFutureValue. For more information, see Deploy Conditional Access App Control for featured apps.'
           '@odata.type':
             type: string
-            default: '#microsoft.graph.customAuthenticationExtension'
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.onAttributeCollectionStartCustomExtension': '#/components/schemas/microsoft.graph.onAttributeCollectionStartCustomExtension'
-            '#microsoft.graph.onAttributeCollectionSubmitCustomExtension': '#/components/schemas/microsoft.graph.onAttributeCollectionSubmitCustomExtension'
-            '#microsoft.graph.onOtpSendCustomExtension': '#/components/schemas/microsoft.graph.onOtpSendCustomExtension'
-            '#microsoft.graph.onTokenIssuanceStartCustomExtension': '#/components/schemas/microsoft.graph.onTokenIssuanceStartCustomExtension'
+            default: '#microsoft.graph.cloudAppSecuritySessionControl'
+      x-ms-discriminator-value: '#microsoft.graph.cloudAppSecuritySessionControl'
     microsoft.graph.conditionalAccessExternalTenants:
       title: conditionalAccessExternalTenants
       required:
@@ -2328,82 +2268,6 @@ components:
         mapping:
           '#microsoft.graph.conditionalAccessAllExternalTenants': '#/components/schemas/microsoft.graph.conditionalAccessAllExternalTenants'
           '#microsoft.graph.conditionalAccessEnumeratedExternalTenants': '#/components/schemas/microsoft.graph.conditionalAccessEnumeratedExternalTenants'
-    microsoft.graph.identityUserFlowAttributeAssignment:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityUserFlowAttributeAssignment
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          displayName:
-            type: string
-            description: The display name of the identityUserFlowAttribute within a user flow.
-            nullable: true
-          isOptional:
-            type: boolean
-            description: Determines whether the identityUserFlowAttribute is optional. true means the user doesn't have to provide a value. false means the user can't complete sign-up without providing a value.
-          requiresVerification:
-            type: boolean
-            description: Determines whether the identityUserFlowAttribute requires verification, and is only used for verifying the user's phone number or email address.
-          userAttributeValues:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.userAttributeValuesItem'
-            description: The input options for the user flow attribute. Only applicable when the userInputType is radioSingleSelect, dropdownSingleSelect, or checkboxMultiSelect.
-          userInputType:
-            $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeInputType'
-          userAttribute:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttribute'
-            - type: object
-              nullable: true
-            description: The user attribute that you want to add to your user flow.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.identityUserFlowAttributeAssignment'
-    microsoft.graph.conditionalAccessSessionControls:
-      title: conditionalAccessSessionControls
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        applicationEnforcedRestrictions:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.applicationEnforcedRestrictionsSessionControl'
-          - type: object
-            nullable: true
-          description: Session control to enforce application restrictions. Only Exchange Online and Sharepoint Online support this session control.
-        cloudAppSecurity:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.cloudAppSecuritySessionControl'
-          - type: object
-            nullable: true
-          description: Session control to apply cloud app security.
-        disableResilienceDefaults:
-          type: boolean
-          description: Session control that determines whether it is acceptable for Microsoft Entra ID to extend existing sessions based on information collected prior to an outage or not.
-          nullable: true
-        persistentBrowser:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.persistentBrowserSessionControl'
-          - type: object
-            nullable: true
-          description: Session control to define whether to persist cookies or not. All apps should be selected for this session control to work correctly.
-        secureSignInSession:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.secureSignInSessionControl'
-          - type: object
-            nullable: true
-        signInFrequency:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.signInFrequencySessionControl'
-          - type: object
-            nullable: true
-          description: Session control to enforce signin frequency.
-        '@odata.type':
-          type: string
     microsoft.graph.applicationEnforcedRestrictionsSessionControl:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.conditionalAccessSessionControl'
@@ -2416,6 +2280,253 @@ components:
             type: string
             default: '#microsoft.graph.applicationEnforcedRestrictionsSessionControl'
       x-ms-discriminator-value: '#microsoft.graph.applicationEnforcedRestrictionsSessionControl'
+    microsoft.graph.filterMode:
+      title: filterMode
+      enum:
+      - include
+      - exclude
+      type: string
+    microsoft.graph.persistentBrowserSessionControl:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.conditionalAccessSessionControl'
+      - title: persistentBrowserSessionControl
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          mode:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.persistentBrowserSessionMode'
+            - type: object
+              nullable: true
+            description: 'The possible values are: always, never.'
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.persistentBrowserSessionControl'
+      x-ms-discriminator-value: '#microsoft.graph.persistentBrowserSessionControl'
+    microsoft.graph.customCalloutExtension:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: customCalloutExtension
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          authenticationConfiguration:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.customExtensionAuthenticationConfiguration'
+            - type: object
+              nullable: true
+            description: Configuration for securing the API call to the logic app. For example, using OAuth client credentials flow.
+          clientConfiguration:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.customExtensionClientConfiguration'
+            - type: object
+              nullable: true
+            description: HTTP connection settings that define how long Microsoft Entra ID can wait for a connection to a logic app, how many times you can retry a timed-out connection and the exception scenarios when retries are allowed.
+          description:
+            type: string
+            description: Description for the customCalloutExtension object.
+            nullable: true
+          displayName:
+            type: string
+            description: Display name for the customCalloutExtension object.
+            nullable: true
+          endpointConfiguration:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.customExtensionEndpointConfiguration'
+            - type: object
+              nullable: true
+            description: The type and details for configuring the endpoint to call the logic app's workflow.
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.accessPackageAssignmentRequestWorkflowExtension': '#/components/schemas/microsoft.graph.accessPackageAssignmentRequestWorkflowExtension'
+            '#microsoft.graph.accessPackageAssignmentWorkflowExtension': '#/components/schemas/microsoft.graph.accessPackageAssignmentWorkflowExtension'
+            '#microsoft.graph.customAuthenticationExtension': '#/components/schemas/microsoft.graph.customAuthenticationExtension'
+            '#microsoft.graph.onAttributeCollectionStartCustomExtension': '#/components/schemas/microsoft.graph.onAttributeCollectionStartCustomExtension'
+            '#microsoft.graph.onAttributeCollectionSubmitCustomExtension': '#/components/schemas/microsoft.graph.onAttributeCollectionSubmitCustomExtension'
+            '#microsoft.graph.onOtpSendCustomExtension': '#/components/schemas/microsoft.graph.onOtpSendCustomExtension'
+            '#microsoft.graph.onTokenIssuanceStartCustomExtension': '#/components/schemas/microsoft.graph.onTokenIssuanceStartCustomExtension'
+            '#microsoft.graph.identityGovernance.customTaskExtension': '#/components/schemas/microsoft.graph.identityGovernance.customTaskExtension'
+    microsoft.graph.genericError:
+      title: genericError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code.
+          nullable: true
+        message:
+          type: string
+          description: The error message.
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.identityContainer:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: identityContainer
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          apiConnectors:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identityApiConnector'
+            description: Represents entry point for API connectors.
+            x-ms-navigationProperty: true
+          authenticationEventListeners:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.authenticationEventListener'
+            description: Represents listeners for custom authentication extension events in Azure AD for workforce and customers.
+            x-ms-navigationProperty: true
+          authenticationEventsFlows:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.authenticationEventsFlow'
+            description: Represents the entry point for self-service sign-up and sign-in user flows in both Microsoft Entra workforce and external tenants.
+            x-ms-navigationProperty: true
+          b2xUserFlows:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.b2xIdentityUserFlow'
+            description: Represents entry point for B2X/self-service sign-up identity userflows.
+            x-ms-navigationProperty: true
+          conditionalAccess:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.conditionalAccessRoot'
+            - type: object
+              nullable: true
+            description: the entry point for the Conditional Access (CA) object model.
+            x-ms-navigationProperty: true
+          customAuthenticationExtensions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.customAuthenticationExtension'
+            description: Represents custom extensions to authentication flows in Azure AD for workforce and customers.
+            x-ms-navigationProperty: true
+          identityProviders:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identityProviderBase'
+            x-ms-navigationProperty: true
+          riskPrevention:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskPreventionContainer'
+            - type: object
+              nullable: true
+            description: Represents the entry point for fraud and risk prevention configurations in Microsoft Entra External ID, including third-party provider settings.
+            x-ms-navigationProperty: true
+          userFlowAttributes:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttribute'
+            description: Represents entry point for identity userflow attributes.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.identityContainer'
+    microsoft.graph.signInFrequencyAuthenticationType:
+      title: signInFrequencyAuthenticationType
+      enum:
+      - primaryAndSecondaryAuthentication
+      - secondaryAuthentication
+      - unknownFutureValue
+      type: string
+    microsoft.graph.identityApiConnector:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: identityApiConnector
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          authenticationConfiguration:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.apiAuthenticationConfigurationBase'
+            - type: object
+              nullable: true
+            description: The object which describes the authentication configuration details for calling the API. Basic and PKCS 12 client certificate are supported.
+          displayName:
+            type: string
+            description: The name of the API connector.
+            nullable: true
+          targetUrl:
+            type: string
+            description: The URL of the API endpoint to call.
+            nullable: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.identityApiConnector'
+    microsoft.graph.conditionalAccessPolicyDetail:
+      title: conditionalAccessPolicyDetail
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        conditions:
+          $ref: '#/components/schemas/microsoft.graph.conditionalAccessConditionSet'
+        grantControls:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessGrantControls'
+          - type: object
+            nullable: true
+          description: Represents grant controls that must be fulfilled for the policy.
+        sessionControls:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessSessionControls'
+          - type: object
+            nullable: true
+          description: Represents a complex type of session controls that is enforced after sign-in.
+        '@odata.type':
+          type: string
+    microsoft.graph.templateScenarios:
+      title: templateScenarios
+      enum:
+      - new
+      - secureFoundation
+      - zeroTrust
+      - remoteWork
+      - protectAdmins
+      - emergingThreats
+      - unknownFutureValue
+      type: string
+      x-ms-enum-flags:
+        isFlags: true
+    microsoft.graph.conditionalAccessDevices:
+      title: conditionalAccessDevices
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        deviceFilter:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessFilter'
+          - type: object
+            nullable: true
+          description: Filter that defines the dynamic-device-syntax rule to include/exclude devices. A filter can use device properties (such as extension attributes) to include/exclude them.
+        '@odata.type':
+          type: string
+    microsoft.graph.customExtensionAuthenticationConfiguration:
+      title: customExtensionAuthenticationConfiguration
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.azureAdPopTokenAuthentication': '#/components/schemas/microsoft.graph.azureAdPopTokenAuthentication'
+          '#microsoft.graph.azureAdTokenAuthentication': '#/components/schemas/microsoft.graph.azureAdTokenAuthentication'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -2454,6 +2565,145 @@ components:
           mapping:
             '#microsoft.graph.arkoseFraudProtectionProvider': '#/components/schemas/microsoft.graph.arkoseFraudProtectionProvider'
             '#microsoft.graph.humanSecurityFraudProtectionProvider': '#/components/schemas/microsoft.graph.humanSecurityFraudProtectionProvider'
+    microsoft.graph.userFlowType:
+      title: userFlowType
+      enum:
+      - signUp
+      - signIn
+      - signUpOrSignIn
+      - passwordReset
+      - profileUpdate
+      - resourceOwner
+      - unknownFutureValue
+      type: string
+    microsoft.graph.authenticationStrengthRequirements:
+      title: authenticationStrengthRequirements
+      enum:
+      - none
+      - mfa
+      - unknownFutureValue
+      type: string
+      x-ms-enum-flags:
+        isFlags: true
+    microsoft.graph.webApplicationFirewallVerificationModel:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: webApplicationFirewallVerificationModel
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          providerType:
+            $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallProviderType'
+          verificationResult:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallVerificationResult'
+            - type: object
+              nullable: true
+            description: An object describing the outcome of the verification operation, including status, errors or warnings
+          verifiedDetails:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallVerifiedDetails'
+            - type: object
+              nullable: true
+            description: Details of DNS configuration
+          verifiedHost:
+            type: string
+            description: The host (domain or subdomain) that was verified as part of this verification operation.
+            nullable: true
+          provider:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallProvider'
+            - type: object
+              nullable: true
+            description: Reference to a provider resource associated with this verification model. Represents a WAF provider that can be used to verify or manage the host.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.webApplicationFirewallVerificationModel'
+    microsoft.graph.conditionalAccessConditionSet:
+      title: conditionalAccessConditionSet
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        applications:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessApplications'
+          - type: object
+            nullable: true
+          description: Applications and user actions included in and excluded from the policy. Required.
+        authenticationFlows:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessAuthenticationFlows'
+          - type: object
+            nullable: true
+          description: Authentication flows included in the policy scope.
+        clientApplications:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessClientApplications'
+          - type: object
+            nullable: true
+          description: Client applications (service principals and workload identities) included in and excluded from the policy. Either users or clientApplications is required.
+        clientAppTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.conditionalAccessClientApp'
+          description: 'Client application types included in the policy. The possible values are: all, browser, mobileAppsAndDesktopClients, exchangeActiveSync, easSupported, other. Required.  The easUnsupported enumeration member will be deprecated in favor of exchangeActiveSync, which includes EAS supported and unsupported platforms.'
+        devices:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessDevices'
+          - type: object
+            nullable: true
+          description: Devices in the policy.
+        insiderRiskLevels:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessInsiderRiskLevels'
+          - type: object
+            nullable: true
+          description: 'Insider risk levels included in the policy. The possible values are: minor, moderate, elevated, unknownFutureValue.'
+        locations:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessLocations'
+          - type: object
+            nullable: true
+          description: Locations included in and excluded from the policy.
+        platforms:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessPlatforms'
+          - type: object
+            nullable: true
+          description: Platforms included in and excluded from the policy.
+        servicePrincipalRiskLevels:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.riskLevel'
+          description: 'Service principal risk levels included in the policy. The possible values are: low, medium, high, none, unknownFutureValue.'
+        signInRiskLevels:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.riskLevel'
+          description: 'Sign-in risk levels included in the policy. The possible values are: low, medium, high, hidden, none, unknownFutureValue. Required.'
+        userRiskLevels:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.riskLevel'
+          description: 'User risk levels included in the policy. The possible values are: low, medium, high, hidden, none, unknownFutureValue. Required.'
+        users:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessUsers'
+          - type: object
+            nullable: true
+          description: Users, groups, and roles included in and excluded from the policy. Either users or clientApplications is required.
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.conditionalAccessGrantControls:
       title: conditionalAccessGrantControls
       required:
@@ -2498,188 +2748,88 @@ components:
           description: The identifier for an application corresponding to a condition which will trigger an authenticationEventListener.
         '@odata.type':
           type: string
-    microsoft.graph.riskPreventionContainer:
-      title: riskPreventionContainer
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        fraudProtectionProviders:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.fraudProtectionProvider'
-          description: Represents entry point for fraud protection provider configurations for Microsoft Entra External ID tenants.
-          x-ms-navigationProperty: true
-        webApplicationFirewallProviders:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallProvider'
-          description: Collection of WAF provider configurations registered in the External ID tenant.
-          x-ms-navigationProperty: true
-        webApplicationFirewallVerifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallVerificationModel'
-          description: Collection of verification operations performed for domains or hosts with WAF providers registered in the External ID tenant.
-          x-ms-navigationProperty: true
-        '@odata.type':
-          type: string
-    microsoft.graph.apiAuthenticationConfigurationBase:
-      title: apiAuthenticationConfigurationBase
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.basicAuthentication': '#/components/schemas/microsoft.graph.basicAuthentication'
-          '#microsoft.graph.clientCertificateAuthentication': '#/components/schemas/microsoft.graph.clientCertificateAuthentication'
-          '#microsoft.graph.pkcs12Certificate': '#/components/schemas/microsoft.graph.pkcs12Certificate'
-    microsoft.graph.customExtensionClientConfiguration:
-      title: customExtensionClientConfiguration
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        maximumRetries:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: The max number of retries that Microsoft Entra ID makes to the external API. Values of 0 or 1 are supported. If null, the default for the service applies.
-          format: int32
-          nullable: true
-        timeoutInMilliseconds:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: The max duration in milliseconds that Microsoft Entra ID waits for a response from the external app before it shuts down the connection. The valid range is between 200 and 2000 milliseconds. Default duration is 1000.
-          format: int32
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.authenticationStrengthPolicyType:
-      title: authenticationStrengthPolicyType
-      enum:
-      - builtIn
-      - custom
-      - unknownFutureValue
-      type: string
-    microsoft.graph.conditionalAccessRoot:
+    microsoft.graph.conditionalAccessTemplate:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: conditionalAccessRoot
+      - title: conditionalAccessTemplate
         required:
         - '@odata.type'
         type: object
         properties:
-          authenticationContextClassReferences:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationContextClassReference'
-            description: Read-only. Nullable. Returns a collection of the specified authentication context class references.
-            x-ms-navigationProperty: true
-          authenticationStrength:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.authenticationStrengthRoot'
-            - type: object
-              nullable: true
-            x-ms-navigationProperty: true
-          namedLocations:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.namedLocation'
-            description: Read-only. Nullable. Returns a collection of the specified named locations.
-            x-ms-navigationProperty: true
-          policies:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.conditionalAccessPolicy'
-            description: Read-only. Nullable. Returns a collection of the specified Conditional Access (CA) policies.
-            x-ms-navigationProperty: true
-          templates:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.conditionalAccessTemplate'
-            description: Read-only. Nullable. Returns a collection of the specified Conditional Access templates.
-            x-ms-navigationProperty: true
+          description:
+            type: string
+            description: The user-friendly name of the template.
+          details:
+            $ref: '#/components/schemas/microsoft.graph.conditionalAccessPolicyDetail'
+          name:
+            type: string
+            description: The user-friendly name of the template.
+          scenarios:
+            $ref: '#/components/schemas/microsoft.graph.templateScenarios'
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.conditionalAccessRoot'
-    microsoft.graph.authenticationMethodModeDetail:
+      x-ms-discriminator-value: '#microsoft.graph.conditionalAccessTemplate'
+    microsoft.graph.webApplicationFirewallProvider:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: authenticationMethodModeDetail
+      - title: webApplicationFirewallProvider
         required:
         - '@odata.type'
         type: object
         properties:
-          authenticationMethod:
-            $ref: '#/components/schemas/microsoft.graph.baseAuthenticationMethod'
           displayName:
             type: string
-            description: The display name of this mode
+            description: The display name of the WAF provider.
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.authenticationMethodModeDetail'
-    microsoft.graph.conditionalAccessAuthenticationFlows:
-      title: conditionalAccessAuthenticationFlows
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.akamaiWebApplicationFirewallProvider': '#/components/schemas/microsoft.graph.akamaiWebApplicationFirewallProvider'
+            '#microsoft.graph.cloudFlareWebApplicationFirewallProvider': '#/components/schemas/microsoft.graph.cloudFlareWebApplicationFirewallProvider'
+    microsoft.graph.userAttributeValuesItem:
+      title: userAttributeValuesItem
       required:
       - '@odata.type'
       type: object
       properties:
-        transferMethods:
-          $ref: '#/components/schemas/microsoft.graph.conditionalAccessTransferMethods'
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.riskLevel:
-      title: riskLevel
-      enum:
-      - low
-      - medium
-      - high
-      - hidden
-      - none
-      - unknownFutureValue
-      type: string
-    microsoft.graph.authenticationStrengthRequirements:
-      title: authenticationStrengthRequirements
-      enum:
-      - none
-      - mfa
-      - unknownFutureValue
-      type: string
-      x-ms-enum-flags:
-        isFlags: true
-    microsoft.graph.conditionalAccessSessionControl:
-      title: conditionalAccessSessionControl
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        isEnabled:
+        isDefault:
           type: boolean
-          description: Specifies whether the session control is enabled.
+          description: Determines whether the value is set as the default.
+        name:
+          type: string
+          description: The display name of the property displayed to the user in the user flow.
+          nullable: true
+        value:
+          type: string
+          description: The value that is set when this item is selected.
           nullable: true
         '@odata.type':
           type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.applicationEnforcedRestrictionsSessionControl': '#/components/schemas/microsoft.graph.applicationEnforcedRestrictionsSessionControl'
-          '#microsoft.graph.cloudAppSecuritySessionControl': '#/components/schemas/microsoft.graph.cloudAppSecuritySessionControl'
-          '#microsoft.graph.persistentBrowserSessionControl': '#/components/schemas/microsoft.graph.persistentBrowserSessionControl'
-          '#microsoft.graph.secureSignInSessionControl': '#/components/schemas/microsoft.graph.secureSignInSessionControl'
-          '#microsoft.graph.signInFrequencySessionControl': '#/components/schemas/microsoft.graph.signInFrequencySessionControl'
+    microsoft.graph.customAuthenticationExtension:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.customCalloutExtension'
+      - title: customAuthenticationExtension
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          behaviorOnError:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.customExtensionBehaviorOnError'
+            - type: object
+              nullable: true
+            description: The behaviour on error for the custom authentication extension.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.customAuthenticationExtension'
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.onAttributeCollectionStartCustomExtension': '#/components/schemas/microsoft.graph.onAttributeCollectionStartCustomExtension'
+            '#microsoft.graph.onAttributeCollectionSubmitCustomExtension': '#/components/schemas/microsoft.graph.onAttributeCollectionSubmitCustomExtension'
+            '#microsoft.graph.onOtpSendCustomExtension': '#/components/schemas/microsoft.graph.onOtpSendCustomExtension'
+            '#microsoft.graph.onTokenIssuanceStartCustomExtension': '#/components/schemas/microsoft.graph.onTokenIssuanceStartCustomExtension'
     microsoft.graph.conditionalAccessClientApplications:
       title: conditionalAccessClientApplications
       required:
@@ -2704,338 +2854,188 @@ components:
           description: Filter that defines the dynamic-servicePrincipal-syntax rule to include/exclude service principals. A filter can use custom security attributes to include/exclude service principals.
         '@odata.type':
           type: string
-    microsoft.graph.conditionalAccessGuestsOrExternalUsers:
-      title: conditionalAccessGuestsOrExternalUsers
+    microsoft.graph.webApplicationFirewallDnsConfiguration:
+      title: webApplicationFirewallDnsConfiguration
       required:
       - '@odata.type'
       type: object
       properties:
-        externalTenants:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessExternalTenants'
-          - type: object
-            nullable: true
-          description: The tenant IDs of the selected types of external users. Either all B2B tenant or a collection of tenant IDs. External tenants can be specified only when the property guestOrExternalUserTypes isn't null or an empty String.
-        guestOrExternalUserTypes:
-          $ref: '#/components/schemas/microsoft.graph.conditionalAccessGuestOrExternalUserTypes'
+        isDomainVerified:
+          type: boolean
+          description: Indicates whether the domain owning this DNS record has been verified by the WAF provider.
+        isProxied:
+          type: boolean
+          description: Indicates whether traffic for this DNS record is proxied through the WAF provider's network (for example, using a CDN or reverse proxy).
+        name:
+          type: string
+          description: The DNS record name (for example, www.contoso.com or contoso.com). This is the host or zone name to which the configuration applies.
+          nullable: true
+        recordType:
+          $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallDnsRecordType'
+        value:
+          type: string
+          description: The value of the DNS record.
+          nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.identityUserFlow:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityUserFlow
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          userFlowType:
-            $ref: '#/components/schemas/microsoft.graph.userFlowType'
-          userFlowTypeVersion:
-            oneOf:
-            - type: number
-              format: float
-              nullable: true
-            - type: string
-              nullable: true
-            - $ref: '#/components/schemas/ReferenceNumeric'
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.b2xIdentityUserFlow': '#/components/schemas/microsoft.graph.b2xIdentityUserFlow'
-    microsoft.graph.customExtensionAuthenticationConfiguration:
-      title: customExtensionAuthenticationConfiguration
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.azureAdPopTokenAuthentication': '#/components/schemas/microsoft.graph.azureAdPopTokenAuthentication'
-          '#microsoft.graph.azureAdTokenAuthentication': '#/components/schemas/microsoft.graph.azureAdTokenAuthentication'
-    microsoft.graph.authenticationConditionsApplications:
-      title: authenticationConditionsApplications
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        includeApplications:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.authenticationConditionApplication'
-          x-ms-navigationProperty: true
-        '@odata.type':
-          type: string
-    microsoft.graph.identityUserFlowAttributeInputType:
-      title: identityUserFlowAttributeInputType
+    microsoft.graph.conditionalAccessGuestOrExternalUserTypes:
+      title: conditionalAccessGuestOrExternalUserTypes
       enum:
-      - textBox
-      - dateTimeDropdown
-      - radioSingleSelect
-      - dropdownSingleSelect
-      - emailBox
-      - checkboxMultiSelect
-      type: string
-    microsoft.graph.authenticationCombinationConfiguration:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: authenticationCombinationConfiguration
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          appliesToCombinations:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationMethodModes'
-            description: Which authentication method combinations this configuration applies to. Must be an allowedCombinations object, part of the authenticationStrengthPolicy. The only possible value for fido2combinationConfigurations is 'fido2'.
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.fido2CombinationConfiguration': '#/components/schemas/microsoft.graph.fido2CombinationConfiguration'
-            '#microsoft.graph.x509CertificateCombinationConfiguration': '#/components/schemas/microsoft.graph.x509CertificateCombinationConfiguration'
-    microsoft.graph.signInFrequencyAuthenticationType:
-      title: signInFrequencyAuthenticationType
-      enum:
-      - primaryAndSecondaryAuthentication
-      - secondaryAuthentication
+      - none
+      - internalGuest
+      - b2bCollaborationGuest
+      - b2bCollaborationMember
+      - b2bDirectConnectUser
+      - otherExternalUser
+      - serviceProvider
       - unknownFutureValue
       type: string
-    microsoft.graph.customExtensionEndpointConfiguration:
-      title: customExtensionEndpointConfiguration
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.httpRequestEndpoint': '#/components/schemas/microsoft.graph.httpRequestEndpoint'
-          '#microsoft.graph.logicAppTriggerEndpointConfiguration': '#/components/schemas/microsoft.graph.logicAppTriggerEndpointConfiguration'
-    microsoft.graph.conditionalAccessPlatforms:
-      title: conditionalAccessPlatforms
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        excludePlatforms:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.conditionalAccessDevicePlatform'
-          description: 'The possible values are: android, iOS, windows, windowsPhone, macOS, linux, all, unknownFutureValue.'
-        includePlatforms:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.conditionalAccessDevicePlatform'
-          description: 'The possible values are: android, iOS, windows, windowsPhone, macOS, linux, all, unknownFutureValue.'
-        '@odata.type':
-          type: string
-    microsoft.graph.cloudAppSecuritySessionControl:
+      x-ms-enum-flags:
+        isFlags: true
+    microsoft.graph.webApplicationFirewallVerificationStatus:
+      title: webApplicationFirewallVerificationStatus
+      enum:
+      - success
+      - warning
+      - failure
+      - unknownFutureValue
+      type: string
+    microsoft.graph.identityProvider:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.conditionalAccessSessionControl'
-      - title: cloudAppSecuritySessionControl
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: identityProvider
         required:
         - '@odata.type'
         type: object
         properties:
-          cloudAppSecurityType:
+          clientId:
+            type: string
+            description: The client ID for the application. This is the client ID obtained when registering the application with the identity provider. Required. Not nullable.
+            nullable: true
+          clientSecret:
+            type: string
+            description: The client secret for the application. This is the client secret obtained when registering the application with the identity provider. This is write-only. A read operation will return .  Required. Not nullable.
+            nullable: true
+          name:
+            type: string
+            description: The display name of the identity provider. Not nullable.
+            nullable: true
+          type:
+            type: string
+            description: 'The identity provider type is a required field. For B2B scenario: Google, Facebook. For B2C scenario: Microsoft, Google, Amazon, LinkedIn, Facebook, GitHub, Twitter, Weibo, QQ, WeChat, OpenIDConnect. Not nullable.'
+            nullable: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.identityProvider'
+    microsoft.graph.conditionalAccessClientApp:
+      title: conditionalAccessClientApp
+      enum:
+      - all
+      - browser
+      - mobileAppsAndDesktopClients
+      - exchangeActiveSync
+      - easSupported
+      - other
+      - unknownFutureValue
+      type: string
+    microsoft.graph.authenticationEventListener:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: authenticationEventListener
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          authenticationEventsFlowId:
+            type: string
+            description: The identifier of the authenticationEventsFlow object.
+            nullable: true
+          conditions:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.cloudAppSecuritySessionControlType'
+            - $ref: '#/components/schemas/microsoft.graph.authenticationConditions'
             - type: object
               nullable: true
-            description: 'The possible values are: mcasConfigured, monitorOnly, blockDownloads, unknownFutureValue. For more information, see Deploy Conditional Access App Control for featured apps.'
+            description: The conditions on which this authenticationEventListener should trigger.
+          displayName:
+            type: string
+            description: The display name of the listener.
+            nullable: true
           '@odata.type':
             type: string
-            default: '#microsoft.graph.cloudAppSecuritySessionControl'
-      x-ms-discriminator-value: '#microsoft.graph.cloudAppSecuritySessionControl'
-    microsoft.graph.conditionalAccessDevices:
-      title: conditionalAccessDevices
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        deviceFilter:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessFilter'
-          - type: object
-            nullable: true
-          description: Filter that defines the dynamic-device-syntax rule to include/exclude devices. A filter can use device properties (such as extension attributes) to include/exclude them.
-        '@odata.type':
-          type: string
-    microsoft.graph.persistentBrowserSessionMode:
-      title: persistentBrowserSessionMode
-      enum:
-      - always
-      - never
-      type: string
-    microsoft.graph.conditionalAccessUsers:
-      title: conditionalAccessUsers
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        excludeGroups:
-          type: array
-          items:
-            type: string
-          description: Group IDs excluded from scope of policy.
-        excludeGuestsOrExternalUsers:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessGuestsOrExternalUsers'
-          - type: object
-            nullable: true
-          description: Internal guests or external users excluded from the policy scope. Optionally populated.
-        excludeRoles:
-          type: array
-          items:
-            type: string
-          description: Role IDs excluded from scope of policy.
-        excludeUsers:
-          type: array
-          items:
-            type: string
-          description: User IDs excluded from scope of policy and/or GuestsOrExternalUsers.
-        includeGroups:
-          type: array
-          items:
-            type: string
-          description: Group IDs in scope of policy unless explicitly excluded.
-        includeGuestsOrExternalUsers:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessGuestsOrExternalUsers'
-          - type: object
-            nullable: true
-          description: Internal guests or external users included in the policy scope. Optionally populated.
-        includeRoles:
-          type: array
-          items:
-            type: string
-          description: Role IDs in scope of policy unless explicitly excluded.
-        includeUsers:
-          type: array
-          items:
-            type: string
-          description: User IDs in scope of policy unless explicitly excluded, None, All, or GuestsOrExternalUsers.
-        '@odata.type':
-          type: string
-    microsoft.graph.conditionalAccessLocations:
-      title: conditionalAccessLocations
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        excludeLocations:
-          type: array
-          items:
-            type: string
-          description: Location IDs excluded from scope of policy.
-        includeLocations:
-          type: array
-          items:
-            type: string
-          description: Location IDs in scope of policy unless explicitly excluded, All, or AllTrusted.
-        '@odata.type':
-          type: string
-    microsoft.graph.conditionalAccessApplications:
-      title: conditionalAccessApplications
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        applicationFilter:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.conditionalAccessFilter'
-          - type: object
-            nullable: true
-          description: Filter that defines the dynamic-application-syntax rule to include/exclude cloud applications. A filter can use custom security attributes to include/exclude applications.
-        excludeApplications:
-          type: array
-          items:
-            type: string
-          description: 'Can be one of the following:  The list of client IDs (appId) explicitly excluded from the policy. Office365 - For the list of apps included in Office365, see Apps included in Conditional Access Office 365 app suite  MicrosoftAdminPortals - For more information, see Conditional Access Target resources: Microsoft Admin Portals'
-        includeApplications:
-          type: array
-          items:
-            type: string
-          description: 'Can be one of the following:  The list of client IDs (appId) the policy applies to, unless explicitly excluded (in excludeApplications)  All  Office365 - For the list of apps included in Office365, see Apps included in Conditional Access Office 365 app suite  MicrosoftAdminPortals - For more information, see Conditional Access Target resources: Microsoft Admin Portals'
-        includeAuthenticationContextClassReferences:
-          type: array
-          items:
-            type: string
-        includeUserActions:
-          type: array
-          items:
-            type: string
-          description: User actions to include. Supported values are urn:user:registersecurityinfo and urn:user:registerdevice
-        '@odata.type':
-          type: string
-    microsoft.graph.webApplicationFirewallProviderType:
-      title: webApplicationFirewallProviderType
-      enum:
-      - akamai
-      - cloudflare
-      - unknownFutureValue
-      type: string
-    microsoft.graph.webApplicationFirewallVerificationResult:
-      title: webApplicationFirewallVerificationResult
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.genericError'
-          description: List of errors encountered during the verification process.
-        status:
-          $ref: '#/components/schemas/microsoft.graph.webApplicationFirewallVerificationStatus'
-        verifiedOnDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: UTC timestamp when the verification was performed or last updated. This indicates when the verification result was produced.
-          format: date-time
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.genericError'
-          description: List of warnings produced during verification.
-        '@odata.type':
-          type: string
-    microsoft.graph.identityUserFlowAttribute:
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.onAttributeCollectionListener': '#/components/schemas/microsoft.graph.onAttributeCollectionListener'
+            '#microsoft.graph.onAttributeCollectionStartListener': '#/components/schemas/microsoft.graph.onAttributeCollectionStartListener'
+            '#microsoft.graph.onAttributeCollectionSubmitListener': '#/components/schemas/microsoft.graph.onAttributeCollectionSubmitListener'
+            '#microsoft.graph.onAuthenticationMethodLoadStartListener': '#/components/schemas/microsoft.graph.onAuthenticationMethodLoadStartListener'
+            '#microsoft.graph.onEmailOtpSendListener': '#/components/schemas/microsoft.graph.onEmailOtpSendListener'
+            '#microsoft.graph.onFraudProtectionLoadStartListener': '#/components/schemas/microsoft.graph.onFraudProtectionLoadStartListener'
+            '#microsoft.graph.onInteractiveAuthFlowStartListener': '#/components/schemas/microsoft.graph.onInteractiveAuthFlowStartListener'
+            '#microsoft.graph.onTokenIssuanceStartListener': '#/components/schemas/microsoft.graph.onTokenIssuanceStartListener'
+            '#microsoft.graph.onUserCreateStartListener': '#/components/schemas/microsoft.graph.onUserCreateStartListener'
+    microsoft.graph.authenticationContextClassReference:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityUserFlowAttribute
+      - title: authenticationContextClassReference
         required:
         - '@odata.type'
         type: object
         properties:
-          dataType:
-            $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeDataType'
           description:
             type: string
-            description: The description of the user flow attribute that's shown to the user at the time of sign up.
+            description: A short explanation of the policies that are enforced by authenticationContextClassReference. This value should be used to provide secondary text to describe the authentication context class reference when building user-facing admin experiences. For example, a selection UX.
             nullable: true
           displayName:
             type: string
-            description: The display name of the user flow attribute.  Supports $filter (eq, ne).
+            description: The display name is the friendly name of the authenticationContextClassReference object. This value should be used to identify the authentication context class reference when building user-facing admin experiences. For example, a selection UX.
             nullable: true
-          userFlowAttributeType:
-            $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeType'
+          isAvailable:
+            type: boolean
+            description: Indicates whether the authenticationContextClassReference has been published by the security admin and is ready for use by apps. When it's set to false, it shouldn't be shown in authentication context selection UX, or used to protect app resources. It's shown and available for Conditional Access policy authoring. The default value is false.  Supports $filter (eq).
+            nullable: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.authenticationContextClassReference'
+    microsoft.graph.authenticationEventsFlow:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: authenticationEventsFlow
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          conditions:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.authenticationConditions'
+            - type: object
+              nullable: true
+            description: The conditions representing the context of the authentication request that's used to decide whether the events policy is invoked.  Supports $filter (eq). See support for filtering on user flows for syntax information.
+          description:
+            type: string
+            description: The description of the events policy.
+            nullable: true
+          displayName:
+            type: string
+            description: Required. The display name for the events policy.
           '@odata.type':
             type: string
         discriminator:
           propertyName: '@odata.type'
           mapping:
-            '#microsoft.graph.identityBuiltInUserFlowAttribute': '#/components/schemas/microsoft.graph.identityBuiltInUserFlowAttribute'
-            '#microsoft.graph.identityCustomUserFlowAttribute': '#/components/schemas/microsoft.graph.identityCustomUserFlowAttribute'
+            '#microsoft.graph.externalUsersSelfServiceSignUpEventsFlow': '#/components/schemas/microsoft.graph.externalUsersSelfServiceSignUpEventsFlow'
+    microsoft.graph.customExtensionBehaviorOnError:
+      title: customExtensionBehaviorOnError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.fallbackToMicrosoftProviderOnError': '#/components/schemas/microsoft.graph.fallbackToMicrosoftProviderOnError'
   responses:
     error:
       description: error

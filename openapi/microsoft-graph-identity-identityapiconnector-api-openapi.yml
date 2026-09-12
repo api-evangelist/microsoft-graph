@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin identity.identityApiConnector API
+  title: Microsoft Graph Admin Admin.admin Identity.identity API Connector API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -277,26 +277,9 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    ODataCountResponse:
+      type: integer
+      format: int32
     microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
@@ -310,9 +293,42 @@ components:
         target:
           type: string
           nullable: true
-    ODataCountResponse:
-      type: integer
-      format: int32
+    microsoft.graph.identityApiConnector:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: identityApiConnector
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          authenticationConfiguration:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.apiAuthenticationConfigurationBase'
+            - type: object
+              nullable: true
+            description: The object which describes the authentication configuration details for calling the API. Basic and PKCS 12 client certificate are supported.
+          displayName:
+            type: string
+            description: The name of the API connector.
+            nullable: true
+          targetUrl:
+            type: string
+            description: The URL of the API endpoint to call.
+            nullable: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.identityApiConnector'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type: integer
+          format: int64
+          nullable: true
+        '@odata.nextLink':
+          type: string
+          nullable: true
     microsoft.graph.identityApiConnectorCollectionResponse:
       title: Collection of identityApiConnector
       type: object
@@ -346,17 +362,47 @@ components:
           nullable: true
         '@odata.type':
           type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
       type: object
       properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
           type: string
           nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.apiAuthenticationConfigurationBase:
+      title: apiAuthenticationConfigurationBase
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.basicAuthentication': '#/components/schemas/microsoft.graph.basicAuthentication'
+          '#microsoft.graph.clientCertificateAuthentication': '#/components/schemas/microsoft.graph.clientCertificateAuthentication'
+          '#microsoft.graph.pkcs12Certificate': '#/components/schemas/microsoft.graph.pkcs12Certificate'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1426,52 +1472,6 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.identityApiConnector:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityApiConnector
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          authenticationConfiguration:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.apiAuthenticationConfigurationBase'
-            - type: object
-              nullable: true
-            description: The object which describes the authentication configuration details for calling the API. Basic and PKCS 12 client certificate are supported.
-          displayName:
-            type: string
-            description: The name of the API connector.
-            nullable: true
-          targetUrl:
-            type: string
-            description: The URL of the API endpoint to call.
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.identityApiConnector'
-    microsoft.graph.apiAuthenticationConfigurationBase:
-      title: apiAuthenticationConfigurationBase
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.basicAuthentication': '#/components/schemas/microsoft.graph.basicAuthentication'
-          '#microsoft.graph.clientCertificateAuthentication': '#/components/schemas/microsoft.graph.clientCertificateAuthentication'
-          '#microsoft.graph.pkcs12Certificate': '#/components/schemas/microsoft.graph.pkcs12Certificate'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
   responses:
     ODataCountResponse:
       description: The count of the resource
@@ -1492,6 +1492,14 @@ components:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   parameters:
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
     top:
       name: $top
       in: query
@@ -1502,14 +1510,22 @@ components:
         minimum: 0
         type: integer
       example: 50
-    filter:
-      name: $filter
+    search:
+      name: $search
       in: query
-      description: Filter items by property values
+      description: Search items by search phrases
       style: form
       explode: false
       schema:
         type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     skip:
       name: $skip
       in: query
@@ -1519,19 +1535,3 @@ components:
       schema:
         minimum: 0
         type: integer
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string

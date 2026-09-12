@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Audit Logs Directory Audits API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -257,69 +257,6 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: 2XX
 components:
-  parameters:
-    Top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-    Skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    Count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    Search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    Filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-  responses:
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-          examples:
-            ODataCountResponseExample:
-              $ref: '#/components/examples/ODataCountResponseExample'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
-          examples:
-            ODataErrorExample:
-              $ref: '#/components/examples/ODataErrorExample'
   schemas:
     InnerError:
       title: InnerError
@@ -332,13 +269,6 @@ components:
           format: date-time
         client-request-id:
           type: string
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the entity.
     ODataCountResponse:
       title: ODataCountResponse
       type: integer
@@ -408,20 +338,6 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/MainError'
-    ErrorDetail:
-      title: ErrorDetail
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
     MainError:
       title: MainError
       type: object
@@ -445,7 +361,115 @@ components:
             $ref: '#/components/schemas/ErrorDetail'
         innerError:
           $ref: '#/components/schemas/InnerError'
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the entity.
+    ErrorDetail:
+      title: ErrorDetail
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+  responses:
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+          examples:
+            ODataCountResponseExample:
+              $ref: '#/components/examples/ODataCountResponseExample'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+          examples:
+            ODataErrorExample:
+              $ref: '#/components/examples/ODataErrorExample'
+  parameters:
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    Top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    Skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    Count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    Filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
   examples:
+    ODataCountResponseExample:
+      value: 42
+    DirectoryAuditExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        activityDateTime: '2024-01-15T10:30:00Z'
+        activityDisplayName: Example Display Name
+        additionalDetails:
+        - {}
+        category: string-value
+        correlationId: 00000000-0000-0000-0000-000000000001
+        initiatedBy: {}
+        '@odata.type': '#microsoft.graph.directoryaudit'
+    DirectoryAuditRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        activityDateTime: '2024-01-15T10:30:00Z'
+        activityDisplayName: Example Display Name
+        additionalDetails:
+        - {}
+        category: string-value
+        correlationId: 00000000-0000-0000-0000-000000000001
+        initiatedBy: {}
+        '@odata.type': '#microsoft.graph.directoryaudit'
     ODataErrorExample:
       value:
         error:
@@ -460,27 +484,3 @@ components:
             request-id: 00000000-0000-0000-0000-000000000001
             date: '2024-01-15T10:30:00Z'
             client-request-id: 00000000-0000-0000-0000-000000000002
-    DirectoryAuditRequestExample:
-      value:
-        id: 00000000-0000-0000-0000-000000000001
-        activityDateTime: '2024-01-15T10:30:00Z'
-        activityDisplayName: Example Display Name
-        additionalDetails:
-        - {}
-        category: string-value
-        correlationId: 00000000-0000-0000-0000-000000000001
-        initiatedBy: {}
-        '@odata.type': '#microsoft.graph.directoryaudit'
-    DirectoryAuditExample:
-      value:
-        id: 00000000-0000-0000-0000-000000000001
-        activityDateTime: '2024-01-15T10:30:00Z'
-        activityDisplayName: Example Display Name
-        additionalDetails:
-        - {}
-        category: string-value
-        correlationId: 00000000-0000-0000-0000-000000000001
-        initiatedBy: {}
-        '@odata.type': '#microsoft.graph.directoryaudit'
-    ODataCountResponseExample:
-      value: 42

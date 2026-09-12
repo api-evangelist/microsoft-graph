@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin policies.deviceRegistrationPolicy API
+  title: Microsoft Graph Admin Admin.admin Policies.device Registration Policy API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -61,26 +61,6 @@ paths:
       x-ms-docs-operation-type: operation
 components:
   schemas:
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.deviceRegistrationPolicy:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -133,33 +113,42 @@ components:
         target:
           type: string
           nullable: true
-    microsoft.graph.azureADJoinPolicy:
-      title: azureADJoinPolicy
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
       required:
       - '@odata.type'
       type: object
       properties:
-        allowedToJoin:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.deviceRegistrationMembership'
-          - type: object
-            nullable: true
-        isAdminConfigurable:
-          type: boolean
+        request-id:
+          type: string
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
+          type: string
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
           nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.localAdminPasswordSettings:
-      title: localAdminPasswordSettings
+    microsoft.graph.deviceRegistrationMembership:
+      title: deviceRegistrationMembership
       required:
       - '@odata.type'
       type: object
       properties:
-        isEnabled:
-          type: boolean
-          nullable: true
         '@odata.type':
           type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.allDeviceRegistrationMembership': '#/components/schemas/microsoft.graph.allDeviceRegistrationMembership'
+          '#microsoft.graph.enumeratedDeviceRegistrationMembership': '#/components/schemas/microsoft.graph.enumeratedDeviceRegistrationMembership'
+          '#microsoft.graph.noDeviceRegistrationMembership': '#/components/schemas/microsoft.graph.noDeviceRegistrationMembership'
     microsoft.graph.azureADRegistrationPolicy:
       title: azureADRegistrationPolicy
       required:
@@ -176,6 +165,67 @@ components:
           nullable: true
         '@odata.type':
           type: string
+    microsoft.graph.azureADJoinPolicy:
+      title: azureADJoinPolicy
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        allowedToJoin:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.deviceRegistrationMembership'
+          - type: object
+            nullable: true
+        isAdminConfigurable:
+          type: boolean
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.localAdminPasswordSettings:
+      title: localAdminPasswordSettings
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        isEnabled:
+          type: boolean
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.multiFactorAuthConfiguration:
+      title: multiFactorAuthConfiguration
+      enum:
+      - notRequired
+      - required
+      - unknownFutureValue
+      type: string
     microsoft.graph.entity:
       title: entity
       required:
@@ -1245,56 +1295,6 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.multiFactorAuthConfiguration:
-      title: multiFactorAuthConfiguration
-      enum:
-      - notRequired
-      - required
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.deviceRegistrationMembership:
-      title: deviceRegistrationMembership
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.allDeviceRegistrationMembership': '#/components/schemas/microsoft.graph.allDeviceRegistrationMembership'
-          '#microsoft.graph.enumeratedDeviceRegistrationMembership': '#/components/schemas/microsoft.graph.enumeratedDeviceRegistrationMembership'
-          '#microsoft.graph.noDeviceRegistrationMembership': '#/components/schemas/microsoft.graph.noDeviceRegistrationMembership'
   responses:
     error:
       description: error

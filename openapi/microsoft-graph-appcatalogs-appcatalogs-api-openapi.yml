@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin appCatalogs.appCatalogs API
+  title: Microsoft Graph Admin Admin.admin App Catalogs.app Catalogs API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -85,7 +85,53 @@ paths:
       x-ms-docs-operation-type: operation
 components:
   schemas:
-    microsoft.graph.ODataErrors.MainError:
+    microsoft.graph.teamsAppResourceSpecificPermissionType:
+      title: teamsAppResourceSpecificPermissionType
+      enum:
+      - delegated
+      - application
+      - unknownFutureValue
+      type: string
+    microsoft.graph.teamsAppPermissionSet:
+      title: teamsAppPermissionSet
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        resourceSpecificPermissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.teamsAppResourceSpecificPermission'
+          description: A collection of resource-specific permissions.
+        '@odata.type':
+          type: string
+    microsoft.graph.teamsAppAuthorization:
+      title: teamsAppAuthorization
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        clientAppId:
+          type: string
+          description: The registration ID of the Microsoft Entra app ID associated with the teamsApp.
+          nullable: true
+        requiredPermissionSet:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.teamsAppPermissionSet'
+          - type: object
+            nullable: true
+          description: Set of permissions required by the teamsApp.
+        '@odata.type':
+          type: string
+    microsoft.graph.teamsAppPublishingState:
+      title: teamsAppPublishingState
+      enum:
+      - submitted
+      - rejected
+      - published
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
       - message
@@ -95,52 +141,105 @@ components:
           type: string
         message:
           type: string
-          x-ms-primary-error-message: true
         target:
           type: string
           nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.identitySet:
-      title: identitySet
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
       required:
       - '@odata.type'
       type: object
       properties:
-        application:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
-          description: Optional. The application associated with this action.
-        device:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
-          description: Optional. The device associated with this action.
-        user:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
-          description: Optional. The user associated with this action.
+        request-id:
+          type: string
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
+          type: string
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.teamsAppDistributionMethod:
+      title: teamsAppDistributionMethod
+      enum:
+      - store
+      - organization
+      - sideloaded
+      - unknownFutureValue
+      type: string
+    microsoft.graph.appCatalogs:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: appCatalogs
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          teamsApps:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.teamsApp'
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.appCatalogs'
+    microsoft.graph.identity:
+      title: identity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
+          nullable: true
+        id:
+          type: string
+          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
+          nullable: true
         '@odata.type':
           type: string
       discriminator:
         propertyName: '@odata.type'
         mapping:
-          '#microsoft.graph.aiInteractionMentionedIdentitySet': '#/components/schemas/microsoft.graph.aiInteractionMentionedIdentitySet'
-          '#microsoft.graph.chatMessageFromIdentitySet': '#/components/schemas/microsoft.graph.chatMessageFromIdentitySet'
-          '#microsoft.graph.chatMessageMentionedIdentitySet': '#/components/schemas/microsoft.graph.chatMessageMentionedIdentitySet'
-          '#microsoft.graph.chatMessageReactionIdentitySet': '#/components/schemas/microsoft.graph.chatMessageReactionIdentitySet'
-          '#microsoft.graph.communicationsIdentitySet': '#/components/schemas/microsoft.graph.communicationsIdentitySet'
-          '#microsoft.graph.engagementIdentitySet': '#/components/schemas/microsoft.graph.engagementIdentitySet'
-          '#microsoft.graph.sharePointIdentitySet': '#/components/schemas/microsoft.graph.sharePointIdentitySet'
+          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
+          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
+          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
+          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
+          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
+          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
+          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
+          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
+          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
+          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
+          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
+          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
+          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
+          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
+          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
+          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
+          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
+          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
+          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
+          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
+    microsoft.graph.teamworkBot:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: teamworkBot
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.teamworkBot'
     microsoft.graph.teamsAppDefinition:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -201,71 +300,7 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.teamsAppDefinition'
-    microsoft.graph.identity:
-      title: identity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
-          nullable: true
-        id:
-          type: string
-          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
-          nullable: true
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
-          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
-          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
-          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
-          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
-          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
-          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
-          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
-          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
-          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
-          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
-          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
-          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
-          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
-          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
-          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
-          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
-          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
-          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
-          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
-    microsoft.graph.teamsAppResourceSpecificPermissionType:
-      title: teamsAppResourceSpecificPermissionType
-      enum:
-      - delegated
-      - application
-      - unknownFutureValue
-      type: string
-    microsoft.graph.teamsAppAuthorization:
-      title: teamsAppAuthorization
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        clientAppId:
-          type: string
-          description: The registration ID of the Microsoft Entra app ID associated with the teamsApp.
-          nullable: true
-        requiredPermissionSet:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.teamsAppPermissionSet'
-          - type: object
-            nullable: true
-          description: Set of permissions required by the teamsApp.
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.ODataErrors.MainError:
       required:
       - code
       - message
@@ -275,9 +310,16 @@ components:
           type: string
         message:
           type: string
+          x-ms-primary-error-message: true
         target:
           type: string
           nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.teamsApp:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -309,30 +351,67 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.teamsApp'
-    microsoft.graph.appCatalogs:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: appCatalogs
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          teamsApps:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.teamsApp'
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.appCatalogs'
-    microsoft.graph.teamsAppPublishingState:
-      title: teamsAppPublishingState
-      enum:
-      - submitted
-      - rejected
-      - published
-      - unknownFutureValue
-      type: string
+    microsoft.graph.teamsAppResourceSpecificPermission:
+      title: teamsAppResourceSpecificPermission
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        permissionType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.teamsAppResourceSpecificPermissionType'
+          - type: object
+            nullable: true
+          description: The type of resource-specific permission.
+        permissionValue:
+          type: string
+          description: The name of the resource-specific permission.
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.identitySet:
+      title: identitySet
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        application:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type: object
+            nullable: true
+          description: Optional. The application associated with this action.
+        device:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type: object
+            nullable: true
+          description: Optional. The device associated with this action.
+        user:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type: object
+            nullable: true
+          description: Optional. The user associated with this action.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.aiInteractionMentionedIdentitySet': '#/components/schemas/microsoft.graph.aiInteractionMentionedIdentitySet'
+          '#microsoft.graph.chatMessageFromIdentitySet': '#/components/schemas/microsoft.graph.chatMessageFromIdentitySet'
+          '#microsoft.graph.chatMessageMentionedIdentitySet': '#/components/schemas/microsoft.graph.chatMessageMentionedIdentitySet'
+          '#microsoft.graph.chatMessageReactionIdentitySet': '#/components/schemas/microsoft.graph.chatMessageReactionIdentitySet'
+          '#microsoft.graph.communicationsIdentitySet': '#/components/schemas/microsoft.graph.communicationsIdentitySet'
+          '#microsoft.graph.engagementIdentitySet': '#/components/schemas/microsoft.graph.engagementIdentitySet'
+          '#microsoft.graph.sharePointIdentitySet': '#/components/schemas/microsoft.graph.sharePointIdentitySet'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1402,85 +1481,6 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.teamworkBot:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: teamworkBot
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.teamworkBot'
-    microsoft.graph.teamsAppPermissionSet:
-      title: teamsAppPermissionSet
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        resourceSpecificPermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.teamsAppResourceSpecificPermission'
-          description: A collection of resource-specific permissions.
-        '@odata.type':
-          type: string
-    microsoft.graph.teamsAppResourceSpecificPermission:
-      title: teamsAppResourceSpecificPermission
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        permissionType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.teamsAppResourceSpecificPermissionType'
-          - type: object
-            nullable: true
-          description: The type of resource-specific permission.
-        permissionValue:
-          type: string
-          description: The name of the resource-specific permission.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.teamsAppDistributionMethod:
-      title: teamsAppDistributionMethod
-      enum:
-      - store
-      - organization
-      - sideloaded
-      - unknownFutureValue
-      type: string
   responses:
     error:
       description: error

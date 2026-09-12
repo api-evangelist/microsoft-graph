@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin teams.team.Actions API
+  title: Microsoft Graph Admin Admin.admin Teams.team.Actions API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -36,7 +36,7 @@ paths:
       tags:
       - teams.team.Actions
       summary: Microsoft Graph Invoke action archive
-      description: "Archive the specified team. \r\nWhen a team is archived, users can no longer make most changes to the team. For example, users can no longer: send or like messages on any channel in the team; edit the team's name or description; nor edit other settings. However, membership changes to the team are still allowed. Archiving is an async operation. A team is archived once the async operation completes successfully, which might occur subsequent to a response from this API. To archive a team, the team and group must have an owner. To restore a team from its archived state, use the API to unarchive."
+      description: "Archive the specified team. \nWhen a team is archived, users can no longer make most changes to the team. For example, users can no longer: send or like messages on any channel in the team; edit the team's name or description; nor edit other settings. However, membership changes to the team are still allowed. Archiving is an async operation. A team is archived once the async operation completes successfully, which might occur subsequent to a response from this API. To archive a team, the team and group must have an owner. To restore a team from its archived state, use the API to unarchive."
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/team-archive?view=graph-rest-1.0
@@ -75,7 +75,7 @@ paths:
       tags:
       - teams.team.Actions
       summary: Microsoft Graph Invoke action clone
-      description: "Create a copy of a team. This operation also creates a copy of the corresponding group.\r\nYou can specify which parts of the team to clone: When tabs are cloned, they aren't configured. The tabs are displayed on the tab bar in Microsoft Teams, and the first time a user opens them, they must go through the configuration screen. \r\nIf the user who opens the tab doesn't have permission to configure apps, they see a message that says that the tab isn't configured. Cloning is a long-running operation. After the POST clone returns, you need to GET the operation returned by the Location: header to see if it's running, succeeded, or failed. You should continue to GET until the status isn't running. The recommended delay between GETs is 5 seconds."
+      description: "Create a copy of a team. This operation also creates a copy of the corresponding group.\nYou can specify which parts of the team to clone: When tabs are cloned, they aren't configured. The tabs are displayed on the tab bar in Microsoft Teams, and the first time a user opens them, they must go through the configuration screen. \nIf the user who opens the tab doesn't have permission to configure apps, they see a message that says that the tab isn't configured. Cloning is a long-running operation. After the POST clone returns, you need to GET the operation returned by the Location: header to see if it's running, succeeded, or failed. You should continue to GET until the status isn't running. The recommended delay between GETs is 5 seconds."
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/team-clone?view=graph-rest-1.0
@@ -156,7 +156,9 @@ paths:
       tags:
       - teams.team.Actions
       summary: Microsoft Graph Invoke action sendActivityNotification
-      description: "Send an activity feed notification in the scope of a team. For more information about sending notifications and the requirements for doing so, see\r\nsending Teams activity notifications."
+      description: 'Send an activity feed notification in the scope of a team. For more information about sending notifications and the requirements for doing so, see
+
+        sending Teams activity notifications.'
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/team-sendactivitynotification?view=graph-rest-1.0
@@ -241,31 +243,11 @@ paths:
       x-ms-docs-operation-type: action
 components:
   schemas:
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.teamworkActivityTopicSource:
-      title: teamworkActivityTopicSource
+    microsoft.graph.bodyType:
+      title: bodyType
       enum:
-      - entityUrl
       - text
+      - html
       type: string
     microsoft.graph.ODataErrors.ErrorDetails:
       required:
@@ -280,58 +262,6 @@ components:
         target:
           type: string
           nullable: true
-    microsoft.graph.teamworkNotificationRecipient:
-      title: teamworkNotificationRecipient
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.aadUserNotificationRecipient': '#/components/schemas/microsoft.graph.aadUserNotificationRecipient'
-          '#microsoft.graph.channelMembersNotificationRecipient': '#/components/schemas/microsoft.graph.channelMembersNotificationRecipient'
-          '#microsoft.graph.chatMembersNotificationRecipient': '#/components/schemas/microsoft.graph.chatMembersNotificationRecipient'
-          '#microsoft.graph.teamMembersNotificationRecipient': '#/components/schemas/microsoft.graph.teamMembersNotificationRecipient'
-    microsoft.graph.teamVisibilityType:
-      title: teamVisibilityType
-      enum:
-      - private
-      - public
-      - hiddenMembership
-      - unknownFutureValue
-      type: string
-    microsoft.graph.itemBody:
-      title: itemBody
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        content:
-          type: string
-          description: The content of the item.
-          nullable: true
-        contentType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.bodyType'
-          - type: object
-            nullable: true
-          description: The type of the content. Possible values are text and html.
-        '@odata.type':
-          type: string
-    microsoft.graph.clonableTeamParts:
-      title: clonableTeamParts
-      enum:
-      - apps
-      - tabs
-      - settings
-      - channels
-      - members
-      type: string
-      x-ms-enum-flags:
-        isFlags: true
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -375,13 +305,20 @@ components:
           nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.teamworkActivityTopicSource:
+      title: teamworkActivityTopicSource
+      enum:
+      - entityUrl
+      - text
+      type: string
+    microsoft.graph.teamVisibilityType:
+      title: teamVisibilityType
+      enum:
+      - private
+      - public
+      - hiddenMembership
+      - unknownFutureValue
+      type: string
     microsoft.graph.keyValuePair:
       title: keyValuePair
       required:
@@ -397,12 +334,77 @@ components:
           nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.bodyType:
-      title: bodyType
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.clonableTeamParts:
+      title: clonableTeamParts
       enum:
-      - text
-      - html
+      - apps
+      - tabs
+      - settings
+      - channels
+      - members
       type: string
+      x-ms-enum-flags:
+        isFlags: true
+    microsoft.graph.teamworkNotificationRecipient:
+      title: teamworkNotificationRecipient
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.aadUserNotificationRecipient': '#/components/schemas/microsoft.graph.aadUserNotificationRecipient'
+          '#microsoft.graph.channelMembersNotificationRecipient': '#/components/schemas/microsoft.graph.channelMembersNotificationRecipient'
+          '#microsoft.graph.chatMembersNotificationRecipient': '#/components/schemas/microsoft.graph.chatMembersNotificationRecipient'
+          '#microsoft.graph.teamMembersNotificationRecipient': '#/components/schemas/microsoft.graph.teamMembersNotificationRecipient'
+    microsoft.graph.itemBody:
+      title: itemBody
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        content:
+          type: string
+          description: The content of the item.
+          nullable: true
+        contentType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.bodyType'
+          - type: object
+            nullable: true
+          description: The type of the content. Possible values are text and html.
+        '@odata.type':
+          type: string
   responses:
     error:
       description: error

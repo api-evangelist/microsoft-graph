@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Microsoft 365 Apps API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -82,31 +82,7 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: default
 components:
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
   schemas:
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for an entity.
-        '@odata.type':
-          type: string
-    AdminMicrosoft365Apps:
-      allOf:
-      - $ref: '#/components/schemas/Entity'
-      - title: AdminMicrosoft365Apps
-        type: object
-        properties:
-          '@odata.type':
-            type: string
     ODataError:
       title: ODataError
       required:
@@ -129,18 +105,42 @@ components:
         target:
           type: string
           nullable: true
+    AdminMicrosoft365Apps:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: AdminMicrosoft365Apps
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity.
+        '@odata.type':
+          type: string
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
   examples:
-    UpdateMicrosoft365AppsRequest:
-      summary: Example request for updating Microsoft 365 Apps settings
+    UpdateMicrosoft365AppsResponse:
+      summary: Example response for updated Microsoft 365 Apps settings
       value:
+        id: microsoft365Apps
         '@odata.type': '#microsoft.graph.adminMicrosoft365Apps'
     GetMicrosoft365AppsResponse:
       summary: Example response for getting Microsoft 365 Apps settings
       value:
         id: microsoft365Apps
         '@odata.type': '#microsoft.graph.adminMicrosoft365Apps'
-    UpdateMicrosoft365AppsResponse:
-      summary: Example response for updated Microsoft 365 Apps settings
+    UpdateMicrosoft365AppsRequest:
+      summary: Example request for updating Microsoft 365 Apps settings
       value:
-        id: microsoft365Apps
         '@odata.type': '#microsoft.graph.adminMicrosoft365Apps'

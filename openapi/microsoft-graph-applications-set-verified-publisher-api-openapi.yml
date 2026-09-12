@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Applications Set Verified Publisher API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -84,20 +84,6 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/MainError'
-    ErrorDetail:
-      title: ErrorDetail
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
     MainError:
       title: MainError
       type: object
@@ -121,7 +107,34 @@ components:
             $ref: '#/components/schemas/ErrorDetail'
         innerError:
           $ref: '#/components/schemas/InnerError'
+    ErrorDetail:
+      title: ErrorDetail
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+          examples:
+            ODataErrorExample:
+              $ref: '#/components/examples/ODataErrorExample'
   examples:
+    setVerifiedPublisherApplicationsRequestExample:
+      value:
+        verifiedPublisherId: 00000000-0000-0000-0000-000000000001
     ODataErrorExample:
       value:
         error:
@@ -136,16 +149,3 @@ components:
             request-id: 00000000-0000-0000-0000-000000000001
             date: '2024-01-15T10:30:00Z'
             client-request-id: 00000000-0000-0000-0000-000000000002
-    setVerifiedPublisherApplicationsRequestExample:
-      value:
-        verifiedPublisherId: 00000000-0000-0000-0000-000000000001
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
-          examples:
-            ODataErrorExample:
-              $ref: '#/components/examples/ODataErrorExample'

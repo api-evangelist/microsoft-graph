@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Me.authentication API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -2137,99 +2137,236 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
-  responses:
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.microsoftAuthenticatorAuthenticationMethodCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.microsoftAuthenticatorAuthenticationMethodCollectionResponse'
-    microsoft.graph.longRunningOperationCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.longRunningOperationCollectionResponse'
-    microsoft.graph.temporaryAccessPassAuthenticationMethodCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.temporaryAccessPassAuthenticationMethodCollectionResponse'
-    microsoft.graph.authenticationMethodCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.authenticationMethodCollectionResponse'
-    microsoft.graph.passwordAuthenticationMethodCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.passwordAuthenticationMethodCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.phoneAuthenticationMethodCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.phoneAuthenticationMethodCollectionResponse'
-    microsoft.graph.platformCredentialAuthenticationMethodCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.platformCredentialAuthenticationMethodCollectionResponse'
-    microsoft.graph.fido2AuthenticationMethodCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.fido2AuthenticationMethodCollectionResponse'
-    microsoft.graph.softwareOathAuthenticationMethodCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.softwareOathAuthenticationMethodCollectionResponse'
-    microsoft.graph.windowsHelloForBusinessAuthenticationMethodCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.windowsHelloForBusinessAuthenticationMethodCollectionResponse'
-    microsoft.graph.emailAuthenticationMethodCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.emailAuthenticationMethodCollectionResponse'
   schemas:
-    microsoft.graph.longRunningOperationStatus:
-      title: longRunningOperationStatus
-      enum:
-      - notStarted
-      - running
-      - succeeded
-      - failed
-      - unknownFutureValue
-      type: string
-    microsoft.graph.passwordAuthenticationMethod:
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.emailAuthenticationMethodCollectionResponse:
+      title: Collection of emailAuthenticationMethod
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.emailAuthenticationMethod'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    microsoft.graph.device:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
+      - title: device
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          accountEnabled:
+            type: boolean
+            description: true if the account is enabled; otherwise, false. Required. Default is true.  Supports $filter (eq, ne, not, in). Only callers with at least the Cloud Device Administrator role can set this property.
+            nullable: true
+          alternativeSecurityIds:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.alternativeSecurityId'
+            description: For internal use only. Not nullable. Supports $filter (eq, not, ge, le).
+          approximateLastSignInDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only. Supports $filter (eq, ne, not, ge, le, and eq on null values) and $orderby.
+            format: date-time
+            nullable: true
+          complianceExpirationDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The timestamp when the device is no longer deemed compliant. The timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
+            format: date-time
+            nullable: true
+          deviceCategory:
+            type: string
+            description: User-defined property set by Intune to automatically add devices to groups and simplify managing devices.
+            nullable: true
+          deviceId:
+            type: string
+            description: Unique identifier set by Azure Device Registration Service at the time of registration. This alternate key can be used to reference the device object. Supports $filter (eq, ne, not, startsWith).
+            nullable: true
+          deviceMetadata:
+            type: string
+            description: For internal use only. Set to null.
+            nullable: true
+          deviceOwnership:
+            type: string
+            description: 'Ownership of the device. Intune sets this property. The possible values are: unknown, company, personal.'
+            nullable: true
+          deviceVersion:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: For internal use only.
+            format: int32
+            nullable: true
+          displayName:
+            type: string
+            description: The display name for the device. Maximum length is 256 characters. Required. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values), $search, and $orderby.
+            nullable: true
+          enrollmentProfileName:
+            type: string
+            description: Enrollment profile applied to the device. For example, Apple Device Enrollment Profile, Device enrollment - Corporate device identifiers, or Windows Autopilot profile name. This property is set by Intune.
+            nullable: true
+          enrollmentType:
+            type: string
+            description: 'Enrollment type of the device. Intune sets this property. The possible values are: unknown, userEnrollment, deviceEnrollmentManager, appleBulkWithUser, appleBulkWithoutUser, windowsAzureADJoin, windowsBulkUserless, windowsAutoEnrollment, windowsBulkAzureDomainJoin, windowsCoManagement, windowsAzureADJoinUsingDeviceAuth,appleUserEnrollment, appleUserEnrollmentWithServiceAccount. NOTE: This property might return other values apart from those listed.'
+            nullable: true
+          isCompliant:
+            type: boolean
+            description: true if the device complies with Mobile Device Management (MDM) policies; otherwise, false. Read-only. This can only be updated by Intune for any device OS type or by an approved MDM app for Windows OS devices. Supports $filter (eq, ne, not).
+            nullable: true
+          isManaged:
+            type: boolean
+            description: true if the device is managed by a Mobile Device Management (MDM) app; otherwise, false. This can only be updated by Intune for any device OS type or by an approved MDM app for Windows OS devices. Supports $filter (eq, ne, not).
+            nullable: true
+          isManagementRestricted:
+            type: boolean
+            description: Indicates whether the device is a member of a restricted management administrative unit. If not set, the default value is null and the default behavior is false. Read-only.  To manage a device that's a member of a restricted management administrative unit, the administrator or calling app must be assigned a Microsoft Entra role at the scope of the restricted management administrative unit. Returned only on $select.
+            nullable: true
+          isRooted:
+            type: boolean
+            description: true if the device is rooted or jail-broken. This property can only be updated by Intune.
+            nullable: true
+          managementType:
+            type: string
+            description: 'The management channel of the device. This property is set by Intune. The possible values are: eas, mdm, easMdm, intuneClient, easIntuneClient, configurationManagerClient, configurationManagerClientMdm, configurationManagerClientMdmEas, unknown, jamf, googleCloudDevicePolicyController.'
+            nullable: true
+          manufacturer:
+            type: string
+            description: Manufacturer of the device. Read-only.
+            nullable: true
+          mdmAppId:
+            type: string
+            description: Application identifier used to register device into MDM. Read-only. Supports $filter (eq, ne, not, startsWith).
+            nullable: true
+          model:
+            type: string
+            description: Model of the device. Read-only.
+            nullable: true
+          onPremisesLastSyncDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The last time at which the object was synced with the on-premises directory. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z Read-only. Supports $filter (eq, ne, not, ge, le, in).
+            format: date-time
+            nullable: true
+          onPremisesSecurityIdentifier:
+            type: string
+            description: The on-premises security identifier (SID) for the user who was synchronized from on-premises to the cloud. Read-only. Returned only on $select. Supports $filter (eq).
+            nullable: true
+          onPremisesSyncEnabled:
+            type: boolean
+            description: true if this object is synced from an on-premises directory; false if this object was originally synced from an on-premises directory but is no longer synced; null if this object has never been synced from an on-premises directory (default). Read-only. Supports $filter (eq, ne, not, in, and eq on null values).
+            nullable: true
+          operatingSystem:
+            type: string
+            description: The type of operating system on the device. Required. Supports $filter (eq, ne, not, ge, le, startsWith, and eq on null values).
+            nullable: true
+          operatingSystemVersion:
+            type: string
+            description: The version of the operating system on the device. Required. Supports $filter (eq, ne, not, ge, le, startsWith, and eq on null values).
+            nullable: true
+          physicalIds:
+            type: array
+            items:
+              type: string
+            description: For internal use only. Not nullable. Supports $filter (eq, not, ge, le, startsWith,/$count eq 0, /$count ne 0).
+          profileType:
+            type: string
+            description: 'The profile type of the device. Possible values: RegisteredDevice (default), SecureVM, Printer, Shared, IoT.'
+            nullable: true
+          registrationDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Date and time of when the device was registered. The timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
+            format: date-time
+            nullable: true
+          systemLabels:
+            type: array
+            items:
+              type: string
+            description: List of labels applied to the device by the system. Supports $filter (/$count eq 0, /$count ne 0).
+          trustType:
+            type: string
+            description: 'Type of trust for the joined device. Read-only. Possible values:  Workplace (indicates bring your own personal devices), AzureAd (Cloud-only joined devices), ServerAd (on-premises domain joined devices joined to Microsoft Entra ID). For more information, see Introduction to device management in Microsoft Entra ID. Supports $filter (eq, ne, not, in).'
+            nullable: true
+          extensions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.extension'
+            description: The collection of open extensions defined for the device. Read-only. Nullable.
+            x-ms-navigationProperty: true
+          memberOf:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.directoryObject'
+            description: Groups and administrative units that this device is a member of. Read-only. Nullable. Supports $expand.
+            x-ms-navigationProperty: true
+          registeredOwners:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.directoryObject'
+            description: The user that cloud joined the device or registered their personal device. The registered owner is set at the time of registration. Read-only. Nullable. Supports $expand.
+            x-ms-navigationProperty: true
+          registeredUsers:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.directoryObject'
+            description: Collection of registered users of the device. For cloud joined devices and registered personal devices, registered users are set to the same value as registered owners at the time of registration. Read-only. Nullable. Supports $expand.
+            x-ms-navigationProperty: true
+          transitiveMemberOf:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.directoryObject'
+            description: Groups and administrative units that the device is a member of. This operation is transitive. Supports $expand.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.device'
+      x-ms-discriminator-value: '#microsoft.graph.device'
+    microsoft.graph.fido2AuthenticationMethodCollectionResponse:
+      title: Collection of fido2AuthenticationMethod
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.fido2AuthenticationMethod'
+    microsoft.graph.authenticationMethodCollectionResponse:
+      title: Collection of authenticationMethod
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
+    microsoft.graph.temporaryAccessPassAuthenticationMethod:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
-      - title: passwordAuthenticationMethod
+      - title: temporaryAccessPassAuthenticationMethod
         required:
         - '@odata.type'
         type: object
@@ -2237,17 +2374,262 @@ components:
           createdDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
             type: string
-            description: The date and time when this password was last updated. This property is currently not populated. Read-only. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            description: The date and time when the Temporary Access Pass was created.
             format: date-time
             nullable: true
-          password:
+          isUsable:
+            type: boolean
+            description: The state of the authentication method that indicates whether it's currently usable by the user.
+            nullable: true
+          isUsableOnce:
+            type: boolean
+            description: Determines whether the pass is limited to a one-time use. If true, the pass can be used once; if false, the pass can be used multiple times within the Temporary Access Pass lifetime.
+            nullable: true
+          lifetimeInMinutes:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The lifetime of the Temporary Access Pass in minutes starting at startDateTime. Must be between 10 and 43200 inclusive (equivalent to 30 days).
+            format: int32
+            nullable: true
+          methodUsabilityReason:
             type: string
-            description: For security, the password is always returned as null from a LIST or GET operation.
+            description: 'Details about the usability state (isUsable). Reasons can include: EnabledByPolicy, DisabledByPolicy, Expired, NotYetValid, OneTimeUsed.'
+            nullable: true
+          startDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when the Temporary Access Pass becomes available to use and when isUsable is true is enforced.
+            format: date-time
+            nullable: true
+          temporaryAccessPass:
+            type: string
+            description: The Temporary Access Pass used to authenticate. Returned only on creation of a new temporaryAccessPassAuthenticationMethod object; Hidden in subsequent read operations and returned as null with GET.
             nullable: true
           '@odata.type':
             type: string
-            default: '#microsoft.graph.passwordAuthenticationMethod'
-      x-ms-discriminator-value: '#microsoft.graph.passwordAuthenticationMethod'
+            default: '#microsoft.graph.temporaryAccessPassAuthenticationMethod'
+      x-ms-discriminator-value: '#microsoft.graph.temporaryAccessPassAuthenticationMethod'
+    microsoft.graph.softwareOathAuthenticationMethod:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
+      - title: softwareOathAuthenticationMethod
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          secretKey:
+            type: string
+            description: The secret key of the method. Always returns null.
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.softwareOathAuthenticationMethod'
+      x-ms-discriminator-value: '#microsoft.graph.softwareOathAuthenticationMethod'
+    microsoft.graph.softwareOathAuthenticationMethodCollectionResponse:
+      title: Collection of softwareOathAuthenticationMethod
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.softwareOathAuthenticationMethod'
+    microsoft.graph.platformCredentialAuthenticationMethodCollectionResponse:
+      title: Collection of platformCredentialAuthenticationMethod
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.platformCredentialAuthenticationMethod'
+    microsoft.graph.authenticationMethodSignInState:
+      title: authenticationMethodSignInState
+      enum:
+      - notSupported
+      - notAllowedByPolicy
+      - notEnabled
+      - phoneNumberNotUnique
+      - ready
+      - notConfigured
+      - unknownFutureValue
+      type: string
+    microsoft.graph.phoneAuthenticationMethod:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
+      - title: phoneAuthenticationMethod
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          phoneNumber:
+            type: string
+            description: The phone number to text or call for authentication. Phone numbers use the format +{country code} {number}x{extension}, with extension optional. For example, +1 5555551234 or +1 5555551234x123 are valid. Numbers are rejected when creating or updating if they don't match the required format.
+            nullable: true
+          phoneType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.authenticationPhoneType'
+            - type: object
+              nullable: true
+            description: 'The type of this phone. The possible values are: mobile, alternateMobile, or office.'
+          smsSignInState:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.authenticationMethodSignInState'
+            - type: object
+              nullable: true
+            description: 'Whether a phone is ready to be used for SMS sign-in or not. The possible values are: notSupported, notAllowedByPolicy, notEnabled, phoneNumberNotUnique, ready, or notConfigured, unknownFutureValue.'
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.phoneAuthenticationMethod'
+      x-ms-discriminator-value: '#microsoft.graph.phoneAuthenticationMethod'
+    microsoft.graph.alternativeSecurityId:
+      title: alternativeSecurityId
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        identityProvider:
+          type: string
+          description: For internal use only.
+          nullable: true
+        key:
+          type: string
+          description: For internal use only.
+          format: base64url
+          nullable: true
+        type:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: For internal use only.
+          format: int32
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type: string
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
+          type: string
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.temporaryAccessPassAuthenticationMethodCollectionResponse:
+      title: Collection of temporaryAccessPassAuthenticationMethod
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.temporaryAccessPassAuthenticationMethod'
+    microsoft.graph.authenticationMethodKeyStrength:
+      title: authenticationMethodKeyStrength
+      enum:
+      - normal
+      - weak
+      - unknown
+      type: string
+    microsoft.graph.authenticationMethod:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: authenticationMethod
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.emailAuthenticationMethod': '#/components/schemas/microsoft.graph.emailAuthenticationMethod'
+            '#microsoft.graph.fido2AuthenticationMethod': '#/components/schemas/microsoft.graph.fido2AuthenticationMethod'
+            '#microsoft.graph.microsoftAuthenticatorAuthenticationMethod': '#/components/schemas/microsoft.graph.microsoftAuthenticatorAuthenticationMethod'
+            '#microsoft.graph.passwordAuthenticationMethod': '#/components/schemas/microsoft.graph.passwordAuthenticationMethod'
+            '#microsoft.graph.phoneAuthenticationMethod': '#/components/schemas/microsoft.graph.phoneAuthenticationMethod'
+            '#microsoft.graph.platformCredentialAuthenticationMethod': '#/components/schemas/microsoft.graph.platformCredentialAuthenticationMethod'
+            '#microsoft.graph.softwareOathAuthenticationMethod': '#/components/schemas/microsoft.graph.softwareOathAuthenticationMethod'
+            '#microsoft.graph.temporaryAccessPassAuthenticationMethod': '#/components/schemas/microsoft.graph.temporaryAccessPassAuthenticationMethod'
+            '#microsoft.graph.windowsHelloForBusinessAuthenticationMethod': '#/components/schemas/microsoft.graph.windowsHelloForBusinessAuthenticationMethod'
+    microsoft.graph.platformCredentialAuthenticationMethod:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
+      - title: platformCredentialAuthenticationMethod
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time that this Platform Credential Key was registered.
+            format: date-time
+            nullable: true
+          displayName:
+            type: string
+            description: The name of the device on which Platform Credential is registered.
+            nullable: true
+          keyStrength:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.authenticationMethodKeyStrength'
+            - type: object
+              nullable: true
+            description: 'Key strength of this Platform Credential key. The possible values are: normal, weak, unknown.'
+          platform:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.authenticationMethodPlatform'
+            - type: object
+              nullable: true
+            description: 'Platform on which this Platform Credential key is present. The possible values are: unknown, windows, macOS,iOS, android, linux.'
+          device:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.device'
+            - type: object
+              nullable: true
+            description: The registered device on which this Platform Credential resides. Supports $expand. When you get a user's Platform Credential registration information, this property is returned only on a single GET and when you specify ?$expand. For example, GET /users/admin@contoso.com/authentication/platformCredentialAuthenticationMethod/_jpuR-TGZtk6aQCLF3BQjA2?$expand=device.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.platformCredentialAuthenticationMethod'
+      x-ms-discriminator-value: '#microsoft.graph.platformCredentialAuthenticationMethod'
+    microsoft.graph.emailAuthenticationMethod:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
+      - title: emailAuthenticationMethod
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          emailAddress:
+            type: string
+            description: The email address registered to this user.
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.emailAuthenticationMethod'
+      x-ms-discriminator-value: '#microsoft.graph.emailAuthenticationMethod'
     microsoft.graph.directoryObject:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -2300,15 +2682,8 @@ components:
             '#microsoft.graph.resourceSpecificPermissionGrant': '#/components/schemas/microsoft.graph.resourceSpecificPermissionGrant'
             '#microsoft.graph.servicePrincipal': '#/components/schemas/microsoft.graph.servicePrincipal'
             '#microsoft.graph.user': '#/components/schemas/microsoft.graph.user'
-    microsoft.graph.attestationLevel:
-      title: attestationLevel
-      enum:
-      - attested
-      - notAttested
-      - unknownFutureValue
-      type: string
-    microsoft.graph.fido2AuthenticationMethodCollectionResponse:
-      title: Collection of fido2AuthenticationMethod
+    microsoft.graph.phoneAuthenticationMethodCollectionResponse:
+      title: Collection of phoneAuthenticationMethod
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -2317,38 +2692,406 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.fido2AuthenticationMethod'
-    microsoft.graph.authenticationMethodKeyStrength:
-      title: authenticationMethodKeyStrength
+              $ref: '#/components/schemas/microsoft.graph.phoneAuthenticationMethod'
+    microsoft.graph.longRunningOperation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: longRunningOperation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The start time of the operation. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            nullable: true
+          lastActionDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The time of the last action in the operation. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            nullable: true
+          resourceLocation:
+            type: string
+            description: URI of the resource that the operation is performed on.
+            nullable: true
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.longRunningOperationStatus'
+            - type: object
+              nullable: true
+            description: 'The status of the operation. The possible values are: notStarted, running, succeeded, failed, unknownFutureValue.'
+          statusDetail:
+            type: string
+            description: Details about the status of the operation.
+            nullable: true
+          '@odata.type':
+            type: string
+        description: The status of a long-running operation.
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.attackSimulationOperation': '#/components/schemas/microsoft.graph.attackSimulationOperation'
+            '#microsoft.graph.engagementAsyncOperation': '#/components/schemas/microsoft.graph.engagementAsyncOperation'
+            '#microsoft.graph.richLongRunningOperation': '#/components/schemas/microsoft.graph.richLongRunningOperation'
+    microsoft.graph.attestationLevel:
+      title: attestationLevel
       enum:
-      - normal
-      - weak
-      - unknown
+      - attested
+      - notAttested
+      - unknownFutureValue
       type: string
-    microsoft.graph.alternativeSecurityId:
-      title: alternativeSecurityId
+    microsoft.graph.fido2AuthenticationMethod:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
+      - title: fido2AuthenticationMethod
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          aaGuid:
+            type: string
+            description: Authenticator Attestation GUID, an identifier that indicates the type (e.g. make and model) of the authenticator.
+            nullable: true
+          attestationCertificates:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: The attestation certificate(s) attached to this security key.
+          attestationLevel:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.attestationLevel'
+            - type: object
+              nullable: true
+            description: 'The attestation level of this FIDO2 security key. The possible values are: attested, or notAttested.'
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The timestamp when this key was registered to the user.
+            format: date-time
+            nullable: true
+          displayName:
+            type: string
+            description: The display name of the key as given by the user.
+            nullable: true
+          model:
+            type: string
+            description: The manufacturer-assigned model of the FIDO2 security key.
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.fido2AuthenticationMethod'
+      x-ms-discriminator-value: '#microsoft.graph.fido2AuthenticationMethod'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.longRunningOperationStatus:
+      title: longRunningOperationStatus
+      enum:
+      - notStarted
+      - running
+      - succeeded
+      - failed
+      - unknownFutureValue
+      type: string
+    microsoft.graph.passwordResetResponse:
+      title: passwordResetResponse
       required:
       - '@odata.type'
       type: object
       properties:
-        identityProvider:
+        newPassword:
           type: string
-          description: For internal use only.
-          nullable: true
-        key:
-          type: string
-          description: For internal use only.
-          format: base64url
-          nullable: true
-        type:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: For internal use only.
-          format: int32
+          description: The Microsoft Entra ID-generated password.
           nullable: true
         '@odata.type':
           type: string
+    microsoft.graph.authentication:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: authentication
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          emailMethods:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.emailAuthenticationMethod'
+            description: The email address registered to a user for authentication.
+            x-ms-navigationProperty: true
+          fido2Methods:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.fido2AuthenticationMethod'
+            description: Represents the FIDO2 security keys registered to a user for authentication.
+            x-ms-navigationProperty: true
+          methods:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
+            description: Represents all authentication methods registered to a user.
+            x-ms-navigationProperty: true
+          microsoftAuthenticatorMethods:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.microsoftAuthenticatorAuthenticationMethod'
+            description: The details of the Microsoft Authenticator app registered to a user for authentication.
+            x-ms-navigationProperty: true
+          operations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.longRunningOperation'
+            description: Represents the status of a long-running operation, such as a password reset operation.
+            x-ms-navigationProperty: true
+          passwordMethods:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.passwordAuthenticationMethod'
+            description: Represents the password registered to a user for authentication. For security, the password itself is never returned in the object, but action can be taken to reset a password.
+            x-ms-navigationProperty: true
+          phoneMethods:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.phoneAuthenticationMethod'
+            description: The phone numbers registered to a user for authentication.
+            x-ms-navigationProperty: true
+          platformCredentialMethods:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.platformCredentialAuthenticationMethod'
+            description: Represents a platform credential instance registered to a user on Mac OS.
+            x-ms-navigationProperty: true
+          softwareOathMethods:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.softwareOathAuthenticationMethod'
+            description: The software OATH time-based one-time password (TOTP) applications registered to a user for authentication.
+            x-ms-navigationProperty: true
+          temporaryAccessPassMethods:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.temporaryAccessPassAuthenticationMethod'
+            description: Represents a Temporary Access Pass registered to a user for authentication through time-limited passcodes.
+            x-ms-navigationProperty: true
+          windowsHelloForBusinessMethods:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.windowsHelloForBusinessAuthenticationMethod'
+            description: Represents the Windows Hello for Business authentication method registered to a user for authentication.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.authentication'
+    microsoft.graph.microsoftAuthenticatorAuthenticationMethod:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
+      - title: microsoftAuthenticatorAuthenticationMethod
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time that this app was registered. This property is null if the device isn't registered for passwordless Phone Sign-In.
+            format: date-time
+            nullable: true
+          deviceTag:
+            type: string
+            description: Tags containing app metadata.
+            nullable: true
+          displayName:
+            type: string
+            description: The name of the device on which this app is registered.
+            nullable: true
+          phoneAppVersion:
+            type: string
+            description: Numerical version of this instance of the Authenticator app.
+            nullable: true
+          device:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.device'
+            - type: object
+              nullable: true
+            description: The registered device on which Microsoft Authenticator resides. This property is null if the device isn't registered for passwordless Phone Sign-In.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.microsoftAuthenticatorAuthenticationMethod'
+      x-ms-discriminator-value: '#microsoft.graph.microsoftAuthenticatorAuthenticationMethod'
+    microsoft.graph.longRunningOperationCollectionResponse:
+      title: Collection of longRunningOperation
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.longRunningOperation'
+    microsoft.graph.authenticationMethodPlatform:
+      title: authenticationMethodPlatform
+      enum:
+      - unknown
+      - windows
+      - macOS
+      - iOS
+      - android
+      - linux
+      - unknownFutureValue
+      type: string
+    microsoft.graph.passwordAuthenticationMethodCollectionResponse:
+      title: Collection of passwordAuthenticationMethod
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.passwordAuthenticationMethod'
+    microsoft.graph.microsoftAuthenticatorAuthenticationMethodCollectionResponse:
+      title: Collection of microsoftAuthenticatorAuthenticationMethod
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.microsoftAuthenticatorAuthenticationMethod'
+    microsoft.graph.passwordAuthenticationMethod:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
+      - title: passwordAuthenticationMethod
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when this password was last updated. This property is currently not populated. Read-only. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            nullable: true
+          password:
+            type: string
+            description: For security, the password is always returned as null from a LIST or GET operation.
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.passwordAuthenticationMethod'
+      x-ms-discriminator-value: '#microsoft.graph.passwordAuthenticationMethod'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type: integer
+          format: int64
+          nullable: true
+        '@odata.nextLink':
+          type: string
+          nullable: true
+    microsoft.graph.extension:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: extension
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.openTypeExtension': '#/components/schemas/microsoft.graph.openTypeExtension'
+    microsoft.graph.windowsHelloForBusinessAuthenticationMethod:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
+      - title: windowsHelloForBusinessAuthenticationMethod
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time that this Windows Hello for Business key was registered.
+            format: date-time
+            nullable: true
+          displayName:
+            type: string
+            description: The name of the device on which Windows Hello for Business is registered
+            nullable: true
+          keyStrength:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.authenticationMethodKeyStrength'
+            - type: object
+              nullable: true
+            description: 'Key strength of this Windows Hello for Business key. The possible values are: normal, weak, unknown.'
+          device:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.device'
+            - type: object
+              nullable: true
+            description: The registered device on which this Windows Hello for Business key resides. Supports $expand. When you get a user's Windows Hello for Business registration information, this property is returned only on a single GET and when you specify ?$expand. For example, GET /users/admin@contoso.com/authentication/windowsHelloForBusinessMethods/_jpuR-TGZtk6aQCLF3BQjA2?$expand=device.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.windowsHelloForBusinessAuthenticationMethod'
+      x-ms-discriminator-value: '#microsoft.graph.windowsHelloForBusinessAuthenticationMethod'
+    microsoft.graph.windowsHelloForBusinessAuthenticationMethodCollectionResponse:
+      title: Collection of windowsHelloForBusinessAuthenticationMethod
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.windowsHelloForBusinessAuthenticationMethod'
+    microsoft.graph.authenticationPhoneType:
+      title: authenticationPhoneType
+      enum:
+      - mobile
+      - alternateMobile
+      - office
+      - unknownFutureValue
+      type: string
     microsoft.graph.entity:
       title: entity
       required:
@@ -3418,841 +4161,90 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.temporaryAccessPassAuthenticationMethod:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
-      - title: temporaryAccessPassAuthenticationMethod
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when the Temporary Access Pass was created.
-            format: date-time
-            nullable: true
-          isUsable:
-            type: boolean
-            description: The state of the authentication method that indicates whether it's currently usable by the user.
-            nullable: true
-          isUsableOnce:
-            type: boolean
-            description: Determines whether the pass is limited to a one-time use. If true, the pass can be used once; if false, the pass can be used multiple times within the Temporary Access Pass lifetime.
-            nullable: true
-          lifetimeInMinutes:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The lifetime of the Temporary Access Pass in minutes starting at startDateTime. Must be between 10 and 43200 inclusive (equivalent to 30 days).
-            format: int32
-            nullable: true
-          methodUsabilityReason:
-            type: string
-            description: 'Details about the usability state (isUsable). Reasons can include: EnabledByPolicy, DisabledByPolicy, Expired, NotYetValid, OneTimeUsed.'
-            nullable: true
-          startDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when the Temporary Access Pass becomes available to use and when isUsable is true is enforced.
-            format: date-time
-            nullable: true
-          temporaryAccessPass:
-            type: string
-            description: The Temporary Access Pass used to authenticate. Returned only on creation of a new temporaryAccessPassAuthenticationMethod object; Hidden in subsequent read operations and returned as null with GET.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.temporaryAccessPassAuthenticationMethod'
-      x-ms-discriminator-value: '#microsoft.graph.temporaryAccessPassAuthenticationMethod'
-    microsoft.graph.emailAuthenticationMethodCollectionResponse:
-      title: Collection of emailAuthenticationMethod
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.emailAuthenticationMethod'
-    microsoft.graph.platformCredentialAuthenticationMethodCollectionResponse:
-      title: Collection of platformCredentialAuthenticationMethod
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.platformCredentialAuthenticationMethod'
+  responses:
+    microsoft.graph.fido2AuthenticationMethodCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.fido2AuthenticationMethodCollectionResponse'
     microsoft.graph.softwareOathAuthenticationMethodCollectionResponse:
-      title: Collection of softwareOathAuthenticationMethod
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.softwareOathAuthenticationMethod'
-    microsoft.graph.extension:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: extension
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.openTypeExtension': '#/components/schemas/microsoft.graph.openTypeExtension'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.authenticationMethodPlatform:
-      title: authenticationMethodPlatform
-      enum:
-      - unknown
-      - windows
-      - macOS
-      - iOS
-      - android
-      - linux
-      - unknownFutureValue
-      type: string
-    microsoft.graph.softwareOathAuthenticationMethod:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
-      - title: softwareOathAuthenticationMethod
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          secretKey:
-            type: string
-            description: The secret key of the method. Always returns null.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.softwareOathAuthenticationMethod'
-      x-ms-discriminator-value: '#microsoft.graph.softwareOathAuthenticationMethod'
-    microsoft.graph.fido2AuthenticationMethod:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
-      - title: fido2AuthenticationMethod
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          aaGuid:
-            type: string
-            description: Authenticator Attestation GUID, an identifier that indicates the type (e.g. make and model) of the authenticator.
-            nullable: true
-          attestationCertificates:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The attestation certificate(s) attached to this security key.
-          attestationLevel:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.attestationLevel'
-            - type: object
-              nullable: true
-            description: 'The attestation level of this FIDO2 security key. The possible values are: attested, or notAttested.'
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The timestamp when this key was registered to the user.
-            format: date-time
-            nullable: true
-          displayName:
-            type: string
-            description: The display name of the key as given by the user.
-            nullable: true
-          model:
-            type: string
-            description: The manufacturer-assigned model of the FIDO2 security key.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.fido2AuthenticationMethod'
-      x-ms-discriminator-value: '#microsoft.graph.fido2AuthenticationMethod'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.softwareOathAuthenticationMethodCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
     microsoft.graph.temporaryAccessPassAuthenticationMethodCollectionResponse:
-      title: Collection of temporaryAccessPassAuthenticationMethod
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.temporaryAccessPassAuthenticationMethod'
-    microsoft.graph.windowsHelloForBusinessAuthenticationMethod:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
-      - title: windowsHelloForBusinessAuthenticationMethod
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time that this Windows Hello for Business key was registered.
-            format: date-time
-            nullable: true
-          displayName:
-            type: string
-            description: The name of the device on which Windows Hello for Business is registered
-            nullable: true
-          keyStrength:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.authenticationMethodKeyStrength'
-            - type: object
-              nullable: true
-            description: 'Key strength of this Windows Hello for Business key. The possible values are: normal, weak, unknown.'
-          device:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.device'
-            - type: object
-              nullable: true
-            description: The registered device on which this Windows Hello for Business key resides. Supports $expand. When you get a user's Windows Hello for Business registration information, this property is returned only on a single GET and when you specify ?$expand. For example, GET /users/admin@contoso.com/authentication/windowsHelloForBusinessMethods/_jpuR-TGZtk6aQCLF3BQjA2?$expand=device.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.windowsHelloForBusinessAuthenticationMethod'
-      x-ms-discriminator-value: '#microsoft.graph.windowsHelloForBusinessAuthenticationMethod'
-    microsoft.graph.platformCredentialAuthenticationMethod:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
-      - title: platformCredentialAuthenticationMethod
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time that this Platform Credential Key was registered.
-            format: date-time
-            nullable: true
-          displayName:
-            type: string
-            description: The name of the device on which Platform Credential is registered.
-            nullable: true
-          keyStrength:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.authenticationMethodKeyStrength'
-            - type: object
-              nullable: true
-            description: 'Key strength of this Platform Credential key. The possible values are: normal, weak, unknown.'
-          platform:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.authenticationMethodPlatform'
-            - type: object
-              nullable: true
-            description: 'Platform on which this Platform Credential key is present. The possible values are: unknown, windows, macOS,iOS, android, linux.'
-          device:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.device'
-            - type: object
-              nullable: true
-            description: The registered device on which this Platform Credential resides. Supports $expand. When you get a user's Platform Credential registration information, this property is returned only on a single GET and when you specify ?$expand. For example, GET /users/admin@contoso.com/authentication/platformCredentialAuthenticationMethod/_jpuR-TGZtk6aQCLF3BQjA2?$expand=device.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.platformCredentialAuthenticationMethod'
-      x-ms-discriminator-value: '#microsoft.graph.platformCredentialAuthenticationMethod'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.authenticationPhoneType:
-      title: authenticationPhoneType
-      enum:
-      - mobile
-      - alternateMobile
-      - office
-      - unknownFutureValue
-      type: string
-    microsoft.graph.emailAuthenticationMethod:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
-      - title: emailAuthenticationMethod
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          emailAddress:
-            type: string
-            description: The email address registered to this user.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.emailAuthenticationMethod'
-      x-ms-discriminator-value: '#microsoft.graph.emailAuthenticationMethod'
-    microsoft.graph.phoneAuthenticationMethod:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
-      - title: phoneAuthenticationMethod
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          phoneNumber:
-            type: string
-            description: The phone number to text or call for authentication. Phone numbers use the format +{country code} {number}x{extension}, with extension optional. For example, +1 5555551234 or +1 5555551234x123 are valid. Numbers are rejected when creating or updating if they don't match the required format.
-            nullable: true
-          phoneType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.authenticationPhoneType'
-            - type: object
-              nullable: true
-            description: 'The type of this phone. The possible values are: mobile, alternateMobile, or office.'
-          smsSignInState:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.authenticationMethodSignInState'
-            - type: object
-              nullable: true
-            description: 'Whether a phone is ready to be used for SMS sign-in or not. The possible values are: notSupported, notAllowedByPolicy, notEnabled, phoneNumberNotUnique, ready, or notConfigured, unknownFutureValue.'
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.phoneAuthenticationMethod'
-      x-ms-discriminator-value: '#microsoft.graph.phoneAuthenticationMethod'
-    microsoft.graph.authenticationMethodCollectionResponse:
-      title: Collection of authenticationMethod
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
-    microsoft.graph.microsoftAuthenticatorAuthenticationMethodCollectionResponse:
-      title: Collection of microsoftAuthenticatorAuthenticationMethod
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.microsoftAuthenticatorAuthenticationMethod'
-    microsoft.graph.authenticationMethod:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: authenticationMethod
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.emailAuthenticationMethod': '#/components/schemas/microsoft.graph.emailAuthenticationMethod'
-            '#microsoft.graph.fido2AuthenticationMethod': '#/components/schemas/microsoft.graph.fido2AuthenticationMethod'
-            '#microsoft.graph.microsoftAuthenticatorAuthenticationMethod': '#/components/schemas/microsoft.graph.microsoftAuthenticatorAuthenticationMethod'
-            '#microsoft.graph.passwordAuthenticationMethod': '#/components/schemas/microsoft.graph.passwordAuthenticationMethod'
-            '#microsoft.graph.phoneAuthenticationMethod': '#/components/schemas/microsoft.graph.phoneAuthenticationMethod'
-            '#microsoft.graph.platformCredentialAuthenticationMethod': '#/components/schemas/microsoft.graph.platformCredentialAuthenticationMethod'
-            '#microsoft.graph.softwareOathAuthenticationMethod': '#/components/schemas/microsoft.graph.softwareOathAuthenticationMethod'
-            '#microsoft.graph.temporaryAccessPassAuthenticationMethod': '#/components/schemas/microsoft.graph.temporaryAccessPassAuthenticationMethod'
-            '#microsoft.graph.windowsHelloForBusinessAuthenticationMethod': '#/components/schemas/microsoft.graph.windowsHelloForBusinessAuthenticationMethod'
-    microsoft.graph.phoneAuthenticationMethodCollectionResponse:
-      title: Collection of phoneAuthenticationMethod
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.phoneAuthenticationMethod'
-    microsoft.graph.passwordResetResponse:
-      title: passwordResetResponse
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        newPassword:
-          type: string
-          description: The Microsoft Entra ID-generated password.
-          nullable: true
-        '@odata.type':
-          type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.longRunningOperationCollectionResponse:
-      title: Collection of longRunningOperation
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.longRunningOperation'
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.temporaryAccessPassAuthenticationMethodCollectionResponse'
+    microsoft.graph.emailAuthenticationMethodCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.emailAuthenticationMethodCollectionResponse'
     microsoft.graph.windowsHelloForBusinessAuthenticationMethodCollectionResponse:
-      title: Collection of windowsHelloForBusinessAuthenticationMethod
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.windowsHelloForBusinessAuthenticationMethod'
-    microsoft.graph.microsoftAuthenticatorAuthenticationMethod:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
-      - title: microsoftAuthenticatorAuthenticationMethod
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time that this app was registered. This property is null if the device isn't registered for passwordless Phone Sign-In.
-            format: date-time
-            nullable: true
-          deviceTag:
-            type: string
-            description: Tags containing app metadata.
-            nullable: true
-          displayName:
-            type: string
-            description: The name of the device on which this app is registered.
-            nullable: true
-          phoneAppVersion:
-            type: string
-            description: Numerical version of this instance of the Authenticator app.
-            nullable: true
-          device:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.device'
-            - type: object
-              nullable: true
-            description: The registered device on which Microsoft Authenticator resides. This property is null if the device isn't registered for passwordless Phone Sign-In.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.microsoftAuthenticatorAuthenticationMethod'
-      x-ms-discriminator-value: '#microsoft.graph.microsoftAuthenticatorAuthenticationMethod'
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.authenticationMethodSignInState:
-      title: authenticationMethodSignInState
-      enum:
-      - notSupported
-      - notAllowedByPolicy
-      - notEnabled
-      - phoneNumberNotUnique
-      - ready
-      - notConfigured
-      - unknownFutureValue
-      type: string
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.windowsHelloForBusinessAuthenticationMethodCollectionResponse'
+    microsoft.graph.phoneAuthenticationMethodCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.phoneAuthenticationMethodCollectionResponse'
+    microsoft.graph.authenticationMethodCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.authenticationMethodCollectionResponse'
+    microsoft.graph.platformCredentialAuthenticationMethodCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.platformCredentialAuthenticationMethodCollectionResponse'
     microsoft.graph.passwordAuthenticationMethodCollectionResponse:
-      title: Collection of passwordAuthenticationMethod
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.passwordAuthenticationMethod'
-    microsoft.graph.device:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
-      - title: device
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          accountEnabled:
-            type: boolean
-            description: true if the account is enabled; otherwise, false. Required. Default is true.  Supports $filter (eq, ne, not, in). Only callers with at least the Cloud Device Administrator role can set this property.
-            nullable: true
-          alternativeSecurityIds:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.alternativeSecurityId'
-            description: For internal use only. Not nullable. Supports $filter (eq, not, ge, le).
-          approximateLastSignInDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only. Supports $filter (eq, ne, not, ge, le, and eq on null values) and $orderby.
-            format: date-time
-            nullable: true
-          complianceExpirationDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The timestamp when the device is no longer deemed compliant. The timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
-            format: date-time
-            nullable: true
-          deviceCategory:
-            type: string
-            description: User-defined property set by Intune to automatically add devices to groups and simplify managing devices.
-            nullable: true
-          deviceId:
-            type: string
-            description: Unique identifier set by Azure Device Registration Service at the time of registration. This alternate key can be used to reference the device object. Supports $filter (eq, ne, not, startsWith).
-            nullable: true
-          deviceMetadata:
-            type: string
-            description: For internal use only. Set to null.
-            nullable: true
-          deviceOwnership:
-            type: string
-            description: 'Ownership of the device. Intune sets this property. The possible values are: unknown, company, personal.'
-            nullable: true
-          deviceVersion:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: For internal use only.
-            format: int32
-            nullable: true
-          displayName:
-            type: string
-            description: The display name for the device. Maximum length is 256 characters. Required. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values), $search, and $orderby.
-            nullable: true
-          enrollmentProfileName:
-            type: string
-            description: Enrollment profile applied to the device. For example, Apple Device Enrollment Profile, Device enrollment - Corporate device identifiers, or Windows Autopilot profile name. This property is set by Intune.
-            nullable: true
-          enrollmentType:
-            type: string
-            description: 'Enrollment type of the device. Intune sets this property. The possible values are: unknown, userEnrollment, deviceEnrollmentManager, appleBulkWithUser, appleBulkWithoutUser, windowsAzureADJoin, windowsBulkUserless, windowsAutoEnrollment, windowsBulkAzureDomainJoin, windowsCoManagement, windowsAzureADJoinUsingDeviceAuth,appleUserEnrollment, appleUserEnrollmentWithServiceAccount. NOTE: This property might return other values apart from those listed.'
-            nullable: true
-          isCompliant:
-            type: boolean
-            description: true if the device complies with Mobile Device Management (MDM) policies; otherwise, false. Read-only. This can only be updated by Intune for any device OS type or by an approved MDM app for Windows OS devices. Supports $filter (eq, ne, not).
-            nullable: true
-          isManaged:
-            type: boolean
-            description: true if the device is managed by a Mobile Device Management (MDM) app; otherwise, false. This can only be updated by Intune for any device OS type or by an approved MDM app for Windows OS devices. Supports $filter (eq, ne, not).
-            nullable: true
-          isManagementRestricted:
-            type: boolean
-            description: Indicates whether the device is a member of a restricted management administrative unit. If not set, the default value is null and the default behavior is false. Read-only.  To manage a device that's a member of a restricted management administrative unit, the administrator or calling app must be assigned a Microsoft Entra role at the scope of the restricted management administrative unit. Returned only on $select.
-            nullable: true
-          isRooted:
-            type: boolean
-            description: true if the device is rooted or jail-broken. This property can only be updated by Intune.
-            nullable: true
-          managementType:
-            type: string
-            description: 'The management channel of the device. This property is set by Intune. The possible values are: eas, mdm, easMdm, intuneClient, easIntuneClient, configurationManagerClient, configurationManagerClientMdm, configurationManagerClientMdmEas, unknown, jamf, googleCloudDevicePolicyController.'
-            nullable: true
-          manufacturer:
-            type: string
-            description: Manufacturer of the device. Read-only.
-            nullable: true
-          mdmAppId:
-            type: string
-            description: Application identifier used to register device into MDM. Read-only. Supports $filter (eq, ne, not, startsWith).
-            nullable: true
-          model:
-            type: string
-            description: Model of the device. Read-only.
-            nullable: true
-          onPremisesLastSyncDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The last time at which the object was synced with the on-premises directory. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z Read-only. Supports $filter (eq, ne, not, ge, le, in).
-            format: date-time
-            nullable: true
-          onPremisesSecurityIdentifier:
-            type: string
-            description: The on-premises security identifier (SID) for the user who was synchronized from on-premises to the cloud. Read-only. Returned only on $select. Supports $filter (eq).
-            nullable: true
-          onPremisesSyncEnabled:
-            type: boolean
-            description: true if this object is synced from an on-premises directory; false if this object was originally synced from an on-premises directory but is no longer synced; null if this object has never been synced from an on-premises directory (default). Read-only. Supports $filter (eq, ne, not, in, and eq on null values).
-            nullable: true
-          operatingSystem:
-            type: string
-            description: The type of operating system on the device. Required. Supports $filter (eq, ne, not, ge, le, startsWith, and eq on null values).
-            nullable: true
-          operatingSystemVersion:
-            type: string
-            description: The version of the operating system on the device. Required. Supports $filter (eq, ne, not, ge, le, startsWith, and eq on null values).
-            nullable: true
-          physicalIds:
-            type: array
-            items:
-              type: string
-            description: For internal use only. Not nullable. Supports $filter (eq, not, ge, le, startsWith,/$count eq 0, /$count ne 0).
-          profileType:
-            type: string
-            description: 'The profile type of the device. Possible values: RegisteredDevice (default), SecureVM, Printer, Shared, IoT.'
-            nullable: true
-          registrationDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time of when the device was registered. The timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
-            format: date-time
-            nullable: true
-          systemLabels:
-            type: array
-            items:
-              type: string
-            description: List of labels applied to the device by the system. Supports $filter (/$count eq 0, /$count ne 0).
-          trustType:
-            type: string
-            description: 'Type of trust for the joined device. Read-only. Possible values:  Workplace (indicates bring your own personal devices), AzureAd (Cloud-only joined devices), ServerAd (on-premises domain joined devices joined to Microsoft Entra ID). For more information, see Introduction to device management in Microsoft Entra ID. Supports $filter (eq, ne, not, in).'
-            nullable: true
-          extensions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.extension'
-            description: The collection of open extensions defined for the device. Read-only. Nullable.
-            x-ms-navigationProperty: true
-          memberOf:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.directoryObject'
-            description: Groups and administrative units that this device is a member of. Read-only. Nullable. Supports $expand.
-            x-ms-navigationProperty: true
-          registeredOwners:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.directoryObject'
-            description: The user that cloud joined the device or registered their personal device. The registered owner is set at the time of registration. Read-only. Nullable. Supports $expand.
-            x-ms-navigationProperty: true
-          registeredUsers:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.directoryObject'
-            description: Collection of registered users of the device. For cloud joined devices and registered personal devices, registered users are set to the same value as registered owners at the time of registration. Read-only. Nullable. Supports $expand.
-            x-ms-navigationProperty: true
-          transitiveMemberOf:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.directoryObject'
-            description: Groups and administrative units that the device is a member of. This operation is transitive. Supports $expand.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.device'
-      x-ms-discriminator-value: '#microsoft.graph.device'
-    microsoft.graph.authentication:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: authentication
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          emailMethods:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.emailAuthenticationMethod'
-            description: The email address registered to a user for authentication.
-            x-ms-navigationProperty: true
-          fido2Methods:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.fido2AuthenticationMethod'
-            description: Represents the FIDO2 security keys registered to a user for authentication.
-            x-ms-navigationProperty: true
-          methods:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationMethod'
-            description: Represents all authentication methods registered to a user.
-            x-ms-navigationProperty: true
-          microsoftAuthenticatorMethods:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.microsoftAuthenticatorAuthenticationMethod'
-            description: The details of the Microsoft Authenticator app registered to a user for authentication.
-            x-ms-navigationProperty: true
-          operations:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.longRunningOperation'
-            description: Represents the status of a long-running operation, such as a password reset operation.
-            x-ms-navigationProperty: true
-          passwordMethods:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.passwordAuthenticationMethod'
-            description: Represents the password registered to a user for authentication. For security, the password itself is never returned in the object, but action can be taken to reset a password.
-            x-ms-navigationProperty: true
-          phoneMethods:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.phoneAuthenticationMethod'
-            description: The phone numbers registered to a user for authentication.
-            x-ms-navigationProperty: true
-          platformCredentialMethods:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.platformCredentialAuthenticationMethod'
-            description: Represents a platform credential instance registered to a user on Mac OS.
-            x-ms-navigationProperty: true
-          softwareOathMethods:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.softwareOathAuthenticationMethod'
-            description: The software OATH time-based one-time password (TOTP) applications registered to a user for authentication.
-            x-ms-navigationProperty: true
-          temporaryAccessPassMethods:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.temporaryAccessPassAuthenticationMethod'
-            description: Represents a Temporary Access Pass registered to a user for authentication through time-limited passcodes.
-            x-ms-navigationProperty: true
-          windowsHelloForBusinessMethods:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.windowsHelloForBusinessAuthenticationMethod'
-            description: Represents the Windows Hello for Business authentication method registered to a user for authentication.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.authentication'
-    microsoft.graph.longRunningOperation:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: longRunningOperation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The start time of the operation. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          lastActionDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The time of the last action in the operation. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          resourceLocation:
-            type: string
-            description: URI of the resource that the operation is performed on.
-            nullable: true
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.longRunningOperationStatus'
-            - type: object
-              nullable: true
-            description: 'The status of the operation. The possible values are: notStarted, running, succeeded, failed, unknownFutureValue.'
-          statusDetail:
-            type: string
-            description: Details about the status of the operation.
-            nullable: true
-          '@odata.type':
-            type: string
-        description: The status of a long-running operation.
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.attackSimulationOperation': '#/components/schemas/microsoft.graph.attackSimulationOperation'
-            '#microsoft.graph.engagementAsyncOperation': '#/components/schemas/microsoft.graph.engagementAsyncOperation'
-            '#microsoft.graph.richLongRunningOperation': '#/components/schemas/microsoft.graph.richLongRunningOperation'
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.passwordAuthenticationMethodCollectionResponse'
+    microsoft.graph.microsoftAuthenticatorAuthenticationMethodCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.microsoftAuthenticatorAuthenticationMethodCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.longRunningOperationCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.longRunningOperationCollectionResponse'
   parameters:
-    count:
-      name: $count
+    filter:
+      name: $filter
       in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
+      description: Filter items by property values
       style: form
       explode: false
       schema:
@@ -4267,6 +4259,14 @@ components:
         minimum: 0
         type: integer
       example: 50
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     skip:
       name: $skip
       in: query
@@ -4276,10 +4276,10 @@ components:
       schema:
         minimum: 0
         type: integer
-    filter:
-      name: $filter
+    search:
+      name: $search
       in: query
-      description: Filter items by property values
+      description: Search items by search phrases
       style: form
       explode: false
       schema:

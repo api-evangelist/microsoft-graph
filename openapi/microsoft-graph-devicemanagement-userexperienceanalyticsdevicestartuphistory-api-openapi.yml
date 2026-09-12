@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin deviceManagement.userExperienceAnalyticsDeviceStartupHistory API
+  title: Microsoft Graph Admin Admin.admin Device Management.user Experience Analytics Device Startup History API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -208,6 +208,62 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type: integer
+          format: int64
+          nullable: true
+        '@odata.nextLink':
+          type: string
+          nullable: true
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type: string
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
+          type: string
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -228,33 +284,155 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
+    microsoft.graph.userExperienceAnalyticsOperatingSystemRestartCategory:
+      title: userExperienceAnalyticsOperatingSystemRestartCategory
+      enum:
+      - unknown
+      - restartWithUpdate
+      - restartWithoutUpdate
+      - blueScreen
+      - shutdownWithUpdate
+      - shutdownWithoutUpdate
+      - longPowerButtonPress
+      - bootError
+      - update
+      - unknownFutureValue
+      type: string
+      description: Operating System restart category.
+      x-ms-enum:
+        name: userExperienceAnalyticsOperatingSystemRestartCategory
+        modelAsString: false
+        values:
+        - value: unknown
+          description: Default. Set to unknown if device operating system restart category has not yet been calculated.
+          name: unknown
+        - value: restartWithUpdate
+          description: Indicates that the device operating system restart is along with an update.
+          name: restartWithUpdate
+        - value: restartWithoutUpdate
+          description: Indicates that the device operating system restart is without update.
+          name: restartWithoutUpdate
+        - value: blueScreen
+          description: Indicates that the device operating system restart is due to a specific stop error.
+          name: blueScreen
+        - value: shutdownWithUpdate
+          description: Indicates that the device operating system restart is due to shutdown with update.
+          name: shutdownWithUpdate
+        - value: shutdownWithoutUpdate
+          description: Indicates that the device operating system restart is due to shutdown without update.
+          name: shutdownWithoutUpdate
+        - value: longPowerButtonPress
+          description: Indicates that the device operating system restart is due to update long power-button press.
+          name: longPowerButtonPress
+        - value: bootError
+          description: Indicates that the device operating system restart is due to boot error.
+          name: bootError
+        - value: update
+          description: Indicates that the device operating system restarted after an update.
+          name: update
+        - value: unknownFutureValue
+          description: Evolvable enumeration sentinel value. Do not use.
+          name: unknownFutureValue
+    microsoft.graph.userExperienceAnalyticsDeviceStartupHistoryCollectionResponse:
+      title: Collection of userExperienceAnalyticsDeviceStartupHistory
       type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    ODataCountResponse:
-      type: integer
-      format: int32
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsDeviceStartupHistory'
+    microsoft.graph.userExperienceAnalyticsDeviceStartupHistory:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: userExperienceAnalyticsDeviceStartupHistory
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          coreBootTimeInMs:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: 'The device core boot time in milliseconds. Supports: $select, $OrderBy. Read-only.'
+            format: int32
+          coreLoginTimeInMs:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: 'The device core login time in milliseconds. Supports: $select, $OrderBy. Read-only.'
+            format: int32
+          deviceId:
+            type: string
+            description: 'The Intune device id of the device. Supports: $select, $OrderBy. Read-only.'
+            nullable: true
+          featureUpdateBootTimeInMs:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: 'The impact of device feature updates on boot time in milliseconds. Supports: $select, $OrderBy. Read-only.'
+            format: int32
+          groupPolicyBootTimeInMs:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: 'The impact of device group policy client on boot time in milliseconds. Supports: $select, $OrderBy. Read-only.'
+            format: int32
+          groupPolicyLoginTimeInMs:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: 'The impact of device group policy client on login time in milliseconds. Supports: $select, $OrderBy. Read-only.'
+            format: int32
+          isFeatureUpdate:
+            type: boolean
+            description: 'When TRUE, indicates the device boot record is associated with feature updates. When FALSE, indicates the device boot record is not associated with feature updates. Supports: $select, $OrderBy. Read-only.'
+          isFirstLogin:
+            type: boolean
+            description: 'When TRUE, indicates the device login is the first login after a reboot. When FALSE, indicates the device login is not the first login after a reboot. Supports: $select, $OrderBy. Read-only.'
+          operatingSystemVersion:
+            type: string
+            description: 'The user experience analytics device boot record''s operating system version. Supports: $select, $OrderBy. Read-only.'
+            nullable: true
+          responsiveDesktopTimeInMs:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: 'The time for desktop to become responsive during login process in milliseconds. Supports: $select, $OrderBy. Read-only.'
+            format: int32
+          restartCategory:
+            $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsOperatingSystemRestartCategory'
+          restartFaultBucket:
+            type: string
+            description: 'OS restart fault bucket. The fault bucket is used to find additional information about a system crash. Supports: $select, $OrderBy. Read-only.'
+            nullable: true
+          restartStopCode:
+            type: string
+            description: 'OS restart stop code. This shows the bug check code which can be used to look up the blue screen reason. Supports: $select, $OrderBy. Read-only.'
+            nullable: true
+          startTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: 'The device boot start time. The value cannot be modified and is automatically populated when the device performs a reboot. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2022 would look like this: ''2022-01-01T00:00:00Z''. Returned by default. Read-only.'
+            format: date-time
+          totalBootTimeInMs:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: 'The device total boot time in milliseconds. Supports: $select, $OrderBy. Read-only.'
+            format: int32
+          totalLoginTimeInMs:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: 'The device total login time in milliseconds. Supports: $select, $OrderBy. Read-only.'
+            format: int32
+          '@odata.type':
+            type: string
+        description: The user experience analytics device startup history entity contains device boot performance history details.
+      x-ms-discriminator-value: '#microsoft.graph.userExperienceAnalyticsDeviceStartupHistory'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1324,204 +1502,15 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.userExperienceAnalyticsDeviceStartupHistory:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: userExperienceAnalyticsDeviceStartupHistory
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          coreBootTimeInMs:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: 'The device core boot time in milliseconds. Supports: $select, $OrderBy. Read-only.'
-            format: int32
-          coreLoginTimeInMs:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: 'The device core login time in milliseconds. Supports: $select, $OrderBy. Read-only.'
-            format: int32
-          deviceId:
-            type: string
-            description: 'The Intune device id of the device. Supports: $select, $OrderBy. Read-only.'
-            nullable: true
-          featureUpdateBootTimeInMs:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: 'The impact of device feature updates on boot time in milliseconds. Supports: $select, $OrderBy. Read-only.'
-            format: int32
-          groupPolicyBootTimeInMs:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: 'The impact of device group policy client on boot time in milliseconds. Supports: $select, $OrderBy. Read-only.'
-            format: int32
-          groupPolicyLoginTimeInMs:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: 'The impact of device group policy client on login time in milliseconds. Supports: $select, $OrderBy. Read-only.'
-            format: int32
-          isFeatureUpdate:
-            type: boolean
-            description: 'When TRUE, indicates the device boot record is associated with feature updates. When FALSE, indicates the device boot record is not associated with feature updates. Supports: $select, $OrderBy. Read-only.'
-          isFirstLogin:
-            type: boolean
-            description: 'When TRUE, indicates the device login is the first login after a reboot. When FALSE, indicates the device login is not the first login after a reboot. Supports: $select, $OrderBy. Read-only.'
-          operatingSystemVersion:
-            type: string
-            description: 'The user experience analytics device boot record''s operating system version. Supports: $select, $OrderBy. Read-only.'
-            nullable: true
-          responsiveDesktopTimeInMs:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: 'The time for desktop to become responsive during login process in milliseconds. Supports: $select, $OrderBy. Read-only.'
-            format: int32
-          restartCategory:
-            $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsOperatingSystemRestartCategory'
-          restartFaultBucket:
-            type: string
-            description: 'OS restart fault bucket. The fault bucket is used to find additional information about a system crash. Supports: $select, $OrderBy. Read-only.'
-            nullable: true
-          restartStopCode:
-            type: string
-            description: 'OS restart stop code. This shows the bug check code which can be used to look up the blue screen reason. Supports: $select, $OrderBy. Read-only.'
-            nullable: true
-          startTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: 'The device boot start time. The value cannot be modified and is automatically populated when the device performs a reboot. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2022 would look like this: ''2022-01-01T00:00:00Z''. Returned by default. Read-only.'
-            format: date-time
-          totalBootTimeInMs:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: 'The device total boot time in milliseconds. Supports: $select, $OrderBy. Read-only.'
-            format: int32
-          totalLoginTimeInMs:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: 'The device total login time in milliseconds. Supports: $select, $OrderBy. Read-only.'
-            format: int32
-          '@odata.type':
-            type: string
-        description: The user experience analytics device startup history entity contains device boot performance history details.
-      x-ms-discriminator-value: '#microsoft.graph.userExperienceAnalyticsDeviceStartupHistory'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.userExperienceAnalyticsOperatingSystemRestartCategory:
-      title: userExperienceAnalyticsOperatingSystemRestartCategory
-      enum:
-      - unknown
-      - restartWithUpdate
-      - restartWithoutUpdate
-      - blueScreen
-      - shutdownWithUpdate
-      - shutdownWithoutUpdate
-      - longPowerButtonPress
-      - bootError
-      - update
-      - unknownFutureValue
-      type: string
-      description: Operating System restart category.
-      x-ms-enum:
-        name: userExperienceAnalyticsOperatingSystemRestartCategory
-        modelAsString: false
-        values:
-        - value: unknown
-          description: Default. Set to unknown if device operating system restart category has not yet been calculated.
-          name: unknown
-        - value: restartWithUpdate
-          description: Indicates that the device operating system restart is along with an update.
-          name: restartWithUpdate
-        - value: restartWithoutUpdate
-          description: Indicates that the device operating system restart is without update.
-          name: restartWithoutUpdate
-        - value: blueScreen
-          description: Indicates that the device operating system restart is due to a specific stop error.
-          name: blueScreen
-        - value: shutdownWithUpdate
-          description: Indicates that the device operating system restart is due to shutdown with update.
-          name: shutdownWithUpdate
-        - value: shutdownWithoutUpdate
-          description: Indicates that the device operating system restart is due to shutdown without update.
-          name: shutdownWithoutUpdate
-        - value: longPowerButtonPress
-          description: Indicates that the device operating system restart is due to update long power-button press.
-          name: longPowerButtonPress
-        - value: bootError
-          description: Indicates that the device operating system restart is due to boot error.
-          name: bootError
-        - value: update
-          description: Indicates that the device operating system restarted after an update.
-          name: update
-        - value: unknownFutureValue
-          description: Evolvable enumeration sentinel value. Do not use.
-          name: unknownFutureValue
-    microsoft.graph.userExperienceAnalyticsDeviceStartupHistoryCollectionResponse:
-      title: Collection of userExperienceAnalyticsDeviceStartupHistory
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsDeviceStartupHistory'
-  responses:
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.userExperienceAnalyticsDeviceStartupHistoryCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsDeviceStartupHistoryCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   parameters:
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
     top:
       name: $top
       in: query
@@ -1532,10 +1521,10 @@ components:
         minimum: 0
         type: integer
       example: 50
-    filter:
-      name: $filter
+    search:
+      name: $search
       in: query
-      description: Filter items by property values
+      description: Search items by search phrases
       style: form
       explode: false
       schema:
@@ -1557,11 +1546,22 @@ components:
       explode: false
       schema:
         type: boolean
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+  responses:
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.userExperienceAnalyticsDeviceStartupHistoryCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsDeviceStartupHistoryCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin reports.reportRoot.Functions API
+  title: Microsoft Graph Admin Admin.admin Reports.report Root.Functions API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -3608,6 +3608,233 @@ paths:
       x-ms-docs-operation-type: function
 components:
   schemas:
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    microsoft.graph.identity:
+      title: identity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
+          nullable: true
+        id:
+          type: string
+          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
+          nullable: true
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
+          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
+          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
+          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
+          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
+          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
+          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
+          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
+          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
+          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
+          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
+          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
+          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
+          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
+          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
+          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
+          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
+          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
+          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
+          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
+    microsoft.graph.userIdentity:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.identity'
+      - title: userIdentity
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          ipAddress:
+            type: string
+            description: Indicates the client IP address associated with the user performing the activity (audit log only).
+            nullable: true
+          userPrincipalName:
+            type: string
+            description: The userPrincipalName attribute of the user.
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.userIdentity'
+      x-ms-discriminator-value: '#microsoft.graph.userIdentity'
+    microsoft.graph.migrationStatus:
+      title: migrationStatus
+      enum:
+      - ready
+      - needsReview
+      - additionalStepsRequired
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type: string
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
+          type: string
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.keyValuePair:
+      title: keyValuePair
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name for this key-value pair
+        value:
+          type: string
+          description: Value for this key-value pair
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.archivedPrintJob:
+      title: archivedPrintJob
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        acquiredByPrinter:
+          type: boolean
+          description: True if the job was acquired by a printer; false otherwise. Read-only.
+        acquiredDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The dateTimeOffset when the job was acquired by the printer, if any. Read-only.
+          format: date-time
+          nullable: true
+        completionDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The dateTimeOffset when the job was completed, canceled, or aborted. Read-only.
+          format: date-time
+          nullable: true
+        copiesPrinted:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: The number of copies that were printed. Read-only.
+          format: int32
+        createdBy:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.userIdentity'
+          - type: object
+            nullable: true
+          description: The user who created the print job. Read-only.
+        createdDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The dateTimeOffset when the job was created. Read-only.
+          format: date-time
+        id:
+          type: string
+          description: The archived print job's GUID. Read-only.
+        printerId:
+          type: string
+          description: The printer ID that the job was queued for. Read-only.
+          nullable: true
+        printerName:
+          type: string
+          description: The printer name that the job was queued for. Read-only.
+          nullable: true
+        processingState:
+          $ref: '#/components/schemas/microsoft.graph.printJobProcessingState'
+        '@odata.type':
+          type: string
+    microsoft.graph.relyingPartyDetailedSummary:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: relyingPartyDetailedSummary
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          failedSignInCount:
+            type: number
+            description: Number of failed sign ins on AD FS in the period specified. Supports $orderby, $filter (eq).
+            format: int64
+          migrationStatus:
+            $ref: '#/components/schemas/microsoft.graph.migrationStatus'
+          migrationValidationDetails:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.keyValuePair'
+            description: Specifies all the validations checks done on applications config details.
+          relyingPartyId:
+            type: string
+            description: Identifies the relying party to this federation service. It's used when issuing claims to the relying party. Supports $orderby, $filter (eq).
+          relyingPartyName:
+            type: string
+            description: Name of the relying party's website or other entity on the Internet that uses an identity provider to authenticate a user who wants to log in. Supports $orderby, $filter (eq).
+          replyUrls:
+            type: array
+            items:
+              type: string
+            description: Specifies where the relying party expects to receive the token.
+          serviceId:
+            type: string
+            description: Uniquely identifies the Active Directory forest. Supports $orderby, $filter (eq).
+          signInSuccessRate:
+            oneOf:
+            - type: number
+              format: double
+              nullable: true
+            - type: string
+              nullable: true
+            - $ref: '#/components/schemas/ReferenceNumeric'
+            description: Calculated as Number of successful / (Number of successful + Number of failed sign ins) or successfulSignInCount / totalSignInCount on AD FS in the period specified. Supports $orderby, $filter (eq).
+          successfulSignInCount:
+            type: number
+            description: Number of successful sign ins on AD FS. Supports $orderby, $filter (eq).
+            format: int64
+          totalSignInCount:
+            type: number
+            description: Number of successful + failed sign ins on AD FS in the period specified. Supports $orderby, $filter (eq).
+            format: int64
+          uniqueUserCount:
+            type: number
+            description: Number of unique users that signed into the application. Supports $orderby, $filter (eq).
+            format: int64
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.relyingPartyDetailedSummary'
     ReferenceNumeric:
       enum:
       - -INF
@@ -3615,6 +3842,71 @@ components:
       - NaN
       type: string
       nullable: true
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.printJobProcessingState:
+      title: printJobProcessingState
+      enum:
+      - unknown
+      - pending
+      - processing
+      - paused
+      - stopped
+      - completed
+      - canceled
+      - aborted
+      - unknownFutureValue
+      type: string
+    microsoft.graph.report:
+      title: report
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        content:
+          type: string
+          description: The http content that has the data
+          format: base64url
+          nullable: true
+        '@odata.type':
+          type: string
+      description: Device Configuration profile History reports.
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type: integer
+          format: int64
+          nullable: true
+        '@odata.nextLink':
+          type: string
+          nullable: true
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -4684,311 +4976,18 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.userIdentity:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.identity'
-      - title: userIdentity
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          ipAddress:
-            type: string
-            description: Indicates the client IP address associated with the user performing the activity (audit log only).
-            nullable: true
-          userPrincipalName:
-            type: string
-            description: The userPrincipalName attribute of the user.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.userIdentity'
-      x-ms-discriminator-value: '#microsoft.graph.userIdentity'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.identity:
-      title: identity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
-          nullable: true
-        id:
-          type: string
-          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
-          nullable: true
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
-          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
-          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
-          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
-          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
-          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
-          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
-          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
-          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
-          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
-          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
-          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
-          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
-          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
-          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
-          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
-          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
-          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
-          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
-          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.relyingPartyDetailedSummary:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: relyingPartyDetailedSummary
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          failedSignInCount:
-            type: number
-            description: Number of failed sign ins on AD FS in the period specified. Supports $orderby, $filter (eq).
-            format: int64
-          migrationStatus:
-            $ref: '#/components/schemas/microsoft.graph.migrationStatus'
-          migrationValidationDetails:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.keyValuePair'
-            description: Specifies all the validations checks done on applications config details.
-          relyingPartyId:
-            type: string
-            description: Identifies the relying party to this federation service. It's used when issuing claims to the relying party. Supports $orderby, $filter (eq).
-          relyingPartyName:
-            type: string
-            description: Name of the relying party's website or other entity on the Internet that uses an identity provider to authenticate a user who wants to log in. Supports $orderby, $filter (eq).
-          replyUrls:
-            type: array
-            items:
-              type: string
-            description: Specifies where the relying party expects to receive the token.
-          serviceId:
-            type: string
-            description: Uniquely identifies the Active Directory forest. Supports $orderby, $filter (eq).
-          signInSuccessRate:
-            oneOf:
-            - type: number
-              format: double
-              nullable: true
-            - type: string
-              nullable: true
-            - $ref: '#/components/schemas/ReferenceNumeric'
-            description: Calculated as Number of successful / (Number of successful + Number of failed sign ins) or successfulSignInCount / totalSignInCount on AD FS in the period specified. Supports $orderby, $filter (eq).
-          successfulSignInCount:
-            type: number
-            description: Number of successful sign ins on AD FS. Supports $orderby, $filter (eq).
-            format: int64
-          totalSignInCount:
-            type: number
-            description: Number of successful + failed sign ins on AD FS in the period specified. Supports $orderby, $filter (eq).
-            format: int64
-          uniqueUserCount:
-            type: number
-            description: Number of unique users that signed into the application. Supports $orderby, $filter (eq).
-            format: int64
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.relyingPartyDetailedSummary'
-    microsoft.graph.printJobProcessingState:
-      title: printJobProcessingState
-      enum:
-      - unknown
-      - pending
-      - processing
-      - paused
-      - stopped
-      - completed
-      - canceled
-      - aborted
-      - unknownFutureValue
-      type: string
-    microsoft.graph.keyValuePair:
-      title: keyValuePair
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name for this key-value pair
-        value:
-          type: string
-          description: Value for this key-value pair
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.archivedPrintJob:
-      title: archivedPrintJob
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        acquiredByPrinter:
-          type: boolean
-          description: True if the job was acquired by a printer; false otherwise. Read-only.
-        acquiredDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The dateTimeOffset when the job was acquired by the printer, if any. Read-only.
-          format: date-time
-          nullable: true
-        completionDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The dateTimeOffset when the job was completed, canceled, or aborted. Read-only.
-          format: date-time
-          nullable: true
-        copiesPrinted:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: The number of copies that were printed. Read-only.
-          format: int32
-        createdBy:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.userIdentity'
-          - type: object
-            nullable: true
-          description: The user who created the print job. Read-only.
-        createdDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The dateTimeOffset when the job was created. Read-only.
-          format: date-time
-        id:
-          type: string
-          description: The archived print job's GUID. Read-only.
-        printerId:
-          type: string
-          description: The printer ID that the job was queued for. Read-only.
-          nullable: true
-        printerName:
-          type: string
-          description: The printer name that the job was queued for. Read-only.
-          nullable: true
-        processingState:
-          $ref: '#/components/schemas/microsoft.graph.printJobProcessingState'
-        '@odata.type':
-          type: string
-    microsoft.graph.report:
-      title: report
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        content:
-          type: string
-          description: The http content that has the data
-          format: base64url
-          nullable: true
-        '@odata.type':
-          type: string
-      description: Device Configuration profile History reports.
-    microsoft.graph.migrationStatus:
-      title: migrationStatus
-      enum:
-      - ready
-      - needsReview
-      - additionalStepsRequired
-      - unknownFutureValue
-      type: string
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   parameters:
-    count:
-      name: $count
+    filter:
+      name: $filter
       in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
+      description: Filter items by property values
       style: form
       explode: false
       schema:
@@ -5003,6 +5002,14 @@ components:
         minimum: 0
         type: integer
       example: 50
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     skip:
       name: $skip
       in: query
@@ -5012,18 +5019,11 @@ components:
       schema:
         minimum: 0
         type: integer
-    filter:
-      name: $filter
+    search:
+      name: $search
       in: query
-      description: Filter items by property values
+      description: Search items by search phrases
       style: form
       explode: false
       schema:
         type: string
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

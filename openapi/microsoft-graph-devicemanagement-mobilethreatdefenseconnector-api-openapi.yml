@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin deviceManagement.mobileThreatDefenseConnector API
+  title: Microsoft Graph Admin Admin.admin Device Management.mobile Threat Defense Connector API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -208,26 +208,9 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    ODataCountResponse:
+      type: integer
+      format: int32
     microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
@@ -241,9 +224,6 @@ components:
         target:
           type: string
           nullable: true
-    ODataCountResponse:
-      type: integer
-      format: int32
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -266,6 +246,46 @@ components:
           nullable: true
         '@odata.type':
           type: string
+    microsoft.graph.mobileThreatPartnerTenantState:
+      title: mobileThreatPartnerTenantState
+      enum:
+      - unavailable
+      - available
+      - enabled
+      - unresponsive
+      - unknownFutureValue
+      type: string
+      description: Partner state of this tenant.
+      x-ms-enum:
+        name: mobileThreatPartnerTenantState
+        modelAsString: false
+        values:
+        - value: unavailable
+          description: Partner is unavailable.
+          name: unavailable
+        - value: available
+          description: Partner is available.
+          name: available
+        - value: enabled
+          description: Partner is enabled.
+          name: enabled
+        - value: unresponsive
+          description: Partner is unresponsive.
+          name: unresponsive
+        - value: unknownFutureValue
+          description: Evolvable enumeration sentinel value. Do not use.
+          name: unknownFutureValue
+    microsoft.graph.mobileThreatDefenseConnectorCollectionResponse:
+      title: Collection of mobileThreatDefenseConnector
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mobileThreatDefenseConnector'
     microsoft.graph.mobileThreatDefenseConnector:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -327,6 +347,33 @@ components:
             type: string
         description: Entity which represents a connection to Mobile Threat Defense partner.
       x-ms-discriminator-value: '#microsoft.graph.mobileThreatDefenseConnector'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -1407,73 +1454,15 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.mobileThreatDefenseConnectorCollectionResponse:
-      title: Collection of mobileThreatDefenseConnector
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mobileThreatDefenseConnector'
-    microsoft.graph.mobileThreatPartnerTenantState:
-      title: mobileThreatPartnerTenantState
-      enum:
-      - unavailable
-      - available
-      - enabled
-      - unresponsive
-      - unknownFutureValue
-      type: string
-      description: Partner state of this tenant.
-      x-ms-enum:
-        name: mobileThreatPartnerTenantState
-        modelAsString: false
-        values:
-        - value: unavailable
-          description: Partner is unavailable.
-          name: unavailable
-        - value: available
-          description: Partner is available.
-          name: available
-        - value: enabled
-          description: Partner is enabled.
-          name: enabled
-        - value: unresponsive
-          description: Partner is unresponsive.
-          name: unresponsive
-        - value: unknownFutureValue
-          description: Evolvable enumeration sentinel value. Do not use.
-          name: unknownFutureValue
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-  responses:
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.mobileThreatDefenseConnectorCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.mobileThreatDefenseConnectorCollectionResponse'
   parameters:
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
     top:
       name: $top
       in: query
@@ -1484,10 +1473,10 @@ components:
         minimum: 0
         type: integer
       example: 50
-    filter:
-      name: $filter
+    search:
+      name: $search
       in: query
-      description: Filter items by property values
+      description: Search items by search phrases
       style: form
       explode: false
       schema:
@@ -1509,11 +1498,22 @@ components:
       explode: false
       schema:
         type: boolean
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+  responses:
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.mobileThreatDefenseConnectorCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.mobileThreatDefenseConnectorCollectionResponse'

@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Internet Explorer Mode API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -127,14 +127,46 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: default
 components:
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
+  examples:
+    UpdateInternetExplorerModeResponse:
+      summary: Example response for updated Internet Explorer mode settings
+      value:
+        id: internetExplorerMode
+        siteLists: []
+        '@odata.type': '#microsoft.graph.internetExplorerMode'
+    UpdateInternetExplorerModeRequest:
+      summary: Example request for updating Internet Explorer mode settings
+      value:
+        '@odata.type': '#microsoft.graph.internetExplorerMode'
+    GetInternetExplorerModeResponse:
+      summary: Example response for getting Internet Explorer mode settings
+      value:
+        id: internetExplorerMode
+        siteLists: []
+        '@odata.type': '#microsoft.graph.internetExplorerMode'
   schemas:
+    ODataError:
+      title: ODataError
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    MainError:
+      title: MainError
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
     InternetExplorerMode:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -164,14 +196,6 @@ components:
       - published
       - pending
       - unknownFutureValue
-    ODataError:
-      title: ODataError
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
     BrowserSiteList:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -192,34 +216,10 @@ components:
             $ref: '#/components/schemas/BrowserSiteListStatus'
           '@odata.type':
             type: string
-    MainError:
-      title: MainError
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-  examples:
-    UpdateInternetExplorerModeRequest:
-      summary: Example request for updating Internet Explorer mode settings
-      value:
-        '@odata.type': '#microsoft.graph.internetExplorerMode'
-    UpdateInternetExplorerModeResponse:
-      summary: Example response for updated Internet Explorer mode settings
-      value:
-        id: internetExplorerMode
-        siteLists: []
-        '@odata.type': '#microsoft.graph.internetExplorerMode'
-    GetInternetExplorerModeResponse:
-      summary: Example response for getting Internet Explorer mode settings
-      value:
-        id: internetExplorerMode
-        siteLists: []
-        '@odata.type': '#microsoft.graph.internetExplorerMode'
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'

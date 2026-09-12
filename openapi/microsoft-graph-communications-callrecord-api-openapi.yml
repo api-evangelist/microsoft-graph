@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin communications.callRecord API
+  title: Microsoft Graph Admin Admin.admin Communications.call Record API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -114,7 +114,11 @@ paths:
       tags:
       - communications.callRecord
       summary: Microsoft Graph Get callRecord
-      description: "Retrieve the properties and relationships of a callRecord object. You can get the id of a callRecord in two ways:\r\n* Subscribe to change notifications to the /communications/callRecords endpoint.\r\n* Use the callChainId property of a call. The call record is available only after the associated call is completed."
+      description: 'Retrieve the properties and relationships of a callRecord object. You can get the id of a callRecord in two ways:
+
+        * Subscribe to change notifications to the /communications/callRecords endpoint.
+
+        * Use the callChainId property of a call. The call record is available only after the associated call is completed.'
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/callrecords-callrecord-get?view=graph-rest-1.0
@@ -1077,104 +1081,589 @@ paths:
         nextLinkName: '@odata.nextLink'
         operationName: listMore
 components:
-  responses:
-    microsoft.graph.callRecords.participantCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.callRecords.participantCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.callRecords.callRecordCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.callRecords.callRecordCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.callRecords.segmentCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.callRecords.segmentCollectionResponse'
-    microsoft.graph.callRecords.sessionCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.callRecords.sessionCollectionResponse'
   schemas:
-    microsoft.graph.communicationsIdentitySet:
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    microsoft.graph.callRecords.organizer:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.identitySet'
-      - title: communicationsIdentitySet
+      - $ref: '#/components/schemas/microsoft.graph.callRecords.participantBase'
+      - title: organizer
         required:
         - '@odata.type'
         type: object
         properties:
-          applicationInstance:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identity'
-            - type: object
-              nullable: true
-            description: The application instance associated with this action.
-          assertedIdentity:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identity'
-            - type: object
-              nullable: true
-            description: An identity the participant would like to present itself as to the other participants in the call.
-          azureCommunicationServicesUser:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identity'
-            - type: object
-              nullable: true
-            description: The Azure Communication Services user associated with this action.
-          encrypted:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identity'
-            - type: object
-              nullable: true
-            description: The encrypted user associated with this action.
-          endpointType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.endpointType'
-            - type: object
-              nullable: true
-            description: 'Type of endpoint that the participant uses. The possible values are: default, voicemail, skypeForBusiness, skypeForBusinessVoipPhone, unknownFutureValue.'
-          guest:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identity'
-            - type: object
-              nullable: true
-            description: The guest user associated with this action.
-          onPremises:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identity'
-            - type: object
-              nullable: true
-            description: The Skype for Business on-premises user associated with this action.
-          phone:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identity'
-            - type: object
-              nullable: true
-            description: The phone user associated with this action.
           '@odata.type':
             type: string
-            default: '#microsoft.graph.communicationsIdentitySet'
-      x-ms-discriminator-value: '#microsoft.graph.communicationsIdentitySet'
+            default: '#microsoft.graph.callRecords.organizer'
+      x-ms-discriminator-value: '#microsoft.graph.callRecords.organizer'
+    microsoft.graph.callRecords.directRoutingLogRow:
+      title: directRoutingLogRow
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        calleeNumber:
+          type: string
+          description: Number of the user or bot who received the call. E.164 format, but might include other data.
+          nullable: true
+        callEndSubReason:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: In addition to the SIP codes, Microsoft has subcodes that indicate the specific issue.
+          format: int32
+          nullable: true
+        callerNumber:
+          type: string
+          description: Number of the user or bot who made the call. E.164 format, but might include other data.
+          nullable: true
+        callType:
+          type: string
+          description: Call type and direction.
+          nullable: true
+        correlationId:
+          type: string
+          description: Identifier for the call that you can use when calling Microsoft Support. GUID.
+          nullable: true
+        duration:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Duration of the call in seconds.
+          format: int32
+          nullable: true
+        endDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Only exists for successful (fully established) calls. Time when call ended.
+          format: date-time
+          nullable: true
+        failureDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Only exists for failed (not fully established) calls.
+          format: date-time
+          nullable: true
+        finalSipCode:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: The final response code with which the call ended. For more information, see RFC 3261.
+          format: int32
+          nullable: true
+        finalSipCodePhrase:
+          type: string
+          description: Description of the SIP code and Microsoft subcode.
+          nullable: true
+        id:
+          type: string
+          description: Unique call identifier. GUID.
+          nullable: true
+        inviteDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The date and time when the initial invite was sent.
+          format: date-time
+          nullable: true
+        mediaBypassEnabled:
+          type: boolean
+          description: Indicates whether the trunk was enabled for media bypass.
+          nullable: true
+        mediaPathLocation:
+          type: string
+          description: The datacenter used for media path in a nonbypass call.
+          nullable: true
+        signalingLocation:
+          type: string
+          description: The datacenter used for signaling for both bypass and nonbypass calls.
+          nullable: true
+        startDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Call start time.For failed and unanswered calls, this value can be equal to the invite or failure time.
+          format: date-time
+          nullable: true
+        successfulCall:
+          type: boolean
+          description: Success or attempt.
+          nullable: true
+        trunkFullyQualifiedDomainName:
+          type: string
+          description: Fully qualified domain name of the session border controller.
+          nullable: true
+        userDisplayName:
+          type: string
+          description: Display name of the user.
+          nullable: true
+        userId:
+          type: string
+          description: Calling user's ID in Microsoft Graph. This and other user information is null/empty for bot call types. GUID.
+          nullable: true
+        userPrincipalName:
+          type: string
+          description: UserPrincipalName (sign-in name) in Microsoft Entra ID. This value is usually the same as the user's SIP Address, and can be the same as the user's email address.
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.callRecords.userAgent:
+      title: userAgent
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        applicationVersion:
+          type: string
+          description: Identifies the version of application software used by this endpoint.
+          nullable: true
+        headerValue:
+          type: string
+          description: User-agent header value reported by this endpoint.
+          nullable: true
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.callRecords.clientUserAgent': '#/components/schemas/microsoft.graph.callRecords.clientUserAgent'
+          '#microsoft.graph.callRecords.serviceUserAgent': '#/components/schemas/microsoft.graph.callRecords.serviceUserAgent'
+    microsoft.graph.identity:
+      title: identity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
+          nullable: true
+        id:
+          type: string
+          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
+          nullable: true
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
+          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
+          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
+          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
+          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
+          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
+          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
+          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
+          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
+          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
+          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
+          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
+          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
+          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
+          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
+          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
+          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
+          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
+          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
+          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
+    microsoft.graph.callRecords.failureInfo:
+      title: failureInfo
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Classification of why a call or portion of a call failed.
+          nullable: true
+        stage:
+          $ref: '#/components/schemas/microsoft.graph.callRecords.failureStage'
+        '@odata.type':
+          type: string
+    microsoft.graph.callRecords.wifiBand:
+      title: wifiBand
+      enum:
+      - unknown
+      - frequency24GHz
+      - frequency50GHz
+      - frequency60GHz
+      - unknownFutureValue
+      type: string
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type: integer
+          format: int64
+          nullable: true
+        '@odata.nextLink':
+          type: string
+          nullable: true
+    microsoft.graph.callRecords.mediaStream:
+      title: mediaStream
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        audioCodec:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.callRecords.audioCodec'
+          - type: object
+            nullable: true
+          description: 'Codec name used to encode audio for transmission on the network. The possible values are: unknown, invalid, cn, pcma, pcmu, amrWide, g722, g7221, g7221c, g729, multiChannelAudio, muchv2, opus, satin, satinFullband, rtAudio8, rtAudio16, silk, silkNarrow, silkWide, siren, xmsRta, unknownFutureValue.'
+        averageAudioDegradation:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Average Network Mean Opinion Score degradation for stream. Represents how much the network loss and jitter has impacted the quality of received audio.
+        averageAudioNetworkJitter:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: Average jitter for the stream computed as specified in RFC 3550, denoted in ISO 8601 format. For example, 1 second is denoted as 'PT1S', where 'P' is the duration designator, 'T' is the time designator, and 'S' is the second designator.
+          format: duration
+          nullable: true
+        averageBandwidthEstimate:
+          type: number
+          description: Average estimated bandwidth available between two endpoints in bits per second.
+          format: int64
+          nullable: true
+        averageFreezeDuration:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: Average duration of the received freezing time in the video stream.
+          format: duration
+          nullable: true
+        averageJitter:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: Average jitter for the stream computed as specified in RFC 3550, denoted in ISO 8601 format. For example, 1 second is denoted as 'PT1S', where 'P' is the duration designator, 'T' is the time designator, and 'S' is the second designator.
+          format: duration
+          nullable: true
+        averagePacketLossRate:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Average packet loss rate for stream.
+        averageRatioOfConcealedSamples:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Ratio of the number of audio frames with samples generated by packet loss concealment to the total number of audio frames.
+        averageReceivedFrameRate:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Average frames per second received for all video streams computed over the duration of the session.
+        averageRoundTripTime:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: Average network propagation round-trip time computed as specified in RFC 3550, denoted in ISO 8601 format. For example, 1 second is denoted as 'PT1S', where 'P' is the duration designator, 'T' is the time designator, and 'S' is the second designator.
+          format: duration
+          nullable: true
+        averageVideoFrameLossPercentage:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Average percentage of video frames lost as displayed to the user.
+        averageVideoFrameRate:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Average frames per second received for a video stream, computed over the duration of the session.
+        averageVideoPacketLossRate:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Average fraction of packets lost, as specified in RFC 3550, computed over the duration of the session.
+        endDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: UTC time when the stream ended. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. This field is only available for streams that use the SIP protocol.
+          format: date-time
+          nullable: true
+        isAudioForwardErrorCorrectionUsed:
+          type: boolean
+          description: Indicates whether the forward error correction (FEC) was used at some point during the session. The default value is null.
+          nullable: true
+        lowFrameRateRatio:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Fraction of the call where frame rate is less than 7.5 frames per second.
+        lowVideoProcessingCapabilityRatio:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Fraction of the call that the client is running less than 70% expected video processing capability.
+        maxAudioNetworkJitter:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: Maximum of audio network jitter computed over each of the 20 second windows during the session, denoted in ISO 8601 format. For example, 1 second is denoted as 'PT1S', where 'P' is the duration designator, 'T' is the time designator, and 'S' is the second designator.
+          format: duration
+          nullable: true
+        maxJitter:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: Maximum jitter for the stream computed as specified in RFC 3550, denoted in ISO 8601 format. For example, 1 second is denoted as 'PT1S', where 'P' is the duration designator, 'T' is the time designator, and 'S' is the second designator.
+          format: duration
+          nullable: true
+        maxPacketLossRate:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Maximum packet loss rate for the stream.
+        maxRatioOfConcealedSamples:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Maximum ratio of packets concealed by the healer.
+        maxRoundTripTime:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: Maximum network propagation round-trip time computed as specified in RFC 3550, denoted in ISO 8601 format. For example, 1 second is denoted as 'PT1S', where 'P' is the duration designator, 'T' is the time designator, and 'S' is the second designator.
+          format: duration
+          nullable: true
+        packetUtilization:
+          type: number
+          description: Packet count for the stream.
+          format: int64
+          nullable: true
+        postForwardErrorCorrectionPacketLossRate:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Packet loss rate after FEC has been applied aggregated across all video streams and codecs.
+        rmsFreezeDuration:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: Average duration of the received freezing time in the video stream represented in root mean square.
+          format: duration
+          nullable: true
+        startDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: UTC time when the stream started. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. This field is only available for streams that use the SIP protocol.
+          format: date-time
+          nullable: true
+        streamDirection:
+          $ref: '#/components/schemas/microsoft.graph.callRecords.mediaStreamDirection'
+        streamId:
+          type: string
+          description: Unique identifier for the stream.
+          nullable: true
+        videoCodec:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.callRecords.videoCodec'
+          - type: object
+            nullable: true
+          description: 'Codec name used to encode video for transmission on the network. The possible values are: unknown, invalid, av1, h263, h264, h264s, h264uc, h265, rtvc1, rtVideo, xrtvc1, unknownFutureValue.'
+        wasMediaBypassed:
+          type: boolean
+          description: True if the media stream bypassed the Mediation Server and went straight between client and PSTN Gateway/PBX, false otherwise.
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type: string
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
+          type: string
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.callRecords.endpoint:
+      title: endpoint
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        userAgent:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.callRecords.userAgent'
+          - type: object
+            nullable: true
+          description: User-agent reported by this endpoint.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.callRecords.participantEndpoint': '#/components/schemas/microsoft.graph.callRecords.participantEndpoint'
+          '#microsoft.graph.callRecords.serviceEndpoint': '#/components/schemas/microsoft.graph.callRecords.serviceEndpoint'
+    microsoft.graph.callRecords.segment:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: segment
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          callee:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.callRecords.endpoint'
+            - type: object
+              nullable: true
+            description: Endpoint that answered this segment.
+          caller:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.callRecords.endpoint'
+            - type: object
+              nullable: true
+            description: Endpoint that initiated this segment.
+          endDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: UTC time when the segment ended. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+            format: date-time
+          failureInfo:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.callRecords.failureInfo'
+            - type: object
+              nullable: true
+            description: Failure information associated with the segment if it failed.
+          media:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.callRecords.media'
+            description: Media associated with this segment.
+          startDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: UTC time when the segment started. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+            format: date-time
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.callRecords.segment'
+    microsoft.graph.callRecords.session:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: session
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          callee:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.callRecords.endpoint'
+            - type: object
+              nullable: true
+            description: Endpoint that answered the session.
+          caller:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.callRecords.endpoint'
+            - type: object
+              nullable: true
+            description: Endpoint that initiated the session.
+          endDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: UTC time when the last user left the session. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+            format: date-time
+          failureInfo:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.callRecords.failureInfo'
+            - type: object
+              nullable: true
+            description: Failure information associated with the session if the session failed.
+          isTest:
+            type: boolean
+            description: Specifies whether the session is a test.
+            nullable: true
+          modalities:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.callRecords.modality'
+            description: 'List of modalities present in the session. The possible values are: unknown, audio, video, videoBasedScreenSharing, data, screenSharing, unknownFutureValue.'
+          startDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: UTC time when the first user joined the session. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+            format: date-time
+          segments:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.callRecords.segment'
+            description: The list of segments involved in the session. Read-only. Nullable.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.callRecords.session'
     microsoft.graph.callRecords.callType:
       title: callType
       enum:
@@ -1183,6 +1672,119 @@ components:
       - peerToPeer
       - unknownFutureValue
       type: string
+    microsoft.graph.callRecords.traceRouteHop:
+      title: traceRouteHop
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        hopCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: The network path count of this hop that was used to compute the RTT.
+          format: int32
+          nullable: true
+        ipAddress:
+          type: string
+          description: IP address used for this hop in the network trace.
+          nullable: true
+        roundTripTime:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: The time from when the trace route packet was sent from the client to this hop and back to the client, denoted in ISO 8601 format. For example, 1 second is denoted as PT1S, where P is the duration designator, T is the time designator, and S is the second designator.
+          format: duration
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.callRecords.networkTransportProtocol:
+      title: networkTransportProtocol
+      enum:
+      - unknown
+      - udp
+      - tcp
+      - unknownFutureValue
+      type: string
+    microsoft.graph.callRecords.networkConnectionType:
+      title: networkConnectionType
+      enum:
+      - unknown
+      - wired
+      - wifi
+      - mobile
+      - tunnel
+      - unknownFutureValue
+      type: string
+    microsoft.graph.callRecords.segmentCollectionResponse:
+      title: Collection of segment
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.callRecords.segment'
+    microsoft.graph.callRecords.wifiRadioType:
+      title: wifiRadioType
+      enum:
+      - unknown
+      - wifi80211a
+      - wifi80211b
+      - wifi80211g
+      - wifi80211n
+      - wifi80211ac
+      - wifi80211ax
+      - unknownFutureValue
+      type: string
+    microsoft.graph.callRecords.mediaStreamDirection:
+      title: mediaStreamDirection
+      enum:
+      - callerToCallee
+      - calleeToCaller
+      type: string
+    microsoft.graph.callRecords.media:
+      title: media
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        calleeDevice:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.callRecords.deviceInfo'
+          - type: object
+            nullable: true
+          description: Device information associated with the callee endpoint of this media.
+        calleeNetwork:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.callRecords.networkInfo'
+          - type: object
+            nullable: true
+          description: Network information associated with the callee endpoint of this media.
+        callerDevice:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.callRecords.deviceInfo'
+          - type: object
+            nullable: true
+          description: Device information associated with the caller endpoint of this media.
+        callerNetwork:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.callRecords.networkInfo'
+          - type: object
+            nullable: true
+          description: Network information associated with the caller endpoint of this media.
+        label:
+          type: string
+          description: How the media was identified during media negotiation stage.
+          nullable: true
+        streams:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.callRecords.mediaStream'
+          description: Network streams associated with this media.
+        '@odata.type':
+          type: string
     ReferenceNumeric:
       enum:
       - -INF
@@ -1190,6 +1792,210 @@ components:
       - NaN
       type: string
       nullable: true
+    microsoft.graph.endpointType:
+      title: endpointType
+      enum:
+      - default
+      - voicemail
+      - skypeForBusiness
+      - skypeForBusinessVoipPhone
+      - unknownFutureValue
+      type: string
+    microsoft.graph.callRecords.participantCollectionResponse:
+      title: Collection of participant
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.callRecords.participant'
+    microsoft.graph.callRecords.pstnCallDurationSource:
+      title: pstnCallDurationSource
+      enum:
+      - microsoft
+      - operator
+      type: string
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.callRecords.administrativeUnitInfo:
+      title: administrativeUnitInfo
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the administrative unit.
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.callRecords.failureStage:
+      title: failureStage
+      enum:
+      - unknown
+      - callSetup
+      - midcall
+      - unknownFutureValue
+      type: string
+    microsoft.graph.callRecords.audioCodec:
+      title: audioCodec
+      enum:
+      - unknown
+      - invalid
+      - cn
+      - pcma
+      - pcmu
+      - amrWide
+      - g722
+      - g7221
+      - g7221c
+      - g729
+      - multiChannelAudio
+      - muchv2
+      - opus
+      - satin
+      - satinFullband
+      - rtAudio8
+      - rtAudio16
+      - silk
+      - silkNarrow
+      - silkWide
+      - siren
+      - xmsRta
+      - unknownFutureValue
+      type: string
+    microsoft.graph.callRecords.pstnCallLogRow:
+      title: pstnCallLogRow
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        callDurationSource:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.callRecords.pstnCallDurationSource'
+          - type: object
+            nullable: true
+          description: The source of the call duration data. If the call uses a third-party telecommunications operator via the Operator Connect Program, the operator can provide their own call duration data. In this case, the property value is operator. Otherwise, the value is microsoft.
+        calleeNumber:
+          type: string
+          description: Number dialed in E.164 format.
+          nullable: true
+        callerNumber:
+          type: string
+          description: Number that received the call for inbound calls or the number dialed for outbound calls. E.164 format.
+          nullable: true
+        callId:
+          type: string
+          description: Call identifier. Not guaranteed to be unique.
+          nullable: true
+        callType:
+          type: string
+          description: Indicates whether the call was a PSTN outbound or inbound call and the type of call, such as a call placed by a user or an audio conference.
+          nullable: true
+        charge:
+          type: number
+          description: Amount of money or cost of the call that is charged to your account.
+          format: decimal
+          nullable: true
+        conferenceId:
+          type: string
+          description: ID of the audio conference.
+          nullable: true
+        connectionCharge:
+          type: number
+          description: Connection fee price.
+          format: decimal
+          nullable: true
+        currency:
+          type: string
+          description: Type of currency used to calculate the cost of the call. For details, see (ISO 4217.
+          nullable: true
+        destinationContext:
+          type: string
+          description: Whether the call was domestic (within a country or region) or international (outside a country or region), based on the user's location.
+          nullable: true
+        destinationName:
+          type: string
+          description: Country or region dialed.
+          nullable: true
+        duration:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: How long the call was connected, in seconds.
+          format: int32
+          nullable: true
+        endDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Call end time.
+          format: date-time
+          nullable: true
+        id:
+          type: string
+          description: Unique call identifier. GUID.
+          nullable: true
+        inventoryType:
+          type: string
+          description: User's phone number type, such as a service of toll-free number.
+          nullable: true
+        licenseCapability:
+          type: string
+          description: The license used for the call.
+          nullable: true
+        operator:
+          type: string
+          description: The telecommunications operator which provided PSTN services for this call. This might be Microsoft, or it might be a third-party operator via the Operator Connect Program.
+          nullable: true
+        startDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Call start time.
+          format: date-time
+          nullable: true
+        tenantCountryCode:
+          type: string
+          description: Country code of the tenant. For details, see ISO 3166-1 alpha-2.
+          nullable: true
+        usageCountryCode:
+          type: string
+          description: Country code of the user. For details, see ISO 3166-1 alpha-2.
+          nullable: true
+        userDisplayName:
+          type: string
+          description: Display name of the user.
+          nullable: true
+        userId:
+          type: string
+          description: Calling user's ID in Microsoft Graph. GUID. This and other user info will be null/empty for bot call types (ucapin, ucapout).
+          nullable: true
+        userPrincipalName:
+          type: string
+          description: The user principal name (sign-in name) in Microsoft Entra ID. This is usually the same as the user's SIP address, and can be the same as the user's email address.
+          nullable: true
+        '@odata.type':
+          type: string
     microsoft.graph.callRecords.deviceInfo:
       title: deviceInfo
       required:
@@ -1357,6 +2163,407 @@ components:
           description: Glitches per 5 minute internal for the media endpoint's loudspeaker.
         '@odata.type':
           type: string
+    microsoft.graph.callRecords.sessionCollectionResponse:
+      title: Collection of session
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.callRecords.session'
+    microsoft.graph.callRecords.participantBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: participantBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          administrativeUnitInfos:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.callRecords.administrativeUnitInfo'
+            description: List of administrativeUnitInfo objects for the call participant.
+          identity:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.communicationsIdentitySet'
+            - type: object
+              nullable: true
+            description: The identity of the call participant.
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.callRecords.organizer': '#/components/schemas/microsoft.graph.callRecords.organizer'
+            '#microsoft.graph.callRecords.participant': '#/components/schemas/microsoft.graph.callRecords.participant'
+    microsoft.graph.callRecords.participant:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.callRecords.participantBase'
+      - title: participant
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.callRecords.participant'
+      x-ms-discriminator-value: '#microsoft.graph.callRecords.participant'
+    microsoft.graph.callRecords.modality:
+      title: modality
+      enum:
+      - audio
+      - video
+      - videoBasedScreenSharing
+      - data
+      - screenSharing
+      - unknownFutureValue
+      type: string
+    microsoft.graph.communicationsIdentitySet:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.identitySet'
+      - title: communicationsIdentitySet
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          applicationInstance:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identity'
+            - type: object
+              nullable: true
+            description: The application instance associated with this action.
+          assertedIdentity:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identity'
+            - type: object
+              nullable: true
+            description: An identity the participant would like to present itself as to the other participants in the call.
+          azureCommunicationServicesUser:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identity'
+            - type: object
+              nullable: true
+            description: The Azure Communication Services user associated with this action.
+          encrypted:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identity'
+            - type: object
+              nullable: true
+            description: The encrypted user associated with this action.
+          endpointType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.endpointType'
+            - type: object
+              nullable: true
+            description: 'Type of endpoint that the participant uses. The possible values are: default, voicemail, skypeForBusiness, skypeForBusinessVoipPhone, unknownFutureValue.'
+          guest:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identity'
+            - type: object
+              nullable: true
+            description: The guest user associated with this action.
+          onPremises:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identity'
+            - type: object
+              nullable: true
+            description: The Skype for Business on-premises user associated with this action.
+          phone:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identity'
+            - type: object
+              nullable: true
+            description: The phone user associated with this action.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.communicationsIdentitySet'
+      x-ms-discriminator-value: '#microsoft.graph.communicationsIdentitySet'
+    microsoft.graph.callRecords.callRecordCollectionResponse:
+      title: Collection of callRecord
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.callRecords.callRecord'
+    microsoft.graph.callRecords.networkInfo:
+      title: networkInfo
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        bandwidthLowEventRatio:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Fraction of the call that the media endpoint detected the available bandwidth or bandwidth policy was low enough to cause poor quality of the audio sent.
+        basicServiceSetIdentifier:
+          type: string
+          description: The wireless LAN basic service set identifier of the media endpoint used to connect to the network. This property isn't available if the user disables precise location sharing in their operating system or Microsoft Teams app settings.
+          nullable: true
+        connectionType:
+          $ref: '#/components/schemas/microsoft.graph.callRecords.networkConnectionType'
+        delayEventRatio:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Fraction of the call that the media endpoint detected the network delay was significant enough to impact the ability to have real-time two-way communication.
+        dnsSuffix:
+          type: string
+          description: DNS suffix associated with the network adapter of the media endpoint.
+          nullable: true
+        ipAddress:
+          type: string
+          description: IP address of the media endpoint.
+          nullable: true
+        linkSpeed:
+          type: number
+          description: Link speed in bits per second reported by the network adapter used by the media endpoint.
+          format: int64
+          nullable: true
+        macAddress:
+          type: string
+          description: The media access control (MAC) address of the media endpoint's network device. This value may be missing or shown as 02:00:00:00:00:00 due to operating system privacy policies.
+          nullable: true
+        networkTransportProtocol:
+          $ref: '#/components/schemas/microsoft.graph.callRecords.networkTransportProtocol'
+        port:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Network port number used by media endpoint.
+          format: int32
+          nullable: true
+        receivedQualityEventRatio:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Fraction of the call that the media endpoint detected the network was causing poor quality of the audio received.
+        reflexiveIPAddress:
+          type: string
+          description: IP address of the media endpoint as seen by the media relay server. This is typically the public internet IP address associated to the endpoint.
+          nullable: true
+        relayIPAddress:
+          type: string
+          description: IP address of the media relay server allocated by the media endpoint.
+          nullable: true
+        relayPort:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Network port number allocated on the media relay server by the media endpoint.
+          format: int32
+          nullable: true
+        sentQualityEventRatio:
+          oneOf:
+          - type: number
+            format: float
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Fraction of the call that the media endpoint detected the network was causing poor quality of the audio sent.
+        subnet:
+          type: string
+          description: Subnet used for media stream by the media endpoint.
+          nullable: true
+        traceRouteHops:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.callRecords.traceRouteHop'
+          description: List of network trace route hops collected for this media stream.*
+        wifiBand:
+          $ref: '#/components/schemas/microsoft.graph.callRecords.wifiBand'
+        wifiBatteryCharge:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Estimated remaining battery charge in percentage reported by the media endpoint.
+          format: int32
+          nullable: true
+        wifiChannel:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: WiFi channel used by the media endpoint.
+          format: int32
+          nullable: true
+        wifiMicrosoftDriver:
+          type: string
+          description: Name of the Microsoft WiFi driver used by the media endpoint. Value may be localized based on the language used by endpoint.
+          nullable: true
+        wifiMicrosoftDriverVersion:
+          type: string
+          description: Version of the Microsoft WiFi driver used by the media endpoint.
+          nullable: true
+        wifiRadioType:
+          $ref: '#/components/schemas/microsoft.graph.callRecords.wifiRadioType'
+        wifiSignalStrength:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: WiFi signal strength in percentage reported by the media endpoint.
+          format: int32
+          nullable: true
+        wifiVendorDriver:
+          type: string
+          description: Name of the WiFi driver used by the media endpoint. Value may be localized based on the language used by endpoint.
+          nullable: true
+        wifiVendorDriverVersion:
+          type: string
+          description: Version of the WiFi driver used by the media endpoint.
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.callRecords.videoCodec:
+      title: videoCodec
+      enum:
+      - unknown
+      - invalid
+      - av1
+      - h263
+      - h264
+      - h264s
+      - h264uc
+      - h265
+      - rtvc1
+      - rtVideo
+      - xrtvc1
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.identitySet:
+      title: identitySet
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        application:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type: object
+            nullable: true
+          description: Optional. The application associated with this action.
+        device:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type: object
+            nullable: true
+          description: Optional. The device associated with this action.
+        user:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type: object
+            nullable: true
+          description: Optional. The user associated with this action.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.aiInteractionMentionedIdentitySet': '#/components/schemas/microsoft.graph.aiInteractionMentionedIdentitySet'
+          '#microsoft.graph.chatMessageFromIdentitySet': '#/components/schemas/microsoft.graph.chatMessageFromIdentitySet'
+          '#microsoft.graph.chatMessageMentionedIdentitySet': '#/components/schemas/microsoft.graph.chatMessageMentionedIdentitySet'
+          '#microsoft.graph.chatMessageReactionIdentitySet': '#/components/schemas/microsoft.graph.chatMessageReactionIdentitySet'
+          '#microsoft.graph.communicationsIdentitySet': '#/components/schemas/microsoft.graph.communicationsIdentitySet'
+          '#microsoft.graph.engagementIdentitySet': '#/components/schemas/microsoft.graph.engagementIdentitySet'
+          '#microsoft.graph.sharePointIdentitySet': '#/components/schemas/microsoft.graph.sharePointIdentitySet'
+    microsoft.graph.callRecords.callRecord:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: callRecord
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          endDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: UTC time when the last user left the call. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+            format: date-time
+          joinWebUrl:
+            type: string
+            description: Meeting URL associated to the call. May not be available for a peerToPeer call record type.
+            nullable: true
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: UTC time when the call record was created. The DatetimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+            format: date-time
+          modalities:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.callRecords.modality'
+            description: 'List of all the modalities used in the call. The possible values are: unknown, audio, video, videoBasedScreenSharing, data, screenSharing, unknownFutureValue.'
+          organizer:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type: object
+              nullable: true
+            description: The organizing party's identity. The organizer property is deprecated and will stop returning data on June 30, 2026. Going forward, use the organizer_v2 relationship.
+          participants:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identitySet'
+            description: List of distinct identities involved in the call. Limited to 130 entries. The participants property is deprecated and will stop returning data on June 30, 2026. Going forward, use the participants_v2 relationship.
+          startDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: UTC time when the first user joined the call. The DatetimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          type:
+            $ref: '#/components/schemas/microsoft.graph.callRecords.callType'
+          version:
+            type: number
+            description: Monotonically increasing version of the call record. Higher version call records with the same id includes additional data compared to the lower version.
+            format: int64
+          organizer_v2:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.callRecords.organizer'
+            - type: object
+              nullable: true
+            description: Identity of the organizer of the call. This relationship is expanded by default in callRecord methods.
+            x-ms-navigationProperty: true
+          participants_v2:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.callRecords.participant'
+            description: List of distinct participants in the call.
+            x-ms-navigationProperty: true
+          sessions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.callRecords.session'
+            description: List of sessions involved in the call. Peer-to-peer calls typically only have one session, whereas group calls typically have at least one session per participant. Read-only. Nullable.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.callRecords.callRecord'
     microsoft.graph.entity:
       title: entity
       required:
@@ -2426,1259 +3633,48 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.callRecords.wifiBand:
-      title: wifiBand
-      enum:
-      - unknown
-      - frequency24GHz
-      - frequency50GHz
-      - frequency60GHz
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.callRecords.participantBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: participantBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          administrativeUnitInfos:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.callRecords.administrativeUnitInfo'
-            description: List of administrativeUnitInfo objects for the call participant.
-          identity:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.communicationsIdentitySet'
-            - type: object
-              nullable: true
-            description: The identity of the call participant.
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.callRecords.organizer': '#/components/schemas/microsoft.graph.callRecords.organizer'
-            '#microsoft.graph.callRecords.participant': '#/components/schemas/microsoft.graph.callRecords.participant'
-    microsoft.graph.callRecords.segment:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: segment
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          callee:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.callRecords.endpoint'
-            - type: object
-              nullable: true
-            description: Endpoint that answered this segment.
-          caller:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.callRecords.endpoint'
-            - type: object
-              nullable: true
-            description: Endpoint that initiated this segment.
-          endDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: UTC time when the segment ended. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-            format: date-time
-          failureInfo:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.callRecords.failureInfo'
-            - type: object
-              nullable: true
-            description: Failure information associated with the segment if it failed.
-          media:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.callRecords.media'
-            description: Media associated with this segment.
-          startDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: UTC time when the segment started. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-            format: date-time
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.callRecords.segment'
-    microsoft.graph.callRecords.failureStage:
-      title: failureStage
-      enum:
-      - unknown
-      - callSetup
-      - midcall
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.callRecords.pstnCallLogRow:
-      title: pstnCallLogRow
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        callDurationSource:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.callRecords.pstnCallDurationSource'
-          - type: object
-            nullable: true
-          description: The source of the call duration data. If the call uses a third-party telecommunications operator via the Operator Connect Program, the operator can provide their own call duration data. In this case, the property value is operator. Otherwise, the value is microsoft.
-        calleeNumber:
-          type: string
-          description: Number dialed in E.164 format.
-          nullable: true
-        callerNumber:
-          type: string
-          description: Number that received the call for inbound calls or the number dialed for outbound calls. E.164 format.
-          nullable: true
-        callId:
-          type: string
-          description: Call identifier. Not guaranteed to be unique.
-          nullable: true
-        callType:
-          type: string
-          description: Indicates whether the call was a PSTN outbound or inbound call and the type of call, such as a call placed by a user or an audio conference.
-          nullable: true
-        charge:
-          type: number
-          description: Amount of money or cost of the call that is charged to your account.
-          format: decimal
-          nullable: true
-        conferenceId:
-          type: string
-          description: ID of the audio conference.
-          nullable: true
-        connectionCharge:
-          type: number
-          description: Connection fee price.
-          format: decimal
-          nullable: true
-        currency:
-          type: string
-          description: Type of currency used to calculate the cost of the call. For details, see (ISO 4217.
-          nullable: true
-        destinationContext:
-          type: string
-          description: Whether the call was domestic (within a country or region) or international (outside a country or region), based on the user's location.
-          nullable: true
-        destinationName:
-          type: string
-          description: Country or region dialed.
-          nullable: true
-        duration:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: How long the call was connected, in seconds.
-          format: int32
-          nullable: true
-        endDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Call end time.
-          format: date-time
-          nullable: true
-        id:
-          type: string
-          description: Unique call identifier. GUID.
-          nullable: true
-        inventoryType:
-          type: string
-          description: User's phone number type, such as a service of toll-free number.
-          nullable: true
-        licenseCapability:
-          type: string
-          description: The license used for the call.
-          nullable: true
-        operator:
-          type: string
-          description: The telecommunications operator which provided PSTN services for this call. This might be Microsoft, or it might be a third-party operator via the Operator Connect Program.
-          nullable: true
-        startDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Call start time.
-          format: date-time
-          nullable: true
-        tenantCountryCode:
-          type: string
-          description: Country code of the tenant. For details, see ISO 3166-1 alpha-2.
-          nullable: true
-        usageCountryCode:
-          type: string
-          description: Country code of the user. For details, see ISO 3166-1 alpha-2.
-          nullable: true
-        userDisplayName:
-          type: string
-          description: Display name of the user.
-          nullable: true
-        userId:
-          type: string
-          description: Calling user's ID in Microsoft Graph. GUID. This and other user info will be null/empty for bot call types (ucapin, ucapout).
-          nullable: true
-        userPrincipalName:
-          type: string
-          description: The user principal name (sign-in name) in Microsoft Entra ID. This is usually the same as the user's SIP address, and can be the same as the user's email address.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.callRecords.videoCodec:
-      title: videoCodec
-      enum:
-      - unknown
-      - invalid
-      - av1
-      - h263
-      - h264
-      - h264s
-      - h264uc
-      - h265
-      - rtvc1
-      - rtVideo
-      - xrtvc1
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.callRecords.session:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: session
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          callee:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.callRecords.endpoint'
-            - type: object
-              nullable: true
-            description: Endpoint that answered the session.
-          caller:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.callRecords.endpoint'
-            - type: object
-              nullable: true
-            description: Endpoint that initiated the session.
-          endDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: UTC time when the last user left the session. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-            format: date-time
-          failureInfo:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.callRecords.failureInfo'
-            - type: object
-              nullable: true
-            description: Failure information associated with the session if the session failed.
-          isTest:
-            type: boolean
-            description: Specifies whether the session is a test.
-            nullable: true
-          modalities:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.callRecords.modality'
-            description: 'List of modalities present in the session. The possible values are: unknown, audio, video, videoBasedScreenSharing, data, screenSharing, unknownFutureValue.'
-          startDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: UTC time when the first user joined the session. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-            format: date-time
-          segments:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.callRecords.segment'
-            description: The list of segments involved in the session. Read-only. Nullable.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.callRecords.session'
-    microsoft.graph.callRecords.mediaStreamDirection:
-      title: mediaStreamDirection
-      enum:
-      - callerToCallee
-      - calleeToCaller
-      type: string
-    microsoft.graph.callRecords.failureInfo:
-      title: failureInfo
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        reason:
-          type: string
-          description: Classification of why a call or portion of a call failed.
-          nullable: true
-        stage:
-          $ref: '#/components/schemas/microsoft.graph.callRecords.failureStage'
-        '@odata.type':
-          type: string
-    microsoft.graph.callRecords.networkTransportProtocol:
-      title: networkTransportProtocol
-      enum:
-      - unknown
-      - udp
-      - tcp
-      - unknownFutureValue
-      type: string
-    microsoft.graph.callRecords.networkConnectionType:
-      title: networkConnectionType
-      enum:
-      - unknown
-      - wired
-      - wifi
-      - mobile
-      - tunnel
-      - unknownFutureValue
-      type: string
-    microsoft.graph.identitySet:
-      title: identitySet
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        application:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
-          description: Optional. The application associated with this action.
-        device:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
-          description: Optional. The device associated with this action.
-        user:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
-          description: Optional. The user associated with this action.
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.aiInteractionMentionedIdentitySet': '#/components/schemas/microsoft.graph.aiInteractionMentionedIdentitySet'
-          '#microsoft.graph.chatMessageFromIdentitySet': '#/components/schemas/microsoft.graph.chatMessageFromIdentitySet'
-          '#microsoft.graph.chatMessageMentionedIdentitySet': '#/components/schemas/microsoft.graph.chatMessageMentionedIdentitySet'
-          '#microsoft.graph.chatMessageReactionIdentitySet': '#/components/schemas/microsoft.graph.chatMessageReactionIdentitySet'
-          '#microsoft.graph.communicationsIdentitySet': '#/components/schemas/microsoft.graph.communicationsIdentitySet'
-          '#microsoft.graph.engagementIdentitySet': '#/components/schemas/microsoft.graph.engagementIdentitySet'
-          '#microsoft.graph.sharePointIdentitySet': '#/components/schemas/microsoft.graph.sharePointIdentitySet'
-    microsoft.graph.identity:
-      title: identity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
-          nullable: true
-        id:
-          type: string
-          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
-          nullable: true
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
-          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
-          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
-          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
-          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
-          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
-          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
-          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
-          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
-          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
-          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
-          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
-          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
-          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
-          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
-          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
-          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
-          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
-          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
-          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
-    microsoft.graph.callRecords.userAgent:
-      title: userAgent
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        applicationVersion:
-          type: string
-          description: Identifies the version of application software used by this endpoint.
-          nullable: true
-        headerValue:
-          type: string
-          description: User-agent header value reported by this endpoint.
-          nullable: true
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.callRecords.clientUserAgent': '#/components/schemas/microsoft.graph.callRecords.clientUserAgent'
-          '#microsoft.graph.callRecords.serviceUserAgent': '#/components/schemas/microsoft.graph.callRecords.serviceUserAgent'
-    microsoft.graph.callRecords.sessionCollectionResponse:
-      title: Collection of session
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.callRecords.session'
-    microsoft.graph.callRecords.traceRouteHop:
-      title: traceRouteHop
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        hopCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: The network path count of this hop that was used to compute the RTT.
-          format: int32
-          nullable: true
-        ipAddress:
-          type: string
-          description: IP address used for this hop in the network trace.
-          nullable: true
-        roundTripTime:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type: string
-          description: The time from when the trace route packet was sent from the client to this hop and back to the client, denoted in ISO 8601 format. For example, 1 second is denoted as PT1S, where P is the duration designator, T is the time designator, and S is the second designator.
-          format: duration
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.callRecords.callRecord:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: callRecord
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          endDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: UTC time when the last user left the call. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-            format: date-time
-          joinWebUrl:
-            type: string
-            description: Meeting URL associated to the call. May not be available for a peerToPeer call record type.
-            nullable: true
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: UTC time when the call record was created. The DatetimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-            format: date-time
-          modalities:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.callRecords.modality'
-            description: 'List of all the modalities used in the call. The possible values are: unknown, audio, video, videoBasedScreenSharing, data, screenSharing, unknownFutureValue.'
-          organizer:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
-            description: The organizing party's identity. The organizer property is deprecated and will stop returning data on June 30, 2026. Going forward, use the organizer_v2 relationship.
-          participants:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.identitySet'
-            description: List of distinct identities involved in the call. Limited to 130 entries. The participants property is deprecated and will stop returning data on June 30, 2026. Going forward, use the participants_v2 relationship.
-          startDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: UTC time when the first user joined the call. The DatetimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          type:
-            $ref: '#/components/schemas/microsoft.graph.callRecords.callType'
-          version:
-            type: number
-            description: Monotonically increasing version of the call record. Higher version call records with the same id includes additional data compared to the lower version.
-            format: int64
-          organizer_v2:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.callRecords.organizer'
-            - type: object
-              nullable: true
-            description: Identity of the organizer of the call. This relationship is expanded by default in callRecord methods.
-            x-ms-navigationProperty: true
-          participants_v2:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.callRecords.participant'
-            description: List of distinct participants in the call.
-            x-ms-navigationProperty: true
-          sessions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.callRecords.session'
-            description: List of sessions involved in the call. Peer-to-peer calls typically only have one session, whereas group calls typically have at least one session per participant. Read-only. Nullable.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.callRecords.callRecord'
-    microsoft.graph.callRecords.endpoint:
-      title: endpoint
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        userAgent:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.callRecords.userAgent'
-          - type: object
-            nullable: true
-          description: User-agent reported by this endpoint.
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.callRecords.participantEndpoint': '#/components/schemas/microsoft.graph.callRecords.participantEndpoint'
-          '#microsoft.graph.callRecords.serviceEndpoint': '#/components/schemas/microsoft.graph.callRecords.serviceEndpoint'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.callRecords.callRecordCollectionResponse:
-      title: Collection of callRecord
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.callRecords.callRecord'
+  responses:
     microsoft.graph.callRecords.segmentCollectionResponse:
-      title: Collection of segment
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.callRecords.segment'
-    microsoft.graph.callRecords.wifiRadioType:
-      title: wifiRadioType
-      enum:
-      - unknown
-      - wifi80211a
-      - wifi80211b
-      - wifi80211g
-      - wifi80211n
-      - wifi80211ac
-      - wifi80211ax
-      - unknownFutureValue
-      type: string
-    microsoft.graph.endpointType:
-      title: endpointType
-      enum:
-      - default
-      - voicemail
-      - skypeForBusiness
-      - skypeForBusinessVoipPhone
-      - unknownFutureValue
-      type: string
-    microsoft.graph.callRecords.directRoutingLogRow:
-      title: directRoutingLogRow
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        calleeNumber:
-          type: string
-          description: Number of the user or bot who received the call. E.164 format, but might include other data.
-          nullable: true
-        callEndSubReason:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: In addition to the SIP codes, Microsoft has subcodes that indicate the specific issue.
-          format: int32
-          nullable: true
-        callerNumber:
-          type: string
-          description: Number of the user or bot who made the call. E.164 format, but might include other data.
-          nullable: true
-        callType:
-          type: string
-          description: Call type and direction.
-          nullable: true
-        correlationId:
-          type: string
-          description: Identifier for the call that you can use when calling Microsoft Support. GUID.
-          nullable: true
-        duration:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Duration of the call in seconds.
-          format: int32
-          nullable: true
-        endDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Only exists for successful (fully established) calls. Time when call ended.
-          format: date-time
-          nullable: true
-        failureDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Only exists for failed (not fully established) calls.
-          format: date-time
-          nullable: true
-        finalSipCode:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: The final response code with which the call ended. For more information, see RFC 3261.
-          format: int32
-          nullable: true
-        finalSipCodePhrase:
-          type: string
-          description: Description of the SIP code and Microsoft subcode.
-          nullable: true
-        id:
-          type: string
-          description: Unique call identifier. GUID.
-          nullable: true
-        inviteDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The date and time when the initial invite was sent.
-          format: date-time
-          nullable: true
-        mediaBypassEnabled:
-          type: boolean
-          description: Indicates whether the trunk was enabled for media bypass.
-          nullable: true
-        mediaPathLocation:
-          type: string
-          description: The datacenter used for media path in a nonbypass call.
-          nullable: true
-        signalingLocation:
-          type: string
-          description: The datacenter used for signaling for both bypass and nonbypass calls.
-          nullable: true
-        startDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Call start time.For failed and unanswered calls, this value can be equal to the invite or failure time.
-          format: date-time
-          nullable: true
-        successfulCall:
-          type: boolean
-          description: Success or attempt.
-          nullable: true
-        trunkFullyQualifiedDomainName:
-          type: string
-          description: Fully qualified domain name of the session border controller.
-          nullable: true
-        userDisplayName:
-          type: string
-          description: Display name of the user.
-          nullable: true
-        userId:
-          type: string
-          description: Calling user's ID in Microsoft Graph. This and other user information is null/empty for bot call types. GUID.
-          nullable: true
-        userPrincipalName:
-          type: string
-          description: UserPrincipalName (sign-in name) in Microsoft Entra ID. This value is usually the same as the user's SIP Address, and can be the same as the user's email address.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.callRecords.modality:
-      title: modality
-      enum:
-      - audio
-      - video
-      - videoBasedScreenSharing
-      - data
-      - screenSharing
-      - unknownFutureValue
-      type: string
-    microsoft.graph.callRecords.media:
-      title: media
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        calleeDevice:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.callRecords.deviceInfo'
-          - type: object
-            nullable: true
-          description: Device information associated with the callee endpoint of this media.
-        calleeNetwork:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.callRecords.networkInfo'
-          - type: object
-            nullable: true
-          description: Network information associated with the callee endpoint of this media.
-        callerDevice:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.callRecords.deviceInfo'
-          - type: object
-            nullable: true
-          description: Device information associated with the caller endpoint of this media.
-        callerNetwork:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.callRecords.networkInfo'
-          - type: object
-            nullable: true
-          description: Network information associated with the caller endpoint of this media.
-        label:
-          type: string
-          description: How the media was identified during media negotiation stage.
-          nullable: true
-        streams:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.callRecords.mediaStream'
-          description: Network streams associated with this media.
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.callRecords.pstnCallDurationSource:
-      title: pstnCallDurationSource
-      enum:
-      - microsoft
-      - operator
-      type: string
-    microsoft.graph.callRecords.participant:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.callRecords.participantBase'
-      - title: participant
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.callRecords.participant'
-      x-ms-discriminator-value: '#microsoft.graph.callRecords.participant'
-    ODataCountResponse:
-      type: integer
-      format: int32
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.callRecords.segmentCollectionResponse'
     microsoft.graph.callRecords.participantCollectionResponse:
-      title: Collection of participant
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.callRecords.participant'
-    microsoft.graph.callRecords.audioCodec:
-      title: audioCodec
-      enum:
-      - unknown
-      - invalid
-      - cn
-      - pcma
-      - pcmu
-      - amrWide
-      - g722
-      - g7221
-      - g7221c
-      - g729
-      - multiChannelAudio
-      - muchv2
-      - opus
-      - satin
-      - satinFullband
-      - rtAudio8
-      - rtAudio16
-      - silk
-      - silkNarrow
-      - silkWide
-      - siren
-      - xmsRta
-      - unknownFutureValue
-      type: string
-    microsoft.graph.callRecords.organizer:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.callRecords.participantBase'
-      - title: organizer
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.callRecords.organizer'
-      x-ms-discriminator-value: '#microsoft.graph.callRecords.organizer'
-    microsoft.graph.callRecords.mediaStream:
-      title: mediaStream
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        audioCodec:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.callRecords.audioCodec'
-          - type: object
-            nullable: true
-          description: 'Codec name used to encode audio for transmission on the network. The possible values are: unknown, invalid, cn, pcma, pcmu, amrWide, g722, g7221, g7221c, g729, multiChannelAudio, muchv2, opus, satin, satinFullband, rtAudio8, rtAudio16, silk, silkNarrow, silkWide, siren, xmsRta, unknownFutureValue.'
-        averageAudioDegradation:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Average Network Mean Opinion Score degradation for stream. Represents how much the network loss and jitter has impacted the quality of received audio.
-        averageAudioNetworkJitter:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type: string
-          description: Average jitter for the stream computed as specified in RFC 3550, denoted in ISO 8601 format. For example, 1 second is denoted as 'PT1S', where 'P' is the duration designator, 'T' is the time designator, and 'S' is the second designator.
-          format: duration
-          nullable: true
-        averageBandwidthEstimate:
-          type: number
-          description: Average estimated bandwidth available between two endpoints in bits per second.
-          format: int64
-          nullable: true
-        averageFreezeDuration:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type: string
-          description: Average duration of the received freezing time in the video stream.
-          format: duration
-          nullable: true
-        averageJitter:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type: string
-          description: Average jitter for the stream computed as specified in RFC 3550, denoted in ISO 8601 format. For example, 1 second is denoted as 'PT1S', where 'P' is the duration designator, 'T' is the time designator, and 'S' is the second designator.
-          format: duration
-          nullable: true
-        averagePacketLossRate:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Average packet loss rate for stream.
-        averageRatioOfConcealedSamples:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Ratio of the number of audio frames with samples generated by packet loss concealment to the total number of audio frames.
-        averageReceivedFrameRate:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Average frames per second received for all video streams computed over the duration of the session.
-        averageRoundTripTime:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type: string
-          description: Average network propagation round-trip time computed as specified in RFC 3550, denoted in ISO 8601 format. For example, 1 second is denoted as 'PT1S', where 'P' is the duration designator, 'T' is the time designator, and 'S' is the second designator.
-          format: duration
-          nullable: true
-        averageVideoFrameLossPercentage:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Average percentage of video frames lost as displayed to the user.
-        averageVideoFrameRate:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Average frames per second received for a video stream, computed over the duration of the session.
-        averageVideoPacketLossRate:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Average fraction of packets lost, as specified in RFC 3550, computed over the duration of the session.
-        endDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: UTC time when the stream ended. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. This field is only available for streams that use the SIP protocol.
-          format: date-time
-          nullable: true
-        isAudioForwardErrorCorrectionUsed:
-          type: boolean
-          description: Indicates whether the forward error correction (FEC) was used at some point during the session. The default value is null.
-          nullable: true
-        lowFrameRateRatio:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Fraction of the call where frame rate is less than 7.5 frames per second.
-        lowVideoProcessingCapabilityRatio:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Fraction of the call that the client is running less than 70% expected video processing capability.
-        maxAudioNetworkJitter:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type: string
-          description: Maximum of audio network jitter computed over each of the 20 second windows during the session, denoted in ISO 8601 format. For example, 1 second is denoted as 'PT1S', where 'P' is the duration designator, 'T' is the time designator, and 'S' is the second designator.
-          format: duration
-          nullable: true
-        maxJitter:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type: string
-          description: Maximum jitter for the stream computed as specified in RFC 3550, denoted in ISO 8601 format. For example, 1 second is denoted as 'PT1S', where 'P' is the duration designator, 'T' is the time designator, and 'S' is the second designator.
-          format: duration
-          nullable: true
-        maxPacketLossRate:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Maximum packet loss rate for the stream.
-        maxRatioOfConcealedSamples:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Maximum ratio of packets concealed by the healer.
-        maxRoundTripTime:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type: string
-          description: Maximum network propagation round-trip time computed as specified in RFC 3550, denoted in ISO 8601 format. For example, 1 second is denoted as 'PT1S', where 'P' is the duration designator, 'T' is the time designator, and 'S' is the second designator.
-          format: duration
-          nullable: true
-        packetUtilization:
-          type: number
-          description: Packet count for the stream.
-          format: int64
-          nullable: true
-        postForwardErrorCorrectionPacketLossRate:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Packet loss rate after FEC has been applied aggregated across all video streams and codecs.
-        rmsFreezeDuration:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type: string
-          description: Average duration of the received freezing time in the video stream represented in root mean square.
-          format: duration
-          nullable: true
-        startDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: UTC time when the stream started. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. This field is only available for streams that use the SIP protocol.
-          format: date-time
-          nullable: true
-        streamDirection:
-          $ref: '#/components/schemas/microsoft.graph.callRecords.mediaStreamDirection'
-        streamId:
-          type: string
-          description: Unique identifier for the stream.
-          nullable: true
-        videoCodec:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.callRecords.videoCodec'
-          - type: object
-            nullable: true
-          description: 'Codec name used to encode video for transmission on the network. The possible values are: unknown, invalid, av1, h263, h264, h264s, h264uc, h265, rtvc1, rtVideo, xrtvc1, unknownFutureValue.'
-        wasMediaBypassed:
-          type: boolean
-          description: True if the media stream bypassed the Mediation Server and went straight between client and PSTN Gateway/PBX, false otherwise.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.callRecords.networkInfo:
-      title: networkInfo
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        bandwidthLowEventRatio:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Fraction of the call that the media endpoint detected the available bandwidth or bandwidth policy was low enough to cause poor quality of the audio sent.
-        basicServiceSetIdentifier:
-          type: string
-          description: The wireless LAN basic service set identifier of the media endpoint used to connect to the network. This property isn't available if the user disables precise location sharing in their operating system or Microsoft Teams app settings.
-          nullable: true
-        connectionType:
-          $ref: '#/components/schemas/microsoft.graph.callRecords.networkConnectionType'
-        delayEventRatio:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Fraction of the call that the media endpoint detected the network delay was significant enough to impact the ability to have real-time two-way communication.
-        dnsSuffix:
-          type: string
-          description: DNS suffix associated with the network adapter of the media endpoint.
-          nullable: true
-        ipAddress:
-          type: string
-          description: IP address of the media endpoint.
-          nullable: true
-        linkSpeed:
-          type: number
-          description: Link speed in bits per second reported by the network adapter used by the media endpoint.
-          format: int64
-          nullable: true
-        macAddress:
-          type: string
-          description: The media access control (MAC) address of the media endpoint's network device. This value may be missing or shown as 02:00:00:00:00:00 due to operating system privacy policies.
-          nullable: true
-        networkTransportProtocol:
-          $ref: '#/components/schemas/microsoft.graph.callRecords.networkTransportProtocol'
-        port:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Network port number used by media endpoint.
-          format: int32
-          nullable: true
-        receivedQualityEventRatio:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Fraction of the call that the media endpoint detected the network was causing poor quality of the audio received.
-        reflexiveIPAddress:
-          type: string
-          description: IP address of the media endpoint as seen by the media relay server. This is typically the public internet IP address associated to the endpoint.
-          nullable: true
-        relayIPAddress:
-          type: string
-          description: IP address of the media relay server allocated by the media endpoint.
-          nullable: true
-        relayPort:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Network port number allocated on the media relay server by the media endpoint.
-          format: int32
-          nullable: true
-        sentQualityEventRatio:
-          oneOf:
-          - type: number
-            format: float
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Fraction of the call that the media endpoint detected the network was causing poor quality of the audio sent.
-        subnet:
-          type: string
-          description: Subnet used for media stream by the media endpoint.
-          nullable: true
-        traceRouteHops:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.callRecords.traceRouteHop'
-          description: List of network trace route hops collected for this media stream.*
-        wifiBand:
-          $ref: '#/components/schemas/microsoft.graph.callRecords.wifiBand'
-        wifiBatteryCharge:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Estimated remaining battery charge in percentage reported by the media endpoint.
-          format: int32
-          nullable: true
-        wifiChannel:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: WiFi channel used by the media endpoint.
-          format: int32
-          nullable: true
-        wifiMicrosoftDriver:
-          type: string
-          description: Name of the Microsoft WiFi driver used by the media endpoint. Value may be localized based on the language used by endpoint.
-          nullable: true
-        wifiMicrosoftDriverVersion:
-          type: string
-          description: Version of the Microsoft WiFi driver used by the media endpoint.
-          nullable: true
-        wifiRadioType:
-          $ref: '#/components/schemas/microsoft.graph.callRecords.wifiRadioType'
-        wifiSignalStrength:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: WiFi signal strength in percentage reported by the media endpoint.
-          format: int32
-          nullable: true
-        wifiVendorDriver:
-          type: string
-          description: Name of the WiFi driver used by the media endpoint. Value may be localized based on the language used by endpoint.
-          nullable: true
-        wifiVendorDriverVersion:
-          type: string
-          description: Version of the WiFi driver used by the media endpoint.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.callRecords.administrativeUnitInfo:
-      title: administrativeUnitInfo
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the administrative unit.
-          nullable: true
-        '@odata.type':
-          type: string
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.callRecords.participantCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.callRecords.callRecordCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.callRecords.callRecordCollectionResponse'
+    microsoft.graph.callRecords.sessionCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.callRecords.sessionCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
   parameters:
-    count:
-      name: $count
+    filter:
+      name: $filter
       in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
+      description: Filter items by property values
       style: form
       explode: false
       schema:
@@ -3693,6 +3689,14 @@ components:
         minimum: 0
         type: integer
       example: 50
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     skip:
       name: $skip
       in: query
@@ -3702,10 +3706,10 @@ components:
       schema:
         minimum: 0
         type: integer
-    filter:
-      name: $filter
+    search:
+      name: $search
       in: query
-      description: Filter items by property values
+      description: Search items by search phrases
       style: form
       explode: false
       schema:

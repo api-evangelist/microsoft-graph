@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Applications Validate Properties API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -25,7 +25,13 @@ paths:
       tags:
       - Applications Validate Properties
       summary: Microsoft Graph Create Validate Properties
-      description: "Validate that a Microsoft 365 group's display name or mail nickname complies with naming policies. Clients can use this API to determine whether a display name or mail nickname is valid before trying to create a Microsoft 365 group. To validate the properties of an existing group, use the group: validateProperties function. The following policy validations are performed for the display name and mail nickname properties:\r\n1. Validate the prefix and suffix naming policy\r\n2. Validate the custom banned words policy\r\n3. Validate that the mail nickname is unique This API only returns the first validation failure that is encountered. If the properties fail multiple validations, only the first validation failure is returned. However, you can validate both the mail nickname and the display name and receive a collection of validation errors if you're only validating the prefix and suffix naming policy. To learn more about configuring naming policies, see Configure naming policy."
+      description: 'Validate that a Microsoft 365 group''s display name or mail nickname complies with naming policies. Clients can use this API to determine whether a display name or mail nickname is valid before trying to create a Microsoft 365 group. To validate the properties of an existing group, use the group: validateProperties function. The following policy validations are performed for the display name and mail nickname properties:
+
+        1. Validate the prefix and suffix naming policy
+
+        2. Validate the custom banned words policy
+
+        3. Validate that the mail nickname is unique This API only returns the first validation failure that is encountered. If the properties fail multiple validations, only the first validation failure is returned. However, you can validate both the mail nickname and the display name and receive a collection of validation errors if you''re only validating the prefix and suffix naming policy. To learn more about configuring naming policies, see Configure naming policy.'
       operationId: createApplicationsValidateProperties
       externalDocs:
         description: Find more info here
@@ -88,20 +94,6 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/MainError'
-    ErrorDetail:
-      title: ErrorDetail
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
     MainError:
       title: MainError
       type: object
@@ -125,7 +117,27 @@ components:
             $ref: '#/components/schemas/ErrorDetail'
         innerError:
           $ref: '#/components/schemas/InnerError'
+    ErrorDetail:
+      title: ErrorDetail
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
   examples:
+    createApplicationsValidatePropertiesRequestExample:
+      value:
+        entityType: exampleType
+        displayName: Example Display Name
+        mailNickname: example-name
+        onBehalfOfUserId: 00000000-0000-0000-0000-000000000001
     ODataErrorExample:
       value:
         error:
@@ -140,12 +152,6 @@ components:
             request-id: 00000000-0000-0000-0000-000000000001
             date: '2024-01-15T10:30:00Z'
             client-request-id: 00000000-0000-0000-0000-000000000002
-    createApplicationsValidatePropertiesRequestExample:
-      value:
-        entityType: exampleType
-        displayName: Example Display Name
-        mailNickname: example-name
-        onBehalfOfUserId: 00000000-0000-0000-0000-000000000001
   responses:
     error:
       description: error

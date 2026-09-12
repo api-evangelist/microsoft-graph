@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin solutions.backupRestoreRoot API
+  title: Microsoft Graph Admin Admin.admin Solutions.backup Restore Root API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -7759,30 +7759,31 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    microsoft.graph.sharePointRestoreSession:
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.mailboxProtectionUnitsBulkAdditionJobCollectionResponse:
+      title: Collection of mailboxProtectionUnitsBulkAdditionJob
+      type: object
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.restoreSessionBase'
-      - title: sharePointRestoreSession
-        required:
-        - '@odata.type'
-        type: object
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
         properties:
-          siteRestoreArtifacts:
+          value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.siteRestoreArtifact'
-            description: A collection of restore points and destination details that can be used to restore SharePoint sites.
-            x-ms-navigationProperty: true
-          siteRestoreArtifactsBulkAdditionRequests:
+              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnitsBulkAdditionJob'
+    microsoft.graph.exchangeRestoreSessionCollectionResponse:
+      title: Collection of exchangeRestoreSession
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.siteRestoreArtifactsBulkAdditionRequest'
-            description: A collection of SharePoint site URLs and destination details that can be used to restore SharePoint sites.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.sharePointRestoreSession'
-      x-ms-discriminator-value: '#microsoft.graph.sharePointRestoreSession'
+              $ref: '#/components/schemas/microsoft.graph.exchangeRestoreSession'
     microsoft.graph.siteProtectionRuleCollectionResponse:
       title: Collection of siteProtectionRule
       type: object
@@ -7794,96 +7795,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.siteProtectionRule'
-    microsoft.graph.protectionRuleStatus:
-      title: protectionRuleStatus
-      enum:
-      - draft
-      - active
-      - completed
-      - completedWithErrors
-      - unknownFutureValue
-      - updateRequested
-      - deleteRequested
-      type: string
-    microsoft.graph.backupServiceConsumer:
-      title: backupServiceConsumer
-      enum:
-      - unknown
-      - firstparty
-      - thirdparty
-      - unknownFutureValue
-      type: string
-    microsoft.graph.siteProtectionUnitCollectionResponse:
-      title: Collection of siteProtectionUnit
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.siteProtectionUnit'
-    microsoft.graph.driveRestoreArtifactCollectionResponse:
-      title: Collection of driveRestoreArtifact
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.driveRestoreArtifact'
-    microsoft.graph.protectionUnitStatus:
-      title: protectionUnitStatus
-      enum:
-      - protectRequested
-      - protected
-      - unprotectRequested
-      - unprotected
-      - removeRequested
-      - unknownFutureValue
-      - offboardRequested
-      - offboarded
-      - cancelOffboardRequested
-      type: string
-    microsoft.graph.mailboxRestoreArtifactCollectionResponse:
-      title: Collection of mailboxRestoreArtifact
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mailboxRestoreArtifact'
-    microsoft.graph.siteRestoreArtifact:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.restoreArtifactBase'
-      - title: siteRestoreArtifact
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          restoredSiteId:
-            type: string
-            description: The new site identifier if the value of the destinationType property is new, and the existing site ID if the value is inPlace.
-            nullable: true
-          restoredSiteName:
-            type: string
-            description: The name of the restored site.
-            nullable: true
-            readOnly: true
-          restoredSiteWebUrl:
-            type: string
-            description: The web URL of the restored site.
-            nullable: true
-            readOnly: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.siteRestoreArtifact'
     microsoft.graph.identity:
       title: identity
       required:
@@ -7923,8 +7834,8 @@ components:
           '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
           '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
           '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
-    microsoft.graph.oneDriveForBusinessProtectionPolicyCollectionResponse:
-      title: Collection of oneDriveForBusinessProtectionPolicy
+    microsoft.graph.mailboxProtectionRuleCollectionResponse:
+      title: Collection of mailboxProtectionRule
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -7933,41 +7844,17 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.oneDriveForBusinessProtectionPolicy'
-    microsoft.graph.restoreArtifactsBulkRequestStatus:
-      title: restoreArtifactsBulkRequestStatus
+              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionRule'
+    microsoft.graph.backupServiceConsumer:
+      title: backupServiceConsumer
       enum:
       - unknown
-      - active
-      - completed
-      - completedWithErrors
+      - firstparty
+      - thirdparty
       - unknownFutureValue
       type: string
-    microsoft.graph.restorePointSearchResponse:
-      title: restorePointSearchResponse
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        noResultProtectionUnitIds:
-          type: array
-          items:
-            type: string
-            nullable: true
-          description: Contains  alist of protection units with no restore points.
-        searchResponseId:
-          type: string
-          description: The unique identifier of the search response.
-          nullable: true
-        searchResults:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.restorePointSearchResult'
-          description: Contains a collection of restore points.
-        '@odata.type':
-          type: string
-    microsoft.graph.driveRestoreArtifactsBulkAdditionRequestCollectionResponse:
-      title: Collection of driveRestoreArtifactsBulkAdditionRequest
+    microsoft.graph.siteProtectionUnitCollectionResponse:
+      title: Collection of siteProtectionUnit
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -7976,277 +7863,374 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.driveRestoreArtifactsBulkAdditionRequest'
-    microsoft.graph.restoreSessionBase:
+              $ref: '#/components/schemas/microsoft.graph.siteProtectionUnit'
+    microsoft.graph.backupRestoreRoot:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: restoreSessionBase
+      - title: backupRestoreRoot
         required:
         - '@odata.type'
         type: object
         properties:
-          completedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The time of completion of the restore session.
-            format: date-time
-            nullable: true
-          createdBy:
+          serviceStatus:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - $ref: '#/components/schemas/microsoft.graph.serviceStatus'
             - type: object
               nullable: true
-            description: The identity of person who created the restore session.
-          createdDateTime:
+            description: Represents the tenant-level status of the Backup Storage service.
+          driveInclusionRules:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.driveProtectionRule'
+            description: The list of drive inclusion rules applied to the tenant.
+            x-ms-navigationProperty: true
+          driveProtectionUnits:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.driveProtectionUnit'
+            description: The list of drive protection units in the tenant.
+            x-ms-navigationProperty: true
+          driveProtectionUnitsBulkAdditionJobs:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.driveProtectionUnitsBulkAdditionJob'
+            x-ms-navigationProperty: true
+          exchangeProtectionPolicies:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.exchangeProtectionPolicy'
+            description: The list of Exchange protection policies in the tenant.
+            x-ms-navigationProperty: true
+          exchangeRestoreSessions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.exchangeRestoreSession'
+            description: The list of Exchange restore sessions available in the tenant.
+            x-ms-navigationProperty: true
+          mailboxInclusionRules:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionRule'
+            description: The list of mailbox inclusion rules applied to the tenant.
+            x-ms-navigationProperty: true
+          mailboxProtectionUnits:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnit'
+            description: The list of mailbox protection units in the tenant.
+            x-ms-navigationProperty: true
+          mailboxProtectionUnitsBulkAdditionJobs:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnitsBulkAdditionJob'
+            x-ms-navigationProperty: true
+          oneDriveForBusinessProtectionPolicies:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.oneDriveForBusinessProtectionPolicy'
+            description: The list of OneDrive for Business protection policies in the tenant.
+            x-ms-navigationProperty: true
+          oneDriveForBusinessRestoreSessions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.oneDriveForBusinessRestoreSession'
+            description: The list of OneDrive for Business restore sessions available in the tenant.
+            x-ms-navigationProperty: true
+          protectionPolicies:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.protectionPolicyBase'
+            description: List of protection policies in the tenant.
+            x-ms-navigationProperty: true
+          protectionUnits:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.protectionUnitBase'
+            description: List of protection units in the tenant.
+            x-ms-navigationProperty: true
+          restorePoints:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.restorePoint'
+            description: List of restore points in the tenant.
+            x-ms-navigationProperty: true
+          restoreSessions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.restoreSessionBase'
+            description: List of restore sessions in the tenant.
+            x-ms-navigationProperty: true
+          serviceApps:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.serviceApp'
+            description: List of Backup Storage apps in the tenant.
+            x-ms-navigationProperty: true
+          sharePointProtectionPolicies:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.sharePointProtectionPolicy'
+            description: The list of SharePoint protection policies in the tenant.
+            x-ms-navigationProperty: true
+          sharePointRestoreSessions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.sharePointRestoreSession'
+            description: The list of SharePoint restore sessions available in the tenant.
+            x-ms-navigationProperty: true
+          siteInclusionRules:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.siteProtectionRule'
+            description: The list of site inclusion rules applied to the tenant.
+            x-ms-navigationProperty: true
+          siteProtectionUnits:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.siteProtectionUnit'
+            description: The list of site protection units in the tenant.
+            x-ms-navigationProperty: true
+          siteProtectionUnitsBulkAdditionJobs:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.siteProtectionUnitsBulkAdditionJob'
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.backupRestoreRoot'
+    microsoft.graph.restorePointCollectionResponse:
+      title: Collection of restorePoint
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.restorePoint'
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type: string
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
+          type: string
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.sharePointProtectionPolicyCollectionResponse:
+      title: Collection of sharePointProtectionPolicy
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.sharePointProtectionPolicy'
+    microsoft.graph.publicError:
+      title: publicError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        code:
+          type: string
+          description: Represents the error code.
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.publicErrorDetail'
+          description: Details of the error.
+        innerError:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.publicInnerError'
+          - type: object
+            nullable: true
+          description: Details of the inner error.
+        message:
+          type: string
+          description: A non-localized message for the developer.
+          nullable: true
+        target:
+          type: string
+          description: The target of the error.
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.serviceStatus:
+      title: serviceStatus
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        backupServiceConsumer:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.backupServiceConsumer'
+          - type: object
+            nullable: true
+          description: 'The type of consumer. The possible values are: unknown, firstparty, thirdparty, unknownFutureValue.'
+        disableReason:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.disableReason'
+          - type: object
+            nullable: true
+          description: 'The reason the service is disabled. The possible values are: none, controllerServiceAppDeleted, invalidBillingProfile, userRequested, unknownFutureValue.'
+        gracePeriodDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The expiration time of the grace period.
+          format: date-time
+          nullable: true
+        lastModifiedBy:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identitySet'
+          - type: object
+            nullable: true
+          description: Identity of the person who last modified the entity.
+        lastModifiedDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Timestamp of the last modification of the entity.
+          format: date-time
+          nullable: true
+        restoreAllowedTillDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The expiration time of the restoration allowed period.
+          format: date-time
+          nullable: true
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.backupServiceStatus'
+          - type: object
+            nullable: true
+          description: 'Status of the service. This value indicates what capabilities can be used. The possible values are: disabled, enabled, protectionChangeLocked, restoreLocked, unknownFutureValue.'
+        '@odata.type':
+          type: string
+    microsoft.graph.restoreArtifactBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: restoreArtifactBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          completionDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
             type: string
-            description: The time of creation of the restore session.
+            description: The time when restoration of restore artifact is completed.
             format: date-time
             nullable: true
+          destinationType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.destinationType'
+            - type: object
+              nullable: true
+            description: 'Indicates the restoration destination. The possible values are: new, inPlace, unknownFutureValue.'
           error:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.publicError'
             - type: object
               nullable: true
             description: Contains error details if the restore session fails or completes with an error.
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
-            description: Identity of the person who last modified the restore session.
-          lastModifiedDateTime:
+          startDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
             type: string
-            description: Timestamp of the last modification of the restore session.
+            description: The time when restoration of restore artifact is started.
             format: date-time
             nullable: true
-          restoreJobType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.restoreJobType'
-            - type: object
-              nullable: true
-            description: Indicates whether the restore session was created normally or by a bulk job.
-          restoreSessionArtifactCount:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.restoreSessionArtifactCount'
-            - type: object
-              nullable: true
-            description: The number of metadata artifacts that belong to this restore session.
           status:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.restoreSessionStatus'
+            - $ref: '#/components/schemas/microsoft.graph.artifactRestoreStatus'
             - type: object
               nullable: true
-            description: 'Status of the restore session. The value is an aggregated status of the restored artifacts. The possible values are: draft, activating, active, completedWithError, completed, unknownFutureValue, failed. Use the Prefer: include-unknown-enum-members request header to get the following members in this evolvable enum: failed.'
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.exchangeRestoreSession': '#/components/schemas/microsoft.graph.exchangeRestoreSession'
-            '#microsoft.graph.oneDriveForBusinessRestoreSession': '#/components/schemas/microsoft.graph.oneDriveForBusinessRestoreSession'
-            '#microsoft.graph.sharePointRestoreSession': '#/components/schemas/microsoft.graph.sharePointRestoreSession'
-    microsoft.graph.protectionPolicyBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: protectionPolicyBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdBy:
+            description: 'The individual restoration status of the restore artifact. The possible values are: added, scheduling, scheduled, inProgress, succeeded, failed, unknownFutureValue.'
+          restorePoint:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - $ref: '#/components/schemas/microsoft.graph.restorePoint'
             - type: object
               nullable: true
-            description: The identity of person who created the policy.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The time of creation of the policy.
-            format: date-time
-            nullable: true
-          displayName:
-            type: string
-            description: The name of the policy to be created.
-            nullable: true
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
-            description: The identity of the person who last modified the policy.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The timestamp of the last modification of the policy.
-            format: date-time
-            nullable: true
-          retentionSettings:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.retentionSetting'
-            description: Contains the retention setting details for the policy.
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.protectionPolicyStatus'
-            - type: object
-              nullable: true
-            description: 'The aggregated status of the protection units associated with the policy. The possible values are: inactive, activeWithErrors, updating, active, unknownFutureValue.'
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.exchangeProtectionPolicy': '#/components/schemas/microsoft.graph.exchangeProtectionPolicy'
-            '#microsoft.graph.oneDriveForBusinessProtectionPolicy': '#/components/schemas/microsoft.graph.oneDriveForBusinessProtectionPolicy'
-            '#microsoft.graph.sharePointProtectionPolicy': '#/components/schemas/microsoft.graph.sharePointProtectionPolicy'
-    microsoft.graph.mailboxProtectionUnitCollectionResponse:
-      title: Collection of mailboxProtectionUnit
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnit'
-    microsoft.graph.mailboxProtectionRule:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.protectionRuleBase'
-      - title: mailboxProtectionRule
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          mailboxExpression:
-            type: string
-            description: Contains a mailbox expression. For examples, see mailboxExpression examples.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.mailboxProtectionRule'
-      x-ms-discriminator-value: '#microsoft.graph.mailboxProtectionRule'
-    microsoft.graph.restorePoint:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: restorePoint
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          expirationDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Expiration date time of the restore point.
-            format: date-time
-            nullable: true
-          protectionDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date time when the restore point was created.
-            format: date-time
-            nullable: true
-          tags:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.restorePointTags'
-            - type: object
-              nullable: true
-            description: 'The type of the restore point. The possible values are: none, fastRestore, unknownFutureValue.'
-          protectionUnit:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.protectionUnitBase'
-            - type: object
-              nullable: true
-            description: The site, drive, or mailbox units that are protected under a protection policy.
+            description: Represents the date and time when an artifact is protected by a protectionPolicy and can be restored.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.restorePoint'
-    microsoft.graph.siteRestoreArtifactCollectionResponse:
-      title: Collection of siteRestoreArtifact
-      type: object
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.driveRestoreArtifact': '#/components/schemas/microsoft.graph.driveRestoreArtifact'
+            '#microsoft.graph.mailboxRestoreArtifact': '#/components/schemas/microsoft.graph.mailboxRestoreArtifact'
+            '#microsoft.graph.granularMailboxRestoreArtifact': '#/components/schemas/microsoft.graph.granularMailboxRestoreArtifact'
+            '#microsoft.graph.siteRestoreArtifact': '#/components/schemas/microsoft.graph.siteRestoreArtifact'
+    microsoft.graph.driveProtectionUnit:
       allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
+      - $ref: '#/components/schemas/microsoft.graph.protectionUnitBase'
+      - title: driveProtectionUnit
+        required:
+        - '@odata.type'
+        type: object
         properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.siteRestoreArtifact'
-    microsoft.graph.retentionSetting:
-      title: retentionSetting
+          directoryObjectId:
+            type: string
+            description: ID of the directory object.
+            nullable: true
+          displayName:
+            type: string
+            description: Display name of the directory object.
+            nullable: true
+            readOnly: true
+          email:
+            type: string
+            description: Email associated with the directory object.
+            nullable: true
+            readOnly: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.driveProtectionUnit'
+      x-ms-discriminator-value: '#microsoft.graph.driveProtectionUnit'
+    microsoft.graph.disableReason:
+      title: disableReason
+      enum:
+      - none
+      - invalidBillingProfile
+      - userRequested
+      - unknownFutureValue
+      type: string
+    microsoft.graph.timePeriod:
+      title: timePeriod
       required:
       - '@odata.type'
       type: object
       properties:
-        interval:
+        endDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
           type: string
-          description: The frequency of the backup.
+          description: The date time of the end of the time period.
+          format: date-time
           nullable: true
-        period:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+        startDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
           type: string
-          description: The period of time to retain the protected data for a single Microsoft 365 service.
-          format: duration
+          description: The date time of the start of the time period.
+          format: date-time
           nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.serviceAppStatus:
-      title: serviceAppStatus
-      enum:
-      - inactive
-      - active
-      - pendingActive
-      - pendingInactive
-      - unknownFutureValue
-      type: string
-    microsoft.graph.oneDriveForBusinessRestoreSession:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.restoreSessionBase'
-      - title: oneDriveForBusinessRestoreSession
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          driveRestoreArtifacts:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.driveRestoreArtifact'
-            description: A collection of restore points and destination details that can be used to restore a OneDrive for work or school drive.
-            x-ms-navigationProperty: true
-          driveRestoreArtifactsBulkAdditionRequests:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.driveRestoreArtifactsBulkAdditionRequest'
-            description: A collection of user mailboxes and destination details that can be used to restore a OneDrive for work or school drive.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.oneDriveForBusinessRestoreSession'
-      x-ms-discriminator-value: '#microsoft.graph.oneDriveForBusinessRestoreSession'
-    microsoft.graph.restorePointTags:
-      title: restorePointTags
-      enum:
-      - none
-      - fastRestore
-      - unknownFutureValue
-      type: string
-      x-ms-enum-flags:
-        isFlags: true
-    microsoft.graph.driveProtectionUnitsBulkAdditionJobCollectionResponse:
-      title: Collection of driveProtectionUnitsBulkAdditionJob
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.driveProtectionUnitsBulkAdditionJob'
     microsoft.graph.restorePointSearchResult:
       title: restorePointSearchResult
       required:
@@ -8268,15 +8252,152 @@ components:
           x-ms-navigationProperty: true
         '@odata.type':
           type: string
-    microsoft.graph.protectionPolicyStatus:
-      title: protectionPolicyStatus
-      enum:
-      - inactive
-      - activeWithErrors
-      - updating
-      - active
-      - unknownFutureValue
-      type: string
+    microsoft.graph.siteProtectionUnitsBulkAdditionJobCollectionResponse:
+      title: Collection of siteProtectionUnitsBulkAdditionJob
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.siteProtectionUnitsBulkAdditionJob'
+    microsoft.graph.mailboxRestoreArtifact:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.restoreArtifactBase'
+      - title: mailboxRestoreArtifact
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          restoredFolderId:
+            type: string
+            description: The new restored folder identifier for the user.
+            nullable: true
+          restoredFolderName:
+            type: string
+            description: The new restored folder name.
+            nullable: true
+            readOnly: true
+          restoredItemCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The number of items that are being restored in the folder.
+            format: int32
+            nullable: true
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.granularMailboxRestoreArtifact': '#/components/schemas/microsoft.graph.granularMailboxRestoreArtifact'
+    microsoft.graph.restoreSessionArtifactCount:
+      title: restoreSessionArtifactCount
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        completed:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: The number of artifacts whose restoration completed.
+          format: int32
+          nullable: true
+        failed:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: The number of artifacts whose restoration failed.
+          format: int32
+          nullable: true
+        inProgress:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: The number of artifacts whose restoration is in progress.
+          format: int32
+          nullable: true
+        total:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: The number of artifacts present in the restore session.
+          format: int32
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.granularMailboxRestoreArtifactCollectionResponse:
+      title: Collection of granularMailboxRestoreArtifact
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.granularMailboxRestoreArtifact'
+    microsoft.graph.siteProtectionUnitsBulkAdditionJob:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.protectionUnitsBulkJobBase'
+      - title: siteProtectionUnitsBulkAdditionJob
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          siteIds:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: The list of SharePoint site IDs to add to the SharePoint protection policy.
+          siteWebUrls:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: The list of SharePoint site URLs to add to the SharePoint protection policy.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.siteProtectionUnitsBulkAdditionJob'
+      x-ms-discriminator-value: '#microsoft.graph.siteProtectionUnitsBulkAdditionJob'
+    microsoft.graph.retentionSetting:
+      title: retentionSetting
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        interval:
+          type: string
+          description: The frequency of the backup.
+          nullable: true
+        period:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: The period of time to retain the protected data for a single Microsoft 365 service.
+          format: duration
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.mailboxProtectionRule:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.protectionRuleBase'
+      - title: mailboxProtectionRule
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          mailboxExpression:
+            type: string
+            description: Contains a mailbox expression. For examples, see mailboxExpression examples.
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.mailboxProtectionRule'
+      x-ms-discriminator-value: '#microsoft.graph.mailboxProtectionRule'
     microsoft.graph.identitySet:
       title: identitySet
       required:
@@ -8313,87 +8434,27 @@ components:
           '#microsoft.graph.communicationsIdentitySet': '#/components/schemas/microsoft.graph.communicationsIdentitySet'
           '#microsoft.graph.engagementIdentitySet': '#/components/schemas/microsoft.graph.engagementIdentitySet'
           '#microsoft.graph.sharePointIdentitySet': '#/components/schemas/microsoft.graph.sharePointIdentitySet'
-    microsoft.graph.restorePointCollectionResponse:
-      title: Collection of restorePoint
-      type: object
+    microsoft.graph.granularMailboxRestoreArtifact:
       allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.restorePoint'
-    microsoft.graph.sharePointProtectionPolicy:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.protectionPolicyBase'
-      - title: sharePointProtectionPolicy
+      - $ref: '#/components/schemas/microsoft.graph.mailboxRestoreArtifact'
+      - title: granularMailboxRestoreArtifact
         required:
         - '@odata.type'
         type: object
         properties:
-          siteInclusionRules:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.siteProtectionRule'
-            description: The rules associated with the SharePoint Protection policy.
-            x-ms-navigationProperty: true
-          siteProtectionUnits:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.siteProtectionUnit'
-            description: The protection units (sites) that are protected under the site protection policy.
-            x-ms-navigationProperty: true
-          siteProtectionUnitsBulkAdditionJobs:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.siteProtectionUnitsBulkAdditionJob'
-            x-ms-navigationProperty: true
+          artifactCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: This property will be deprecated soon. Don't use.
+            format: int32
+            nullable: true
+          searchResponseId:
+            type: string
+            description: .
           '@odata.type':
             type: string
-            default: '#microsoft.graph.sharePointProtectionPolicy'
-      x-ms-discriminator-value: '#microsoft.graph.sharePointProtectionPolicy'
-    microsoft.graph.siteRestoreArtifactsBulkAdditionRequest:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.restoreArtifactsBulkRequestBase'
-      - title: siteRestoreArtifactsBulkAdditionRequest
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          siteIds:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The list of SharePoint site IDs that are added to the corresponding SharePoint restore session in a bulk operation.
-          siteWebUrls:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The list of SharePoint site URLs that are added to the corresponding SharePoint restore session in a bulk operation.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.siteRestoreArtifactsBulkAdditionRequest'
-    microsoft.graph.oneDriveForBusinessRestoreSessionCollectionResponse:
-      title: Collection of oneDriveForBusinessRestoreSession
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.oneDriveForBusinessRestoreSession'
-    microsoft.graph.restoreJobType:
-      title: restoreJobType
-      enum:
-      - standard
-      - bulk
-      - unknownFutureValue
-      type: string
+      x-ms-discriminator-value: '#microsoft.graph.granularMailboxRestoreArtifact'
     microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequestCollectionResponse:
       title: Collection of mailboxRestoreArtifactsBulkAdditionRequest
       type: object
@@ -8405,148 +8466,86 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequest'
-    microsoft.graph.oneDriveForBusinessProtectionPolicy:
+    microsoft.graph.driveProtectionUnitsBulkAdditionJob:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.protectionPolicyBase'
-      - title: oneDriveForBusinessProtectionPolicy
+      - $ref: '#/components/schemas/microsoft.graph.protectionUnitsBulkJobBase'
+      - title: driveProtectionUnitsBulkAdditionJob
         required:
         - '@odata.type'
         type: object
         properties:
-          driveInclusionRules:
+          directoryObjectIds:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.driveProtectionRule'
-            description: Contains the details of the Onedrive for Business protection rule.
-            x-ms-navigationProperty: true
-          driveProtectionUnits:
+              type: string
+              nullable: true
+            description: The list of OneDrive directoryObjectIds to add to the OneDrive protection policy.
+          drives:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.driveProtectionUnit'
-            description: Contains the protection units associated with a  OneDrive for Business protection policy.
-            x-ms-navigationProperty: true
-          driveProtectionUnitsBulkAdditionJobs:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.driveProtectionUnitsBulkAdditionJob'
-            x-ms-navigationProperty: true
+              type: string
+              nullable: true
+            description: The list of email addresses to add to the OneDrive protection policy.
           '@odata.type':
             type: string
-            default: '#microsoft.graph.oneDriveForBusinessProtectionPolicy'
-      x-ms-discriminator-value: '#microsoft.graph.oneDriveForBusinessProtectionPolicy'
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.backupServiceStatus:
-      title: backupServiceStatus
-      enum:
-      - disabled
-      - enabled
-      - protectionChangeLocked
-      - restoreLocked
-      - unknownFutureValue
-      type: string
-    microsoft.graph.protectionUnitBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: protectionUnitBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
-            description: The identity of the person who created the protection unit.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The time of creation of the protection unit. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          error:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.publicError'
-            - type: object
-              nullable: true
-            description: Contains error details if an error occurred while creating a protection unit.
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
-            description: The identity of person who last modified the protection unit.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Timestamp of the last modification of this protection unit. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          offboardRequestedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when protection unit offboard was requested. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          policyId:
-            type: string
-            description: The unique identifier of the protection policy based on which protection unit was created.
-            nullable: true
-          protectionSources:
-            $ref: '#/components/schemas/microsoft.graph.protectionSource'
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.protectionUnitStatus'
-            - type: object
-              nullable: true
-            description: 'The status of the protection unit. The possible values are: protectRequested, protected, unprotectRequested, unprotected, removeRequested, unknownFutureValue, offboardRequested, offboarded, cancelOffboardRequested. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: offboardRequested, offboarded, cancelOffboardRequested.'
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.driveProtectionUnit': '#/components/schemas/microsoft.graph.driveProtectionUnit'
-            '#microsoft.graph.mailboxProtectionUnit': '#/components/schemas/microsoft.graph.mailboxProtectionUnit'
-            '#microsoft.graph.siteProtectionUnit': '#/components/schemas/microsoft.graph.siteProtectionUnit'
-    microsoft.graph.restorableArtifact:
-      title: restorableArtifact
-      enum:
-      - message
-      - unknownFutureValue
-      type: string
-    microsoft.graph.siteRestoreArtifactsBulkAdditionRequestCollectionResponse:
-      title: Collection of siteRestoreArtifactsBulkAdditionRequest
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.siteRestoreArtifactsBulkAdditionRequest'
-    microsoft.graph.publicErrorDetail:
-      title: publicErrorDetail
+            default: '#microsoft.graph.driveProtectionUnitsBulkAdditionJob'
+      x-ms-discriminator-value: '#microsoft.graph.driveProtectionUnitsBulkAdditionJob'
+    microsoft.graph.ODataErrors.ErrorDetails:
       required:
-      - '@odata.type'
+      - code
+      - message
       type: object
       properties:
         code:
           type: string
-          description: The error code.
-          nullable: true
         message:
           type: string
-          description: The error message.
-          nullable: true
         target:
           type: string
-          description: The target of the error.
           nullable: true
-        '@odata.type':
-          type: string
+    microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequest:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.restoreArtifactsBulkRequestBase'
+      - title: mailboxRestoreArtifactsBulkAdditionRequest
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          directoryObjectIds:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: The list of directory object IDs that are added to the corresponding Exchange restore session in a bulk operation.
+          mailboxes:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: The list of email addresses that are added to the corresponding Exchange restore session in a bulk operation.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequest'
+    microsoft.graph.protectionPolicyStatus:
+      title: protectionPolicyStatus
+      enum:
+      - inactive
+      - activeWithErrors
+      - updating
+      - active
+      - unknownFutureValue
+      type: string
+    microsoft.graph.restoreSessionStatus:
+      title: restoreSessionStatus
+      enum:
+      - draft
+      - activating
+      - active
+      - completedWithError
+      - completed
+      - unknownFutureValue
+      - failed
+      type: string
     microsoft.graph.driveRestoreArtifact:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.restoreArtifactBase'
@@ -8572,28 +8571,26 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.driveRestoreArtifact'
-    microsoft.graph.mailboxProtectionUnitsBulkAdditionJobCollectionResponse:
-      title: Collection of mailboxProtectionUnitsBulkAdditionJob
+    microsoft.graph.publicErrorDetail:
+      title: publicErrorDetail
+      required:
+      - '@odata.type'
       type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnitsBulkAdditionJob'
-    microsoft.graph.serviceAppCollectionResponse:
-      title: Collection of serviceApp
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.serviceApp'
+      properties:
+        code:
+          type: string
+          description: The error code.
+          nullable: true
+        message:
+          type: string
+          description: The error message.
+          nullable: true
+        target:
+          type: string
+          description: The target of the error.
+          nullable: true
+        '@odata.type':
+          type: string
     microsoft.graph.artifactRestoreStatus:
       title: artifactRestoreStatus
       enum:
@@ -8605,6 +8602,216 @@ components:
       - failed
       - unknownFutureValue
       type: string
+    microsoft.graph.mailboxProtectionUnitsBulkAdditionJob:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.protectionUnitsBulkJobBase'
+      - title: mailboxProtectionUnitsBulkAdditionJob
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          directoryObjectIds:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: The list of Exchange directoryObjectIds to add to the Exchange protection policy.
+          mailboxes:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: The list of Exchange email addresses to add to the Exchange protection policy.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.mailboxProtectionUnitsBulkAdditionJob'
+      x-ms-discriminator-value: '#microsoft.graph.mailboxProtectionUnitsBulkAdditionJob'
+    microsoft.graph.sharePointRestoreSession:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.restoreSessionBase'
+      - title: sharePointRestoreSession
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          siteRestoreArtifacts:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.siteRestoreArtifact'
+            description: A collection of restore points and destination details that can be used to restore SharePoint sites.
+            x-ms-navigationProperty: true
+          siteRestoreArtifactsBulkAdditionRequests:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.siteRestoreArtifactsBulkAdditionRequest'
+            description: A collection of SharePoint site URLs and destination details that can be used to restore SharePoint sites.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.sharePointRestoreSession'
+      x-ms-discriminator-value: '#microsoft.graph.sharePointRestoreSession'
+    microsoft.graph.mailboxProtectionUnit:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.protectionUnitBase'
+      - title: mailboxProtectionUnit
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          directoryObjectId:
+            type: string
+            description: The ID of the directory object.
+            nullable: true
+          displayName:
+            type: string
+            description: Display name of the directory object.
+            nullable: true
+            readOnly: true
+          email:
+            type: string
+            description: Email address associated with the directory object.
+            nullable: true
+            readOnly: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.mailboxProtectionUnit'
+      x-ms-discriminator-value: '#microsoft.graph.mailboxProtectionUnit'
+    microsoft.graph.siteRestoreArtifact:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.restoreArtifactBase'
+      - title: siteRestoreArtifact
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          restoredSiteId:
+            type: string
+            description: The new site identifier if the value of the destinationType property is new, and the existing site ID if the value is inPlace.
+            nullable: true
+          restoredSiteName:
+            type: string
+            description: The name of the restored site.
+            nullable: true
+            readOnly: true
+          restoredSiteWebUrl:
+            type: string
+            description: The web URL of the restored site.
+            nullable: true
+            readOnly: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.siteRestoreArtifact'
+    microsoft.graph.siteProtectionUnit:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.protectionUnitBase'
+      - title: siteProtectionUnit
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          siteId:
+            type: string
+            description: Unique identifier of the SharePoint site.
+            nullable: true
+          siteName:
+            type: string
+            description: Name of the SharePoint site.
+            nullable: true
+            readOnly: true
+          siteWebUrl:
+            type: string
+            description: The web URL of the SharePoint site.
+            nullable: true
+            readOnly: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.siteProtectionUnit'
+      x-ms-discriminator-value: '#microsoft.graph.siteProtectionUnit'
+    microsoft.graph.protectionRuleBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: protectionRuleBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type: object
+              nullable: true
+            description: The identity of person who created the rule.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The time of creation of the rule.
+            format: date-time
+            nullable: true
+          error:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.publicError'
+            - type: object
+              nullable: true
+            description: Contains error details if an operation on a rule fails.
+          isAutoApplyEnabled:
+            type: boolean
+            description: true indicates that the protection rule is dynamic; false that it's static.
+            nullable: true
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type: object
+              nullable: true
+            description: The identity of the person who last modified the rule.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Timestamp of the last modification made to the rule.
+            format: date-time
+            nullable: true
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.protectionRuleStatus'
+            - type: object
+              nullable: true
+            description: 'The status of the protection rule. The possible values are: draft, active, completed, completedWithErrors, unknownFutureValue, updateRequested, deleteRequested. Use the Prefer: include-unknown-enum-members request header to get the following values in this evolvable enum: updateRequested , deleteRequested. The draft member is currently unsupported.'
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.driveProtectionRule': '#/components/schemas/microsoft.graph.driveProtectionRule'
+            '#microsoft.graph.mailboxProtectionRule': '#/components/schemas/microsoft.graph.mailboxProtectionRule'
+            '#microsoft.graph.siteProtectionRule': '#/components/schemas/microsoft.graph.siteProtectionRule'
+    microsoft.graph.exchangeProtectionPolicy:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.protectionPolicyBase'
+      - title: exchangeProtectionPolicy
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          mailboxInclusionRules:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionRule'
+            description: The rules associated with the Exchange protection policy.
+            x-ms-navigationProperty: true
+          mailboxProtectionUnits:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnit'
+            description: The protection units (mailboxes) that are  protected under the Exchange protection policy.
+            x-ms-navigationProperty: true
+          mailboxProtectionUnitsBulkAdditionJobs:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnitsBulkAdditionJob'
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.exchangeProtectionPolicy'
+      x-ms-discriminator-value: '#microsoft.graph.exchangeProtectionPolicy'
     microsoft.graph.entity:
       title: entity
       required:
@@ -9674,235 +9881,25 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.artifactQuery:
-      title: artifactQuery
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        artifactType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.restorableArtifact'
-          - type: object
-            nullable: true
-          description: 'The type of artifact to search. The possible values are: message, unknownFutureValue.'
-        queryExpression:
-          type: string
-          description: Specifies criteria to retrieve artifacts.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.mailboxProtectionUnitsBulkAdditionJob:
+    microsoft.graph.sharePointProtectionPolicy:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.protectionUnitsBulkJobBase'
-      - title: mailboxProtectionUnitsBulkAdditionJob
+      - $ref: '#/components/schemas/microsoft.graph.protectionPolicyBase'
+      - title: sharePointProtectionPolicy
         required:
         - '@odata.type'
         type: object
         properties:
-          directoryObjectIds:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The list of Exchange directoryObjectIds to add to the Exchange protection policy.
-          mailboxes:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The list of Exchange email addresses to add to the Exchange protection policy.
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.mailboxProtectionUnitsBulkAdditionJob'
-      x-ms-discriminator-value: '#microsoft.graph.mailboxProtectionUnitsBulkAdditionJob'
-    microsoft.graph.mailboxRestoreArtifact:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.restoreArtifactBase'
-      - title: mailboxRestoreArtifact
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          restoredFolderId:
-            type: string
-            description: The new restored folder identifier for the user.
-            nullable: true
-          restoredFolderName:
-            type: string
-            description: The new restored folder name.
-            nullable: true
-            readOnly: true
-          restoredItemCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The number of items that are being restored in the folder.
-            format: int32
-            nullable: true
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.granularMailboxRestoreArtifact': '#/components/schemas/microsoft.graph.granularMailboxRestoreArtifact'
-    microsoft.graph.disableReason:
-      title: disableReason
-      enum:
-      - none
-      - invalidBillingProfile
-      - userRequested
-      - unknownFutureValue
-      type: string
-    microsoft.graph.restoreSessionBaseCollectionResponse:
-      title: Collection of restoreSessionBase
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.restoreSessionBase'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.backupRestoreRoot:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: backupRestoreRoot
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          serviceStatus:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.serviceStatus'
-            - type: object
-              nullable: true
-            description: Represents the tenant-level status of the Backup Storage service.
-          driveInclusionRules:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.driveProtectionRule'
-            description: The list of drive inclusion rules applied to the tenant.
-            x-ms-navigationProperty: true
-          driveProtectionUnits:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.driveProtectionUnit'
-            description: The list of drive protection units in the tenant.
-            x-ms-navigationProperty: true
-          driveProtectionUnitsBulkAdditionJobs:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.driveProtectionUnitsBulkAdditionJob'
-            x-ms-navigationProperty: true
-          exchangeProtectionPolicies:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.exchangeProtectionPolicy'
-            description: The list of Exchange protection policies in the tenant.
-            x-ms-navigationProperty: true
-          exchangeRestoreSessions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.exchangeRestoreSession'
-            description: The list of Exchange restore sessions available in the tenant.
-            x-ms-navigationProperty: true
-          mailboxInclusionRules:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionRule'
-            description: The list of mailbox inclusion rules applied to the tenant.
-            x-ms-navigationProperty: true
-          mailboxProtectionUnits:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnit'
-            description: The list of mailbox protection units in the tenant.
-            x-ms-navigationProperty: true
-          mailboxProtectionUnitsBulkAdditionJobs:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnitsBulkAdditionJob'
-            x-ms-navigationProperty: true
-          oneDriveForBusinessProtectionPolicies:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.oneDriveForBusinessProtectionPolicy'
-            description: The list of OneDrive for Business protection policies in the tenant.
-            x-ms-navigationProperty: true
-          oneDriveForBusinessRestoreSessions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.oneDriveForBusinessRestoreSession'
-            description: The list of OneDrive for Business restore sessions available in the tenant.
-            x-ms-navigationProperty: true
-          protectionPolicies:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.protectionPolicyBase'
-            description: List of protection policies in the tenant.
-            x-ms-navigationProperty: true
-          protectionUnits:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.protectionUnitBase'
-            description: List of protection units in the tenant.
-            x-ms-navigationProperty: true
-          restorePoints:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.restorePoint'
-            description: List of restore points in the tenant.
-            x-ms-navigationProperty: true
-          restoreSessions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.restoreSessionBase'
-            description: List of restore sessions in the tenant.
-            x-ms-navigationProperty: true
-          serviceApps:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.serviceApp'
-            description: List of Backup Storage apps in the tenant.
-            x-ms-navigationProperty: true
-          sharePointProtectionPolicies:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.sharePointProtectionPolicy'
-            description: The list of SharePoint protection policies in the tenant.
-            x-ms-navigationProperty: true
-          sharePointRestoreSessions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.sharePointRestoreSession'
-            description: The list of SharePoint restore sessions available in the tenant.
-            x-ms-navigationProperty: true
           siteInclusionRules:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.siteProtectionRule'
-            description: The list of site inclusion rules applied to the tenant.
+            description: The rules associated with the SharePoint Protection policy.
             x-ms-navigationProperty: true
           siteProtectionUnits:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.siteProtectionUnit'
-            description: The list of site protection units in the tenant.
+            description: The protection units (sites) that are protected under the site protection policy.
             x-ms-navigationProperty: true
           siteProtectionUnitsBulkAdditionJobs:
             type: array
@@ -9911,849 +9908,93 @@ components:
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.backupRestoreRoot'
-    microsoft.graph.publicError:
-      title: publicError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        code:
-          type: string
-          description: Represents the error code.
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.publicErrorDetail'
-          description: Details of the error.
-        innerError:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.publicInnerError'
-          - type: object
-            nullable: true
-          description: Details of the inner error.
-        message:
-          type: string
-          description: A non-localized message for the developer.
-          nullable: true
-        target:
-          type: string
-          description: The target of the error.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.mailboxProtectionUnit:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.protectionUnitBase'
-      - title: mailboxProtectionUnit
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          directoryObjectId:
-            type: string
-            description: The ID of the directory object.
-            nullable: true
-          displayName:
-            type: string
-            description: Display name of the directory object.
-            nullable: true
-            readOnly: true
-          email:
-            type: string
-            description: Email address associated with the directory object.
-            nullable: true
-            readOnly: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.mailboxProtectionUnit'
-      x-ms-discriminator-value: '#microsoft.graph.mailboxProtectionUnit'
-    microsoft.graph.granularMailboxRestoreArtifactCollectionResponse:
-      title: Collection of granularMailboxRestoreArtifact
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.granularMailboxRestoreArtifact'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.exchangeProtectionPolicy:
+            default: '#microsoft.graph.sharePointProtectionPolicy'
+      x-ms-discriminator-value: '#microsoft.graph.sharePointProtectionPolicy'
+    microsoft.graph.oneDriveForBusinessProtectionPolicy:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.protectionPolicyBase'
-      - title: exchangeProtectionPolicy
+      - title: oneDriveForBusinessProtectionPolicy
         required:
         - '@odata.type'
         type: object
         properties:
-          mailboxInclusionRules:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionRule'
-            description: The rules associated with the Exchange protection policy.
-            x-ms-navigationProperty: true
-          mailboxProtectionUnits:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnit'
-            description: The protection units (mailboxes) that are  protected under the Exchange protection policy.
-            x-ms-navigationProperty: true
-          mailboxProtectionUnitsBulkAdditionJobs:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnitsBulkAdditionJob'
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.exchangeProtectionPolicy'
-      x-ms-discriminator-value: '#microsoft.graph.exchangeProtectionPolicy'
-    microsoft.graph.sharePointProtectionPolicyCollectionResponse:
-      title: Collection of sharePointProtectionPolicy
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.sharePointProtectionPolicy'
-    microsoft.graph.exchangeRestoreSession:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.restoreSessionBase'
-      - title: exchangeRestoreSession
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          granularMailboxRestoreArtifacts:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.granularMailboxRestoreArtifact'
-            x-ms-navigationProperty: true
-          mailboxRestoreArtifacts:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mailboxRestoreArtifact'
-            description: A collection of restore points and destination details that can be used to restore Exchange mailboxes.
-            x-ms-navigationProperty: true
-          mailboxRestoreArtifactsBulkAdditionRequests:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequest'
-            description: A collection of user mailboxes and destination details that can be used to restore Exchange mailboxes.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.exchangeRestoreSession'
-      x-ms-discriminator-value: '#microsoft.graph.exchangeRestoreSession'
-    microsoft.graph.exchangeProtectionPolicyCollectionResponse:
-      title: Collection of exchangeProtectionPolicy
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.exchangeProtectionPolicy'
-    microsoft.graph.restorePointPreference:
-      title: restorePointPreference
-      enum:
-      - latest
-      - oldest
-      - unknownFutureValue
-      type: string
-    microsoft.graph.driveProtectionUnitsBulkAdditionJob:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.protectionUnitsBulkJobBase'
-      - title: driveProtectionUnitsBulkAdditionJob
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          directoryObjectIds:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The list of OneDrive directoryObjectIds to add to the OneDrive protection policy.
-          drives:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The list of email addresses to add to the OneDrive protection policy.
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.driveProtectionUnitsBulkAdditionJob'
-      x-ms-discriminator-value: '#microsoft.graph.driveProtectionUnitsBulkAdditionJob'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.sharePointRestoreSessionCollectionResponse:
-      title: Collection of sharePointRestoreSession
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.sharePointRestoreSession'
-    microsoft.graph.siteProtectionRule:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.protectionRuleBase'
-      - title: siteProtectionRule
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          siteExpression:
-            type: string
-            description: Contains a site expression. For examples, see siteExpression example.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.siteProtectionRule'
-      x-ms-discriminator-value: '#microsoft.graph.siteProtectionRule'
-    microsoft.graph.serviceStatus:
-      title: serviceStatus
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        backupServiceConsumer:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.backupServiceConsumer'
-          - type: object
-            nullable: true
-          description: 'The type of consumer. The possible values are: unknown, firstparty, thirdparty, unknownFutureValue.'
-        disableReason:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.disableReason'
-          - type: object
-            nullable: true
-          description: 'The reason the service is disabled. The possible values are: none, controllerServiceAppDeleted, invalidBillingProfile, userRequested, unknownFutureValue.'
-        gracePeriodDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The expiration time of the grace period.
-          format: date-time
-          nullable: true
-        lastModifiedBy:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identitySet'
-          - type: object
-            nullable: true
-          description: Identity of the person who last modified the entity.
-        lastModifiedDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Timestamp of the last modification of the entity.
-          format: date-time
-          nullable: true
-        restoreAllowedTillDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The expiration time of the restoration allowed period.
-          format: date-time
-          nullable: true
-        status:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.backupServiceStatus'
-          - type: object
-            nullable: true
-          description: 'Status of the service. This value indicates what capabilities can be used. The possible values are: disabled, enabled, protectionChangeLocked, restoreLocked, unknownFutureValue.'
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.protectionUnitsBulkJobBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: protectionUnitsBulkJobBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
-            description: The identity of person who created the job.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The time of creation of the job.
-            format: date-time
-            nullable: true
-          displayName:
-            type: string
-            description: The name of the protection units bulk addition job.
-            nullable: true
-          error:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.publicError'
-            - type: object
-              nullable: true
-            description: Error details containing resource resolution failures, if any.
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
-            description: The identity of the person who last modified the job.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Timestamp of the last modification made to the job.
-            format: date-time
-            nullable: true
-          status:
-            $ref: '#/components/schemas/microsoft.graph.protectionUnitsBulkJobStatus'
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.driveProtectionUnitsBulkAdditionJob': '#/components/schemas/microsoft.graph.driveProtectionUnitsBulkAdditionJob'
-            '#microsoft.graph.mailboxProtectionUnitsBulkAdditionJob': '#/components/schemas/microsoft.graph.mailboxProtectionUnitsBulkAdditionJob'
-            '#microsoft.graph.siteProtectionUnitsBulkAdditionJob': '#/components/schemas/microsoft.graph.siteProtectionUnitsBulkAdditionJob'
-    microsoft.graph.driveProtectionRule:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.protectionRuleBase'
-      - title: driveProtectionRule
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          driveExpression:
-            type: string
-            description: Contains a drive expression. For examples, see driveExpression examples.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.driveProtectionRule'
-      x-ms-discriminator-value: '#microsoft.graph.driveProtectionRule'
-    microsoft.graph.restoreSessionArtifactCount:
-      title: restoreSessionArtifactCount
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        completed:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: The number of artifacts whose restoration completed.
-          format: int32
-          nullable: true
-        failed:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: The number of artifacts whose restoration failed.
-          format: int32
-          nullable: true
-        inProgress:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: The number of artifacts whose restoration is in progress.
-          format: int32
-          nullable: true
-        total:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: The number of artifacts present in the restore session.
-          format: int32
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.granularMailboxRestoreArtifact:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mailboxRestoreArtifact'
-      - title: granularMailboxRestoreArtifact
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          artifactCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: This property will be deprecated soon. Don't use.
-            format: int32
-            nullable: true
-          searchResponseId:
-            type: string
-            description: .
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.granularMailboxRestoreArtifact'
-    microsoft.graph.destinationType:
-      title: destinationType
-      enum:
-      - new
-      - inPlace
-      - unknownFutureValue
-      type: string
-    microsoft.graph.timePeriod:
-      title: timePeriod
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        endDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The date time of the end of the time period.
-          format: date-time
-          nullable: true
-        startDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The date time of the start of the time period.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequest:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.restoreArtifactsBulkRequestBase'
-      - title: mailboxRestoreArtifactsBulkAdditionRequest
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          directoryObjectIds:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The list of directory object IDs that are added to the corresponding Exchange restore session in a bulk operation.
-          mailboxes:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The list of email addresses that are added to the corresponding Exchange restore session in a bulk operation.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequest'
-    microsoft.graph.protectionUnitsBulkJobStatus:
-      title: protectionUnitsBulkJobStatus
-      enum:
-      - unknown
-      - active
-      - completed
-      - completedWithErrors
-      - unknownFutureValue
-      type: string
-    microsoft.graph.serviceApp:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: serviceApp
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          application:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identity'
-            - type: object
-              nullable: true
-            description: The Entra ID application ID.
-          effectiveDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Timestamp of the effective activation of the service app.
-            format: date-time
-            nullable: true
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
-            description: Identity of the person who last modified the entity.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Timestamp of the last modification of the entity.
-            format: date-time
-            nullable: true
-          registrationDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Timestamp of the creation of the service app entity.
-            format: date-time
-            nullable: true
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.serviceAppStatus'
-            - type: object
-              nullable: true
-            description: 'The status of the service app. This value indicates whether or not the application can be used to control the backup service. The possible values are: inactive, active, pendingActive, pendingInactive, unknownFutureValue.'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.serviceApp'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.protectionPolicyBaseCollectionResponse:
-      title: Collection of protectionPolicyBase
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.protectionPolicyBase'
-    microsoft.graph.driveProtectionUnitCollectionResponse:
-      title: Collection of driveProtectionUnit
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.driveProtectionUnit'
-    microsoft.graph.driveRestoreArtifactsBulkAdditionRequest:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.restoreArtifactsBulkRequestBase'
-      - title: driveRestoreArtifactsBulkAdditionRequest
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          directoryObjectIds:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The list of directory object IDs that are added to the corresponding OneDrive for work or school restore session in a bulk operation.
-          drives:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The list of email addresses that are added to the corresponding OneDrive for work or school restore session in a bulk operation.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.driveRestoreArtifactsBulkAdditionRequest'
-    microsoft.graph.protectionRuleBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: protectionRuleBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
-            description: The identity of person who created the rule.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The time of creation of the rule.
-            format: date-time
-            nullable: true
-          error:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.publicError'
-            - type: object
-              nullable: true
-            description: Contains error details if an operation on a rule fails.
-          isAutoApplyEnabled:
-            type: boolean
-            description: true indicates that the protection rule is dynamic; false that it's static.
-            nullable: true
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
-            description: The identity of the person who last modified the rule.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Timestamp of the last modification made to the rule.
-            format: date-time
-            nullable: true
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.protectionRuleStatus'
-            - type: object
-              nullable: true
-            description: 'The status of the protection rule. The possible values are: draft, active, completed, completedWithErrors, unknownFutureValue, updateRequested, deleteRequested. Use the Prefer: include-unknown-enum-members request header to get the following values in this evolvable enum: updateRequested , deleteRequested. The draft member is currently unsupported.'
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.driveProtectionRule': '#/components/schemas/microsoft.graph.driveProtectionRule'
-            '#microsoft.graph.mailboxProtectionRule': '#/components/schemas/microsoft.graph.mailboxProtectionRule'
-            '#microsoft.graph.siteProtectionRule': '#/components/schemas/microsoft.graph.siteProtectionRule'
-    microsoft.graph.restoreArtifactBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: restoreArtifactBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          completionDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The time when restoration of restore artifact is completed.
-            format: date-time
-            nullable: true
-          destinationType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.destinationType'
-            - type: object
-              nullable: true
-            description: 'Indicates the restoration destination. The possible values are: new, inPlace, unknownFutureValue.'
-          error:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.publicError'
-            - type: object
-              nullable: true
-            description: Contains error details if the restore session fails or completes with an error.
-          startDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The time when restoration of restore artifact is started.
-            format: date-time
-            nullable: true
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.artifactRestoreStatus'
-            - type: object
-              nullable: true
-            description: 'The individual restoration status of the restore artifact. The possible values are: added, scheduling, scheduled, inProgress, succeeded, failed, unknownFutureValue.'
-          restorePoint:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.restorePoint'
-            - type: object
-              nullable: true
-            description: Represents the date and time when an artifact is protected by a protectionPolicy and can be restored.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.driveRestoreArtifact': '#/components/schemas/microsoft.graph.driveRestoreArtifact'
-            '#microsoft.graph.mailboxRestoreArtifact': '#/components/schemas/microsoft.graph.mailboxRestoreArtifact'
-            '#microsoft.graph.granularMailboxRestoreArtifact': '#/components/schemas/microsoft.graph.granularMailboxRestoreArtifact'
-            '#microsoft.graph.siteRestoreArtifact': '#/components/schemas/microsoft.graph.siteRestoreArtifact'
-    microsoft.graph.exchangeRestoreSessionCollectionResponse:
-      title: Collection of exchangeRestoreSession
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.exchangeRestoreSession'
-    microsoft.graph.restoreSessionStatus:
-      title: restoreSessionStatus
-      enum:
-      - draft
-      - activating
-      - active
-      - completedWithError
-      - completed
-      - unknownFutureValue
-      - failed
-      type: string
-    microsoft.graph.mailboxProtectionRuleCollectionResponse:
-      title: Collection of mailboxProtectionRule
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionRule'
-    microsoft.graph.publicInnerError:
-      title: publicInnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        code:
-          type: string
-          description: The error code.
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.publicErrorDetail'
-          description: A collection of error details.
-        message:
-          type: string
-          description: The error message.
-          nullable: true
-        target:
-          type: string
-          description: The target of the error.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.protectionUnitBaseCollectionResponse:
-      title: Collection of protectionUnitBase
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.protectionUnitBase'
-    microsoft.graph.siteProtectionUnitsBulkAdditionJob:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.protectionUnitsBulkJobBase'
-      - title: siteProtectionUnitsBulkAdditionJob
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          siteIds:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The list of SharePoint site IDs to add to the SharePoint protection policy.
-          siteWebUrls:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The list of SharePoint site URLs to add to the SharePoint protection policy.
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.siteProtectionUnitsBulkAdditionJob'
-      x-ms-discriminator-value: '#microsoft.graph.siteProtectionUnitsBulkAdditionJob'
-    microsoft.graph.driveProtectionUnit:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.protectionUnitBase'
-      - title: driveProtectionUnit
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          directoryObjectId:
-            type: string
-            description: ID of the directory object.
-            nullable: true
-          displayName:
-            type: string
-            description: Display name of the directory object.
-            nullable: true
-            readOnly: true
-          email:
-            type: string
-            description: Email associated with the directory object.
-            nullable: true
-            readOnly: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.driveProtectionUnit'
-      x-ms-discriminator-value: '#microsoft.graph.driveProtectionUnit'
-    microsoft.graph.driveProtectionRuleCollectionResponse:
-      title: Collection of driveProtectionRule
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
+          driveInclusionRules:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.driveProtectionRule'
-    microsoft.graph.protectionSource:
-      title: protectionSource
+            description: Contains the details of the Onedrive for Business protection rule.
+            x-ms-navigationProperty: true
+          driveProtectionUnits:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.driveProtectionUnit'
+            description: Contains the protection units associated with a  OneDrive for Business protection policy.
+            x-ms-navigationProperty: true
+          driveProtectionUnitsBulkAdditionJobs:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.driveProtectionUnitsBulkAdditionJob'
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.oneDriveForBusinessProtectionPolicy'
+      x-ms-discriminator-value: '#microsoft.graph.oneDriveForBusinessProtectionPolicy'
+    microsoft.graph.siteRestoreArtifactsBulkAdditionRequestCollectionResponse:
+      title: Collection of siteRestoreArtifactsBulkAdditionRequest
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.siteRestoreArtifactsBulkAdditionRequest'
+    microsoft.graph.serviceAppStatus:
+      title: serviceAppStatus
       enum:
-      - none
-      - manual
-      - dynamicRule
+      - inactive
+      - active
+      - pendingActive
+      - pendingInactive
       - unknownFutureValue
       type: string
-      x-ms-enum-flags:
-        isFlags: true
+    microsoft.graph.restorePoint:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: restorePoint
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          expirationDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Expiration date time of the restore point.
+            format: date-time
+            nullable: true
+          protectionDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Date time when the restore point was created.
+            format: date-time
+            nullable: true
+          tags:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.restorePointTags'
+            - type: object
+              nullable: true
+            description: 'The type of the restore point. The possible values are: none, fastRestore, unknownFutureValue.'
+          protectionUnit:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.protectionUnitBase'
+            - type: object
+              nullable: true
+            description: The site, drive, or mailbox units that are protected under a protection policy.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.restorePoint'
     microsoft.graph.restoreArtifactsBulkRequestBase:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -10836,8 +10077,15 @@ components:
             '#microsoft.graph.driveRestoreArtifactsBulkAdditionRequest': '#/components/schemas/microsoft.graph.driveRestoreArtifactsBulkAdditionRequest'
             '#microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequest': '#/components/schemas/microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequest'
             '#microsoft.graph.siteRestoreArtifactsBulkAdditionRequest': '#/components/schemas/microsoft.graph.siteRestoreArtifactsBulkAdditionRequest'
-    microsoft.graph.siteProtectionUnitsBulkAdditionJobCollectionResponse:
-      title: Collection of siteProtectionUnitsBulkAdditionJob
+    microsoft.graph.destinationType:
+      title: destinationType
+      enum:
+      - new
+      - inPlace
+      - unknownFutureValue
+      type: string
+    microsoft.graph.oneDriveForBusinessProtectionPolicyCollectionResponse:
+      title: Collection of oneDriveForBusinessProtectionPolicy
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -10846,219 +10094,977 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.siteProtectionUnitsBulkAdditionJob'
-    microsoft.graph.siteProtectionUnit:
+              $ref: '#/components/schemas/microsoft.graph.oneDriveForBusinessProtectionPolicy'
+    microsoft.graph.driveProtectionUnitCollectionResponse:
+      title: Collection of driveProtectionUnit
+      type: object
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.protectionUnitBase'
-      - title: siteProtectionUnit
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.driveProtectionUnit'
+    microsoft.graph.driveRestoreArtifactCollectionResponse:
+      title: Collection of driveRestoreArtifact
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.driveRestoreArtifact'
+    microsoft.graph.siteRestoreArtifactsBulkAdditionRequest:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.restoreArtifactsBulkRequestBase'
+      - title: siteRestoreArtifactsBulkAdditionRequest
         required:
         - '@odata.type'
         type: object
         properties:
-          siteId:
-            type: string
-            description: Unique identifier of the SharePoint site.
-            nullable: true
-          siteName:
-            type: string
-            description: Name of the SharePoint site.
-            nullable: true
-            readOnly: true
-          siteWebUrl:
-            type: string
-            description: The web URL of the SharePoint site.
-            nullable: true
-            readOnly: true
+          siteIds:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: The list of SharePoint site IDs that are added to the corresponding SharePoint restore session in a bulk operation.
+          siteWebUrls:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: The list of SharePoint site URLs that are added to the corresponding SharePoint restore session in a bulk operation.
           '@odata.type':
             type: string
-            default: '#microsoft.graph.siteProtectionUnit'
-      x-ms-discriminator-value: '#microsoft.graph.siteProtectionUnit'
-  responses:
-    microsoft.graph.siteProtectionUnitsBulkAdditionJobCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.siteProtectionUnitsBulkAdditionJobCollectionResponse'
-    microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequestCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequestCollectionResponse'
-    microsoft.graph.sharePointProtectionPolicyCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.sharePointProtectionPolicyCollectionResponse'
-    microsoft.graph.protectionPolicyBaseCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.protectionPolicyBaseCollectionResponse'
-    microsoft.graph.driveRestoreArtifactCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.driveRestoreArtifactCollectionResponse'
-    microsoft.graph.oneDriveForBusinessProtectionPolicyCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.oneDriveForBusinessProtectionPolicyCollectionResponse'
+      x-ms-discriminator-value: '#microsoft.graph.siteRestoreArtifactsBulkAdditionRequest'
+    microsoft.graph.oneDriveForBusinessRestoreSession:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.restoreSessionBase'
+      - title: oneDriveForBusinessRestoreSession
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          driveRestoreArtifacts:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.driveRestoreArtifact'
+            description: A collection of restore points and destination details that can be used to restore a OneDrive for work or school drive.
+            x-ms-navigationProperty: true
+          driveRestoreArtifactsBulkAdditionRequests:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.driveRestoreArtifactsBulkAdditionRequest'
+            description: A collection of user mailboxes and destination details that can be used to restore a OneDrive for work or school drive.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.oneDriveForBusinessRestoreSession'
+      x-ms-discriminator-value: '#microsoft.graph.oneDriveForBusinessRestoreSession'
+    microsoft.graph.protectionPolicyBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: protectionPolicyBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type: object
+              nullable: true
+            description: The identity of person who created the policy.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The time of creation of the policy.
+            format: date-time
+            nullable: true
+          displayName:
+            type: string
+            description: The name of the policy to be created.
+            nullable: true
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type: object
+              nullable: true
+            description: The identity of the person who last modified the policy.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The timestamp of the last modification of the policy.
+            format: date-time
+            nullable: true
+          retentionSettings:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.retentionSetting'
+            description: Contains the retention setting details for the policy.
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.protectionPolicyStatus'
+            - type: object
+              nullable: true
+            description: 'The aggregated status of the protection units associated with the policy. The possible values are: inactive, activeWithErrors, updating, active, unknownFutureValue.'
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.exchangeProtectionPolicy': '#/components/schemas/microsoft.graph.exchangeProtectionPolicy'
+            '#microsoft.graph.oneDriveForBusinessProtectionPolicy': '#/components/schemas/microsoft.graph.oneDriveForBusinessProtectionPolicy'
+            '#microsoft.graph.sharePointProtectionPolicy': '#/components/schemas/microsoft.graph.sharePointProtectionPolicy'
+    microsoft.graph.protectionUnitsBulkJobStatus:
+      title: protectionUnitsBulkJobStatus
+      enum:
+      - unknown
+      - active
+      - completed
+      - completedWithErrors
+      - unknownFutureValue
+      type: string
+    microsoft.graph.publicInnerError:
+      title: publicInnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code.
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.publicErrorDetail'
+          description: A collection of error details.
+        message:
+          type: string
+          description: The error message.
+          nullable: true
+        target:
+          type: string
+          description: The target of the error.
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.restorePointSearchResponse:
+      title: restorePointSearchResponse
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        noResultProtectionUnitIds:
+          type: array
+          items:
+            type: string
+            nullable: true
+          description: Contains  alist of protection units with no restore points.
+        searchResponseId:
+          type: string
+          description: The unique identifier of the search response.
+          nullable: true
+        searchResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.restorePointSearchResult'
+          description: Contains a collection of restore points.
+        '@odata.type':
+          type: string
+    microsoft.graph.artifactQuery:
+      title: artifactQuery
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        artifactType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.restorableArtifact'
+          - type: object
+            nullable: true
+          description: 'The type of artifact to search. The possible values are: message, unknownFutureValue.'
+        queryExpression:
+          type: string
+          description: Specifies criteria to retrieve artifacts.
+          nullable: true
+        '@odata.type':
+          type: string
     microsoft.graph.oneDriveForBusinessRestoreSessionCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.oneDriveForBusinessRestoreSessionCollectionResponse'
-    microsoft.graph.siteRestoreArtifactsBulkAdditionRequestCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.siteRestoreArtifactsBulkAdditionRequestCollectionResponse'
-    microsoft.graph.mailboxProtectionRuleCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.mailboxProtectionRuleCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.siteRestoreArtifactCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.siteRestoreArtifactCollectionResponse'
-    microsoft.graph.mailboxProtectionUnitCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnitCollectionResponse'
+      title: Collection of oneDriveForBusinessRestoreSession
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.oneDriveForBusinessRestoreSession'
+    microsoft.graph.restorableArtifact:
+      title: restorableArtifact
+      enum:
+      - message
+      - unknownFutureValue
+      type: string
+    microsoft.graph.protectionSource:
+      title: protectionSource
+      enum:
+      - none
+      - manual
+      - dynamicRule
+      - unknownFutureValue
+      type: string
+      x-ms-enum-flags:
+        isFlags: true
+    microsoft.graph.protectionUnitsBulkJobBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: protectionUnitsBulkJobBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type: object
+              nullable: true
+            description: The identity of person who created the job.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The time of creation of the job.
+            format: date-time
+            nullable: true
+          displayName:
+            type: string
+            description: The name of the protection units bulk addition job.
+            nullable: true
+          error:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.publicError'
+            - type: object
+              nullable: true
+            description: Error details containing resource resolution failures, if any.
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type: object
+              nullable: true
+            description: The identity of the person who last modified the job.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Timestamp of the last modification made to the job.
+            format: date-time
+            nullable: true
+          status:
+            $ref: '#/components/schemas/microsoft.graph.protectionUnitsBulkJobStatus'
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.driveProtectionUnitsBulkAdditionJob': '#/components/schemas/microsoft.graph.driveProtectionUnitsBulkAdditionJob'
+            '#microsoft.graph.mailboxProtectionUnitsBulkAdditionJob': '#/components/schemas/microsoft.graph.mailboxProtectionUnitsBulkAdditionJob'
+            '#microsoft.graph.siteProtectionUnitsBulkAdditionJob': '#/components/schemas/microsoft.graph.siteProtectionUnitsBulkAdditionJob'
+    microsoft.graph.protectionUnitBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: protectionUnitBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type: object
+              nullable: true
+            description: The identity of the person who created the protection unit.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The time of creation of the protection unit. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            nullable: true
+          error:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.publicError'
+            - type: object
+              nullable: true
+            description: Contains error details if an error occurred while creating a protection unit.
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type: object
+              nullable: true
+            description: The identity of person who last modified the protection unit.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Timestamp of the last modification of this protection unit. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            nullable: true
+          offboardRequestedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when protection unit offboard was requested. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            nullable: true
+          policyId:
+            type: string
+            description: The unique identifier of the protection policy based on which protection unit was created.
+            nullable: true
+          protectionSources:
+            $ref: '#/components/schemas/microsoft.graph.protectionSource'
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.protectionUnitStatus'
+            - type: object
+              nullable: true
+            description: 'The status of the protection unit. The possible values are: protectRequested, protected, unprotectRequested, unprotected, removeRequested, unknownFutureValue, offboardRequested, offboarded, cancelOffboardRequested. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: offboardRequested, offboarded, cancelOffboardRequested.'
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.driveProtectionUnit': '#/components/schemas/microsoft.graph.driveProtectionUnit'
+            '#microsoft.graph.mailboxProtectionUnit': '#/components/schemas/microsoft.graph.mailboxProtectionUnit'
+            '#microsoft.graph.siteProtectionUnit': '#/components/schemas/microsoft.graph.siteProtectionUnit'
+    microsoft.graph.mailboxRestoreArtifactCollectionResponse:
+      title: Collection of mailboxRestoreArtifact
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mailboxRestoreArtifact'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.driveProtectionRuleCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.driveProtectionRuleCollectionResponse'
-    microsoft.graph.sharePointRestoreSessionCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.sharePointRestoreSessionCollectionResponse'
-    microsoft.graph.siteProtectionRuleCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.siteProtectionRuleCollectionResponse'
+      title: Collection of driveProtectionRule
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.driveProtectionRule'
+    microsoft.graph.protectionRuleStatus:
+      title: protectionRuleStatus
+      enum:
+      - draft
+      - active
+      - completed
+      - completedWithErrors
+      - unknownFutureValue
+      - updateRequested
+      - deleteRequested
+      type: string
+    microsoft.graph.siteRestoreArtifactCollectionResponse:
+      title: Collection of siteRestoreArtifact
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.siteRestoreArtifact'
+    microsoft.graph.restorePointPreference:
+      title: restorePointPreference
+      enum:
+      - latest
+      - oldest
+      - unknownFutureValue
+      type: string
+    microsoft.graph.restoreArtifactsBulkRequestStatus:
+      title: restoreArtifactsBulkRequestStatus
+      enum:
+      - unknown
+      - active
+      - completed
+      - completedWithErrors
+      - unknownFutureValue
+      type: string
+    microsoft.graph.protectionUnitBaseCollectionResponse:
+      title: Collection of protectionUnitBase
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.protectionUnitBase'
+    microsoft.graph.siteProtectionRule:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.protectionRuleBase'
+      - title: siteProtectionRule
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          siteExpression:
+            type: string
+            description: Contains a site expression. For examples, see siteExpression example.
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.siteProtectionRule'
+      x-ms-discriminator-value: '#microsoft.graph.siteProtectionRule'
+    microsoft.graph.exchangeProtectionPolicyCollectionResponse:
+      title: Collection of exchangeProtectionPolicy
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.exchangeProtectionPolicy'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.driveProtectionRule:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.protectionRuleBase'
+      - title: driveProtectionRule
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          driveExpression:
+            type: string
+            description: Contains a drive expression. For examples, see driveExpression examples.
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.driveProtectionRule'
+      x-ms-discriminator-value: '#microsoft.graph.driveProtectionRule'
     microsoft.graph.driveProtectionUnitsBulkAdditionJobCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.driveProtectionUnitsBulkAdditionJobCollectionResponse'
-    microsoft.graph.granularMailboxRestoreArtifactCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.granularMailboxRestoreArtifactCollectionResponse'
-    microsoft.graph.driveProtectionUnitCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.driveProtectionUnitCollectionResponse'
-    microsoft.graph.restorePointCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.restorePointCollectionResponse'
-    microsoft.graph.exchangeRestoreSessionCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.exchangeRestoreSessionCollectionResponse'
-    microsoft.graph.serviceAppCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.serviceAppCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
+      title: Collection of driveProtectionUnitsBulkAdditionJob
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.driveProtectionUnitsBulkAdditionJob'
+    microsoft.graph.backupServiceStatus:
+      title: backupServiceStatus
+      enum:
+      - disabled
+      - enabled
+      - protectionChangeLocked
+      - restoreLocked
+      - unknownFutureValue
+      type: string
+    microsoft.graph.protectionUnitStatus:
+      title: protectionUnitStatus
+      enum:
+      - protectRequested
+      - protected
+      - unprotectRequested
+      - unprotected
+      - removeRequested
+      - unknownFutureValue
+      - offboardRequested
+      - offboarded
+      - cancelOffboardRequested
+      type: string
     microsoft.graph.driveRestoreArtifactsBulkAdditionRequestCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.driveRestoreArtifactsBulkAdditionRequestCollectionResponse'
+      title: Collection of driveRestoreArtifactsBulkAdditionRequest
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.driveRestoreArtifactsBulkAdditionRequest'
+    microsoft.graph.driveRestoreArtifactsBulkAdditionRequest:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.restoreArtifactsBulkRequestBase'
+      - title: driveRestoreArtifactsBulkAdditionRequest
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          directoryObjectIds:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: The list of directory object IDs that are added to the corresponding OneDrive for work or school restore session in a bulk operation.
+          drives:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: The list of email addresses that are added to the corresponding OneDrive for work or school restore session in a bulk operation.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.driveRestoreArtifactsBulkAdditionRequest'
+    microsoft.graph.mailboxProtectionUnitCollectionResponse:
+      title: Collection of mailboxProtectionUnit
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnit'
+    microsoft.graph.protectionPolicyBaseCollectionResponse:
+      title: Collection of protectionPolicyBase
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.protectionPolicyBase'
+    microsoft.graph.restoreSessionBaseCollectionResponse:
+      title: Collection of restoreSessionBase
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.restoreSessionBase'
+    microsoft.graph.restoreSessionBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: restoreSessionBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          completedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The time of completion of the restore session.
+            format: date-time
+            nullable: true
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type: object
+              nullable: true
+            description: The identity of person who created the restore session.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The time of creation of the restore session.
+            format: date-time
+            nullable: true
+          error:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.publicError'
+            - type: object
+              nullable: true
+            description: Contains error details if the restore session fails or completes with an error.
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type: object
+              nullable: true
+            description: Identity of the person who last modified the restore session.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Timestamp of the last modification of the restore session.
+            format: date-time
+            nullable: true
+          restoreJobType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.restoreJobType'
+            - type: object
+              nullable: true
+            description: Indicates whether the restore session was created normally or by a bulk job.
+          restoreSessionArtifactCount:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.restoreSessionArtifactCount'
+            - type: object
+              nullable: true
+            description: The number of metadata artifacts that belong to this restore session.
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.restoreSessionStatus'
+            - type: object
+              nullable: true
+            description: 'Status of the restore session. The value is an aggregated status of the restored artifacts. The possible values are: draft, activating, active, completedWithError, completed, unknownFutureValue, failed. Use the Prefer: include-unknown-enum-members request header to get the following members in this evolvable enum: failed.'
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.exchangeRestoreSession': '#/components/schemas/microsoft.graph.exchangeRestoreSession'
+            '#microsoft.graph.oneDriveForBusinessRestoreSession': '#/components/schemas/microsoft.graph.oneDriveForBusinessRestoreSession'
+            '#microsoft.graph.sharePointRestoreSession': '#/components/schemas/microsoft.graph.sharePointRestoreSession'
+    microsoft.graph.serviceApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: serviceApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          application:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identity'
+            - type: object
+              nullable: true
+            description: The Entra ID application ID.
+          effectiveDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Timestamp of the effective activation of the service app.
+            format: date-time
+            nullable: true
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type: object
+              nullable: true
+            description: Identity of the person who last modified the entity.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Timestamp of the last modification of the entity.
+            format: date-time
+            nullable: true
+          registrationDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Timestamp of the creation of the service app entity.
+            format: date-time
+            nullable: true
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.serviceAppStatus'
+            - type: object
+              nullable: true
+            description: 'The status of the service app. This value indicates whether or not the application can be used to control the backup service. The possible values are: inactive, active, pendingActive, pendingInactive, unknownFutureValue.'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.serviceApp'
+    microsoft.graph.restoreJobType:
+      title: restoreJobType
+      enum:
+      - standard
+      - bulk
+      - unknownFutureValue
+      type: string
+    microsoft.graph.exchangeRestoreSession:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.restoreSessionBase'
+      - title: exchangeRestoreSession
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          granularMailboxRestoreArtifacts:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.granularMailboxRestoreArtifact'
+            x-ms-navigationProperty: true
+          mailboxRestoreArtifacts:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mailboxRestoreArtifact'
+            description: A collection of restore points and destination details that can be used to restore Exchange mailboxes.
+            x-ms-navigationProperty: true
+          mailboxRestoreArtifactsBulkAdditionRequests:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequest'
+            description: A collection of user mailboxes and destination details that can be used to restore Exchange mailboxes.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.exchangeRestoreSession'
+      x-ms-discriminator-value: '#microsoft.graph.exchangeRestoreSession'
+    microsoft.graph.restorePointTags:
+      title: restorePointTags
+      enum:
+      - none
+      - fastRestore
+      - unknownFutureValue
+      type: string
+      x-ms-enum-flags:
+        isFlags: true
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type: integer
+          format: int64
+          nullable: true
+        '@odata.nextLink':
+          type: string
+          nullable: true
+    microsoft.graph.sharePointRestoreSessionCollectionResponse:
+      title: Collection of sharePointRestoreSession
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.sharePointRestoreSession'
+    microsoft.graph.serviceAppCollectionResponse:
+      title: Collection of serviceApp
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.serviceApp'
+  responses:
     microsoft.graph.restoreSessionBaseCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.restoreSessionBaseCollectionResponse'
-    microsoft.graph.mailboxRestoreArtifactCollectionResponse:
-      description: Retrieved collection
+    error:
+      description: error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.mailboxRestoreArtifactCollectionResponse'
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
     microsoft.graph.exchangeProtectionPolicyCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.exchangeProtectionPolicyCollectionResponse'
+    microsoft.graph.driveProtectionRuleCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.driveProtectionRuleCollectionResponse'
+    microsoft.graph.sharePointProtectionPolicyCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.sharePointProtectionPolicyCollectionResponse'
+    microsoft.graph.oneDriveForBusinessRestoreSessionCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.oneDriveForBusinessRestoreSessionCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.serviceAppCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.serviceAppCollectionResponse'
+    microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequestCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequestCollectionResponse'
     microsoft.graph.siteProtectionUnitCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.siteProtectionUnitCollectionResponse'
-    microsoft.graph.mailboxProtectionUnitsBulkAdditionJobCollectionResponse:
+    microsoft.graph.driveRestoreArtifactsBulkAdditionRequestCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnitsBulkAdditionJobCollectionResponse'
+            $ref: '#/components/schemas/microsoft.graph.driveRestoreArtifactsBulkAdditionRequestCollectionResponse'
+    microsoft.graph.exchangeRestoreSessionCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.exchangeRestoreSessionCollectionResponse'
+    microsoft.graph.oneDriveForBusinessProtectionPolicyCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.oneDriveForBusinessProtectionPolicyCollectionResponse'
+    microsoft.graph.protectionPolicyBaseCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.protectionPolicyBaseCollectionResponse'
+    microsoft.graph.mailboxProtectionUnitCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnitCollectionResponse'
+    microsoft.graph.siteRestoreArtifactsBulkAdditionRequestCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.siteRestoreArtifactsBulkAdditionRequestCollectionResponse'
+    microsoft.graph.sharePointRestoreSessionCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.sharePointRestoreSessionCollectionResponse'
+    microsoft.graph.driveProtectionUnitCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.driveProtectionUnitCollectionResponse'
+    microsoft.graph.driveRestoreArtifactCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.driveRestoreArtifactCollectionResponse'
+    microsoft.graph.mailboxRestoreArtifactCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.mailboxRestoreArtifactCollectionResponse'
     microsoft.graph.protectionUnitBaseCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.protectionUnitBaseCollectionResponse'
+    microsoft.graph.mailboxProtectionUnitsBulkAdditionJobCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.mailboxProtectionUnitsBulkAdditionJobCollectionResponse'
+    microsoft.graph.restorePointCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.restorePointCollectionResponse'
+    microsoft.graph.siteProtectionUnitsBulkAdditionJobCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.siteProtectionUnitsBulkAdditionJobCollectionResponse'
+    microsoft.graph.siteRestoreArtifactCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.siteRestoreArtifactCollectionResponse'
+    microsoft.graph.mailboxProtectionRuleCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.mailboxProtectionRuleCollectionResponse'
+    microsoft.graph.siteProtectionRuleCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.siteProtectionRuleCollectionResponse'
+    microsoft.graph.granularMailboxRestoreArtifactCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.granularMailboxRestoreArtifactCollectionResponse'
+    microsoft.graph.driveProtectionUnitsBulkAdditionJobCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.driveProtectionUnitsBulkAdditionJobCollectionResponse'
   parameters:
-    top:
-      name: $top
+    filter:
+      name: $filter
       in: query
-      description: Show only the first n items
+      description: Filter items by property values
       style: form
       explode: false
       schema:
-        minimum: 0
-        type: integer
-      example: 50
+        type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
     count:
       name: $count
       in: query
@@ -11076,19 +11082,13 @@ components:
       schema:
         minimum: 0
         type: integer
-    filter:
-      name: $filter
+    top:
+      name: $top
       in: query
-      description: Filter items by property values
+      description: Show only the first n items
       style: form
       explode: false
       schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+        minimum: 0
+        type: integer
+      example: 50

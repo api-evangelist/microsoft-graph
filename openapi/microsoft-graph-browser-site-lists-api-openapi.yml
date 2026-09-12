@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Browser Site Lists API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -183,7 +183,73 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: default
 components:
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+    BrowserSiteListCollectionResponse:
+      description: Retrieved collection of browser site lists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BrowserSiteListCollectionResponse'
+          examples:
+            BrowserSiteListCollectionExample:
+              $ref: '#/components/examples/BrowserSiteListCollectionExample'
+  parameters:
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      schema:
+        type: string
+    Skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      schema:
+        minimum: 0
+        type: integer
+    Filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      schema:
+        type: string
+    Top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    Count:
+      name: $count
+      in: query
+      description: Include count of items
+      schema:
+        type: boolean
+    BrowserSiteListId:
+      name: browserSiteList-id
+      in: path
+      description: The unique identifier of the browser site list
+      required: true
+      schema:
+        type: string
   schemas:
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity.
+        '@odata.type':
+          type: string
     BrowserSiteListCollectionResponse:
       title: BrowserSiteListCollectionResponse
       type: object
@@ -198,6 +264,22 @@ components:
         '@odata.count':
           type: integer
           format: int32
+    ODataError:
+      title: ODataError
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    BrowserSiteListStatus:
+      title: BrowserSiteListStatus
+      type: string
+      enum:
+      - draft
+      - published
+      - pending
+      - unknownFutureValue
     MainError:
       title: MainError
       required:
@@ -212,15 +294,6 @@ components:
         target:
           type: string
           nullable: true
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for an entity.
-        '@odata.type':
-          type: string
     BrowserSiteList:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -241,43 +314,17 @@ components:
             $ref: '#/components/schemas/BrowserSiteListStatus'
           '@odata.type':
             type: string
-    BrowserSiteListStatus:
-      title: BrowserSiteListStatus
-      type: string
-      enum:
-      - draft
-      - published
-      - pending
-      - unknownFutureValue
-    ODataError:
-      title: ODataError
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
-    BrowserSiteListCollectionResponse:
-      description: Retrieved collection of browser site lists
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BrowserSiteListCollectionResponse'
-          examples:
-            BrowserSiteListCollectionExample:
-              $ref: '#/components/examples/BrowserSiteListCollectionExample'
   examples:
     UpdateBrowserSiteListRequest:
       summary: Example request for updating a browser site list
       value:
         displayName: Updated Enterprise Mode Site List
+        '@odata.type': '#microsoft.graph.browserSiteList'
+    CreateBrowserSiteListRequest:
+      summary: Example request for creating a browser site list
+      value:
+        displayName: Enterprise Mode Site List
+        description: Site list for legacy web applications
         '@odata.type': '#microsoft.graph.browserSiteList'
     UpdateBrowserSiteListResponse:
       summary: Example response for updated browser site list
@@ -286,21 +333,6 @@ components:
         displayName: Updated Enterprise Mode Site List
         status: draft
         revision: '2'
-        '@odata.type': '#microsoft.graph.browserSiteList'
-    CreateBrowserSiteListRequest:
-      summary: Example request for creating a browser site list
-      value:
-        displayName: Enterprise Mode Site List
-        description: Site list for legacy web applications
-        '@odata.type': '#microsoft.graph.browserSiteList'
-    GetBrowserSiteListResponse:
-      summary: Example response for getting a browser site list
-      value:
-        id: 00000000-0000-0000-0000-000000000001
-        displayName: Enterprise Mode Site List
-        description: Site list for legacy web applications
-        status: draft
-        revision: '1'
         '@odata.type': '#microsoft.graph.browserSiteList'
     CreateBrowserSiteListResponse:
       summary: Example response for created browser site list
@@ -320,44 +352,12 @@ components:
           status: draft
           '@odata.type': '#microsoft.graph.browserSiteList'
         '@odata.count': 1
-  parameters:
-    Filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      schema:
-        type: string
-    BrowserSiteListId:
-      name: browserSiteList-id
-      in: path
-      description: The unique identifier of the browser site list
-      required: true
-      schema:
-        type: string
-    Top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-    Skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      schema:
-        minimum: 0
-        type: integer
-    Count:
-      name: $count
-      in: query
-      description: Include count of items
-      schema:
-        type: boolean
-    Search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      schema:
-        type: string
+    GetBrowserSiteListResponse:
+      summary: Example response for getting a browser site list
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        displayName: Enterprise Mode Site List
+        description: Site list for legacy web applications
+        status: draft
+        revision: '1'
+        '@odata.type': '#microsoft.graph.browserSiteList'

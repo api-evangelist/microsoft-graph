@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin User Acceptances API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -158,6 +158,9 @@ paths:
         dispatcherRules: default
 components:
   schemas:
+    ODataCountResponse:
+      type: integer
+      format: int32
     AgreementAcceptanceCollectionResponse:
       title: AgreementAcceptanceCollectionResponse
       type: object
@@ -172,6 +175,22 @@ components:
         '@odata.count':
           type: integer
           format: int32
+    AgreementAcceptanceState:
+      title: AgreementAcceptanceState
+      type: string
+      enum:
+      - accepted
+      - declined
+      description: The state of the agreement acceptance.
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity. Read-only.
+        '@odata.type':
+          type: string
     ErrorDetail:
       title: ErrorDetail
       required:
@@ -186,6 +205,14 @@ components:
         target:
           type: string
           nullable: true
+    ODataError:
+      title: ODataError
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
     AgreementAcceptance:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -255,6 +282,10 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementAcceptance'
+    InnerError:
+      title: InnerError
+      type: object
+      description: The structure of this object is service-specific
     MainError:
       title: MainError
       required:
@@ -276,59 +307,6 @@ components:
             $ref: '#/components/schemas/ErrorDetail'
         innerError:
           $ref: '#/components/schemas/InnerError'
-    InnerError:
-      title: InnerError
-      type: object
-      description: The structure of this object is service-specific
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for an entity. Read-only.
-        '@odata.type':
-          type: string
-    AgreementAcceptanceState:
-      title: AgreementAcceptanceState
-      type: string
-      enum:
-      - accepted
-      - declined
-      description: The state of the agreement acceptance.
-    ODataCountResponse:
-      type: integer
-      format: int32
-    ODataError:
-      title: ODataError
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    AgreementAcceptanceCollectionResponse:
-      description: Retrieved collection of agreement acceptances
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AgreementAcceptanceCollectionResponse'
-          examples:
-            AgreementAcceptanceCollectionExample:
-              $ref: '#/components/examples/AgreementAcceptanceCollectionExample'
   examples:
     GetUserAcceptanceResponse:
       summary: Example response for getting a user's agreement acceptance
@@ -368,7 +346,54 @@ components:
           state: accepted
           '@odata.type': '#microsoft.graph.agreementAcceptance'
         '@odata.count': 1
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    AgreementAcceptanceCollectionResponse:
+      description: Retrieved collection of agreement acceptances
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgreementAcceptanceCollectionResponse'
+          examples:
+            AgreementAcceptanceCollectionExample:
+              $ref: '#/components/examples/AgreementAcceptanceCollectionExample'
   parameters:
+    AgreementAcceptanceId:
+      name: agreementAcceptance-id
+      in: path
+      description: The unique identifier of the agreement acceptance
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreementAcceptance
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    Skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
     Filter:
       name: $filter
       in: query
@@ -377,6 +402,14 @@ components:
       explode: false
       schema:
         type: string
+    UserId:
+      name: user-id
+      in: path
+      description: The unique identifier of the user
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: user
     Top:
       name: $top
       in: query
@@ -387,23 +420,6 @@ components:
         minimum: 0
         type: integer
       example: 50
-    Skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    AgreementAcceptanceId:
-      name: agreementAcceptance-id
-      in: path
-      description: The unique identifier of the agreement acceptance
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreementAcceptance
     Count:
       name: $count
       in: query
@@ -412,19 +428,3 @@ components:
       explode: false
       schema:
         type: boolean
-    UserId:
-      name: user-id
-      in: path
-      description: The unique identifier of the user
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: user
-    Search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string

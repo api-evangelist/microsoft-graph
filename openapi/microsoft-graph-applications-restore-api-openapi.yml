@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Applications Restore API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -33,7 +33,21 @@ paths:
       tags:
       - Applications Restore
       summary: Microsoft Graph Create Restore
-      description: "Restore a recently deleted application, group, servicePrincipal, administrative unit, or user object from deleted items.  Restore a recently deleted directory object from deleted items. The following types are supported:\r\n- administrativeUnit\r\n- application\r\n- certificateBasedAuthPki\r\n- certificateAuthorityDetail\r\n- group\r\n- servicePrincipal\r\n- user If an item is accidentally deleted, you can fully restore the item. Additionally, restoring an application doesn't automatically restore the associated service principal automatically. You must call this API to explicitly restore the deleted service principal. A recently deleted item remains available for up to 30 days. After 30 days, the item is permanently deleted."
+      description: 'Restore a recently deleted application, group, servicePrincipal, administrative unit, or user object from deleted items.  Restore a recently deleted directory object from deleted items. The following types are supported:
+
+        - administrativeUnit
+
+        - application
+
+        - certificateBasedAuthPki
+
+        - certificateAuthorityDetail
+
+        - group
+
+        - servicePrincipal
+
+        - user If an item is accidentally deleted, you can fully restore the item. Additionally, restoring an application doesn''t automatically restore the associated service principal automatically. You must call this API to explicitly restore the deleted service principal. A recently deleted item remains available for up to 30 days. After 30 days, the item is permanently deleted.'
       operationId: restoreApplications
       externalDocs:
         description: Find more info here
@@ -73,13 +87,6 @@ components:
           format: date-time
         client-request-id:
           type: string
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the entity.
     ODataError:
       title: ODataError
       type: object
@@ -88,8 +95,8 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/MainError'
-    ErrorDetail:
-      title: ErrorDetail
+    MainError:
+      title: MainError
       type: object
       required:
       - code
@@ -97,11 +104,20 @@ components:
       properties:
         code:
           type: string
+          description: Error code
         message:
           type: string
+          description: Error message
         target:
           type: string
+          description: Target of the error
           nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
     DirectoryObject:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -154,8 +170,15 @@ components:
             '#microsoft.graph.resourceSpecificPermissionGrant': '#/components/schemas/microsoft.graph.resourceSpecificPermissionGrant'
             '#microsoft.graph.servicePrincipal': '#/components/schemas/microsoft.graph.servicePrincipal'
             '#microsoft.graph.user': '#/components/schemas/microsoft.graph.user'
-    MainError:
-      title: MainError
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the entity.
+    ErrorDetail:
+      title: ErrorDetail
       type: object
       required:
       - code
@@ -163,21 +186,17 @@ components:
       properties:
         code:
           type: string
-          description: Error code
         message:
           type: string
-          description: Error message
         target:
           type: string
-          description: Target of the error
           nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        innerError:
-          $ref: '#/components/schemas/InnerError'
   examples:
+    DirectoryObjectExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        deletedDateTime: '2024-01-15T10:30:00Z'
+        '@odata.type': '#microsoft.graph.directoryobject'
     ODataErrorExample:
       value:
         error:
@@ -192,11 +211,6 @@ components:
             request-id: 00000000-0000-0000-0000-000000000001
             date: '2024-01-15T10:30:00Z'
             client-request-id: 00000000-0000-0000-0000-000000000002
-    DirectoryObjectExample:
-      value:
-        id: 00000000-0000-0000-0000-000000000001
-        deletedDateTime: '2024-01-15T10:30:00Z'
-        '@odata.type': '#microsoft.graph.directoryobject'
   responses:
     error:
       description: error

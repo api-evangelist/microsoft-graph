@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin deviceAppManagement.mobileApp API
+  title: Microsoft Graph Admin Admin.admin Device App Management.mobile App API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -18797,84 +18797,20 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    microsoft.graph.iosVppApp:
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.mobileAppCollectionResponse:
+      title: Collection of mobileApp
+      type: object
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mobileApp'
-      - title: iosVppApp
-        required:
-        - '@odata.type'
-        type: object
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
         properties:
-          applicableDeviceType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.iosDeviceType'
-            - type: object
-              nullable: true
-            description: The applicable iOS Device Type.
-          appStoreUrl:
-            type: string
-            description: The store URL.
-            nullable: true
-          bundleId:
-            type: string
-            description: The Identity Name.
-            nullable: true
-          licensingType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.vppLicensingType'
-            - type: object
-              nullable: true
-            description: The supported License Type.
-          releaseDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The VPP application release date and time.
-            format: date-time
-            nullable: true
-          totalLicenseCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The total number of VPP licenses.
-            format: int32
-          usedLicenseCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The number of VPP licenses in use.
-            format: int32
-          vppTokenAccountType:
-            $ref: '#/components/schemas/microsoft.graph.vppTokenAccountType'
-          vppTokenAppleId:
-            type: string
-            description: The Apple Id associated with the given Apple Volume Purchase Program Token.
-            nullable: true
-          vppTokenOrganizationName:
-            type: string
-            description: The organization associated with the Apple Volume Purchase Program Token
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.iosVppApp'
-        description: Contains properties and inherited properties for iOS Volume-Purchased Program (VPP) Apps.
-      x-ms-discriminator-value: '#microsoft.graph.iosVppApp'
-    microsoft.graph.managedAppAvailability:
-      title: managedAppAvailability
-      enum:
-      - global
-      - lineOfBusiness
-      type: string
-      description: A managed (MAM) application's availability.
-      x-ms-enum:
-        name: managedAppAvailability
-        modelAsString: false
-        values:
-        - value: global
-          description: A globally available app to all tenants.
-          name: global
-        - value: lineOfBusiness
-          description: A line-of-business apps private to an organization.
-          name: lineOfBusiness
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mobileApp'
     microsoft.graph.win32LobAppRule:
       title: win32LobAppRule
       required:
@@ -18893,126 +18829,56 @@ components:
           '#microsoft.graph.win32LobAppPowerShellScriptRule': '#/components/schemas/microsoft.graph.win32LobAppPowerShellScriptRule'
           '#microsoft.graph.win32LobAppProductCodeRule': '#/components/schemas/microsoft.graph.win32LobAppProductCodeRule'
           '#microsoft.graph.win32LobAppRegistryRule': '#/components/schemas/microsoft.graph.win32LobAppRegistryRule'
-    microsoft.graph.mobileAppCollectionResponse:
-      title: Collection of mobileApp
-      type: object
+    microsoft.graph.managedAndroidLobApp:
       allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
+      - $ref: '#/components/schemas/microsoft.graph.managedMobileLobApp'
+      - title: managedAndroidLobApp
+        required:
+        - '@odata.type'
+        type: object
         properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mobileApp'
-    microsoft.graph.windowsDeviceType:
-      title: windowsDeviceType
-      enum:
-      - none
-      - desktop
-      - mobile
-      - holographic
-      - team
-      - unknownFutureValue
-      type: string
-      description: Contains properties for Windows device type. Multiple values can be selected. Default value is `none`.
-      x-ms-enum-flags:
-        isFlags: true
-      x-ms-enum:
-        name: windowsDeviceType
-        modelAsString: false
-        values:
-        - value: none
-          description: No device types supported. Default value.
-          name: none
-        - value: desktop
-          description: Indicates support for Desktop Windows device type.
-          name: desktop
-        - value: mobile
-          description: Indicates support for Mobile Windows device type.
-          name: mobile
-        - value: holographic
-          description: Indicates support for Holographic Windows device type.
-          name: holographic
-        - value: team
-          description: Indicates support for Team Windows device type.
-          name: team
-        - value: unknownFutureValue
-          description: Evolvable enumeration sentinel value. Do not use.
-          name: unknownFutureValue
-    microsoft.graph.mimeContent:
-      title: mimeContent
+          minimumSupportedOperatingSystem:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.androidMinimumOperatingSystem'
+            - type: object
+              nullable: true
+            description: The value for the minimum applicable operating system.
+          packageId:
+            type: string
+            description: The package identifier.
+            nullable: true
+          versionCode:
+            type: string
+            description: The version code of managed Android Line of Business (LoB) app.
+            nullable: true
+          versionName:
+            type: string
+            description: The version name of managed Android Line of Business (LoB) app.
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.managedAndroidLobApp'
+        description: Contains properties and inherited properties for Managed Android Line Of Business apps.
+      x-ms-discriminator-value: '#microsoft.graph.managedAndroidLobApp'
+    microsoft.graph.deviceAndAppManagementAssignmentTarget:
+      title: deviceAndAppManagementAssignmentTarget
       required:
       - '@odata.type'
       type: object
       properties:
-        type:
-          type: string
-          description: Indicates the content mime type.
-          nullable: true
-        value:
-          type: string
-          description: The byte array that contains the actual content.
-          format: base64url
-          nullable: true
         '@odata.type':
           type: string
-      description: Contains properties for a generic mime content.
-    microsoft.graph.macOSLobApp:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
-      - title: macOSLobApp
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          buildNumber:
-            type: string
-            description: The build number of the package. This should match the package CFBundleShortVersionString of the .pkg file.
-            nullable: true
-          bundleId:
-            type: string
-            description: The primary bundleId of the package.
-            nullable: true
-          childApps:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.macOSLobChildApp'
-            description: List of ComplexType macOSLobChildApp objects. Represents the apps expected to be installed by the package.
-          ignoreVersionDetection:
-            type: boolean
-            description: When TRUE, indicates that the app's version will NOT be used to detect if the app is installed on a device. When FALSE, indicates that the app's version will be used to detect if the app is installed on a device. Set this to true for apps that use a self update feature. The default value is FALSE.
-          installAsManaged:
-            type: boolean
-            description: When TRUE, indicates that the app will be installed as managed (requires macOS 11.0 and other managed package restrictions). When FALSE, indicates that the app will be installed as unmanaged. The default value is FALSE.
-          md5Hash:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The MD5 hash codes. This is empty if the package was uploaded directly. If the Intune App Wrapping Tool is used to create a .intunemac, this value can be found inside the Detection.xml file.
-          md5HashChunkSize:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The chunk size for MD5 hash. This is '0' or empty if the package was uploaded directly. If the Intune App Wrapping Tool is used to create a .intunemac, this value can be found inside the Detection.xml file.
-            format: int32
-          minimumSupportedOperatingSystem:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.macOSMinimumOperatingSystem'
-            - type: object
-              nullable: true
-            description: ComplexType macOSMinimumOperatingSystem that indicates the minimum operating system applicable for the application.
-          versionNumber:
-            type: string
-            description: The version number of the package. This should match the package CFBundleVersion in the packageinfo file.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.macOSLobApp'
-        description: Contains properties and inherited properties for the macOS LOB App.
-      x-ms-discriminator-value: '#microsoft.graph.macOSLobApp'
-    microsoft.graph.managedIOSLobAppCollectionResponse:
-      title: Collection of managedIOSLobApp
+      description: Base type for assignment targets.
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.allDevicesAssignmentTarget': '#/components/schemas/microsoft.graph.allDevicesAssignmentTarget'
+          '#microsoft.graph.allLicensedUsersAssignmentTarget': '#/components/schemas/microsoft.graph.allLicensedUsersAssignmentTarget'
+          '#microsoft.graph.configurationManagerCollectionAssignmentTarget': '#/components/schemas/microsoft.graph.configurationManagerCollectionAssignmentTarget'
+          '#microsoft.graph.groupAssignmentTarget': '#/components/schemas/microsoft.graph.groupAssignmentTarget'
+          '#microsoft.graph.exclusionGroupAssignmentTarget': '#/components/schemas/microsoft.graph.exclusionGroupAssignmentTarget'
+    microsoft.graph.iosVppAppCollectionResponse:
+      title: Collection of iosVppApp
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -19021,42 +18887,487 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.managedIOSLobApp'
-    microsoft.graph.microsoftStoreForBusinessApp:
+              $ref: '#/components/schemas/microsoft.graph.iosVppApp'
+    microsoft.graph.mobileAppAssignmentSettings:
+      title: mobileAppAssignmentSettings
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+      description: Abstract class to contain properties used to assign a mobile app to a group.
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.iosLobAppAssignmentSettings': '#/components/schemas/microsoft.graph.iosLobAppAssignmentSettings'
+          '#microsoft.graph.iosStoreAppAssignmentSettings': '#/components/schemas/microsoft.graph.iosStoreAppAssignmentSettings'
+          '#microsoft.graph.iosVppAppAssignmentSettings': '#/components/schemas/microsoft.graph.iosVppAppAssignmentSettings'
+          '#microsoft.graph.macOsLobAppAssignmentSettings': '#/components/schemas/microsoft.graph.macOsLobAppAssignmentSettings'
+          '#microsoft.graph.microsoftStoreForBusinessAppAssignmentSettings': '#/components/schemas/microsoft.graph.microsoftStoreForBusinessAppAssignmentSettings'
+          '#microsoft.graph.win32LobAppAssignmentSettings': '#/components/schemas/microsoft.graph.win32LobAppAssignmentSettings'
+          '#microsoft.graph.windowsAppXAppAssignmentSettings': '#/components/schemas/microsoft.graph.windowsAppXAppAssignmentSettings'
+          '#microsoft.graph.windowsUniversalAppXAppAssignmentSettings': '#/components/schemas/microsoft.graph.windowsUniversalAppXAppAssignmentSettings'
+    microsoft.graph.installIntent:
+      title: installIntent
+      enum:
+      - available
+      - required
+      - uninstall
+      - availableWithoutEnrollment
+      type: string
+      description: Possible values for the install intent chosen by the admin.
+      x-ms-enum:
+        name: installIntent
+        modelAsString: false
+        values:
+        - value: available
+          description: Available install intent.
+          name: available
+        - value: required
+          description: Required install intent.
+          name: required
+        - value: uninstall
+          description: Uninstall install intent.
+          name: uninstall
+        - value: availableWithoutEnrollment
+          description: Available without enrollment install intent.
+          name: availableWithoutEnrollment
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type: string
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
+          type: string
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.mobileAppContentCollectionResponse:
+      title: Collection of mobileAppContent
+      type: object
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mobileApp'
-      - title: microsoftStoreForBusinessApp
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mobileAppContent'
+    microsoft.graph.iosLobApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
+      - title: iosLobApp
         required:
         - '@odata.type'
         type: object
         properties:
-          licenseType:
-            $ref: '#/components/schemas/microsoft.graph.microsoftStoreForBusinessLicenseType'
-          packageIdentityName:
+          applicableDeviceType:
+            $ref: '#/components/schemas/microsoft.graph.iosDeviceType'
+          buildNumber:
             type: string
-            description: The app package identifier
+            description: The build number of iOS Line of Business (LoB) app.
             nullable: true
-          productKey:
+          bundleId:
             type: string
-            description: The app product key
+            description: The Identity Name.
             nullable: true
-          totalLicenseCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The total number of Microsoft Store for Business licenses.
-            format: int32
-          usedLicenseCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The number of Microsoft Store for Business licenses in use.
-            format: int32
+          expirationDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The expiration time.
+            format: date-time
+            nullable: true
+          minimumSupportedOperatingSystem:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.iosMinimumOperatingSystem'
+            - type: object
+              nullable: true
+            description: The value for the minimum applicable operating system.
+          versionNumber:
+            type: string
+            description: The version number of iOS Line of Business (LoB) app.
+            nullable: true
           '@odata.type':
             type: string
-            default: '#microsoft.graph.microsoftStoreForBusinessApp'
-        description: Microsoft Store for Business Apps. This class does not support Create, Delete, or Update.
-      x-ms-discriminator-value: '#microsoft.graph.microsoftStoreForBusinessApp'
+            default: '#microsoft.graph.iosLobApp'
+        description: Contains properties and inherited properties for iOS Line Of Business apps.
+      x-ms-discriminator-value: '#microsoft.graph.iosLobApp'
+    microsoft.graph.mobileAppAssignmentCollectionResponse:
+      title: Collection of mobileAppAssignment
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mobileAppAssignment'
+    microsoft.graph.win32LobAppMsiPackageType:
+      title: win32LobAppMsiPackageType
+      enum:
+      - perMachine
+      - perUser
+      - dualPurpose
+      type: string
+      description: Indicates the package type of an MSI Win32LobApp.
+      x-ms-enum:
+        name: win32LobAppMsiPackageType
+        modelAsString: false
+        values:
+        - value: perMachine
+          description: Indicates a per-machine app package.
+          name: perMachine
+        - value: perUser
+          description: Indicates a per-user app package.
+          name: perUser
+        - value: dualPurpose
+          description: Indicates a dual-purpose app package.
+          name: dualPurpose
+    microsoft.graph.mobileAppContentFileCollectionResponse:
+      title: Collection of mobileAppContentFile
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mobileAppContentFile'
+    microsoft.graph.windowsUniversalAppX:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
+      - title: windowsUniversalAppX
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          applicableArchitectures:
+            $ref: '#/components/schemas/microsoft.graph.windowsArchitecture'
+          applicableDeviceTypes:
+            $ref: '#/components/schemas/microsoft.graph.windowsDeviceType'
+          identityName:
+            type: string
+            description: 'The Identity Name of the app, parsed from the appx file when it is uploaded through the Intune MEM console. For example: ''Contoso.DemoApp''.'
+            nullable: true
+          identityPublisherHash:
+            type: string
+            description: 'The Identity Publisher Hash of the app, parsed from the appx file when it is uploaded through the Intune MEM console. For example: ''AB82CD0XYZ''.'
+          identityResourceIdentifier:
+            type: string
+            description: 'The Identity Resource Identifier of the app, parsed from the appx file when it is uploaded through the Intune MEM console. For example: ''TestResourceId''.'
+            nullable: true
+          identityVersion:
+            type: string
+            description: 'The Identity Version of the app, parsed from the appx file when it is uploaded through the Intune MEM console.  For example: ''1.0.0.0''.'
+            nullable: true
+          isBundle:
+            type: boolean
+            description: Whether or not the app is a bundle. If TRUE, app is a bundle; if FALSE, app is not a bundle.
+          minimumSupportedOperatingSystem:
+            $ref: '#/components/schemas/microsoft.graph.windowsMinimumOperatingSystem'
+          committedContainedApps:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mobileContainedApp'
+            description: The collection of contained apps in the committed mobileAppContent of a windowsUniversalAppX app. This property is read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.windowsUniversalAppX'
+        description: Contains properties and inherited properties for Windows Universal AppX Line Of Business apps. Inherits from `mobileLobApp`.
+      x-ms-discriminator-value: '#microsoft.graph.windowsUniversalAppX'
+    microsoft.graph.managedIOSLobApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.managedMobileLobApp'
+      - title: managedIOSLobApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          applicableDeviceType:
+            $ref: '#/components/schemas/microsoft.graph.iosDeviceType'
+          buildNumber:
+            type: string
+            description: The build number of managed iOS Line of Business (LoB) app.
+            nullable: true
+          bundleId:
+            type: string
+            description: The Identity Name.
+            nullable: true
+          expirationDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The expiration time.
+            format: date-time
+            nullable: true
+          minimumSupportedOperatingSystem:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.iosMinimumOperatingSystem'
+            - type: object
+              nullable: true
+            description: The value for the minimum applicable operating system.
+          versionNumber:
+            type: string
+            description: The version number of managed iOS Line of Business (LoB) app.
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.managedIOSLobApp'
+        description: Contains properties and inherited properties for Managed iOS Line Of Business apps.
+      x-ms-discriminator-value: '#microsoft.graph.managedIOSLobApp'
+    microsoft.graph.windowsWebApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.mobileApp'
+      - title: windowsWebApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          appUrl:
+            type: string
+            description: 'Indicates the Windows web app URL. Example: ''https://www.contoso.com'''
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.windowsWebApp'
+        description: Contains properties and inherited properties for Windows web apps.
+      x-ms-discriminator-value: '#microsoft.graph.windowsWebApp'
+    microsoft.graph.microsoftStoreForBusinessLicenseType:
+      title: microsoftStoreForBusinessLicenseType
+      enum:
+      - offline
+      - online
+      type: string
+    microsoft.graph.androidMinimumOperatingSystem:
+      title: androidMinimumOperatingSystem
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        v10_0:
+          type: boolean
+          description: When TRUE, only Version 10.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v11_0:
+          type: boolean
+          description: When TRUE, only Version 11.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v4_0:
+          type: boolean
+          description: When TRUE, only Version 4.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v4_0_3:
+          type: boolean
+          description: When TRUE, only Version 4.0.3 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v4_1:
+          type: boolean
+          description: When TRUE, only Version 4.1 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v4_2:
+          type: boolean
+          description: When TRUE, only Version 4.2 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v4_3:
+          type: boolean
+          description: When TRUE, only Version 4.3 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v4_4:
+          type: boolean
+          description: When TRUE, only Version 4.4 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v5_0:
+          type: boolean
+          description: When TRUE, only Version 5.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v5_1:
+          type: boolean
+          description: When TRUE, only Version 5.1 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v6_0:
+          type: boolean
+          description: When TRUE, only Version 6.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v7_0:
+          type: boolean
+          description: When TRUE, only Version 7.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v7_1:
+          type: boolean
+          description: When TRUE, only Version 7.1 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v8_0:
+          type: boolean
+          description: When TRUE, only Version 8.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v8_1:
+          type: boolean
+          description: When TRUE, only Version 8.1 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        v9_0:
+          type: boolean
+          description: When TRUE, only Version 9.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
+        '@odata.type':
+          type: string
+      description: Contains properties for the minimum operating system required for an Android mobile app.
+    microsoft.graph.windowsAppX:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
+      - title: windowsAppX
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          applicableArchitectures:
+            $ref: '#/components/schemas/microsoft.graph.windowsArchitecture'
+          identityName:
+            type: string
+            description: 'The identity name of the uploaded app package. For example: ''Contoso.DemoApp''.'
+            nullable: true
+          identityPublisherHash:
+            type: string
+            description: 'The identity publisher hash of the uploaded app package. This is the hash of the publisher from the manifest. For example: ''AB82CD0XYZ''.'
+          identityResourceIdentifier:
+            type: string
+            description: 'The identity resource identifier of the uploaded app package. For example: ''TestResourceId''.'
+            nullable: true
+          identityVersion:
+            type: string
+            description: 'The identity version of the uploaded app package. For example: ''1.0.0.0''.'
+            nullable: true
+          isBundle:
+            type: boolean
+            description: When TRUE, indicates that the app is a bundle. When FALSE, indicates that the app is not a bundle. By default, property is set to FALSE.
+          minimumSupportedOperatingSystem:
+            $ref: '#/components/schemas/microsoft.graph.windowsMinimumOperatingSystem'
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.windowsAppX'
+        description: Contains properties and inherited properties for Windows AppX Line Of Business apps.
+      x-ms-discriminator-value: '#microsoft.graph.windowsAppX'
+    microsoft.graph.iosMinimumOperatingSystem:
+      title: iosMinimumOperatingSystem
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        v10_0:
+          type: boolean
+          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 10.0 or later is required to install the app. If 'False', iOS Version 10.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
+        v11_0:
+          type: boolean
+          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 11.0 or later is required to install the app. If 'False', iOS Version 11.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
+        v12_0:
+          type: boolean
+          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 12.0 or later is required to install the app. If 'False', iOS Version 12.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
+        v13_0:
+          type: boolean
+          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 13.0 or later is required to install the app. If 'False', iOS Version 13.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
+        v14_0:
+          type: boolean
+          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 14.0 or later is required to install the app. If 'False', iOS Version 14.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
+        v15_0:
+          type: boolean
+          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 15.0 or later is required to install the app. If 'False', iOS Version 15.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
+        v8_0:
+          type: boolean
+          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 8.0 or later is required to install the app. If 'False', iOS Version 8.0  is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
+        v9_0:
+          type: boolean
+          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 9.0 or later is required to install the app. If 'False', iOS Version 9.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
+        '@odata.type':
+          type: string
+      description: Contains properties of the minimum operating system required for an iOS mobile app.
+    microsoft.graph.iosStoreApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.mobileApp'
+      - title: iosStoreApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          applicableDeviceType:
+            $ref: '#/components/schemas/microsoft.graph.iosDeviceType'
+          appStoreUrl:
+            type: string
+            description: The Apple App Store URL
+            nullable: true
+          bundleId:
+            type: string
+            description: The Identity Name.
+            nullable: true
+          minimumSupportedOperatingSystem:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.iosMinimumOperatingSystem'
+            - type: object
+              nullable: true
+            description: The value for the minimum applicable operating system.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.iosStoreApp'
+        description: Contains properties and inherited properties for iOS store apps.
+      x-ms-discriminator-value: '#microsoft.graph.iosStoreApp'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    microsoft.graph.mobileContainedAppCollectionResponse:
+      title: Collection of mobileContainedApp
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mobileContainedApp'
+    microsoft.graph.androidStoreAppCollectionResponse:
+      title: Collection of androidStoreApp
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.androidStoreApp'
+    microsoft.graph.iosDeviceType:
+      title: iosDeviceType
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        iPad:
+          type: boolean
+          description: Whether the app should run on iPads.
+        iPhoneAndIPod:
+          type: boolean
+          description: Whether the app should run on iPhones and iPods.
+        '@odata.type':
+          type: string
+      description: Contains properties of the possible iOS device types the mobile app can run on.
+    microsoft.graph.androidLobAppCollectionResponse:
+      title: Collection of androidLobApp
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.androidLobApp'
     microsoft.graph.win32LobApp:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
@@ -19144,514 +19455,6 @@ components:
             default: '#microsoft.graph.win32LobApp'
         description: Contains properties and inherited properties for Win32 apps.
       x-ms-discriminator-value: '#microsoft.graph.win32LobApp'
-    microsoft.graph.androidStoreAppCollectionResponse:
-      title: Collection of androidStoreApp
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.androidStoreApp'
-    microsoft.graph.microsoftStoreForBusinessLicenseType:
-      title: microsoftStoreForBusinessLicenseType
-      enum:
-      - offline
-      - online
-      type: string
-    microsoft.graph.iosDeviceType:
-      title: iosDeviceType
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        iPad:
-          type: boolean
-          description: Whether the app should run on iPads.
-        iPhoneAndIPod:
-          type: boolean
-          description: Whether the app should run on iPhones and iPods.
-        '@odata.type':
-          type: string
-      description: Contains properties of the possible iOS device types the mobile app can run on.
-    microsoft.graph.windowsAppX:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
-      - title: windowsAppX
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          applicableArchitectures:
-            $ref: '#/components/schemas/microsoft.graph.windowsArchitecture'
-          identityName:
-            type: string
-            description: 'The identity name of the uploaded app package. For example: ''Contoso.DemoApp''.'
-            nullable: true
-          identityPublisherHash:
-            type: string
-            description: 'The identity publisher hash of the uploaded app package. This is the hash of the publisher from the manifest. For example: ''AB82CD0XYZ''.'
-          identityResourceIdentifier:
-            type: string
-            description: 'The identity resource identifier of the uploaded app package. For example: ''TestResourceId''.'
-            nullable: true
-          identityVersion:
-            type: string
-            description: 'The identity version of the uploaded app package. For example: ''1.0.0.0''.'
-            nullable: true
-          isBundle:
-            type: boolean
-            description: When TRUE, indicates that the app is a bundle. When FALSE, indicates that the app is not a bundle. By default, property is set to FALSE.
-          minimumSupportedOperatingSystem:
-            $ref: '#/components/schemas/microsoft.graph.windowsMinimumOperatingSystem'
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.windowsAppX'
-        description: Contains properties and inherited properties for Windows AppX Line Of Business apps.
-      x-ms-discriminator-value: '#microsoft.graph.windowsAppX'
-    microsoft.graph.win32LobAppMsiInformation:
-      title: win32LobAppMsiInformation
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        packageType:
-          $ref: '#/components/schemas/microsoft.graph.win32LobAppMsiPackageType'
-        productCode:
-          type: string
-          description: The MSI product code.
-          nullable: true
-        productName:
-          type: string
-          description: The MSI product name.
-          nullable: true
-        productVersion:
-          type: string
-          description: The MSI product version.
-          nullable: true
-        publisher:
-          type: string
-          description: The MSI publisher.
-          nullable: true
-        requiresReboot:
-          type: boolean
-          description: Whether the MSI app requires the machine to reboot to complete installation.
-        upgradeCode:
-          type: string
-          description: The MSI upgrade code.
-          nullable: true
-        '@odata.type':
-          type: string
-      description: Contains MSI app properties for a Win32 App.
-    microsoft.graph.win32LobAppRestartBehavior:
-      title: win32LobAppRestartBehavior
-      enum:
-      - basedOnReturnCode
-      - allow
-      - suppress
-      - force
-      type: string
-      description: Indicates the type of restart action.
-      x-ms-enum:
-        name: win32LobAppRestartBehavior
-        modelAsString: false
-        values:
-        - value: basedOnReturnCode
-          description: Intune will restart the device after running the app installation if the operation returns a reboot code.
-          name: basedOnReturnCode
-        - value: allow
-          description: Intune will not take any specific action on reboot codes resulting from app installations. Intune will not attempt to suppress restarts for MSI apps.
-          name: allow
-        - value: suppress
-          description: Intune will attempt to suppress restarts for MSI apps.
-          name: suppress
-        - value: force
-          description: Intune will force the device to restart immediately after the app installation operation.
-          name: force
-    microsoft.graph.androidMinimumOperatingSystem:
-      title: androidMinimumOperatingSystem
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        v10_0:
-          type: boolean
-          description: When TRUE, only Version 10.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v11_0:
-          type: boolean
-          description: When TRUE, only Version 11.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v4_0:
-          type: boolean
-          description: When TRUE, only Version 4.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v4_0_3:
-          type: boolean
-          description: When TRUE, only Version 4.0.3 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v4_1:
-          type: boolean
-          description: When TRUE, only Version 4.1 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v4_2:
-          type: boolean
-          description: When TRUE, only Version 4.2 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v4_3:
-          type: boolean
-          description: When TRUE, only Version 4.3 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v4_4:
-          type: boolean
-          description: When TRUE, only Version 4.4 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v5_0:
-          type: boolean
-          description: When TRUE, only Version 5.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v5_1:
-          type: boolean
-          description: When TRUE, only Version 5.1 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v6_0:
-          type: boolean
-          description: When TRUE, only Version 6.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v7_0:
-          type: boolean
-          description: When TRUE, only Version 7.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v7_1:
-          type: boolean
-          description: When TRUE, only Version 7.1 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v8_0:
-          type: boolean
-          description: When TRUE, only Version 8.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v8_1:
-          type: boolean
-          description: When TRUE, only Version 8.1 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        v9_0:
-          type: boolean
-          description: When TRUE, only Version 9.0 or later is supported. Default value is FALSE. Exactly one of the minimum operating system boolean values will be TRUE.
-        '@odata.type':
-          type: string
-      description: Contains properties for the minimum operating system required for an Android mobile app.
-    microsoft.graph.win32LobAppRuleType:
-      title: win32LobAppRuleType
-      enum:
-      - detection
-      - requirement
-      type: string
-      description: Contains rule types for Win32 LOB apps.
-      x-ms-enum:
-        name: win32LobAppRuleType
-        modelAsString: false
-        values:
-        - value: detection
-          description: Detection rule.
-          name: detection
-        - value: requirement
-          description: Requirement rule.
-          name: requirement
-    microsoft.graph.mobileAppAssignment:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: mobileAppAssignment
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          intent:
-            $ref: '#/components/schemas/microsoft.graph.installIntent'
-          settings:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.mobileAppAssignmentSettings'
-            - type: object
-              nullable: true
-            description: The settings for target assignment defined by the admin.
-          target:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.deviceAndAppManagementAssignmentTarget'
-            - type: object
-              nullable: true
-            description: The target group assignment defined by the admin.
-          '@odata.type':
-            type: string
-        description: A class containing the properties used for Group Assignment of a Mobile App.
-      x-ms-discriminator-value: '#microsoft.graph.mobileAppAssignment'
-    microsoft.graph.macOSDmgApp:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
-      - title: macOSDmgApp
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          ignoreVersionDetection:
-            type: boolean
-            description: When TRUE, indicates that the app's version will NOT be used to detect if the app is installed on a device. When FALSE, indicates that the app's version will be used to detect if the app is installed on a device. Set this to true for apps that use a self update feature. The default value is FALSE.
-          includedApps:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.macOSIncludedApp'
-            description: The list of .apps expected to be installed by the DMG (Apple Disk Image). This collection can contain a maximum of 500 elements.
-          minimumSupportedOperatingSystem:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.macOSMinimumOperatingSystem'
-            - type: object
-              nullable: true
-            description: ComplexType macOSMinimumOperatingSystem that indicates the minimum operating system applicable for the application.
-          primaryBundleId:
-            type: string
-            description: The bundleId of the primary .app in the DMG (Apple Disk Image). This maps to the CFBundleIdentifier in the app's bundle configuration.
-          primaryBundleVersion:
-            type: string
-            description: The version of the primary .app in the DMG (Apple Disk Image). This maps to the CFBundleShortVersion in the app's bundle configuration.
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.macOSDmgApp'
-        description: Contains properties and inherited properties for the MacOS DMG (Apple Disk Image) App.
-      x-ms-discriminator-value: '#microsoft.graph.macOSDmgApp'
-    microsoft.graph.managedIOSLobApp:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.managedMobileLobApp'
-      - title: managedIOSLobApp
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          applicableDeviceType:
-            $ref: '#/components/schemas/microsoft.graph.iosDeviceType'
-          buildNumber:
-            type: string
-            description: The build number of managed iOS Line of Business (LoB) app.
-            nullable: true
-          bundleId:
-            type: string
-            description: The Identity Name.
-            nullable: true
-          expirationDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The expiration time.
-            format: date-time
-            nullable: true
-          minimumSupportedOperatingSystem:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.iosMinimumOperatingSystem'
-            - type: object
-              nullable: true
-            description: The value for the minimum applicable operating system.
-          versionNumber:
-            type: string
-            description: The version number of managed iOS Line of Business (LoB) app.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.managedIOSLobApp'
-        description: Contains properties and inherited properties for Managed iOS Line Of Business apps.
-      x-ms-discriminator-value: '#microsoft.graph.managedIOSLobApp'
-    microsoft.graph.iosStoreAppCollectionResponse:
-      title: Collection of iosStoreApp
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.iosStoreApp'
-    microsoft.graph.iosStoreApp:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mobileApp'
-      - title: iosStoreApp
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          applicableDeviceType:
-            $ref: '#/components/schemas/microsoft.graph.iosDeviceType'
-          appStoreUrl:
-            type: string
-            description: The Apple App Store URL
-            nullable: true
-          bundleId:
-            type: string
-            description: The Identity Name.
-            nullable: true
-          minimumSupportedOperatingSystem:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.iosMinimumOperatingSystem'
-            - type: object
-              nullable: true
-            description: The value for the minimum applicable operating system.
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.iosStoreApp'
-        description: Contains properties and inherited properties for iOS store apps.
-      x-ms-discriminator-value: '#microsoft.graph.iosStoreApp'
-    microsoft.graph.mobileApp:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: mobileApp
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time the app was created. This property is read-only.
-            format: date-time
-            readOnly: true
-          description:
-            type: string
-            description: The description of the app.
-            nullable: true
-          developer:
-            type: string
-            description: The developer of the app.
-            nullable: true
-          displayName:
-            type: string
-            description: The admin provided or imported title of the app.
-            nullable: true
-          informationUrl:
-            type: string
-            description: The more information Url.
-            nullable: true
-          isFeatured:
-            type: boolean
-            description: The value indicating whether the app is marked as featured by the admin.
-          largeIcon:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.mimeContent'
-            - type: object
-              nullable: true
-            description: The large icon, to be displayed in the app details and used for upload of the icon.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time the app was last modified. This property is read-only.
-            format: date-time
-            readOnly: true
-          notes:
-            type: string
-            description: Notes for the app.
-            nullable: true
-          owner:
-            type: string
-            description: The owner of the app.
-            nullable: true
-          privacyInformationUrl:
-            type: string
-            description: The privacy statement Url.
-            nullable: true
-          publisher:
-            type: string
-            description: The publisher of the app.
-            nullable: true
-          publishingState:
-            $ref: '#/components/schemas/microsoft.graph.mobileAppPublishingState'
-          assignments:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mobileAppAssignment'
-            description: The list of group assignments for this mobile app.
-            x-ms-navigationProperty: true
-          categories:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mobileAppCategory'
-            description: The list of categories for this app.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-        description: 'An abstract class containing the base properties for Intune mobile apps. Note: Listing mobile apps with `$expand=assignments` has been deprecated. Instead get the list of apps without the `$expand` query on `assignments`. Then, perform the expansion on individual applications.'
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.androidStoreApp': '#/components/schemas/microsoft.graph.androidStoreApp'
-            '#microsoft.graph.iosiPadOSWebClip': '#/components/schemas/microsoft.graph.iosiPadOSWebClip'
-            '#microsoft.graph.iosStoreApp': '#/components/schemas/microsoft.graph.iosStoreApp'
-            '#microsoft.graph.iosVppApp': '#/components/schemas/microsoft.graph.iosVppApp'
-            '#microsoft.graph.macOSMicrosoftDefenderApp': '#/components/schemas/microsoft.graph.macOSMicrosoftDefenderApp'
-            '#microsoft.graph.macOSMicrosoftEdgeApp': '#/components/schemas/microsoft.graph.macOSMicrosoftEdgeApp'
-            '#microsoft.graph.macOSOfficeSuiteApp': '#/components/schemas/microsoft.graph.macOSOfficeSuiteApp'
-            '#microsoft.graph.managedApp': '#/components/schemas/microsoft.graph.managedApp'
-            '#microsoft.graph.managedAndroidStoreApp': '#/components/schemas/microsoft.graph.managedAndroidStoreApp'
-            '#microsoft.graph.managedIOSStoreApp': '#/components/schemas/microsoft.graph.managedIOSStoreApp'
-            '#microsoft.graph.managedMobileLobApp': '#/components/schemas/microsoft.graph.managedMobileLobApp'
-            '#microsoft.graph.managedAndroidLobApp': '#/components/schemas/microsoft.graph.managedAndroidLobApp'
-            '#microsoft.graph.managedIOSLobApp': '#/components/schemas/microsoft.graph.managedIOSLobApp'
-            '#microsoft.graph.microsoftStoreForBusinessApp': '#/components/schemas/microsoft.graph.microsoftStoreForBusinessApp'
-            '#microsoft.graph.mobileLobApp': '#/components/schemas/microsoft.graph.mobileLobApp'
-            '#microsoft.graph.androidLobApp': '#/components/schemas/microsoft.graph.androidLobApp'
-            '#microsoft.graph.iosLobApp': '#/components/schemas/microsoft.graph.iosLobApp'
-            '#microsoft.graph.macOSDmgApp': '#/components/schemas/microsoft.graph.macOSDmgApp'
-            '#microsoft.graph.macOSLobApp': '#/components/schemas/microsoft.graph.macOSLobApp'
-            '#microsoft.graph.win32LobApp': '#/components/schemas/microsoft.graph.win32LobApp'
-            '#microsoft.graph.windowsAppX': '#/components/schemas/microsoft.graph.windowsAppX'
-            '#microsoft.graph.windowsMobileMSI': '#/components/schemas/microsoft.graph.windowsMobileMSI'
-            '#microsoft.graph.windowsUniversalAppX': '#/components/schemas/microsoft.graph.windowsUniversalAppX'
-            '#microsoft.graph.webApp': '#/components/schemas/microsoft.graph.webApp'
-            '#microsoft.graph.windowsMicrosoftEdgeApp': '#/components/schemas/microsoft.graph.windowsMicrosoftEdgeApp'
-            '#microsoft.graph.windowsWebApp': '#/components/schemas/microsoft.graph.windowsWebApp'
-    microsoft.graph.vppLicensingType:
-      title: vppLicensingType
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        supportsDeviceLicensing:
-          type: boolean
-          description: Whether the program supports the device licensing type.
-        supportsUserLicensing:
-          type: boolean
-          description: Whether the program supports the user licensing type.
-        '@odata.type':
-          type: string
-      description: Contains properties for iOS Volume-Purchased Program (Vpp) Licensing Type.
-    microsoft.graph.mobileAppAssignmentSettings:
-      title: mobileAppAssignmentSettings
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-      description: Abstract class to contain properties used to assign a mobile app to a group.
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.iosLobAppAssignmentSettings': '#/components/schemas/microsoft.graph.iosLobAppAssignmentSettings'
-          '#microsoft.graph.iosStoreAppAssignmentSettings': '#/components/schemas/microsoft.graph.iosStoreAppAssignmentSettings'
-          '#microsoft.graph.iosVppAppAssignmentSettings': '#/components/schemas/microsoft.graph.iosVppAppAssignmentSettings'
-          '#microsoft.graph.macOsLobAppAssignmentSettings': '#/components/schemas/microsoft.graph.macOsLobAppAssignmentSettings'
-          '#microsoft.graph.microsoftStoreForBusinessAppAssignmentSettings': '#/components/schemas/microsoft.graph.microsoftStoreForBusinessAppAssignmentSettings'
-          '#microsoft.graph.win32LobAppAssignmentSettings': '#/components/schemas/microsoft.graph.win32LobAppAssignmentSettings'
-          '#microsoft.graph.windowsAppXAppAssignmentSettings': '#/components/schemas/microsoft.graph.windowsAppXAppAssignmentSettings'
-          '#microsoft.graph.windowsUniversalAppXAppAssignmentSettings': '#/components/schemas/microsoft.graph.windowsUniversalAppXAppAssignmentSettings'
-    microsoft.graph.win32LobAppReturnCode:
-      title: win32LobAppReturnCode
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        returnCode:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Return code.
-          format: int32
-        type:
-          $ref: '#/components/schemas/microsoft.graph.win32LobAppReturnCodeType'
-        '@odata.type':
-          type: string
-      description: Contains return code properties for a Win32 App
-    microsoft.graph.windowsAppXCollectionResponse:
-      title: Collection of windowsAppX
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.windowsAppX'
     microsoft.graph.managedAndroidLobAppCollectionResponse:
       title: Collection of managedAndroidLobApp
       type: object
@@ -19663,50 +19466,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.managedAndroidLobApp'
-    microsoft.graph.win32LobAppCollectionResponse:
-      title: Collection of win32LobApp
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.win32LobApp'
-    microsoft.graph.managedMobileLobAppCollectionResponse:
-      title: Collection of managedMobileLobApp
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.managedMobileLobApp'
-    microsoft.graph.iosVppAppCollectionResponse:
-      title: Collection of iosVppApp
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.iosVppApp'
-    microsoft.graph.macOSDmgAppCollectionResponse:
-      title: Collection of macOSDmgApp
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.macOSDmgApp'
     microsoft.graph.macOSMinimumOperatingSystem:
       title: macOSMinimumOperatingSystem
       required:
@@ -19752,120 +19511,92 @@ components:
         '@odata.type':
           type: string
       description: The minimum operating system required for a macOS app.
-    microsoft.graph.managedAndroidLobApp:
+    microsoft.graph.mobileContainedApp:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.managedMobileLobApp'
-      - title: managedAndroidLobApp
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: mobileContainedApp
         required:
         - '@odata.type'
         type: object
         properties:
-          minimumSupportedOperatingSystem:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.androidMinimumOperatingSystem'
-            - type: object
-              nullable: true
-            description: The value for the minimum applicable operating system.
-          packageId:
-            type: string
-            description: The package identifier.
-            nullable: true
-          versionCode:
-            type: string
-            description: The version code of managed Android Line of Business (LoB) app.
-            nullable: true
-          versionName:
-            type: string
-            description: The version name of managed Android Line of Business (LoB) app.
-            nullable: true
           '@odata.type':
             type: string
-            default: '#microsoft.graph.managedAndroidLobApp'
-        description: Contains properties and inherited properties for Managed Android Line Of Business apps.
-      x-ms-discriminator-value: '#microsoft.graph.managedAndroidLobApp'
-    microsoft.graph.runAsAccountType:
-      title: runAsAccountType
-      enum:
-      - system
-      - user
-      type: string
-      description: Indicates the type of execution context the app runs in.
-      x-ms-enum:
-        name: runAsAccountType
-        modelAsString: false
-        values:
-        - value: system
-          description: System context
-          name: system
-        - value: user
-          description: User context
-          name: user
-    microsoft.graph.androidLobApp:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
-      - title: androidLobApp
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          minimumSupportedOperatingSystem:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.androidMinimumOperatingSystem'
-            - type: object
-              nullable: true
-            description: The value for the minimum applicable operating system.
-          packageId:
-            type: string
-            description: The package identifier.
-            nullable: true
-          versionCode:
-            type: string
-            description: The version code of Android Line of Business (LoB) app.
-            nullable: true
-          versionName:
-            type: string
-            description: The version name of Android Line of Business (LoB) app.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.androidLobApp'
-        description: Contains properties and inherited properties for Android Line Of Business apps.
-      x-ms-discriminator-value: '#microsoft.graph.androidLobApp'
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.windowsMobileMSI:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
-      - title: windowsMobileMSI
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          commandLine:
-            type: string
-            description: The command line.
-            nullable: true
-          ignoreVersionDetection:
-            type: boolean
-            description: A boolean to control whether the app's version will be used to detect the app after it is installed on a device. Set this to true for Windows Mobile MSI Line of Business (LoB) apps that use a self update feature.
-          productCode:
-            type: string
-            description: The product code.
-            nullable: true
-          productVersion:
-            type: string
-            description: The product version of Windows Mobile MSI Line of Business (LoB) app.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.windowsMobileMSI'
-        description: Contains properties and inherited properties for Windows Mobile MSI Line Of Business apps.
-      x-ms-discriminator-value: '#microsoft.graph.windowsMobileMSI'
-    microsoft.graph.mobileLobApp:
+        description: An abstract class that represents a contained app in a mobileApp acting as a package.
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.windowsUniversalAppXContainedApp': '#/components/schemas/microsoft.graph.windowsUniversalAppXContainedApp'
+    microsoft.graph.androidStoreApp:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.mobileApp'
-      - title: mobileLobApp
+      - title: androidStoreApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          appStoreUrl:
+            type: string
+            description: The Android app store URL.
+            nullable: true
+          minimumSupportedOperatingSystem:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.androidMinimumOperatingSystem'
+            - type: object
+              nullable: true
+            description: The value for the minimum applicable operating system.
+          packageId:
+            type: string
+            description: The package identifier. This property is read-only.
+            nullable: true
+            readOnly: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.androidStoreApp'
+        description: Contains properties and inherited properties for Android store apps.
+      x-ms-discriminator-value: '#microsoft.graph.androidStoreApp'
+    microsoft.graph.managedIOSLobAppCollectionResponse:
+      title: Collection of managedIOSLobApp
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.managedIOSLobApp'
+    microsoft.graph.windowsAppXCollectionResponse:
+      title: Collection of windowsAppX
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.windowsAppX'
+    microsoft.graph.win32LobAppReturnCode:
+      title: win32LobAppReturnCode
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        returnCode:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Return code.
+          format: int32
+        type:
+          $ref: '#/components/schemas/microsoft.graph.win32LobAppReturnCodeType'
+        '@odata.type':
+          type: string
+      description: Contains return code properties for a Win32 App
+    microsoft.graph.managedMobileLobApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.managedApp'
+      - title: managedMobileLobApp
         required:
         - '@odata.type'
         type: object
@@ -19891,51 +19622,71 @@ components:
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-            default: '#microsoft.graph.mobileLobApp'
-        description: An abstract base class containing properties for all mobile line-of-business apps.
+            default: '#microsoft.graph.managedMobileLobApp'
+        description: An abstract base class containing properties for all managed mobile line-of-business apps.
         discriminator:
           propertyName: '@odata.type'
           mapping:
-            '#microsoft.graph.androidLobApp': '#/components/schemas/microsoft.graph.androidLobApp'
-            '#microsoft.graph.iosLobApp': '#/components/schemas/microsoft.graph.iosLobApp'
-            '#microsoft.graph.macOSDmgApp': '#/components/schemas/microsoft.graph.macOSDmgApp'
-            '#microsoft.graph.macOSLobApp': '#/components/schemas/microsoft.graph.macOSLobApp'
-            '#microsoft.graph.win32LobApp': '#/components/schemas/microsoft.graph.win32LobApp'
-            '#microsoft.graph.windowsAppX': '#/components/schemas/microsoft.graph.windowsAppX'
-            '#microsoft.graph.windowsMobileMSI': '#/components/schemas/microsoft.graph.windowsMobileMSI'
-            '#microsoft.graph.windowsUniversalAppX': '#/components/schemas/microsoft.graph.windowsUniversalAppX'
-    microsoft.graph.mobileContainedApp:
+            '#microsoft.graph.managedAndroidLobApp': '#/components/schemas/microsoft.graph.managedAndroidLobApp'
+            '#microsoft.graph.managedIOSLobApp': '#/components/schemas/microsoft.graph.managedIOSLobApp'
+    microsoft.graph.windowsWebAppCollectionResponse:
+      title: Collection of windowsWebApp
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.windowsWebApp'
+    microsoft.graph.win32LobAppRestartBehavior:
+      title: win32LobAppRestartBehavior
+      enum:
+      - basedOnReturnCode
+      - allow
+      - suppress
+      - force
+      type: string
+      description: Indicates the type of restart action.
+      x-ms-enum:
+        name: win32LobAppRestartBehavior
+        modelAsString: false
+        values:
+        - value: basedOnReturnCode
+          description: Intune will restart the device after running the app installation if the operation returns a reboot code.
+          name: basedOnReturnCode
+        - value: allow
+          description: Intune will not take any specific action on reboot codes resulting from app installations. Intune will not attempt to suppress restarts for MSI apps.
+          name: allow
+        - value: suppress
+          description: Intune will attempt to suppress restarts for MSI apps.
+          name: suppress
+        - value: force
+          description: Intune will force the device to restart immediately after the app installation operation.
+          name: force
+    microsoft.graph.mobileAppCategory:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: mobileContainedApp
+      - title: mobileAppCategory
         required:
         - '@odata.type'
         type: object
         properties:
+          displayName:
+            type: string
+            description: The name of the app category.
+            nullable: true
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time the mobileAppCategory was last modified. This property is read-only.
+            format: date-time
+            readOnly: true
           '@odata.type':
             type: string
-        description: An abstract class that represents a contained app in a mobileApp acting as a package.
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.windowsUniversalAppXContainedApp': '#/components/schemas/microsoft.graph.windowsUniversalAppXContainedApp'
-    microsoft.graph.vppTokenAccountType:
-      title: vppTokenAccountType
-      enum:
-      - business
-      - education
-      type: string
-      description: Possible types of an Apple Volume Purchase Program token.
-      x-ms-enum:
-        name: vppTokenAccountType
-        modelAsString: false
-        values:
-        - value: business
-          description: Apple Volume Purchase Program token associated with an business program.
-          name: business
-        - value: education
-          description: Apple Volume Purchase Program token associated with an education program.
-          name: education
+        description: Contains properties for a single Intune app category.
+      x-ms-discriminator-value: '#microsoft.graph.mobileAppCategory'
     microsoft.graph.entity:
       title: entity
       required:
@@ -21005,34 +20756,8 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.managedApp:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mobileApp'
-      - title: managedApp
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          appAvailability:
-            $ref: '#/components/schemas/microsoft.graph.managedAppAvailability'
-          version:
-            type: string
-            description: The Application's version.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.managedApp'
-        description: Abstract class that contains properties and inherited properties for apps that you can manage with an Intune app protection policy.
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.managedAndroidStoreApp': '#/components/schemas/microsoft.graph.managedAndroidStoreApp'
-            '#microsoft.graph.managedIOSStoreApp': '#/components/schemas/microsoft.graph.managedIOSStoreApp'
-            '#microsoft.graph.managedMobileLobApp': '#/components/schemas/microsoft.graph.managedMobileLobApp'
-            '#microsoft.graph.managedAndroidLobApp': '#/components/schemas/microsoft.graph.managedAndroidLobApp'
-            '#microsoft.graph.managedIOSLobApp': '#/components/schemas/microsoft.graph.managedIOSLobApp'
-    microsoft.graph.windowsUniversalAppXCollectionResponse:
-      title: Collection of windowsUniversalAppX
+    microsoft.graph.microsoftStoreForBusinessAppCollectionResponse:
+      title: Collection of microsoftStoreForBusinessApp
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -21041,323 +20766,7 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.windowsUniversalAppX'
-    microsoft.graph.mobileAppAssignmentCollectionResponse:
-      title: Collection of mobileAppAssignment
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mobileAppAssignment'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.win32LobAppMsiPackageType:
-      title: win32LobAppMsiPackageType
-      enum:
-      - perMachine
-      - perUser
-      - dualPurpose
-      type: string
-      description: Indicates the package type of an MSI Win32LobApp.
-      x-ms-enum:
-        name: win32LobAppMsiPackageType
-        modelAsString: false
-        values:
-        - value: perMachine
-          description: Indicates a per-machine app package.
-          name: perMachine
-        - value: perUser
-          description: Indicates a per-user app package.
-          name: perUser
-        - value: dualPurpose
-          description: Indicates a dual-purpose app package.
-          name: dualPurpose
-    microsoft.graph.macOSIncludedApp:
-      title: macOSIncludedApp
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        bundleId:
-          type: string
-          description: The bundleId of the app. This maps to the CFBundleIdentifier in the app's bundle configuration.
-        bundleVersion:
-          type: string
-          description: The version of the app. This maps to the CFBundleShortVersion in the app's bundle configuration.
-        '@odata.type':
-          type: string
-      description: Contains properties of an included .app in a MacOS app.
-    microsoft.graph.macOSLobChildApp:
-      title: macOSLobChildApp
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        buildNumber:
-          type: string
-          description: The build number of the app.
-          nullable: true
-        bundleId:
-          type: string
-          description: The bundleId of the app.
-          nullable: true
-        versionNumber:
-          type: string
-          description: The version number of the app.
-          nullable: true
-        '@odata.type':
-          type: string
-      description: Contains properties of a macOS .app in the package
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.mobileAppContentCollectionResponse:
-      title: Collection of mobileAppContent
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mobileAppContent'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.managedMobileLobApp:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.managedApp'
-      - title: managedMobileLobApp
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          committedContentVersion:
-            type: string
-            description: The internal committed content version.
-            nullable: true
-          fileName:
-            type: string
-            description: The name of the main Lob application file.
-            nullable: true
-          size:
-            type: number
-            description: The total size, including all uploaded files. This property is read-only.
-            format: int64
-            readOnly: true
-          contentVersions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mobileAppContent'
-            description: The list of content versions for this app. This property is read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.managedMobileLobApp'
-        description: An abstract base class containing properties for all managed mobile line-of-business apps.
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.managedAndroidLobApp': '#/components/schemas/microsoft.graph.managedAndroidLobApp'
-            '#microsoft.graph.managedIOSLobApp': '#/components/schemas/microsoft.graph.managedIOSLobApp'
-    microsoft.graph.deviceAndAppManagementAssignmentTarget:
-      title: deviceAndAppManagementAssignmentTarget
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-      description: Base type for assignment targets.
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.allDevicesAssignmentTarget': '#/components/schemas/microsoft.graph.allDevicesAssignmentTarget'
-          '#microsoft.graph.allLicensedUsersAssignmentTarget': '#/components/schemas/microsoft.graph.allLicensedUsersAssignmentTarget'
-          '#microsoft.graph.configurationManagerCollectionAssignmentTarget': '#/components/schemas/microsoft.graph.configurationManagerCollectionAssignmentTarget'
-          '#microsoft.graph.groupAssignmentTarget': '#/components/schemas/microsoft.graph.groupAssignmentTarget'
-          '#microsoft.graph.exclusionGroupAssignmentTarget': '#/components/schemas/microsoft.graph.exclusionGroupAssignmentTarget'
-    microsoft.graph.androidLobAppCollectionResponse:
-      title: Collection of androidLobApp
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.androidLobApp'
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.win32LobAppReturnCodeType:
-      title: win32LobAppReturnCodeType
-      enum:
-      - failed
-      - success
-      - softReboot
-      - hardReboot
-      - retry
-      type: string
-      description: Indicates the type of return code.
-      x-ms-enum:
-        name: win32LobAppReturnCodeType
-        modelAsString: false
-        values:
-        - value: failed
-          description: Failed.
-          name: failed
-        - value: success
-          description: Success.
-          name: success
-        - value: softReboot
-          description: Soft-reboot is required.
-          name: softReboot
-        - value: hardReboot
-          description: Hard-reboot is required.
-          name: hardReboot
-        - value: retry
-          description: Retry.
-          name: retry
-    microsoft.graph.iosLobAppCollectionResponse:
-      title: Collection of iosLobApp
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.iosLobApp'
-    microsoft.graph.mobileAppContent:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: mobileAppContent
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          containedApps:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mobileContainedApp'
-            description: The collection of contained apps in a MobileLobApp acting as a package.
-            x-ms-navigationProperty: true
-          files:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mobileAppContentFile'
-            description: The list of files for this app content version.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-        description: Contains content properties for a specific app version. Each mobileAppContent can have multiple mobileAppContentFile.
-      x-ms-discriminator-value: '#microsoft.graph.mobileAppContent'
-    microsoft.graph.windowsMinimumOperatingSystem:
-      title: windowsMinimumOperatingSystem
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        v10_0:
-          type: boolean
-          description: Windows version 10.0 or later.
-        v8_0:
-          type: boolean
-          description: Windows version 8.0 or later.
-        v8_1:
-          type: boolean
-          description: Windows version 8.1 or later.
-        '@odata.type':
-          type: string
-      description: The minimum operating system required for a Windows mobile app.
-    microsoft.graph.installIntent:
-      title: installIntent
-      enum:
-      - available
-      - required
-      - uninstall
-      - availableWithoutEnrollment
-      type: string
-      description: Possible values for the install intent chosen by the admin.
-      x-ms-enum:
-        name: installIntent
-        modelAsString: false
-        values:
-        - value: available
-          description: Available install intent.
-          name: available
-        - value: required
-          description: Required install intent.
-          name: required
-        - value: uninstall
-          description: Uninstall install intent.
-          name: uninstall
-        - value: availableWithoutEnrollment
-          description: Available without enrollment install intent.
-          name: availableWithoutEnrollment
+              $ref: '#/components/schemas/microsoft.graph.microsoftStoreForBusinessApp'
     microsoft.graph.windowsArchitecture:
       title: windowsArchitecture
       enum:
@@ -21389,6 +20798,49 @@ components:
         - value: neutral
           description: Whether or not the Neutral Windows architecture type is supported.
           name: neutral
+    microsoft.graph.managedAppAvailability:
+      title: managedAppAvailability
+      enum:
+      - global
+      - lineOfBusiness
+      type: string
+      description: A managed (MAM) application's availability.
+      x-ms-enum:
+        name: managedAppAvailability
+        modelAsString: false
+        values:
+        - value: global
+          description: A globally available app to all tenants.
+          name: global
+        - value: lineOfBusiness
+          description: A line-of-business apps private to an organization.
+          name: lineOfBusiness
+    microsoft.graph.managedApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.mobileApp'
+      - title: managedApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          appAvailability:
+            $ref: '#/components/schemas/microsoft.graph.managedAppAvailability'
+          version:
+            type: string
+            description: The Application's version.
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.managedApp'
+        description: Abstract class that contains properties and inherited properties for apps that you can manage with an Intune app protection policy.
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.managedAndroidStoreApp': '#/components/schemas/microsoft.graph.managedAndroidStoreApp'
+            '#microsoft.graph.managedIOSStoreApp': '#/components/schemas/microsoft.graph.managedIOSStoreApp'
+            '#microsoft.graph.managedMobileLobApp': '#/components/schemas/microsoft.graph.managedMobileLobApp'
+            '#microsoft.graph.managedAndroidLobApp': '#/components/schemas/microsoft.graph.managedAndroidLobApp'
+            '#microsoft.graph.managedIOSLobApp': '#/components/schemas/microsoft.graph.managedIOSLobApp'
     microsoft.graph.mobileAppContentFileUploadState:
       title: mobileAppContentFileUploadState
       enum:
@@ -21410,15 +20862,97 @@ components:
       - commitFileTimedOut
       type: string
       description: Contains properties for upload request states.
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.mobileAppCategoryCollectionResponse:
-      title: Collection of mobileAppCategory
+    microsoft.graph.macOSLobApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
+      - title: macOSLobApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          buildNumber:
+            type: string
+            description: The build number of the package. This should match the package CFBundleShortVersionString of the .pkg file.
+            nullable: true
+          bundleId:
+            type: string
+            description: The primary bundleId of the package.
+            nullable: true
+          childApps:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.macOSLobChildApp'
+            description: List of ComplexType macOSLobChildApp objects. Represents the apps expected to be installed by the package.
+          ignoreVersionDetection:
+            type: boolean
+            description: When TRUE, indicates that the app's version will NOT be used to detect if the app is installed on a device. When FALSE, indicates that the app's version will be used to detect if the app is installed on a device. Set this to true for apps that use a self update feature. The default value is FALSE.
+          installAsManaged:
+            type: boolean
+            description: When TRUE, indicates that the app will be installed as managed (requires macOS 11.0 and other managed package restrictions). When FALSE, indicates that the app will be installed as unmanaged. The default value is FALSE.
+          md5Hash:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: The MD5 hash codes. This is empty if the package was uploaded directly. If the Intune App Wrapping Tool is used to create a .intunemac, this value can be found inside the Detection.xml file.
+          md5HashChunkSize:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The chunk size for MD5 hash. This is '0' or empty if the package was uploaded directly. If the Intune App Wrapping Tool is used to create a .intunemac, this value can be found inside the Detection.xml file.
+            format: int32
+          minimumSupportedOperatingSystem:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.macOSMinimumOperatingSystem'
+            - type: object
+              nullable: true
+            description: ComplexType macOSMinimumOperatingSystem that indicates the minimum operating system applicable for the application.
+          versionNumber:
+            type: string
+            description: The version number of the package. This should match the package CFBundleVersion in the packageinfo file.
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.macOSLobApp'
+        description: Contains properties and inherited properties for the macOS LOB App.
+      x-ms-discriminator-value: '#microsoft.graph.macOSLobApp'
+    microsoft.graph.windowsDeviceType:
+      title: windowsDeviceType
+      enum:
+      - none
+      - desktop
+      - mobile
+      - holographic
+      - team
+      - unknownFutureValue
+      type: string
+      description: Contains properties for Windows device type. Multiple values can be selected. Default value is `none`.
+      x-ms-enum-flags:
+        isFlags: true
+      x-ms-enum:
+        name: windowsDeviceType
+        modelAsString: false
+        values:
+        - value: none
+          description: No device types supported. Default value.
+          name: none
+        - value: desktop
+          description: Indicates support for Desktop Windows device type.
+          name: desktop
+        - value: mobile
+          description: Indicates support for Mobile Windows device type.
+          name: mobile
+        - value: holographic
+          description: Indicates support for Holographic Windows device type.
+          name: holographic
+        - value: team
+          description: Indicates support for Team Windows device type.
+          name: team
+        - value: unknownFutureValue
+          description: Evolvable enumeration sentinel value. Do not use.
+          name: unknownFutureValue
+    microsoft.graph.macOSDmgAppCollectionResponse:
+      title: Collection of macOSDmgApp
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -21427,112 +20961,90 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.mobileAppCategory'
-    microsoft.graph.iosMinimumOperatingSystem:
-      title: iosMinimumOperatingSystem
-      required:
-      - '@odata.type'
+              $ref: '#/components/schemas/microsoft.graph.macOSDmgApp'
+    microsoft.graph.windowsUniversalAppXCollectionResponse:
+      title: Collection of windowsUniversalAppX
       type: object
-      properties:
-        v10_0:
-          type: boolean
-          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 10.0 or later is required to install the app. If 'False', iOS Version 10.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
-        v11_0:
-          type: boolean
-          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 11.0 or later is required to install the app. If 'False', iOS Version 11.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
-        v12_0:
-          type: boolean
-          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 12.0 or later is required to install the app. If 'False', iOS Version 12.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
-        v13_0:
-          type: boolean
-          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 13.0 or later is required to install the app. If 'False', iOS Version 13.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
-        v14_0:
-          type: boolean
-          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 14.0 or later is required to install the app. If 'False', iOS Version 14.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
-        v15_0:
-          type: boolean
-          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 15.0 or later is required to install the app. If 'False', iOS Version 15.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
-        v8_0:
-          type: boolean
-          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 8.0 or later is required to install the app. If 'False', iOS Version 8.0  is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
-        v9_0:
-          type: boolean
-          description: Indicates the minimum iOS version support required for the managed device. When 'True', iOS with OS Version 9.0 or later is required to install the app. If 'False', iOS Version 9.0 is not the minimum version. Default value is False. Exactly one of the minimum operating system boolean values will be TRUE.
-        '@odata.type':
-          type: string
-      description: Contains properties of the minimum operating system required for an iOS mobile app.
-    microsoft.graph.windowsWebApp:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mobileApp'
-      - title: windowsWebApp
-        required:
-        - '@odata.type'
-        type: object
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
         properties:
-          appUrl:
-            type: string
-            description: 'Indicates the Windows web app URL. Example: ''https://www.contoso.com'''
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.windowsWebApp'
-        description: Contains properties and inherited properties for Windows web apps.
-      x-ms-discriminator-value: '#microsoft.graph.windowsWebApp'
-    microsoft.graph.windowsUniversalAppX:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
-      - title: windowsUniversalAppX
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          applicableArchitectures:
-            $ref: '#/components/schemas/microsoft.graph.windowsArchitecture'
-          applicableDeviceTypes:
-            $ref: '#/components/schemas/microsoft.graph.windowsDeviceType'
-          identityName:
-            type: string
-            description: 'The Identity Name of the app, parsed from the appx file when it is uploaded through the Intune MEM console. For example: ''Contoso.DemoApp''.'
-            nullable: true
-          identityPublisherHash:
-            type: string
-            description: 'The Identity Publisher Hash of the app, parsed from the appx file when it is uploaded through the Intune MEM console. For example: ''AB82CD0XYZ''.'
-          identityResourceIdentifier:
-            type: string
-            description: 'The Identity Resource Identifier of the app, parsed from the appx file when it is uploaded through the Intune MEM console. For example: ''TestResourceId''.'
-            nullable: true
-          identityVersion:
-            type: string
-            description: 'The Identity Version of the app, parsed from the appx file when it is uploaded through the Intune MEM console.  For example: ''1.0.0.0''.'
-            nullable: true
-          isBundle:
-            type: boolean
-            description: Whether or not the app is a bundle. If TRUE, app is a bundle; if FALSE, app is not a bundle.
-          minimumSupportedOperatingSystem:
-            $ref: '#/components/schemas/microsoft.graph.windowsMinimumOperatingSystem'
-          committedContainedApps:
+          value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.mobileContainedApp'
-            description: The collection of contained apps in the committed mobileAppContent of a windowsUniversalAppX app. This property is read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.windowsUniversalAppX'
-        description: Contains properties and inherited properties for Windows Universal AppX Line Of Business apps. Inherits from `mobileLobApp`.
-      x-ms-discriminator-value: '#microsoft.graph.windowsUniversalAppX'
-    microsoft.graph.androidStoreApp:
+              $ref: '#/components/schemas/microsoft.graph.windowsUniversalAppX'
+    microsoft.graph.macOSDmgApp:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mobileApp'
-      - title: androidStoreApp
+      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
+      - title: macOSDmgApp
         required:
         - '@odata.type'
         type: object
         properties:
-          appStoreUrl:
+          ignoreVersionDetection:
+            type: boolean
+            description: When TRUE, indicates that the app's version will NOT be used to detect if the app is installed on a device. When FALSE, indicates that the app's version will be used to detect if the app is installed on a device. Set this to true for apps that use a self update feature. The default value is FALSE.
+          includedApps:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.macOSIncludedApp'
+            description: The list of .apps expected to be installed by the DMG (Apple Disk Image). This collection can contain a maximum of 500 elements.
+          minimumSupportedOperatingSystem:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.macOSMinimumOperatingSystem'
+            - type: object
+              nullable: true
+            description: ComplexType macOSMinimumOperatingSystem that indicates the minimum operating system applicable for the application.
+          primaryBundleId:
             type: string
-            description: The Android app store URL.
-            nullable: true
+            description: The bundleId of the primary .app in the DMG (Apple Disk Image). This maps to the CFBundleIdentifier in the app's bundle configuration.
+          primaryBundleVersion:
+            type: string
+            description: The version of the primary .app in the DMG (Apple Disk Image). This maps to the CFBundleShortVersion in the app's bundle configuration.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.macOSDmgApp'
+        description: Contains properties and inherited properties for the MacOS DMG (Apple Disk Image) App.
+      x-ms-discriminator-value: '#microsoft.graph.macOSDmgApp'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.managedMobileLobAppCollectionResponse:
+      title: Collection of managedMobileLobApp
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.managedMobileLobApp'
+    microsoft.graph.androidLobApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
+      - title: androidLobApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
           minimumSupportedOperatingSystem:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.androidMinimumOperatingSystem'
@@ -21541,56 +21053,88 @@ components:
             description: The value for the minimum applicable operating system.
           packageId:
             type: string
-            description: The package identifier. This property is read-only.
+            description: The package identifier.
             nullable: true
-            readOnly: true
+          versionCode:
+            type: string
+            description: The version code of Android Line of Business (LoB) app.
+            nullable: true
+          versionName:
+            type: string
+            description: The version name of Android Line of Business (LoB) app.
+            nullable: true
           '@odata.type':
             type: string
-            default: '#microsoft.graph.androidStoreApp'
-        description: Contains properties and inherited properties for Android store apps.
-      x-ms-discriminator-value: '#microsoft.graph.androidStoreApp'
-    microsoft.graph.fileEncryptionInfo:
-      title: fileEncryptionInfo
+            default: '#microsoft.graph.androidLobApp'
+        description: Contains properties and inherited properties for Android Line Of Business apps.
+      x-ms-discriminator-value: '#microsoft.graph.androidLobApp'
+    microsoft.graph.win32LobAppInstallExperience:
+      title: win32LobAppInstallExperience
       required:
       - '@odata.type'
       type: object
       properties:
-        encryptionKey:
-          type: string
-          description: The key used to encrypt the file content.
-          format: base64url
-          nullable: true
-        fileDigest:
-          type: string
-          description: The file digest prior to encryption. ProfileVersion1 requires a non-null FileDigest.
-          format: base64url
-          nullable: true
-        fileDigestAlgorithm:
-          type: string
-          description: The file digest algorithm. ProfileVersion1 currently only supports SHA256 for the FileDigestAlgorithm.
-          nullable: true
-        initializationVector:
-          type: string
-          description: The initialization vector (IV) used for the encryption algorithm. Must be 16 bytes.
-          format: base64url
-          nullable: true
-        mac:
-          type: string
-          description: The hash of the concatenation of the IV and encrypted file content. Must be 32 bytes.
-          format: base64url
-          nullable: true
-        macKey:
-          type: string
-          description: The key used to compute the message authentication code of the concatenation of the IV and encrypted file content. Must be 32 bytes.
-          format: base64url
-          nullable: true
-        profileIdentifier:
-          type: string
-          description: The profile identifier. Maps to the strategy used to encrypt the file. Currently, only ProfileVersion1 is supported.
-          nullable: true
+        deviceRestartBehavior:
+          $ref: '#/components/schemas/microsoft.graph.win32LobAppRestartBehavior'
+        runAsAccount:
+          $ref: '#/components/schemas/microsoft.graph.runAsAccountType'
         '@odata.type':
           type: string
-      description: Contains properties for file encryption information for the content version of a line-of-business app.
+      description: Contains installation experience properties for a Win32 App
+    microsoft.graph.windowsMinimumOperatingSystem:
+      title: windowsMinimumOperatingSystem
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        v10_0:
+          type: boolean
+          description: Windows version 10.0 or later.
+        v8_0:
+          type: boolean
+          description: Windows version 8.0 or later.
+        v8_1:
+          type: boolean
+          description: Windows version 8.1 or later.
+        '@odata.type':
+          type: string
+      description: The minimum operating system required for a Windows mobile app.
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.win32LobAppReturnCodeType:
+      title: win32LobAppReturnCodeType
+      enum:
+      - failed
+      - success
+      - softReboot
+      - hardReboot
+      - retry
+      type: string
+      description: Indicates the type of return code.
+      x-ms-enum:
+        name: win32LobAppReturnCodeType
+        modelAsString: false
+        values:
+        - value: failed
+          description: Failed.
+          name: failed
+        - value: success
+          description: Success.
+          name: success
+        - value: softReboot
+          description: Soft-reboot is required.
+          name: softReboot
+        - value: hardReboot
+          description: Hard-reboot is required.
+          name: hardReboot
+        - value: retry
+          description: Retry.
+          name: retry
     microsoft.graph.mobileAppPublishingState:
       title: mobileAppPublishingState
       enum:
@@ -21612,6 +21156,268 @@ components:
         - value: published
           description: The app is published.
           name: published
+    microsoft.graph.mobileAppContent:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: mobileAppContent
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          containedApps:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mobileContainedApp'
+            description: The collection of contained apps in a MobileLobApp acting as a package.
+            x-ms-navigationProperty: true
+          files:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mobileAppContentFile'
+            description: The list of files for this app content version.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+        description: Contains content properties for a specific app version. Each mobileAppContent can have multiple mobileAppContentFile.
+      x-ms-discriminator-value: '#microsoft.graph.mobileAppContent'
+    microsoft.graph.iosStoreAppCollectionResponse:
+      title: Collection of iosStoreApp
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.iosStoreApp'
+    microsoft.graph.mimeContent:
+      title: mimeContent
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        type:
+          type: string
+          description: Indicates the content mime type.
+          nullable: true
+        value:
+          type: string
+          description: The byte array that contains the actual content.
+          format: base64url
+          nullable: true
+        '@odata.type':
+          type: string
+      description: Contains properties for a generic mime content.
+    microsoft.graph.macOSLobAppCollectionResponse:
+      title: Collection of macOSLobApp
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.macOSLobApp'
+    microsoft.graph.win32LobAppRuleType:
+      title: win32LobAppRuleType
+      enum:
+      - detection
+      - requirement
+      type: string
+      description: Contains rule types for Win32 LOB apps.
+      x-ms-enum:
+        name: win32LobAppRuleType
+        modelAsString: false
+        values:
+        - value: detection
+          description: Detection rule.
+          name: detection
+        - value: requirement
+          description: Requirement rule.
+          name: requirement
+    microsoft.graph.win32LobAppCollectionResponse:
+      title: Collection of win32LobApp
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.win32LobApp'
+    microsoft.graph.vppTokenAccountType:
+      title: vppTokenAccountType
+      enum:
+      - business
+      - education
+      type: string
+      description: Possible types of an Apple Volume Purchase Program token.
+      x-ms-enum:
+        name: vppTokenAccountType
+        modelAsString: false
+        values:
+        - value: business
+          description: Apple Volume Purchase Program token associated with an business program.
+          name: business
+        - value: education
+          description: Apple Volume Purchase Program token associated with an education program.
+          name: education
+    microsoft.graph.iosVppApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.mobileApp'
+      - title: iosVppApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          applicableDeviceType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.iosDeviceType'
+            - type: object
+              nullable: true
+            description: The applicable iOS Device Type.
+          appStoreUrl:
+            type: string
+            description: The store URL.
+            nullable: true
+          bundleId:
+            type: string
+            description: The Identity Name.
+            nullable: true
+          licensingType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.vppLicensingType'
+            - type: object
+              nullable: true
+            description: The supported License Type.
+          releaseDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The VPP application release date and time.
+            format: date-time
+            nullable: true
+          totalLicenseCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The total number of VPP licenses.
+            format: int32
+          usedLicenseCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The number of VPP licenses in use.
+            format: int32
+          vppTokenAccountType:
+            $ref: '#/components/schemas/microsoft.graph.vppTokenAccountType'
+          vppTokenAppleId:
+            type: string
+            description: The Apple Id associated with the given Apple Volume Purchase Program Token.
+            nullable: true
+          vppTokenOrganizationName:
+            type: string
+            description: The organization associated with the Apple Volume Purchase Program Token
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.iosVppApp'
+        description: Contains properties and inherited properties for iOS Volume-Purchased Program (VPP) Apps.
+      x-ms-discriminator-value: '#microsoft.graph.iosVppApp'
+    microsoft.graph.vppLicensingType:
+      title: vppLicensingType
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        supportsDeviceLicensing:
+          type: boolean
+          description: Whether the program supports the device licensing type.
+        supportsUserLicensing:
+          type: boolean
+          description: Whether the program supports the user licensing type.
+        '@odata.type':
+          type: string
+      description: Contains properties for iOS Volume-Purchased Program (Vpp) Licensing Type.
+    microsoft.graph.microsoftStoreForBusinessApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.mobileApp'
+      - title: microsoftStoreForBusinessApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          licenseType:
+            $ref: '#/components/schemas/microsoft.graph.microsoftStoreForBusinessLicenseType'
+          packageIdentityName:
+            type: string
+            description: The app package identifier
+            nullable: true
+          productKey:
+            type: string
+            description: The app product key
+            nullable: true
+          totalLicenseCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The total number of Microsoft Store for Business licenses.
+            format: int32
+          usedLicenseCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The number of Microsoft Store for Business licenses in use.
+            format: int32
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.microsoftStoreForBusinessApp'
+        description: Microsoft Store for Business Apps. This class does not support Create, Delete, or Update.
+      x-ms-discriminator-value: '#microsoft.graph.microsoftStoreForBusinessApp'
+    microsoft.graph.mobileLobApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.mobileApp'
+      - title: mobileLobApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          committedContentVersion:
+            type: string
+            description: The internal committed content version.
+            nullable: true
+          fileName:
+            type: string
+            description: The name of the main Lob application file.
+            nullable: true
+          size:
+            type: number
+            description: The total size, including all uploaded files. This property is read-only.
+            format: int64
+            readOnly: true
+          contentVersions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mobileAppContent'
+            description: The list of content versions for this app. This property is read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.mobileLobApp'
+        description: An abstract base class containing properties for all mobile line-of-business apps.
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.androidLobApp': '#/components/schemas/microsoft.graph.androidLobApp'
+            '#microsoft.graph.iosLobApp': '#/components/schemas/microsoft.graph.iosLobApp'
+            '#microsoft.graph.macOSDmgApp': '#/components/schemas/microsoft.graph.macOSDmgApp'
+            '#microsoft.graph.macOSLobApp': '#/components/schemas/microsoft.graph.macOSLobApp'
+            '#microsoft.graph.win32LobApp': '#/components/schemas/microsoft.graph.win32LobApp'
+            '#microsoft.graph.windowsAppX': '#/components/schemas/microsoft.graph.windowsAppX'
+            '#microsoft.graph.windowsMobileMSI': '#/components/schemas/microsoft.graph.windowsMobileMSI'
+            '#microsoft.graph.windowsUniversalAppX': '#/components/schemas/microsoft.graph.windowsUniversalAppX'
     microsoft.graph.windowsMobileMSICollectionResponse:
       title: Collection of windowsMobileMSI
       type: object
@@ -21623,17 +21429,94 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.windowsMobileMSI'
-    microsoft.graph.microsoftStoreForBusinessAppCollectionResponse:
-      title: Collection of microsoftStoreForBusinessApp
-      type: object
+    microsoft.graph.mobileAppAssignment:
       allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: mobileAppAssignment
+        required:
+        - '@odata.type'
+        type: object
         properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.microsoftStoreForBusinessApp'
+          intent:
+            $ref: '#/components/schemas/microsoft.graph.installIntent'
+          settings:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.mobileAppAssignmentSettings'
+            - type: object
+              nullable: true
+            description: The settings for target assignment defined by the admin.
+          target:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.deviceAndAppManagementAssignmentTarget'
+            - type: object
+              nullable: true
+            description: The target group assignment defined by the admin.
+          '@odata.type':
+            type: string
+        description: A class containing the properties used for Group Assignment of a Mobile App.
+      x-ms-discriminator-value: '#microsoft.graph.mobileAppAssignment'
+    microsoft.graph.windowsMobileMSI:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
+      - title: windowsMobileMSI
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          commandLine:
+            type: string
+            description: The command line.
+            nullable: true
+          ignoreVersionDetection:
+            type: boolean
+            description: A boolean to control whether the app's version will be used to detect the app after it is installed on a device. Set this to true for Windows Mobile MSI Line of Business (LoB) apps that use a self update feature.
+          productCode:
+            type: string
+            description: The product code.
+            nullable: true
+          productVersion:
+            type: string
+            description: The product version of Windows Mobile MSI Line of Business (LoB) app.
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.windowsMobileMSI'
+        description: Contains properties and inherited properties for Windows Mobile MSI Line Of Business apps.
+      x-ms-discriminator-value: '#microsoft.graph.windowsMobileMSI'
+    microsoft.graph.win32LobAppMsiInformation:
+      title: win32LobAppMsiInformation
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        packageType:
+          $ref: '#/components/schemas/microsoft.graph.win32LobAppMsiPackageType'
+        productCode:
+          type: string
+          description: The MSI product code.
+          nullable: true
+        productName:
+          type: string
+          description: The MSI product name.
+          nullable: true
+        productVersion:
+          type: string
+          description: The MSI product version.
+          nullable: true
+        publisher:
+          type: string
+          description: The MSI publisher.
+          nullable: true
+        requiresReboot:
+          type: boolean
+          description: Whether the MSI app requires the machine to reboot to complete installation.
+        upgradeCode:
+          type: string
+          description: The MSI upgrade code.
+          nullable: true
+        '@odata.type':
+          type: string
+      description: Contains MSI app properties for a Win32 App.
     microsoft.graph.mobileAppContentFile:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -21690,191 +21573,290 @@ components:
             type: string
         description: Contains properties for a single installer file that is associated with a given mobileAppContent version.
       x-ms-discriminator-value: '#microsoft.graph.mobileAppContentFile'
-    microsoft.graph.mobileAppCategory:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: mobileAppCategory
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          displayName:
-            type: string
-            description: The name of the app category.
-            nullable: true
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time the mobileAppCategory was last modified. This property is read-only.
-            format: date-time
-            readOnly: true
-          '@odata.type':
-            type: string
-        description: Contains properties for a single Intune app category.
-      x-ms-discriminator-value: '#microsoft.graph.mobileAppCategory'
-    microsoft.graph.iosLobApp:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.mobileLobApp'
-      - title: iosLobApp
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          applicableDeviceType:
-            $ref: '#/components/schemas/microsoft.graph.iosDeviceType'
-          buildNumber:
-            type: string
-            description: The build number of iOS Line of Business (LoB) app.
-            nullable: true
-          bundleId:
-            type: string
-            description: The Identity Name.
-            nullable: true
-          expirationDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The expiration time.
-            format: date-time
-            nullable: true
-          minimumSupportedOperatingSystem:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.iosMinimumOperatingSystem'
-            - type: object
-              nullable: true
-            description: The value for the minimum applicable operating system.
-          versionNumber:
-            type: string
-            description: The version number of iOS Line of Business (LoB) app.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.iosLobApp'
-        description: Contains properties and inherited properties for iOS Line Of Business apps.
-      x-ms-discriminator-value: '#microsoft.graph.iosLobApp'
-    microsoft.graph.macOSLobAppCollectionResponse:
-      title: Collection of macOSLobApp
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.macOSLobApp'
-    microsoft.graph.mobileAppContentFileCollectionResponse:
-      title: Collection of mobileAppContentFile
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mobileAppContentFile'
-    microsoft.graph.windowsWebAppCollectionResponse:
-      title: Collection of windowsWebApp
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.windowsWebApp'
-    microsoft.graph.mobileContainedAppCollectionResponse:
-      title: Collection of mobileContainedApp
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.mobileContainedApp'
-    microsoft.graph.win32LobAppInstallExperience:
-      title: win32LobAppInstallExperience
+    microsoft.graph.macOSIncludedApp:
+      title: macOSIncludedApp
       required:
       - '@odata.type'
       type: object
       properties:
-        deviceRestartBehavior:
-          $ref: '#/components/schemas/microsoft.graph.win32LobAppRestartBehavior'
-        runAsAccount:
-          $ref: '#/components/schemas/microsoft.graph.runAsAccountType'
+        bundleId:
+          type: string
+          description: The bundleId of the app. This maps to the CFBundleIdentifier in the app's bundle configuration.
+        bundleVersion:
+          type: string
+          description: The version of the app. This maps to the CFBundleShortVersion in the app's bundle configuration.
         '@odata.type':
           type: string
-      description: Contains installation experience properties for a Win32 App
-  responses:
+      description: Contains properties of an included .app in a MacOS app.
+    microsoft.graph.fileEncryptionInfo:
+      title: fileEncryptionInfo
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        encryptionKey:
+          type: string
+          description: The key used to encrypt the file content.
+          format: base64url
+          nullable: true
+        fileDigest:
+          type: string
+          description: The file digest prior to encryption. ProfileVersion1 requires a non-null FileDigest.
+          format: base64url
+          nullable: true
+        fileDigestAlgorithm:
+          type: string
+          description: The file digest algorithm. ProfileVersion1 currently only supports SHA256 for the FileDigestAlgorithm.
+          nullable: true
+        initializationVector:
+          type: string
+          description: The initialization vector (IV) used for the encryption algorithm. Must be 16 bytes.
+          format: base64url
+          nullable: true
+        mac:
+          type: string
+          description: The hash of the concatenation of the IV and encrypted file content. Must be 32 bytes.
+          format: base64url
+          nullable: true
+        macKey:
+          type: string
+          description: The key used to compute the message authentication code of the concatenation of the IV and encrypted file content. Must be 32 bytes.
+          format: base64url
+          nullable: true
+        profileIdentifier:
+          type: string
+          description: The profile identifier. Maps to the strategy used to encrypt the file. Currently, only ProfileVersion1 is supported.
+          nullable: true
+        '@odata.type':
+          type: string
+      description: Contains properties for file encryption information for the content version of a line-of-business app.
+    microsoft.graph.macOSLobChildApp:
+      title: macOSLobChildApp
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        buildNumber:
+          type: string
+          description: The build number of the app.
+          nullable: true
+        bundleId:
+          type: string
+          description: The bundleId of the app.
+          nullable: true
+        versionNumber:
+          type: string
+          description: The version number of the app.
+          nullable: true
+        '@odata.type':
+          type: string
+      description: Contains properties of a macOS .app in the package
     microsoft.graph.iosLobAppCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.iosLobAppCollectionResponse'
-    microsoft.graph.androidStoreAppCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.androidStoreAppCollectionResponse'
-    microsoft.graph.mobileAppContentFileCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.mobileAppContentFileCollectionResponse'
+      title: Collection of iosLobApp
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.iosLobApp'
+    microsoft.graph.mobileAppCategoryCollectionResponse:
+      title: Collection of mobileAppCategory
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mobileAppCategory'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type: integer
+          format: int64
+          nullable: true
+        '@odata.nextLink':
+          type: string
+          nullable: true
+    microsoft.graph.mobileApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: mobileApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time the app was created. This property is read-only.
+            format: date-time
+            readOnly: true
+          description:
+            type: string
+            description: The description of the app.
+            nullable: true
+          developer:
+            type: string
+            description: The developer of the app.
+            nullable: true
+          displayName:
+            type: string
+            description: The admin provided or imported title of the app.
+            nullable: true
+          informationUrl:
+            type: string
+            description: The more information Url.
+            nullable: true
+          isFeatured:
+            type: boolean
+            description: The value indicating whether the app is marked as featured by the admin.
+          largeIcon:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.mimeContent'
+            - type: object
+              nullable: true
+            description: The large icon, to be displayed in the app details and used for upload of the icon.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time the app was last modified. This property is read-only.
+            format: date-time
+            readOnly: true
+          notes:
+            type: string
+            description: Notes for the app.
+            nullable: true
+          owner:
+            type: string
+            description: The owner of the app.
+            nullable: true
+          privacyInformationUrl:
+            type: string
+            description: The privacy statement Url.
+            nullable: true
+          publisher:
+            type: string
+            description: The publisher of the app.
+            nullable: true
+          publishingState:
+            $ref: '#/components/schemas/microsoft.graph.mobileAppPublishingState'
+          assignments:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mobileAppAssignment'
+            description: The list of group assignments for this mobile app.
+            x-ms-navigationProperty: true
+          categories:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.mobileAppCategory'
+            description: The list of categories for this app.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+        description: 'An abstract class containing the base properties for Intune mobile apps. Note: Listing mobile apps with `$expand=assignments` has been deprecated. Instead get the list of apps without the `$expand` query on `assignments`. Then, perform the expansion on individual applications.'
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.androidStoreApp': '#/components/schemas/microsoft.graph.androidStoreApp'
+            '#microsoft.graph.iosiPadOSWebClip': '#/components/schemas/microsoft.graph.iosiPadOSWebClip'
+            '#microsoft.graph.iosStoreApp': '#/components/schemas/microsoft.graph.iosStoreApp'
+            '#microsoft.graph.iosVppApp': '#/components/schemas/microsoft.graph.iosVppApp'
+            '#microsoft.graph.macOSMicrosoftDefenderApp': '#/components/schemas/microsoft.graph.macOSMicrosoftDefenderApp'
+            '#microsoft.graph.macOSMicrosoftEdgeApp': '#/components/schemas/microsoft.graph.macOSMicrosoftEdgeApp'
+            '#microsoft.graph.macOSOfficeSuiteApp': '#/components/schemas/microsoft.graph.macOSOfficeSuiteApp'
+            '#microsoft.graph.managedApp': '#/components/schemas/microsoft.graph.managedApp'
+            '#microsoft.graph.managedAndroidStoreApp': '#/components/schemas/microsoft.graph.managedAndroidStoreApp'
+            '#microsoft.graph.managedIOSStoreApp': '#/components/schemas/microsoft.graph.managedIOSStoreApp'
+            '#microsoft.graph.managedMobileLobApp': '#/components/schemas/microsoft.graph.managedMobileLobApp'
+            '#microsoft.graph.managedAndroidLobApp': '#/components/schemas/microsoft.graph.managedAndroidLobApp'
+            '#microsoft.graph.managedIOSLobApp': '#/components/schemas/microsoft.graph.managedIOSLobApp'
+            '#microsoft.graph.microsoftStoreForBusinessApp': '#/components/schemas/microsoft.graph.microsoftStoreForBusinessApp'
+            '#microsoft.graph.mobileLobApp': '#/components/schemas/microsoft.graph.mobileLobApp'
+            '#microsoft.graph.androidLobApp': '#/components/schemas/microsoft.graph.androidLobApp'
+            '#microsoft.graph.iosLobApp': '#/components/schemas/microsoft.graph.iosLobApp'
+            '#microsoft.graph.macOSDmgApp': '#/components/schemas/microsoft.graph.macOSDmgApp'
+            '#microsoft.graph.macOSLobApp': '#/components/schemas/microsoft.graph.macOSLobApp'
+            '#microsoft.graph.win32LobApp': '#/components/schemas/microsoft.graph.win32LobApp'
+            '#microsoft.graph.windowsAppX': '#/components/schemas/microsoft.graph.windowsAppX'
+            '#microsoft.graph.windowsMobileMSI': '#/components/schemas/microsoft.graph.windowsMobileMSI'
+            '#microsoft.graph.windowsUniversalAppX': '#/components/schemas/microsoft.graph.windowsUniversalAppX'
+            '#microsoft.graph.webApp': '#/components/schemas/microsoft.graph.webApp'
+            '#microsoft.graph.windowsMicrosoftEdgeApp': '#/components/schemas/microsoft.graph.windowsMicrosoftEdgeApp'
+            '#microsoft.graph.windowsWebApp': '#/components/schemas/microsoft.graph.windowsWebApp'
+    microsoft.graph.runAsAccountType:
+      title: runAsAccountType
+      enum:
+      - system
+      - user
+      type: string
+      description: Indicates the type of execution context the app runs in.
+      x-ms-enum:
+        name: runAsAccountType
+        modelAsString: false
+        values:
+        - value: system
+          description: System context
+          name: system
+        - value: user
+          description: User context
+          name: user
+  responses:
     error:
       description: error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.mobileContainedAppCollectionResponse:
+    microsoft.graph.mobileAppCategoryCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.mobileContainedAppCollectionResponse'
-    microsoft.graph.macOSLobAppCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.macOSLobAppCollectionResponse'
-    microsoft.graph.iosStoreAppCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.iosStoreAppCollectionResponse'
-    microsoft.graph.managedIOSLobAppCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.managedIOSLobAppCollectionResponse'
-    microsoft.graph.windowsMobileMSICollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.windowsMobileMSICollectionResponse'
-    microsoft.graph.microsoftStoreForBusinessAppCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.microsoftStoreForBusinessAppCollectionResponse'
+            $ref: '#/components/schemas/microsoft.graph.mobileAppCategoryCollectionResponse'
     microsoft.graph.win32LobAppCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.win32LobAppCollectionResponse'
+    microsoft.graph.iosLobAppCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.iosLobAppCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.androidStoreAppCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.androidStoreAppCollectionResponse'
+    microsoft.graph.iosStoreAppCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.iosStoreAppCollectionResponse'
+    microsoft.graph.managedAndroidLobAppCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.managedAndroidLobAppCollectionResponse'
     microsoft.graph.mobileAppCollectionResponse:
       description: Retrieved collection
       content:
@@ -21887,60 +21869,72 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.windowsAppXCollectionResponse'
-    microsoft.graph.mobileAppContentCollectionResponse:
+    microsoft.graph.macOSLobAppCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.mobileAppContentCollectionResponse'
-    microsoft.graph.mobileAppCategoryCollectionResponse:
+            $ref: '#/components/schemas/microsoft.graph.macOSLobAppCollectionResponse'
+    microsoft.graph.mobileContainedAppCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.mobileAppCategoryCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.iosVppAppCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.iosVppAppCollectionResponse'
-    microsoft.graph.macOSDmgAppCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.macOSDmgAppCollectionResponse'
+            $ref: '#/components/schemas/microsoft.graph.mobileContainedAppCollectionResponse'
     microsoft.graph.windowsWebAppCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.windowsWebAppCollectionResponse'
+    microsoft.graph.mobileAppContentFileCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.mobileAppContentFileCollectionResponse'
     microsoft.graph.mobileAppAssignmentCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.mobileAppAssignmentCollectionResponse'
-    microsoft.graph.androidLobAppCollectionResponse:
+    microsoft.graph.windowsMobileMSICollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.androidLobAppCollectionResponse'
-    microsoft.graph.managedAndroidLobAppCollectionResponse:
+            $ref: '#/components/schemas/microsoft.graph.windowsMobileMSICollectionResponse'
+    microsoft.graph.mobileAppContentCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.managedAndroidLobAppCollectionResponse'
+            $ref: '#/components/schemas/microsoft.graph.mobileAppContentCollectionResponse'
+    microsoft.graph.iosVppAppCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.iosVppAppCollectionResponse'
+    microsoft.graph.managedIOSLobAppCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.managedIOSLobAppCollectionResponse'
+    microsoft.graph.macOSDmgAppCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.macOSDmgAppCollectionResponse'
+    microsoft.graph.microsoftStoreForBusinessAppCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.microsoftStoreForBusinessAppCollectionResponse'
     microsoft.graph.managedMobileLobAppCollectionResponse:
       description: Retrieved collection
       content:
@@ -21953,17 +21947,29 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.windowsUniversalAppXCollectionResponse'
+    microsoft.graph.androidLobAppCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.androidLobAppCollectionResponse'
   parameters:
-    top:
-      name: $top
+    filter:
+      name: $filter
       in: query
-      description: Show only the first n items
+      description: Filter items by property values
       style: form
       explode: false
       schema:
-        minimum: 0
-        type: integer
-      example: 50
+        type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
     count:
       name: $count
       in: query
@@ -21981,19 +21987,13 @@ components:
       schema:
         minimum: 0
         type: integer
-    filter:
-      name: $filter
+    top:
+      name: $top
       in: query
-      description: Filter items by property values
+      description: Show only the first n items
       style: form
       explode: false
       schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+        minimum: 0
+        type: integer
+      example: 50

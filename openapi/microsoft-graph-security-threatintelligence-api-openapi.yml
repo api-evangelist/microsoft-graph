@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin security.threatIntelligence API
+  title: Microsoft Graph Admin Admin.admin Security.threat Intelligence API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
 
     This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
@@ -3643,7 +3643,7 @@ paths:
       tags:
       - security.threatIntelligence
       summary: Microsoft Graph Get whoisRecord
-      description: "Get the specified whoisRecord resource.  Specify the desired whoisRecord in one of the following two ways:\r\n- Identify a host and get its current whoisRecord. \r\n- Specify an id value to get the corresponding whoisRecord."
+      description: "Get the specified whoisRecord resource.  Specify the desired whoisRecord in one of the following two ways:\n- Identify a host and get its current whoisRecord. \n- Specify an id value to get the corresponding whoisRecord."
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/security-whoisrecord-get?view=graph-rest-1.0
@@ -6567,7 +6567,7 @@ paths:
       tags:
       - security.threatIntelligence
       summary: Microsoft Graph Get whoisRecord
-      description: "Get the specified whoisRecord resource.  Specify the desired whoisRecord in one of the following two ways:\r\n- Identify a host and get its current whoisRecord. \r\n- Specify an id value to get the corresponding whoisRecord."
+      description: "Get the specified whoisRecord resource.  Specify the desired whoisRecord in one of the following two ways:\n- Identify a host and get its current whoisRecord. \n- Specify an id value to get the corresponding whoisRecord."
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/security-whoisrecord-get?view=graph-rest-1.0
@@ -6862,142 +6862,9 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    microsoft.graph.security.cvssSummary:
-      title: cvssSummary
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        score:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The CVSS score about this vulnerability.
-        severity:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.security.vulnerabilitySeverity'
-          - type: object
-            nullable: true
-          description: 'The CVSS severity rating for this vulnerability. The possible values are: none, low, medium, high, critical, unknownFutureValue.'
-        vectorString:
-          type: string
-          description: The CVSS vector string for this vulnerability.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.security.articleIndicator:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.security.indicator'
-      - title: articleIndicator
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.security.articleIndicator'
-      x-ms-discriminator-value: '#microsoft.graph.security.articleIndicator'
-    ReferenceNumeric:
-      enum:
-      - -INF
-      - INF
-      - NaN
-      type: string
-      nullable: true
-    microsoft.graph.security.whoisHistoryRecordCollectionResponse:
-      title: Collection of whoisHistoryRecord
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.whoisHistoryRecord'
-    microsoft.graph.security.article:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: article
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          body:
-            $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when this article was created. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          imageUrl:
-            type: string
-            description: URL of the header image for this article, used for display purposes.
-            nullable: true
-          isFeatured:
-            type: boolean
-            description: Indicates whether this article is currently featured by Microsoft.
-          lastUpdatedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The most recent date and time when this article was updated. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          summary:
-            $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
-          tags:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: Tags for this article, communicating keywords, or key concepts.
-          title:
-            type: string
-            description: The title of this article.
-          indicators:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.articleIndicator'
-            description: Indicators related to this article.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.article'
-    microsoft.graph.security.artifact:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: artifact
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.security.host': '#/components/schemas/microsoft.graph.security.host'
-            '#microsoft.graph.security.hostname': '#/components/schemas/microsoft.graph.security.hostname'
-            '#microsoft.graph.security.ipAddress': '#/components/schemas/microsoft.graph.security.ipAddress'
-            '#microsoft.graph.security.hostComponent': '#/components/schemas/microsoft.graph.security.hostComponent'
-            '#microsoft.graph.security.hostCookie': '#/components/schemas/microsoft.graph.security.hostCookie'
-            '#microsoft.graph.security.hostSslCertificate': '#/components/schemas/microsoft.graph.security.hostSslCertificate'
-            '#microsoft.graph.security.hostTracker': '#/components/schemas/microsoft.graph.security.hostTracker'
-            '#microsoft.graph.security.passiveDnsRecord': '#/components/schemas/microsoft.graph.security.passiveDnsRecord'
-            '#microsoft.graph.security.sslCertificate': '#/components/schemas/microsoft.graph.security.sslCertificate'
-            '#microsoft.graph.security.unclassifiedArtifact': '#/components/schemas/microsoft.graph.security.unclassifiedArtifact'
-    microsoft.graph.security.hostReputationClassification:
-      title: hostReputationClassification
-      enum:
-      - unknown
-      - neutral
-      - suspicious
-      - malicious
-      - unknownFutureValue
-      type: string
+    ODataCountResponse:
+      type: integer
+      format: int32
     microsoft.graph.security.hostPort:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -7071,40 +6938,10 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.security.hostPort'
-    microsoft.graph.security.hostPortComponent:
-      title: hostPortComponent
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        firstSeenDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The first date and time when Microsoft Defender Threat Intelligence observed the hostPortComponent. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
-          format: date-time
-          nullable: true
-        isRecent:
-          type: boolean
-          description: Indicates whether this hostPortComponent is recent, which is determined by whether the hostPortComponent was observed either at the same time or after the latest hostPortBanner in the scan history, or within two days of the latest scan of the hostPort when there are no hostPortBanners in the scan history.
-          nullable: true
-        lastSeenDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The last date and time when Microsoft Defender Threat Intelligence observed the hostPortComponent. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
-          format: date-time
-          nullable: true
-        component:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.security.hostComponent'
-          - type: object
-            nullable: true
-          x-ms-navigationProperty: true
-        '@odata.type':
-          type: string
-    microsoft.graph.security.intelligenceProfileIndicator:
+    microsoft.graph.security.host:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.security.indicator'
-      - title: intelligenceProfileIndicator
+      - $ref: '#/components/schemas/microsoft.graph.security.artifact'
+      - title: host
         required:
         - '@odata.type'
         type: object
@@ -7112,86 +6949,127 @@ components:
           firstSeenDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
             type: string
-            description: Designate when an artifact was first used actively in an attack, when a particular sample was compiled, or if neither of those could be ascertained when the file was first seen in public repositories (for example, VirusTotal, ANY.RUN, Hybrid Analysis) or reported publicly.
+            description: The first date and time when this host was observed. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
             format: date-time
+            nullable: true
           lastSeenDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
             type: string
-            description: Designate when an artifact was most recently used actively in an attack, when a particular sample was compiled, or if neither of those could be ascertained when the file was first seen in public repositories (for example, VirusTotal, ANY.RUN, Hybrid Analysis) or reported publicly.
+            description: The most recent date and time when this host was observed. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
             format: date-time
             nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.security.intelligenceProfileIndicator'
-      x-ms-discriminator-value: '#microsoft.graph.security.intelligenceProfileIndicator'
-    microsoft.graph.security.hostCollectionResponse:
-      title: Collection of host
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.host'
-    microsoft.graph.security.indicator:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: indicator
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          source:
-            $ref: '#/components/schemas/microsoft.graph.security.indicatorSource'
-          artifact:
-            $ref: '#/components/schemas/microsoft.graph.security.artifact'
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.security.articleIndicator': '#/components/schemas/microsoft.graph.security.articleIndicator'
-            '#microsoft.graph.security.intelligenceProfileIndicator': '#/components/schemas/microsoft.graph.security.intelligenceProfileIndicator'
-    microsoft.graph.security.hostSslCertificateCollectionResponse:
-      title: Collection of hostSslCertificate
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostSslCertificate'
-    microsoft.graph.security.hostPairCollectionResponse:
-      title: Collection of hostPair
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
+          childHostPairs:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.security.hostPair'
-    microsoft.graph.security.hyperlink:
-      title: hyperlink
+            description: The hostPairs that are resources associated with a host, where that host is the parentHost and has an outgoing pairing to a childHost.
+            x-ms-navigationProperty: true
+          components:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hostComponent'
+            description: The hostComponents that are associated with this host.
+            x-ms-navigationProperty: true
+          cookies:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hostCookie'
+            description: The hostCookies that are associated with this host.
+            x-ms-navigationProperty: true
+          hostPairs:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hostPair'
+            description: The hostPairs that are associated with this host, where this host is either the parentHost or childHost.
+            x-ms-navigationProperty: true
+          parentHostPairs:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hostPair'
+            description: The hostPairs that are associated with a host, where that host is the childHost and has an incoming pairing with a parentHost.
+            x-ms-navigationProperty: true
+          passiveDns:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.passiveDnsRecord'
+            description: Passive DNS retrieval about this host.
+            x-ms-navigationProperty: true
+          passiveDnsReverse:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.passiveDnsRecord'
+            description: Reverse passive DNS retrieval about this host.
+            x-ms-navigationProperty: true
+          ports:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hostPort'
+            description: The hostPorts associated with a host.
+            x-ms-navigationProperty: true
+          reputation:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.hostReputation'
+            - type: object
+              nullable: true
+            description: Represents a calculated reputation of this host.
+            x-ms-navigationProperty: true
+          sslCertificates:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hostSslCertificate'
+            description: The hostSslCertificates that are associated with this host.
+            x-ms-navigationProperty: true
+          subdomains:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.subdomain'
+            description: The subdomains that are associated with this host.
+            x-ms-navigationProperty: true
+          trackers:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hostTracker'
+            description: The hostTrackers that are associated with this host.
+            x-ms-navigationProperty: true
+          whois:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.whoisRecord'
+            - type: object
+              nullable: true
+            description: The most recent whoisRecord for this host.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.security.host'
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.security.hostname': '#/components/schemas/microsoft.graph.security.hostname'
+            '#microsoft.graph.security.ipAddress': '#/components/schemas/microsoft.graph.security.ipAddress'
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
       required:
       - '@odata.type'
       type: object
       properties:
-        name:
+        request-id:
           type: string
-          description: The name for this hyperlink.
-        url:
+          description: Request Id as tracked internally by the service
+          nullable: true
+        client-request-id:
           type: string
-          description: The URL for this hyperlink.
+          description: Client request Id as sent by the client application.
+          nullable: true
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date when the error occured.
+          format: date-time
+          nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.security.articleIndicatorCollectionResponse:
-      title: Collection of articleIndicator
+    microsoft.graph.security.vulnerabilityCollectionResponse:
+      title: Collection of vulnerability
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -7200,107 +7078,54 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.security.articleIndicator'
-    microsoft.graph.security.hostComponent:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.security.artifact'
-      - title: hostComponent
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          category:
-            type: string
-            description: The type of component that was detected (for example, Operating System, Framework, Remote Access, or Server).
-            nullable: true
-          firstSeenDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The first date and time when Microsoft Defender Threat Intelligence observed this web component. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
-            format: date-time
-          lastSeenDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The most recent date and time when Microsoft Defender Threat Intelligence observed this web component. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
-            format: date-time
-          name:
-            type: string
-            description: A name running on the artifact, for example, Microsoft IIS.
-          version:
-            type: string
-            description: The component version running on the artifact, for example, v8.5. This shouldn't be assumed to be strictly numerical.
-            nullable: true
-          host:
-            $ref: '#/components/schemas/microsoft.graph.security.host'
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.security.hostComponent'
-      x-ms-discriminator-value: '#microsoft.graph.security.hostComponent'
-    microsoft.graph.security.hostPair:
+              $ref: '#/components/schemas/microsoft.graph.security.vulnerability'
+    microsoft.graph.security.article:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: hostPair
+      - title: article
         required:
         - '@odata.type'
         type: object
         properties:
-          firstSeenDateTime:
+          body:
+            $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
+          createdDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
             type: string
-            description: The date and time when Microsoft Defender Threat Intelligence first observed the hostPair. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            description: The date and time when this article was created. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
             format: date-time
+          imageUrl:
+            type: string
+            description: URL of the header image for this article, used for display purposes.
             nullable: true
-          lastSeenDateTime:
+          isFeatured:
+            type: boolean
+            description: Indicates whether this article is currently featured by Microsoft.
+          lastUpdatedDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
             type: string
-            description: The date and time when Microsoft Defender Threat Intelligence last observed the hostPair. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            description: The most recent date and time when this article was updated. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
             format: date-time
-            nullable: true
-          linkKind:
+          summary:
+            $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
+          tags:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: Tags for this article, communicating keywords, or key concepts.
+          title:
             type: string
-            description: The reason that two hosts are identified as hostPair.
-            nullable: true
-          childHost:
-            $ref: '#/components/schemas/microsoft.graph.security.host'
-          parentHost:
-            $ref: '#/components/schemas/microsoft.graph.security.host'
+            description: The title of this article.
+          indicators:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.articleIndicator'
+            description: Indicators related to this article.
+            x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.hostPair'
-    microsoft.graph.security.hostPortBanner:
-      title: hostPortBanner
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        banner:
-          type: string
-          description: The text response received from a web component when scanning a hostPort.
-        firstSeenDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The first date and time when Microsoft Defender Threat Intelligence observed the hostPortBanner. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
-          format: date-time
-          nullable: true
-        lastSeenDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The last date and time when Microsoft Defender Threat Intelligence observed the hostPortBanner. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
-          format: date-time
-          nullable: true
-        scanProtocol:
-          type: string
-          description: The specific protocol used to scan the hostPort.
-          nullable: true
-        timesObserved:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: The total amount of times that Microsoft Defender Threat Intelligence has observed the hostPortBanner in all its scans.
-          format: int32
-          nullable: true
-        '@odata.type':
-          type: string
+      x-ms-discriminator-value: '#microsoft.graph.security.article'
     microsoft.graph.security.threatIntelligence:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -7413,8 +7238,16 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.security.threatIntelligence'
-    microsoft.graph.security.hostTrackerCollectionResponse:
-      title: Collection of hostTracker
+    microsoft.graph.security.indicatorSource:
+      title: indicatorSource
+      enum:
+      - microsoft
+      - osint
+      - public
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.vulnerabilityComponentCollectionResponse:
+      title: Collection of vulnerabilityComponent
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -7423,87 +7256,27 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostTracker'
-    microsoft.graph.security.vulnerabilityCollectionResponse:
-      title: Collection of vulnerability
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.vulnerability'
-    microsoft.graph.security.intelligenceProfileIndicatorCollectionResponse:
-      title: Collection of intelligenceProfileIndicator
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.intelligenceProfileIndicator'
-    microsoft.graph.security.intelligenceProfileCollectionResponse:
-      title: Collection of intelligenceProfile
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.intelligenceProfile'
-    microsoft.graph.security.whoisNameserver:
-      title: whoisNameserver
+              $ref: '#/components/schemas/microsoft.graph.security.vulnerabilityComponent'
+    microsoft.graph.security.formattedContent:
+      title: formattedContent
       required:
       - '@odata.type'
       type: object
       properties:
-        firstSeenDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+        content:
           type: string
-          description: The first seen date and time of this WHOIS contact. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-          format: date-time
+          description: The content of this formattedContent.
           nullable: true
-        lastSeenDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The last seen date and time of this WHOIS contact. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-          format: date-time
-          nullable: true
-        host:
-          $ref: '#/components/schemas/microsoft.graph.security.host'
+        format:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.security.contentFormat'
+          - type: object
+            nullable: true
+          description: 'The format of the content. The possible values are: text, html, markdown, unknownFutureValue.'
         '@odata.type':
           type: string
-    microsoft.graph.security.vulnerabilityComponent:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: vulnerabilityComponent
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          name:
-            type: string
-            description: The name of this vulnerability component.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.vulnerabilityComponent'
-    microsoft.graph.security.hostReputationRuleSeverity:
-      title: hostReputationRuleSeverity
-      enum:
-      - unknown
-      - low
-      - medium
-      - high
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.hostPortCollectionResponse:
-      title: Collection of hostPort
+    microsoft.graph.security.hostComponentCollectionResponse:
+      title: Collection of hostComponent
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -7512,7 +7285,163 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostPort'
+              $ref: '#/components/schemas/microsoft.graph.security.hostComponent'
+    microsoft.graph.security.intelligenceProfileKind:
+      title: intelligenceProfileKind
+      enum:
+      - actor
+      - tool
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    microsoft.graph.security.hostReputationRule:
+      title: hostReputationRule
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        description:
+          type: string
+          description: The description of the rule that gives more context.
+        name:
+          type: string
+          description: The name of the rule.
+        relatedDetailsUrl:
+          type: string
+          description: Link to a web page with details related to this rule.
+          nullable: true
+        severity:
+          $ref: '#/components/schemas/microsoft.graph.security.hostReputationRuleSeverity'
+        '@odata.type':
+          type: string
+    microsoft.graph.security.intelligenceProfileIndicator:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.security.indicator'
+      - title: intelligenceProfileIndicator
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          firstSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Designate when an artifact was first used actively in an attack, when a particular sample was compiled, or if neither of those could be ascertained when the file was first seen in public repositories (for example, VirusTotal, ANY.RUN, Hybrid Analysis) or reported publicly.
+            format: date-time
+          lastSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Designate when an artifact was most recently used actively in an attack, when a particular sample was compiled, or if neither of those could be ascertained when the file was first seen in public repositories (for example, VirusTotal, ANY.RUN, Hybrid Analysis) or reported publicly.
+            format: date-time
+            nullable: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.security.intelligenceProfileIndicator'
+      x-ms-discriminator-value: '#microsoft.graph.security.intelligenceProfileIndicator'
+    microsoft.graph.security.hostCookieCollectionResponse:
+      title: Collection of hostCookie
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hostCookie'
+    microsoft.graph.security.vulnerability:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: vulnerability
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          activeExploitsObserved:
+            type: boolean
+            description: Indicates whether this vulnerability has any known exploits associated to known bad actors.
+          commonWeaknessEnumerationIds:
+            type: array
+            items:
+              type: string
+            description: Community-defined common weakness enumerations (CWE).
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when this vulnerability article was first created.
+            format: date-time
+          cvss2Summary:
+            $ref: '#/components/schemas/microsoft.graph.security.cvssSummary'
+          cvss3Summary:
+            $ref: '#/components/schemas/microsoft.graph.security.cvssSummary'
+          description:
+            $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
+          exploits:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hyperlink'
+            description: Known exploits for this vulnerability.
+          exploitsAvailable:
+            type: boolean
+            description: Indicates whether this vulnerability has exploits in public sources (such as Packetstorm or Exploit-DB) online.
+          hasChatter:
+            type: boolean
+            description: Indicates whether chatter about this vulnerability has been discovered online.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when this vulnerability article was most recently updated.
+            format: date-time
+          priorityScore:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: A unique algorithm that reflects the priority of a vulnerability based on the CVSS score, exploits, chatter, and linkage to malware. This property also evaluates the recency of these components so users can understand which vulnerability should be remediated first.
+            format: int32
+          publishedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when this vulnerability article was published.
+            format: date-time
+          references:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hyperlink'
+            description: Reference links where further information can be learned about this vulnerability.
+          remediation:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
+            - type: object
+              nullable: true
+            description: Any known remediation steps.
+          severity:
+            $ref: '#/components/schemas/microsoft.graph.security.vulnerabilitySeverity'
+          articles:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.article'
+            description: Articles related to this vulnerability.
+            x-ms-navigationProperty: true
+          components:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.vulnerabilityComponent'
+            description: Components related to this vulnerability article.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.security.vulnerability'
     microsoft.graph.physicalAddress:
       title: physicalAddress
       required:
@@ -7541,6 +7470,200 @@ components:
           nullable: true
         '@odata.type':
           type: string
+    microsoft.graph.security.hostReputationRuleSeverity:
+      title: hostReputationRuleSeverity
+      enum:
+      - unknown
+      - low
+      - medium
+      - high
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.intelligenceProfile:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: intelligenceProfile
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          aliases:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: A list of commonly-known aliases for the threat intelligence included in the intelligenceProfile.
+          countriesOrRegionsOfOrigin:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.intelligenceProfileCountryOrRegionOfOrigin'
+            description: The country/region of origin for the given actor or threat associated with this intelligenceProfile.
+          description:
+            $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
+          firstActiveDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when this intelligenceProfile was first active. The timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          kind:
+            $ref: '#/components/schemas/microsoft.graph.security.intelligenceProfileKind'
+          summary:
+            $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
+          targets:
+            type: array
+            items:
+              type: string
+              nullable: true
+            description: Known targets related to this intelligenceProfile.
+          title:
+            type: string
+            description: The title of this intelligenceProfile.
+          tradecraft:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
+            - type: object
+              nullable: true
+            description: Formatted information featuring a description of the distinctive tactics, techniques, and procedures (TTP) of the group, followed by a list of all known custom, commodity, and publicly available implants used by the group.
+          indicators:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.intelligenceProfileIndicator'
+            description: Includes an assemblage of high-fidelity network indicators of compromise.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.security.intelligenceProfile'
+    microsoft.graph.security.hostPairCollectionResponse:
+      title: Collection of hostPair
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hostPair'
+    microsoft.graph.security.hostPortCollectionResponse:
+      title: Collection of hostPort
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hostPort'
+    microsoft.graph.security.hostPortComponent:
+      title: hostPortComponent
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        firstSeenDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The first date and time when Microsoft Defender Threat Intelligence observed the hostPortComponent. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
+          format: date-time
+          nullable: true
+        isRecent:
+          type: boolean
+          description: Indicates whether this hostPortComponent is recent, which is determined by whether the hostPortComponent was observed either at the same time or after the latest hostPortBanner in the scan history, or within two days of the latest scan of the hostPort when there are no hostPortBanners in the scan history.
+          nullable: true
+        lastSeenDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The last date and time when Microsoft Defender Threat Intelligence observed the hostPortComponent. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
+          format: date-time
+          nullable: true
+        component:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.security.hostComponent'
+          - type: object
+            nullable: true
+          x-ms-navigationProperty: true
+        '@odata.type':
+          type: string
+    microsoft.graph.security.hyperlink:
+      title: hyperlink
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name for this hyperlink.
+        url:
+          type: string
+          description: The URL for this hyperlink.
+        '@odata.type':
+          type: string
+    microsoft.graph.security.artifact:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: artifact
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.security.host': '#/components/schemas/microsoft.graph.security.host'
+            '#microsoft.graph.security.hostname': '#/components/schemas/microsoft.graph.security.hostname'
+            '#microsoft.graph.security.ipAddress': '#/components/schemas/microsoft.graph.security.ipAddress'
+            '#microsoft.graph.security.hostComponent': '#/components/schemas/microsoft.graph.security.hostComponent'
+            '#microsoft.graph.security.hostCookie': '#/components/schemas/microsoft.graph.security.hostCookie'
+            '#microsoft.graph.security.hostSslCertificate': '#/components/schemas/microsoft.graph.security.hostSslCertificate'
+            '#microsoft.graph.security.hostTracker': '#/components/schemas/microsoft.graph.security.hostTracker'
+            '#microsoft.graph.security.passiveDnsRecord': '#/components/schemas/microsoft.graph.security.passiveDnsRecord'
+            '#microsoft.graph.security.sslCertificate': '#/components/schemas/microsoft.graph.security.sslCertificate'
+            '#microsoft.graph.security.unclassifiedArtifact': '#/components/schemas/microsoft.graph.security.unclassifiedArtifact'
+    ReferenceNumeric:
+      enum:
+      - -INF
+      - INF
+      - NaN
+      type: string
+      nullable: true
+    microsoft.graph.security.hostReputation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: hostReputation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          classification:
+            $ref: '#/components/schemas/microsoft.graph.security.hostReputationClassification'
+          rules:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hostReputationRule'
+            description: A collection of rules that have been used to calculate the classification and score.
+          score:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The calculated score (0-100) of the requested host. A higher value indicates that this host is more likely to be suspicious or malicious.
+            format: int32
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.security.hostReputation'
+    microsoft.graph.security.sslCertificateCollectionResponse:
+      title: Collection of sslCertificate
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.sslCertificate'
     microsoft.graph.security.hostSslCertificatePort:
       title: hostSslCertificatePort
       required:
@@ -7568,43 +7691,8 @@ components:
           nullable: true
         '@odata.type':
           type: string
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.security.intelligenceProfileCountryOrRegionOfOrigin:
-      title: intelligenceProfileCountryOrRegionOfOrigin
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        code:
-          type: string
-          description: A codified representation for this country/region of origin.
-        label:
-          type: string
-          description: A display label for this ountry/region of origin.
-        '@odata.type':
-          type: string
-    microsoft.graph.security.whoisRecord:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.security.whoisBaseRecord'
-      - title: whoisRecord
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          history:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.whoisHistoryRecord'
-            description: The collection of historical records associated to this WHOIS object.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.security.whoisRecord'
-      x-ms-discriminator-value: '#microsoft.graph.security.whoisRecord'
-    microsoft.graph.security.articleCollectionResponse:
-      title: Collection of article
+    microsoft.graph.security.articleIndicatorCollectionResponse:
+      title: Collection of articleIndicator
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -7613,58 +7701,7 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.security.article'
-    microsoft.graph.security.indicatorSource:
-      title: indicatorSource
-      enum:
-      - microsoft
-      - osint
-      - public
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.hostSslCertificate:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.security.artifact'
-      - title: hostSslCertificate
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          firstSeenDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The first date and time when this hostSslCertificate was observed. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          lastSeenDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The most recent date and time when this hostSslCertificate was observed. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          ports:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostSslCertificatePort'
-            description: The ports related with this hostSslCertificate.
-          host:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.host'
-            - type: object
-              nullable: true
-            description: The host for this hostSslCertificate.
-            x-ms-navigationProperty: true
-          sslCertificate:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.sslCertificate'
-            - type: object
-              nullable: true
-            description: The sslCertificate for this hostSslCertificate.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.security.hostSslCertificate'
-      x-ms-discriminator-value: '#microsoft.graph.security.hostSslCertificate'
+              $ref: '#/components/schemas/microsoft.graph.security.articleIndicator'
     microsoft.graph.entity:
       title: entity
       required:
@@ -8734,334 +8771,8 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.security.vulnerabilitySeverity:
-      title: vulnerabilitySeverity
-      enum:
-      - none
-      - low
-      - medium
-      - high
-      - critical
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.security.host:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.security.artifact'
-      - title: host
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          firstSeenDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The first date and time when this host was observed. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          lastSeenDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The most recent date and time when this host was observed. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          childHostPairs:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostPair'
-            description: The hostPairs that are resources associated with a host, where that host is the parentHost and has an outgoing pairing to a childHost.
-            x-ms-navigationProperty: true
-          components:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostComponent'
-            description: The hostComponents that are associated with this host.
-            x-ms-navigationProperty: true
-          cookies:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostCookie'
-            description: The hostCookies that are associated with this host.
-            x-ms-navigationProperty: true
-          hostPairs:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostPair'
-            description: The hostPairs that are associated with this host, where this host is either the parentHost or childHost.
-            x-ms-navigationProperty: true
-          parentHostPairs:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostPair'
-            description: The hostPairs that are associated with a host, where that host is the childHost and has an incoming pairing with a parentHost.
-            x-ms-navigationProperty: true
-          passiveDns:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.passiveDnsRecord'
-            description: Passive DNS retrieval about this host.
-            x-ms-navigationProperty: true
-          passiveDnsReverse:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.passiveDnsRecord'
-            description: Reverse passive DNS retrieval about this host.
-            x-ms-navigationProperty: true
-          ports:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostPort'
-            description: The hostPorts associated with a host.
-            x-ms-navigationProperty: true
-          reputation:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.hostReputation'
-            - type: object
-              nullable: true
-            description: Represents a calculated reputation of this host.
-            x-ms-navigationProperty: true
-          sslCertificates:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostSslCertificate'
-            description: The hostSslCertificates that are associated with this host.
-            x-ms-navigationProperty: true
-          subdomains:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.subdomain'
-            description: The subdomains that are associated with this host.
-            x-ms-navigationProperty: true
-          trackers:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostTracker'
-            description: The hostTrackers that are associated with this host.
-            x-ms-navigationProperty: true
-          whois:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.whoisRecord'
-            - type: object
-              nullable: true
-            description: The most recent whoisRecord for this host.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.security.host'
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.security.hostname': '#/components/schemas/microsoft.graph.security.hostname'
-            '#microsoft.graph.security.ipAddress': '#/components/schemas/microsoft.graph.security.ipAddress'
-    microsoft.graph.security.hostTracker:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.security.artifact'
-      - title: hostTracker
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          firstSeenDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The first date and time when this hostTracker was observed by Microsoft Defender Threat Intelligence. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
-            format: date-time
-          kind:
-            type: string
-            description: The kind of hostTracker that was detected. For example, GoogleAnalyticsID or JarmHash.
-          lastSeenDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The most recent date and time when this hostTracker was observed by Microsoft Defender Threat Intelligence. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
-            format: date-time
-          value:
-            type: string
-            description: The identification value for the hostTracker.
-          host:
-            $ref: '#/components/schemas/microsoft.graph.security.host'
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.security.hostTracker'
-      x-ms-discriminator-value: '#microsoft.graph.security.hostTracker'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.security.hostCookie:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.security.artifact'
-      - title: hostCookie
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          domain:
-            type: string
-            description: The URI for which the cookie is valid.
-          firstSeenDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The first date and time when this hostCookie was observed by Microsoft Defender Threat Intelligence. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
-            format: date-time
-          lastSeenDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The most recent date and time when this hostCookie was observed by Microsoft Defender Threat Intelligence. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
-            format: date-time
-          name:
-            type: string
-            description: The name of the cookie, for example, JSESSIONID or SEARCH_NAMESITE.
-          host:
-            $ref: '#/components/schemas/microsoft.graph.security.host'
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.security.hostCookie'
-      x-ms-discriminator-value: '#microsoft.graph.security.hostCookie'
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.security.contentFormat:
-      title: contentFormat
-      enum:
-      - text
-      - html
-      - markdown
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.hostReputationRule:
-      title: hostReputationRule
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        description:
-          type: string
-          description: The description of the rule that gives more context.
-        name:
-          type: string
-          description: The name of the rule.
-        relatedDetailsUrl:
-          type: string
-          description: Link to a web page with details related to this rule.
-          nullable: true
-        severity:
-          $ref: '#/components/schemas/microsoft.graph.security.hostReputationRuleSeverity'
-        '@odata.type':
-          type: string
-    microsoft.graph.security.intelligenceProfile:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: intelligenceProfile
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          aliases:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: A list of commonly-known aliases for the threat intelligence included in the intelligenceProfile.
-          countriesOrRegionsOfOrigin:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.intelligenceProfileCountryOrRegionOfOrigin'
-            description: The country/region of origin for the given actor or threat associated with this intelligenceProfile.
-          description:
-            $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
-          firstActiveDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when this intelligenceProfile was first active. The timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          kind:
-            $ref: '#/components/schemas/microsoft.graph.security.intelligenceProfileKind'
-          summary:
-            $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
-          targets:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: Known targets related to this intelligenceProfile.
-          title:
-            type: string
-            description: The title of this intelligenceProfile.
-          tradecraft:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
-            - type: object
-              nullable: true
-            description: Formatted information featuring a description of the distinctive tactics, techniques, and procedures (TTP) of the group, followed by a list of all known custom, commodity, and publicly available implants used by the group.
-          indicators:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.intelligenceProfileIndicator'
-            description: Includes an assemblage of high-fidelity network indicators of compromise.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.intelligenceProfile'
-    microsoft.graph.security.whoisContact:
-      title: whoisContact
+    microsoft.graph.security.sslCertificateEntity:
+      title: sslCertificateEntity
       required:
       - '@odata.type'
       type: object
@@ -9071,31 +8782,115 @@ components:
           - $ref: '#/components/schemas/microsoft.graph.physicalAddress'
           - type: object
             nullable: true
-          description: The physical address of the entity.
+          description: A physical address of the entity.
+        alternateNames:
+          type: array
+          items:
+            type: string
+            nullable: true
+          description: Alternate names for this entity that are part of the certificate.
+        commonName:
+          type: string
+          description: A common name for this entity.
+          nullable: true
         email:
           type: string
-          description: The email of this WHOIS contact.
+          description: An email for this entity.
           nullable: true
-        fax:
+        givenName:
           type: string
-          description: The fax of this WHOIS contact. No format is guaranteed.
+          description: If the entity is a person, this is the person's given name (first name).
           nullable: true
-        name:
+        organizationName:
           type: string
-          description: The name of this WHOIS contact.
+          description: If the entity is an organization, this is the name of the organization.
           nullable: true
-        organization:
+        organizationUnitName:
           type: string
-          description: The organization of this WHOIS contact.
+          description: If the entity is an organization, this communicates if a unit in the organization is named on the entity.
           nullable: true
-        telephone:
+        serialNumber:
           type: string
-          description: The telephone of this WHOIS contact. No format is guaranteed.
+          description: A serial number assigned to the entity; usually only available if the entity is the issuer.
+          nullable: true
+        surname:
+          type: string
+          description: If the entity is a person, this is the person's surname (last name).
           nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.security.hostCookieCollectionResponse:
-      title: Collection of hostCookie
+    microsoft.graph.security.hostSslCertificate:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.security.artifact'
+      - title: hostSslCertificate
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          firstSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The first date and time when this hostSslCertificate was observed. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            nullable: true
+          lastSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The most recent date and time when this hostSslCertificate was observed. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            nullable: true
+          ports:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hostSslCertificatePort'
+            description: The ports related with this hostSslCertificate.
+          host:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.host'
+            - type: object
+              nullable: true
+            description: The host for this hostSslCertificate.
+            x-ms-navigationProperty: true
+          sslCertificate:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.sslCertificate'
+            - type: object
+              nullable: true
+            description: The sslCertificate for this hostSslCertificate.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.security.hostSslCertificate'
+      x-ms-discriminator-value: '#microsoft.graph.security.hostSslCertificate'
+    microsoft.graph.security.cvssSummary:
+      title: cvssSummary
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        score:
+          oneOf:
+          - type: number
+            format: double
+            nullable: true
+          - type: string
+            nullable: true
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The CVSS score about this vulnerability.
+        severity:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.security.vulnerabilitySeverity'
+          - type: object
+            nullable: true
+          description: 'The CVSS severity rating for this vulnerability. The possible values are: none, low, medium, high, critical, unknownFutureValue.'
+        vectorString:
+          type: string
+          description: The CVSS vector string for this vulnerability.
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.security.hostTrackerCollectionResponse:
+      title: Collection of hostTracker
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -9104,126 +8899,7 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostCookie'
-    microsoft.graph.security.formattedContent:
-      title: formattedContent
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        content:
-          type: string
-          description: The content of this formattedContent.
-          nullable: true
-        format:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.security.contentFormat'
-          - type: object
-            nullable: true
-          description: 'The format of the content. The possible values are: text, html, markdown, unknownFutureValue.'
-        '@odata.type':
-          type: string
-    microsoft.graph.security.vulnerability:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: vulnerability
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          activeExploitsObserved:
-            type: boolean
-            description: Indicates whether this vulnerability has any known exploits associated to known bad actors.
-          commonWeaknessEnumerationIds:
-            type: array
-            items:
-              type: string
-            description: Community-defined common weakness enumerations (CWE).
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when this vulnerability article was first created.
-            format: date-time
-          cvss2Summary:
-            $ref: '#/components/schemas/microsoft.graph.security.cvssSummary'
-          cvss3Summary:
-            $ref: '#/components/schemas/microsoft.graph.security.cvssSummary'
-          description:
-            $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
-          exploits:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.hyperlink'
-            description: Known exploits for this vulnerability.
-          exploitsAvailable:
-            type: boolean
-            description: Indicates whether this vulnerability has exploits in public sources (such as Packetstorm or Exploit-DB) online.
-          hasChatter:
-            type: boolean
-            description: Indicates whether chatter about this vulnerability has been discovered online.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when this vulnerability article was most recently updated.
-            format: date-time
-          priorityScore:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: A unique algorithm that reflects the priority of a vulnerability based on the CVSS score, exploits, chatter, and linkage to malware. This property also evaluates the recency of these components so users can understand which vulnerability should be remediated first.
-            format: int32
-          publishedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when this vulnerability article was published.
-            format: date-time
-          references:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.hyperlink'
-            description: Reference links where further information can be learned about this vulnerability.
-          remediation:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.formattedContent'
-            - type: object
-              nullable: true
-            description: Any known remediation steps.
-          severity:
-            $ref: '#/components/schemas/microsoft.graph.security.vulnerabilitySeverity'
-          articles:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.article'
-            description: Articles related to this vulnerability.
-            x-ms-navigationProperty: true
-          components:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.vulnerabilityComponent'
-            description: Components related to this vulnerability article.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.vulnerability'
-    microsoft.graph.security.subdomain:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: subdomain
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          firstSeenDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when Microsoft Defender Threat Intelligence first observed the subdomain. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          host:
-            $ref: '#/components/schemas/microsoft.graph.security.host'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.subdomain'
+              $ref: '#/components/schemas/microsoft.graph.security.hostTracker'
     microsoft.graph.security.passiveDnsRecord:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.security.artifact'
@@ -9258,8 +8934,8 @@ components:
             type: string
             default: '#microsoft.graph.security.passiveDnsRecord'
       x-ms-discriminator-value: '#microsoft.graph.security.passiveDnsRecord'
-    microsoft.graph.security.passiveDnsRecordCollectionResponse:
-      title: Collection of passiveDnsRecord
+    microsoft.graph.security.intelligenceProfileIndicatorCollectionResponse:
+      title: Collection of intelligenceProfileIndicator
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -9268,9 +8944,9 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.security.passiveDnsRecord'
-    microsoft.graph.security.hostComponentCollectionResponse:
-      title: Collection of hostComponent
+              $ref: '#/components/schemas/microsoft.graph.security.intelligenceProfileIndicator'
+    microsoft.graph.security.whoisRecordCollectionResponse:
+      title: Collection of whoisRecord
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -9279,23 +8955,164 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostComponent'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
+              $ref: '#/components/schemas/microsoft.graph.security.whoisRecord'
+    microsoft.graph.security.hostCollectionResponse:
+      title: Collection of host
       type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.security.hostPortProtocol:
-      title: hostPortProtocol
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.host'
+    microsoft.graph.security.whoisRecord:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.security.whoisBaseRecord'
+      - title: whoisRecord
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          history:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.whoisHistoryRecord'
+            description: The collection of historical records associated to this WHOIS object.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.security.whoisRecord'
+      x-ms-discriminator-value: '#microsoft.graph.security.whoisRecord'
+    microsoft.graph.security.whoisHistoryRecord:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.security.whoisBaseRecord'
+      - title: whoisHistoryRecord
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.security.whoisHistoryRecord'
+      x-ms-discriminator-value: '#microsoft.graph.security.whoisHistoryRecord'
+    microsoft.graph.security.vulnerabilitySeverity:
+      title: vulnerabilitySeverity
       enum:
-      - tcp
-      - udp
+      - none
+      - low
+      - medium
+      - high
+      - critical
       - unknownFutureValue
       type: string
-    microsoft.graph.security.sslCertificateCollectionResponse:
-      title: Collection of sslCertificate
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.security.hostComponent:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.security.artifact'
+      - title: hostComponent
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          category:
+            type: string
+            description: The type of component that was detected (for example, Operating System, Framework, Remote Access, or Server).
+            nullable: true
+          firstSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The first date and time when Microsoft Defender Threat Intelligence observed this web component. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
+            format: date-time
+          lastSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The most recent date and time when Microsoft Defender Threat Intelligence observed this web component. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
+            format: date-time
+          name:
+            type: string
+            description: A name running on the artifact, for example, Microsoft IIS.
+          version:
+            type: string
+            description: The component version running on the artifact, for example, v8.5. This shouldn't be assumed to be strictly numerical.
+            nullable: true
+          host:
+            $ref: '#/components/schemas/microsoft.graph.security.host'
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.security.hostComponent'
+      x-ms-discriminator-value: '#microsoft.graph.security.hostComponent'
+    microsoft.graph.security.hostTracker:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.security.artifact'
+      - title: hostTracker
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          firstSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The first date and time when this hostTracker was observed by Microsoft Defender Threat Intelligence. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
+            format: date-time
+          kind:
+            type: string
+            description: The kind of hostTracker that was detected. For example, GoogleAnalyticsID or JarmHash.
+          lastSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The most recent date and time when this hostTracker was observed by Microsoft Defender Threat Intelligence. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
+            format: date-time
+          value:
+            type: string
+            description: The identification value for the hostTracker.
+          host:
+            $ref: '#/components/schemas/microsoft.graph.security.host'
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.security.hostTracker'
+      x-ms-discriminator-value: '#microsoft.graph.security.hostTracker'
+    microsoft.graph.security.indicator:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: indicator
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          source:
+            $ref: '#/components/schemas/microsoft.graph.security.indicatorSource'
+          artifact:
+            $ref: '#/components/schemas/microsoft.graph.security.artifact'
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.security.articleIndicator': '#/components/schemas/microsoft.graph.security.articleIndicator'
+            '#microsoft.graph.security.intelligenceProfileIndicator': '#/components/schemas/microsoft.graph.security.intelligenceProfileIndicator'
+    microsoft.graph.security.intelligenceProfileCollectionResponse:
+      title: Collection of intelligenceProfile
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -9304,7 +9121,26 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.security.sslCertificate'
+              $ref: '#/components/schemas/microsoft.graph.security.intelligenceProfile'
+    microsoft.graph.security.subdomain:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: subdomain
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          firstSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when Microsoft Defender Threat Intelligence first observed the subdomain. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            nullable: true
+          host:
+            $ref: '#/components/schemas/microsoft.graph.security.host'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.security.subdomain'
     microsoft.graph.security.whoisBaseRecord:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -9417,17 +9253,6 @@ components:
           mapping:
             '#microsoft.graph.security.whoisHistoryRecord': '#/components/schemas/microsoft.graph.security.whoisHistoryRecord'
             '#microsoft.graph.security.whoisRecord': '#/components/schemas/microsoft.graph.security.whoisRecord'
-    microsoft.graph.security.whoisRecordCollectionResponse:
-      title: Collection of whoisRecord
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.whoisRecord'
     microsoft.graph.security.sslCertificate:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.security.artifact'
@@ -9494,6 +9319,257 @@ components:
             type: string
             default: '#microsoft.graph.security.sslCertificate'
       x-ms-discriminator-value: '#microsoft.graph.security.sslCertificate'
+    microsoft.graph.security.hostPair:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: hostPair
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          firstSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when Microsoft Defender Threat Intelligence first observed the hostPair. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            nullable: true
+          lastSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when Microsoft Defender Threat Intelligence last observed the hostPair. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            nullable: true
+          linkKind:
+            type: string
+            description: The reason that two hosts are identified as hostPair.
+            nullable: true
+          childHost:
+            $ref: '#/components/schemas/microsoft.graph.security.host'
+          parentHost:
+            $ref: '#/components/schemas/microsoft.graph.security.host'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.security.hostPair'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.security.hostCookie:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.security.artifact'
+      - title: hostCookie
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          domain:
+            type: string
+            description: The URI for which the cookie is valid.
+          firstSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The first date and time when this hostCookie was observed by Microsoft Defender Threat Intelligence. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
+            format: date-time
+          lastSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The most recent date and time when this hostCookie was observed by Microsoft Defender Threat Intelligence. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
+            format: date-time
+          name:
+            type: string
+            description: The name of the cookie, for example, JSESSIONID or SEARCH_NAMESITE.
+          host:
+            $ref: '#/components/schemas/microsoft.graph.security.host'
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.security.hostCookie'
+      x-ms-discriminator-value: '#microsoft.graph.security.hostCookie'
+    microsoft.graph.security.whoisNameserver:
+      title: whoisNameserver
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        firstSeenDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The first seen date and time of this WHOIS contact. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
+          nullable: true
+        lastSeenDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The last seen date and time of this WHOIS contact. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
+          nullable: true
+        host:
+          $ref: '#/components/schemas/microsoft.graph.security.host'
+        '@odata.type':
+          type: string
+    microsoft.graph.security.hostPortBanner:
+      title: hostPortBanner
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        banner:
+          type: string
+          description: The text response received from a web component when scanning a hostPort.
+        firstSeenDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The first date and time when Microsoft Defender Threat Intelligence observed the hostPortBanner. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
+          format: date-time
+          nullable: true
+        lastSeenDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The last date and time when Microsoft Defender Threat Intelligence observed the hostPortBanner. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014, is 2014-01-01T00:00:00Z.
+          format: date-time
+          nullable: true
+        scanProtocol:
+          type: string
+          description: The specific protocol used to scan the hostPort.
+          nullable: true
+        timesObserved:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: The total amount of times that Microsoft Defender Threat Intelligence has observed the hostPortBanner in all its scans.
+          format: int32
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.security.hostPortStatus:
+      title: hostPortStatus
+      enum:
+      - open
+      - filtered
+      - closed
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.contentFormat:
+      title: contentFormat
+      enum:
+      - text
+      - html
+      - markdown
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.intelligenceProfileCountryOrRegionOfOrigin:
+      title: intelligenceProfileCountryOrRegionOfOrigin
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        code:
+          type: string
+          description: A codified representation for this country/region of origin.
+        label:
+          type: string
+          description: A display label for this ountry/region of origin.
+        '@odata.type':
+          type: string
+    microsoft.graph.security.whoisHistoryRecordCollectionResponse:
+      title: Collection of whoisHistoryRecord
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.whoisHistoryRecord'
+    microsoft.graph.security.hostSslCertificateCollectionResponse:
+      title: Collection of hostSslCertificate
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.hostSslCertificate'
+    microsoft.graph.security.hostPortProtocol:
+      title: hostPortProtocol
+      enum:
+      - tcp
+      - udp
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.hostReputationClassification:
+      title: hostReputationClassification
+      enum:
+      - unknown
+      - neutral
+      - suspicious
+      - malicious
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.vulnerabilityComponent:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: vulnerabilityComponent
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          name:
+            type: string
+            description: The name of this vulnerability component.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.security.vulnerabilityComponent'
+    microsoft.graph.security.articleCollectionResponse:
+      title: Collection of article
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.article'
+    microsoft.graph.security.whoisContact:
+      title: whoisContact
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        address:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.physicalAddress'
+          - type: object
+            nullable: true
+          description: The physical address of the entity.
+        email:
+          type: string
+          description: The email of this WHOIS contact.
+          nullable: true
+        fax:
+          type: string
+          description: The fax of this WHOIS contact. No format is guaranteed.
+          nullable: true
+        name:
+          type: string
+          description: The name of this WHOIS contact.
+          nullable: true
+        organization:
+          type: string
+          description: The organization of this WHOIS contact.
+          nullable: true
+        telephone:
+          type: string
+          description: The telephone of this WHOIS contact. No format is guaranteed.
+          nullable: true
+        '@odata.type':
+          type: string
     microsoft.graph.security.subdomainCollectionResponse:
       title: Collection of subdomain
       type: object
@@ -9505,8 +9581,19 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.security.subdomain'
-    microsoft.graph.security.vulnerabilityComponentCollectionResponse:
-      title: Collection of vulnerabilityComponent
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type: integer
+          format: int64
+          nullable: true
+        '@odata.nextLink':
+          type: string
+          nullable: true
+    microsoft.graph.security.passiveDnsRecordCollectionResponse:
+      title: Collection of passiveDnsRecord
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -9515,131 +9602,38 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.security.vulnerabilityComponent'
-    microsoft.graph.security.hostReputation:
+              $ref: '#/components/schemas/microsoft.graph.security.passiveDnsRecord'
+    microsoft.graph.security.articleIndicator:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: hostReputation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          classification:
-            $ref: '#/components/schemas/microsoft.graph.security.hostReputationClassification'
-          rules:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.hostReputationRule'
-            description: A collection of rules that have been used to calculate the classification and score.
-          score:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The calculated score (0-100) of the requested host. A higher value indicates that this host is more likely to be suspicious or malicious.
-            format: int32
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.hostReputation'
-    microsoft.graph.security.sslCertificateEntity:
-      title: sslCertificateEntity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        address:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.physicalAddress'
-          - type: object
-            nullable: true
-          description: A physical address of the entity.
-        alternateNames:
-          type: array
-          items:
-            type: string
-            nullable: true
-          description: Alternate names for this entity that are part of the certificate.
-        commonName:
-          type: string
-          description: A common name for this entity.
-          nullable: true
-        email:
-          type: string
-          description: An email for this entity.
-          nullable: true
-        givenName:
-          type: string
-          description: If the entity is a person, this is the person's given name (first name).
-          nullable: true
-        organizationName:
-          type: string
-          description: If the entity is an organization, this is the name of the organization.
-          nullable: true
-        organizationUnitName:
-          type: string
-          description: If the entity is an organization, this communicates if a unit in the organization is named on the entity.
-          nullable: true
-        serialNumber:
-          type: string
-          description: A serial number assigned to the entity; usually only available if the entity is the issuer.
-          nullable: true
-        surname:
-          type: string
-          description: If the entity is a person, this is the person's surname (last name).
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.security.whoisHistoryRecord:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.security.whoisBaseRecord'
-      - title: whoisHistoryRecord
+      - $ref: '#/components/schemas/microsoft.graph.security.indicator'
+      - title: articleIndicator
         required:
         - '@odata.type'
         type: object
         properties:
           '@odata.type':
             type: string
-            default: '#microsoft.graph.security.whoisHistoryRecord'
-      x-ms-discriminator-value: '#microsoft.graph.security.whoisHistoryRecord'
-    microsoft.graph.security.hostPortStatus:
-      title: hostPortStatus
-      enum:
-      - open
-      - filtered
-      - closed
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.intelligenceProfileKind:
-      title: intelligenceProfileKind
-      enum:
-      - actor
-      - tool
-      - unknownFutureValue
-      type: string
+            default: '#microsoft.graph.security.articleIndicator'
+      x-ms-discriminator-value: '#microsoft.graph.security.articleIndicator'
   responses:
-    microsoft.graph.security.whoisRecordCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.security.whoisRecordCollectionResponse'
-    microsoft.graph.security.subdomainCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.security.subdomainCollectionResponse'
     error:
       description: error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.security.hostPortCollectionResponse:
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.security.articleIndicatorCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.security.hostPortCollectionResponse'
+            $ref: '#/components/schemas/microsoft.graph.security.articleIndicatorCollectionResponse'
     microsoft.graph.security.vulnerabilityCollectionResponse:
       description: Retrieved collection
       content:
@@ -9652,30 +9646,48 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.security.hostComponentCollectionResponse'
-    microsoft.graph.security.hostPairCollectionResponse:
+    microsoft.graph.security.hostPortCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.security.hostPairCollectionResponse'
+            $ref: '#/components/schemas/microsoft.graph.security.hostPortCollectionResponse'
+    microsoft.graph.security.hostSslCertificateCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.security.hostSslCertificateCollectionResponse'
+    microsoft.graph.security.subdomainCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.security.subdomainCollectionResponse'
     microsoft.graph.security.hostCookieCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.security.hostCookieCollectionResponse'
-    microsoft.graph.security.articleIndicatorCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.security.articleIndicatorCollectionResponse'
     microsoft.graph.security.sslCertificateCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.security.sslCertificateCollectionResponse'
+    microsoft.graph.security.passiveDnsRecordCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.security.passiveDnsRecordCollectionResponse'
+    microsoft.graph.security.hostPairCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.security.hostPairCollectionResponse'
     microsoft.graph.security.vulnerabilityComponentCollectionResponse:
       description: Retrieved collection
       content:
@@ -9688,65 +9700,59 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.security.articleCollectionResponse'
-    microsoft.graph.security.intelligenceProfileIndicatorCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.security.intelligenceProfileIndicatorCollectionResponse'
-    microsoft.graph.security.hostSslCertificateCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.security.hostSslCertificateCollectionResponse'
-    microsoft.graph.security.passiveDnsRecordCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.security.passiveDnsRecordCollectionResponse'
     microsoft.graph.security.whoisHistoryRecordCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.security.whoisHistoryRecordCollectionResponse'
-    microsoft.graph.security.hostTrackerCollectionResponse:
+    microsoft.graph.security.whoisRecordCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.security.hostTrackerCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.security.hostCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.security.hostCollectionResponse'
+            $ref: '#/components/schemas/microsoft.graph.security.whoisRecordCollectionResponse'
     microsoft.graph.security.intelligenceProfileCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.security.intelligenceProfileCollectionResponse'
+    microsoft.graph.security.hostTrackerCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.security.hostTrackerCollectionResponse'
+    microsoft.graph.security.hostCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.security.hostCollectionResponse'
+    microsoft.graph.security.intelligenceProfileIndicatorCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.security.intelligenceProfileIndicatorCollectionResponse'
   parameters:
-    top:
-      name: $top
+    filter:
+      name: $filter
       in: query
-      description: Show only the first n items
+      description: Filter items by property values
       style: form
       explode: false
       schema:
-        minimum: 0
-        type: integer
-      example: 50
+        type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
     count:
       name: $count
       in: query
@@ -9764,19 +9770,13 @@ components:
       schema:
         minimum: 0
         type: integer
-    filter:
-      name: $filter
+    top:
+      name: $top
       in: query
-      description: Filter items by property values
+      description: Show only the first n items
       style: form
       explode: false
       schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+        minimum: 0
+        type: integer
+      example: 50

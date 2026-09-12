@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Audit Logs Sign Ins API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -374,32 +374,19 @@ paths:
         dispatcherRules: '204'
       x-ms-docs-operation-type: action
 components:
-  responses:
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-          examples:
-            ODataCountResponseExample:
-              $ref: '#/components/examples/ODataCountResponseExample'
-    SignInCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/SignInCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
-          examples:
-            ODataErrorExample:
-              $ref: '#/components/examples/ODataErrorExample'
   schemas:
+    ODataCountResponse:
+      title: ODataCountResponse
+      type: integer
+      format: int32
+      description: The count of entities
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the entity.
     ErrorDetail:
       title: ErrorDetail
       type: object
@@ -414,47 +401,14 @@ components:
         target:
           type: string
           nullable: true
-    MainError:
-      title: MainError
+    ODataError:
+      title: ODataError
       type: object
       required:
-      - code
-      - message
+      - error
       properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Error message
-        target:
-          type: string
-          description: Target of the error
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        innerError:
-          $ref: '#/components/schemas/InnerError'
-    InnerError:
-      title: InnerError
-      type: object
-      properties:
-        request-id:
-          type: string
-        date:
-          type: string
-          format: date-time
-        client-request-id:
-          type: string
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the entity.
+        error:
+          $ref: '#/components/schemas/MainError'
     SignIn:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -580,20 +534,134 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.signIn'
-    ODataCountResponse:
-      title: ODataCountResponse
-      type: integer
-      format: int32
-      description: The count of entities
-    ODataError:
-      title: ODataError
+    InnerError:
+      title: InnerError
+      type: object
+      properties:
+        request-id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        client-request-id:
+          type: string
+    MainError:
+      title: MainError
       type: object
       required:
-      - error
+      - code
+      - message
       properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        target:
+          type: string
+          description: Target of the error
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+  examples:
+    SignInRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        appDisplayName: Example Display Name
+        appId: 00000000-0000-0000-0000-000000000001
+        appliedConditionalAccessPolicies:
+        - {}
+        clientAppUsed: string-value
+        conditionalAccessStatus: {}
+        correlationId: 00000000-0000-0000-0000-000000000001
+        '@odata.type': '#microsoft.graph.signin'
+    SignInExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        appDisplayName: Example Display Name
+        appId: 00000000-0000-0000-0000-000000000001
+        appliedConditionalAccessPolicies:
+        - {}
+        clientAppUsed: string-value
+        conditionalAccessStatus: {}
+        correlationId: 00000000-0000-0000-0000-000000000001
+        '@odata.type': '#microsoft.graph.signin'
+    dismissAuditLogsSignInsRequestExample:
+      value:
+        requestIds:
+        - 00000000-0000-0000-0000-000000000001
+    confirmSafeAuditLogsSignInsRequestExample:
+      value:
+        requestIds:
+        - 00000000-0000-0000-0000-000000000001
+    confirmCompromisedAuditLogsSignInsRequestExample:
+      value:
+        requestIds:
+        - 00000000-0000-0000-0000-000000000001
+    ODataCountResponseExample:
+      value: 42
+    ODataErrorExample:
+      value:
         error:
-          $ref: '#/components/schemas/MainError'
+          code: BadRequest
+          message: The request is invalid.
+          target: /resource
+          details:
+          - code: InvalidParameter
+            message: Parameter value is invalid.
+            target: parameterName
+          innerError:
+            request-id: 00000000-0000-0000-0000-000000000001
+            date: '2024-01-15T10:30:00Z'
+            client-request-id: 00000000-0000-0000-0000-000000000002
+  responses:
+    SignInCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SignInCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+          examples:
+            ODataErrorExample:
+              $ref: '#/components/examples/ODataErrorExample'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+          examples:
+            ODataCountResponseExample:
+              $ref: '#/components/examples/ODataCountResponseExample'
   parameters:
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    Skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
     Filter:
       name: $filter
       in: query
@@ -612,15 +680,6 @@ components:
         minimum: 0
         type: integer
       example: 50
-    Skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
     Count:
       name: $count
       in: query
@@ -629,62 +688,3 @@ components:
       explode: false
       schema:
         type: boolean
-    Search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-  examples:
-    SignInRequestExample:
-      value:
-        id: 00000000-0000-0000-0000-000000000001
-        appDisplayName: Example Display Name
-        appId: 00000000-0000-0000-0000-000000000001
-        appliedConditionalAccessPolicies:
-        - {}
-        clientAppUsed: string-value
-        conditionalAccessStatus: {}
-        correlationId: 00000000-0000-0000-0000-000000000001
-        '@odata.type': '#microsoft.graph.signin'
-    confirmSafeAuditLogsSignInsRequestExample:
-      value:
-        requestIds:
-        - 00000000-0000-0000-0000-000000000001
-    ODataCountResponseExample:
-      value: 42
-    dismissAuditLogsSignInsRequestExample:
-      value:
-        requestIds:
-        - 00000000-0000-0000-0000-000000000001
-    confirmCompromisedAuditLogsSignInsRequestExample:
-      value:
-        requestIds:
-        - 00000000-0000-0000-0000-000000000001
-    ODataErrorExample:
-      value:
-        error:
-          code: BadRequest
-          message: The request is invalid.
-          target: /resource
-          details:
-          - code: InvalidParameter
-            message: Parameter value is invalid.
-            target: parameterName
-          innerError:
-            request-id: 00000000-0000-0000-0000-000000000001
-            date: '2024-01-15T10:30:00Z'
-            client-request-id: 00000000-0000-0000-0000-000000000002
-    SignInExample:
-      value:
-        id: 00000000-0000-0000-0000-000000000001
-        appDisplayName: Example Display Name
-        appId: 00000000-0000-0000-0000-000000000001
-        appliedConditionalAccessPolicies:
-        - {}
-        clientAppUsed: string-value
-        conditionalAccessStatus: {}
-        correlationId: 00000000-0000-0000-0000-000000000001
-        '@odata.type': '#microsoft.graph.signin'

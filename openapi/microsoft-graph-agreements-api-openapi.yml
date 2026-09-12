@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin Agreements API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -247,6 +247,124 @@ paths:
         dispatcherRules: default
 components:
   schemas:
+    ODataCountResponse:
+      type: integer
+      format: int32
+    Agreement:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: Agreement
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          displayName:
+            type: string
+            description: Display name of the agreement. Supports $filter (eq).
+            nullable: true
+          isPerDeviceAcceptanceRequired:
+            type: boolean
+            description: Indicates whether end users are required to accept this agreement on every device. Supports $filter (eq).
+            nullable: true
+          isViewingBeforeAcceptanceRequired:
+            type: boolean
+            description: Indicates whether the user has to expand the agreement before accepting. Supports $filter (eq).
+            nullable: true
+          termsExpiration:
+            anyOf:
+            - $ref: '#/components/schemas/TermsExpiration'
+            - type: object
+              nullable: true
+            description: Expiration schedule and frequency of agreement for all users. Supports $filter (eq).
+          userReacceptRequiredFrequency:
+            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+            type: string
+            description: The duration after which the user must reaccept the terms of use. The value is represented in ISO 8601 format for durations. Supports $filter (eq).
+            format: duration
+            nullable: true
+          acceptances:
+            type: array
+            items:
+              $ref: '#/components/schemas/AgreementAcceptance'
+            description: Read-only. Information about acceptances of this agreement.
+            x-ms-navigationProperty: true
+          file:
+            anyOf:
+            - $ref: '#/components/schemas/AgreementFile'
+            - type: object
+              nullable: true
+            description: Default PDF linked to this agreement.
+            x-ms-navigationProperty: true
+          files:
+            type: array
+            items:
+              $ref: '#/components/schemas/AgreementFileLocalization'
+            description: PDFs linked to this agreement. This property is in the process of being deprecated. Use the file property instead. Supports $expand.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.agreement'
+    AgreementAcceptanceState:
+      title: AgreementAcceptanceState
+      type: string
+      enum:
+      - accepted
+      - declined
+      description: The state of the agreement acceptance.
+    AgreementFileLocalization:
+      allOf:
+      - $ref: '#/components/schemas/AgreementFileProperties'
+      - title: AgreementFileLocalization
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          versions:
+            type: array
+            items:
+              $ref: '#/components/schemas/AgreementFileVersion'
+            description: Read-only. Customized versions of the terms of use agreement in the Microsoft Entra tenant.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.agreementFileLocalization'
+    AgreementCollectionResponse:
+      title: AgreementCollectionResponse
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agreement'
+        '@odata.nextLink':
+          type: string
+          nullable: true
+        '@odata.count':
+          type: integer
+          format: int32
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity. Read-only.
+        '@odata.type':
+          type: string
+    ErrorDetail:
+      title: ErrorDetail
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
     TermsExpiration:
       title: TermsExpiration
       type: object
@@ -265,20 +383,14 @@ components:
           nullable: true
         '@odata.type':
           type: string
-    ErrorDetail:
-      title: ErrorDetail
+    ODataError:
+      title: ODataError
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
+        error:
+          $ref: '#/components/schemas/MainError'
     AgreementAcceptance:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -348,126 +460,6 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementAcceptance'
-    MainError:
-      title: MainError
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        innerError:
-          $ref: '#/components/schemas/InnerError'
-    InnerError:
-      title: InnerError
-      type: object
-      description: The structure of this object is service-specific
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for an entity. Read-only.
-        '@odata.type':
-          type: string
-    Agreement:
-      allOf:
-      - $ref: '#/components/schemas/Entity'
-      - title: Agreement
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          displayName:
-            type: string
-            description: Display name of the agreement. Supports $filter (eq).
-            nullable: true
-          isPerDeviceAcceptanceRequired:
-            type: boolean
-            description: Indicates whether end users are required to accept this agreement on every device. Supports $filter (eq).
-            nullable: true
-          isViewingBeforeAcceptanceRequired:
-            type: boolean
-            description: Indicates whether the user has to expand the agreement before accepting. Supports $filter (eq).
-            nullable: true
-          termsExpiration:
-            anyOf:
-            - $ref: '#/components/schemas/TermsExpiration'
-            - type: object
-              nullable: true
-            description: Expiration schedule and frequency of agreement for all users. Supports $filter (eq).
-          userReacceptRequiredFrequency:
-            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-            type: string
-            description: The duration after which the user must reaccept the terms of use. The value is represented in ISO 8601 format for durations. Supports $filter (eq).
-            format: duration
-            nullable: true
-          acceptances:
-            type: array
-            items:
-              $ref: '#/components/schemas/AgreementAcceptance'
-            description: Read-only. Information about acceptances of this agreement.
-            x-ms-navigationProperty: true
-          file:
-            anyOf:
-            - $ref: '#/components/schemas/AgreementFile'
-            - type: object
-              nullable: true
-            description: Default PDF linked to this agreement.
-            x-ms-navigationProperty: true
-          files:
-            type: array
-            items:
-              $ref: '#/components/schemas/AgreementFileLocalization'
-            description: PDFs linked to this agreement. This property is in the process of being deprecated. Use the file property instead. Supports $expand.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.agreement'
-    AgreementAcceptanceState:
-      title: AgreementAcceptanceState
-      type: string
-      enum:
-      - accepted
-      - declined
-      description: The state of the agreement acceptance.
-    AgreementCollectionResponse:
-      title: AgreementCollectionResponse
-      type: object
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/Agreement'
-        '@odata.nextLink':
-          type: string
-          nullable: true
-        '@odata.count':
-          type: integer
-          format: int32
-    AgreementFileVersion:
-      allOf:
-      - $ref: '#/components/schemas/AgreementFileProperties'
-      - title: AgreementFileVersion
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
     AgreementFileData:
       title: AgreementFileData
       type: object
@@ -479,6 +471,10 @@ components:
           nullable: true
         '@odata.type':
           type: string
+    InnerError:
+      title: InnerError
+      type: object
+      description: The structure of this object is service-specific
     AgreementFile:
       allOf:
       - $ref: '#/components/schemas/AgreementFileProperties'
@@ -496,34 +492,6 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementFile'
-    AgreementFileLocalization:
-      allOf:
-      - $ref: '#/components/schemas/AgreementFileProperties'
-      - title: AgreementFileLocalization
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          versions:
-            type: array
-            items:
-              $ref: '#/components/schemas/AgreementFileVersion'
-            description: Read-only. Customized versions of the terms of use agreement in the Microsoft Entra tenant.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.agreementFileLocalization'
-    ODataCountResponse:
-      type: integer
-      format: int32
-    ODataError:
-      title: ODataError
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
     AgreementFileProperties:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -564,6 +532,38 @@ components:
             nullable: true
           '@odata.type':
             type: string
+    AgreementFileVersion:
+      allOf:
+      - $ref: '#/components/schemas/AgreementFileProperties'
+      - title: AgreementFileVersion
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
+    MainError:
+      title: MainError
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
   responses:
     ErrorResponse:
       description: Error response
@@ -587,6 +587,30 @@ components:
             AgreementCollectionExample:
               $ref: '#/components/examples/AgreementCollectionExample'
   examples:
+    UpdateAgreementRequest:
+      summary: Example request to update an agreement
+      value:
+        displayName: Updated Terms of Use Agreement
+        isPerDeviceAcceptanceRequired: true
+        '@odata.type': '#microsoft.graph.agreement'
+    CreateAgreementResponse:
+      summary: Example response for created agreement
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        displayName: Terms of Use Agreement
+        isPerDeviceAcceptanceRequired: false
+        isViewingBeforeAcceptanceRequired: true
+        userReacceptRequiredFrequency: P90D
+        '@odata.type': '#microsoft.graph.agreement'
+    UpdateAgreementResponse:
+      summary: Example response for updated agreement
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        displayName: Updated Terms of Use Agreement
+        isPerDeviceAcceptanceRequired: true
+        isViewingBeforeAcceptanceRequired: true
+        userReacceptRequiredFrequency: P90D
+        '@odata.type': '#microsoft.graph.agreement'
     AgreementCollectionExample:
       summary: Example collection of agreements
       value:
@@ -598,29 +622,6 @@ components:
           userReacceptRequiredFrequency: P90D
           '@odata.type': '#microsoft.graph.agreement'
         '@odata.count': 1
-    UpdateAgreementResponse:
-      summary: Example response for updated agreement
-      value:
-        id: 00000000-0000-0000-0000-000000000001
-        displayName: Updated Terms of Use Agreement
-        isPerDeviceAcceptanceRequired: true
-        isViewingBeforeAcceptanceRequired: true
-        userReacceptRequiredFrequency: P90D
-        '@odata.type': '#microsoft.graph.agreement'
-    UpdateAgreementRequest:
-      summary: Example request to update an agreement
-      value:
-        displayName: Updated Terms of Use Agreement
-        isPerDeviceAcceptanceRequired: true
-        '@odata.type': '#microsoft.graph.agreement'
-    CreateAgreementRequest:
-      summary: Example request to create an agreement
-      value:
-        displayName: Terms of Use Agreement
-        isPerDeviceAcceptanceRequired: false
-        isViewingBeforeAcceptanceRequired: true
-        userReacceptRequiredFrequency: P90D
-        '@odata.type': '#microsoft.graph.agreement'
     GetAgreementResponse:
       summary: Example response for getting an agreement
       value:
@@ -630,16 +631,32 @@ components:
         isViewingBeforeAcceptanceRequired: true
         userReacceptRequiredFrequency: P90D
         '@odata.type': '#microsoft.graph.agreement'
-    CreateAgreementResponse:
-      summary: Example response for created agreement
+    CreateAgreementRequest:
+      summary: Example request to create an agreement
       value:
-        id: 00000000-0000-0000-0000-000000000001
         displayName: Terms of Use Agreement
         isPerDeviceAcceptanceRequired: false
         isViewingBeforeAcceptanceRequired: true
         userReacceptRequiredFrequency: P90D
         '@odata.type': '#microsoft.graph.agreement'
   parameters:
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    Skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
     Filter:
       name: $filter
       in: query
@@ -648,6 +665,14 @@ components:
       explode: false
       schema:
         type: string
+    AgreementId:
+      name: agreement-id
+      in: path
+      description: The unique identifier of the agreement
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreement
     Top:
       name: $top
       in: query
@@ -658,23 +683,6 @@ components:
         minimum: 0
         type: integer
       example: 50
-    Skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    AgreementId:
-      name: agreement-id
-      in: path
-      description: The unique identifier of the agreement
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreement
     Count:
       name: $count
       in: query
@@ -683,11 +691,3 @@ components:
       explode: false
       schema:
         type: boolean
-    Search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string

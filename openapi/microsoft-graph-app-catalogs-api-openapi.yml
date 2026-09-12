@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Graph Admin Admin.admin App Catalogs API
   description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
@@ -115,13 +115,6 @@ components:
           format: date-time
         client-request-id:
           type: string
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the entity.
     TeamworkBot:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -133,6 +126,14 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.teamworkBot'
+    ODataError:
+      title: ODataError
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
     TeamsAppDefinition:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -193,6 +194,52 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.teamsAppDefinition'
+    MainError:
+      title: MainError
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        target:
+          type: string
+          description: Target of the error
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+    AppCatalogs:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      - title: appCatalogs
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          teamsApps:
+            type: array
+            items:
+              $ref: '#/components/schemas/TeamsApp'
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.appCatalogs'
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the entity.
     TeamsApp:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -224,30 +271,6 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.teamsApp'
-    AppCatalogs:
-      allOf:
-      - $ref: '#/components/schemas/Entity'
-      - title: appCatalogs
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          teamsApps:
-            type: array
-            items:
-              $ref: '#/components/schemas/TeamsApp'
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.appCatalogs'
-    ODataError:
-      title: ODataError
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
     ErrorDetail:
       title: ErrorDetail
       type: object
@@ -262,30 +285,19 @@ components:
         target:
           type: string
           nullable: true
-    MainError:
-      title: MainError
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Error message
-        target:
-          type: string
-          description: Target of the error
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        innerError:
-          $ref: '#/components/schemas/InnerError'
   examples:
+    AppCatalogsRequestExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        teamsApps:
+        - '@odata.type': '#microsoft.graph.teamsapp'
+        '@odata.type': '#microsoft.graph.appcatalogs'
+    AppCatalogsExample:
+      value:
+        id: 00000000-0000-0000-0000-000000000001
+        teamsApps:
+        - '@odata.type': '#microsoft.graph.teamsapp'
+        '@odata.type': '#microsoft.graph.appcatalogs'
     ODataErrorExample:
       value:
         error:
@@ -300,18 +312,6 @@ components:
             request-id: 00000000-0000-0000-0000-000000000001
             date: '2024-01-15T10:30:00Z'
             client-request-id: 00000000-0000-0000-0000-000000000002
-    AppCatalogsRequestExample:
-      value:
-        id: 00000000-0000-0000-0000-000000000001
-        teamsApps:
-        - '@odata.type': '#microsoft.graph.teamsapp'
-        '@odata.type': '#microsoft.graph.appcatalogs'
-    AppCatalogsExample:
-      value:
-        id: 00000000-0000-0000-0000-000000000001
-        teamsApps:
-        - '@odata.type': '#microsoft.graph.teamsapp'
-        '@odata.type': '#microsoft.graph.appcatalogs'
   responses:
     error:
       description: error
