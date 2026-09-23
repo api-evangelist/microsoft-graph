@@ -1,20 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Places.place.Functions API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: places.place.Functions
   x-ms-docs-toc-type: container
@@ -96,30 +89,6 @@ paths:
         operationName: listMore
 components:
   schemas:
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -127,19 +96,94 @@ components:
       type: object
       properties:
         request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Request Id as tracked internally by the service
-          nullable: true
         client-request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Client request Id as sent by the client application.
-          nullable: true
         date:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
+          type:
+          - string
+          - 'null'
           description: Date when the error occured.
           format: date-time
-          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.checkInMethod:
+      title: checkInMethod
+      enum:
+      - unspecified
+      - manual
+      - inferred
+      - verified
+      - unknownFutureValue
+      type: string
+    microsoft.graph.outlookGeoCoordinates:
+      title: outlookGeoCoordinates
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        accuracy:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The accuracy of the latitude and longitude. As an example, the accuracy can be measured in meters, such as the latitude and longitude are accurate to within 50 meters.
+        altitude:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The altitude of the location.
+        altitudeAccuracy:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The accuracy of the altitude.
+        latitude:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The latitude of the location.
+        longitude:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The longitude of the location.
         '@odata.type':
           type: string
     ReferenceNumeric:
@@ -147,36 +191,16 @@ components:
       - -INF
       - INF
       - NaN
-      type: string
-      nullable: true
-    microsoft.graph.physicalAddress:
-      title: physicalAddress
+      type:
+      - string
+      - 'null'
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - '@odata.type'
+      - error
       type: object
       properties:
-        city:
-          type: string
-          description: The city.
-          nullable: true
-        countryOrRegion:
-          type: string
-          description: The country or region. It's a free-format string value, for example, 'United States'.
-          nullable: true
-        postalCode:
-          type: string
-          description: The postal code.
-          nullable: true
-        state:
-          type: string
-          description: The state.
-          nullable: true
-        street:
-          type: string
-          description: The street.
-          nullable: true
-        '@odata.type':
-          type: string
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.place:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -188,8 +212,9 @@ components:
           address:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.physicalAddress'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: The physical address of the place, including the street, city, state, country or region, and postal code.
           displayName:
             type: string
@@ -197,25 +222,30 @@ components:
           geoCoordinates:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.outlookGeoCoordinates'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Specifies the place location in latitude, longitude, and (optionally) altitude coordinates.
           isWheelChairAccessible:
-            type: boolean
+            type:
+            - boolean
+            - 'null'
             description: Indicates whether the place is wheelchair accessible.
-            nullable: true
           label:
-            type: string
+            type:
+            - string
+            - 'null'
             description: User-defined description of the place.
-            nullable: true
           parentId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The ID of a parent place.
-            nullable: true
           phone:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The phone number of the place.
-            nullable: true
           tags:
             type: array
             items:
@@ -239,34 +269,19 @@ components:
             '#microsoft.graph.roomList': '#/components/schemas/microsoft.graph.roomList'
             '#microsoft.graph.section': '#/components/schemas/microsoft.graph.section'
             '#microsoft.graph.workspace': '#/components/schemas/microsoft.graph.workspace'
-    microsoft.graph.checkInMethod:
-      title: checkInMethod
-      enum:
-      - unspecified
-      - manual
-      - inferred
-      - verified
-      - unknownFutureValue
-      type: string
-    microsoft.graph.checkInClaim:
-      title: checkInClaim
-      required:
-      - '@odata.type'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
       type: object
       properties:
-        calendarEventId:
-          type: string
-          description: The unique identifier for an Outlook calendar event associated with the checkInClaim object. For more information, see the iCalUId property in event.
-        checkInMethod:
-          $ref: '#/components/schemas/microsoft.graph.checkInMethod'
-        createdDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The date and time when the checkInClaim object was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -279,21 +294,48 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.ODataErrors.ODataError:
+    microsoft.graph.physicalAddress:
+      title: physicalAddress
       required:
-      - error
+      - '@odata.type'
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+        city:
+          type:
+          - string
+          - 'null'
+          description: The city.
+        countryOrRegion:
+          type:
+          - string
+          - 'null'
+          description: The country or region. It's a free-format string value, for example, 'United States'.
+        postalCode:
+          type:
+          - string
+          - 'null'
+          description: The postal code.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The state.
+        street:
+          type:
+          - string
+          - 'null'
+          description: The street.
+        '@odata.type':
+          type: string
     microsoft.graph.entity:
       title: entity
       required:
@@ -1363,60 +1405,50 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.outlookGeoCoordinates:
-      title: outlookGeoCoordinates
+    microsoft.graph.checkInClaim:
+      title: checkInClaim
       required:
       - '@odata.type'
       type: object
       properties:
-        accuracy:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The accuracy of the latitude and longitude. As an example, the accuracy can be measured in meters, such as the latitude and longitude are accurate to within 50 meters.
-        altitude:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The altitude of the location.
-        altitudeAccuracy:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The accuracy of the altitude.
-        latitude:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The latitude of the location.
-        longitude:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The longitude of the location.
+        calendarEventId:
+          type: string
+          description: The unique identifier for an Outlook calendar event associated with the checkInClaim object. For more information, see the iCalUId property in event.
+        checkInMethod:
+          $ref: '#/components/schemas/microsoft.graph.checkInMethod'
+        createdDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: The date and time when the checkInClaim object was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
         '@odata.type':
           type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
   parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
     filter:
       name: $filter
       in: query
@@ -1435,23 +1467,6 @@ components:
         minimum: 0
         type: integer
       example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
     search:
       name: $search
       in: query
@@ -1460,6 +1475,14 @@ components:
       explode: false
       schema:
         type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
   responses:
     error:
       description: error

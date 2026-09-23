@@ -1,20 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Solutions.booking Business API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: solutions.bookingBusiness
   x-ms-docs-toc-type: page
@@ -452,8 +445,9 @@ paths:
               type: object
               properties:
                 cancellationMessage:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
         required: true
       responses:
         '204':
@@ -741,8 +735,9 @@ paths:
               type: object
               properties:
                 cancellationMessage:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
         required: true
       responses:
         '204':
@@ -1848,22 +1843,310 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.availabilityItem:
+      title: availabilityItem
       required:
-      - code
-      - message
+      - '@odata.type'
       type: object
       properties:
-        code:
+        endDateTime:
+          $ref: '#/components/schemas/microsoft.graph.dateTimeTimeZone'
+        serviceId:
+          type:
+          - string
+          - 'null'
+          description: Indicates the service ID for 1:n appointments. If the appointment is of type 1:n, this field is present, otherwise, null.
+        startDateTime:
+          $ref: '#/components/schemas/microsoft.graph.dateTimeTimeZone'
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.bookingsAvailabilityStatus'
+          - type:
+            - object
+            - 'null'
+          description: 'The status of the staff member. The possible values are: available, busy, slotsAvailable, outOfOffice, unknownFutureValue.'
+        '@odata.type':
           type: string
-        message:
+    microsoft.graph.locationType:
+      title: locationType
+      enum:
+      - default
+      - conferenceRoom
+      - homeAddress
+      - businessAddress
+      - geoCoordinates
+      - streetAddress
+      - hotel
+      - restaurant
+      - localBusiness
+      - postalAddress
+      type: string
+    microsoft.graph.bookingServiceCollectionResponse:
+      title: Collection of bookingService
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.bookingService'
+    microsoft.graph.bookingsAvailabilityStatus:
+      title: bookingsAvailabilityStatus
+      enum:
+      - available
+      - busy
+      - slotsAvailable
+      - outOfOffice
+      - unknownFutureValue
+      type: string
+    microsoft.graph.bookingsAvailabilityWindow:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.bookingsAvailability'
+      - title: bookingsAvailabilityWindow
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          endDate:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$
+            type:
+            - string
+            - 'null'
+            description: End date of the availability window.
+            format: date
+          startDate:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$
+            type:
+            - string
+            - 'null'
+            description: Start date of the availability window.
+            format: date
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.bookingsAvailabilityWindow'
+      x-ms-discriminator-value: '#microsoft.graph.bookingsAvailabilityWindow'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.bookingAppointment:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: bookingAppointment
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          additionalInformation:
+            type:
+            - string
+            - 'null'
+            description: Additional information that is sent to the customer when an appointment is confirmed.
+          anonymousJoinWebUrl:
+            type:
+            - string
+            - 'null'
+            description: The URL of the meeting to join anonymously.
+          appointmentLabel:
+            type:
+            - string
+            - 'null'
+            description: The custom label that can be stamped on this appointment by users.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date, time, and time zone when the appointment was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          customerEmailAddress:
+            type:
+            - string
+            - 'null'
+            description: The SMTP address of the bookingCustomer who books the appointment.
+          customerName:
+            type:
+            - string
+            - 'null'
+            description: The customer's name.
+          customerNotes:
+            type:
+            - string
+            - 'null'
+            description: Notes from the customer associated with this appointment. You can get the value only when you read this bookingAppointment by its ID. You can set this property only when you initially create an appointment with a new customer.
+          customerPhone:
+            type:
+            - string
+            - 'null'
+            description: The customer's phone number.
+          customers:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.bookingCustomerInformationBase'
+            description: A collection of customer properties for an appointment. An appointment contains a list of customer information and each unit will indicate the properties of a customer who is part of that appointment. Optional.
+          customerTimeZone:
+            type:
+            - string
+            - 'null'
+            description: The time zone of the customer. For a list of possible values, see dateTimeTimeZone.
+          duration:
+            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+            type: string
+            description: The length of the appointment, denoted in ISO8601 format.
+            format: duration
+            readOnly: true
+          endDateTime:
+            $ref: '#/components/schemas/microsoft.graph.dateTimeTimeZone'
+          filledAttendeesCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The current number of customers in the appointment.
+            format: int32
+            readOnly: true
+          isCustomerAllowedToManageBooking:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates that the customer can manage bookings created by the staff. The default value is false.
+          isLocationOnline:
+            type: boolean
+            description: Indicates that the appointment is held online. The default value is false.
+          joinWebUrl:
+            type:
+            - string
+            - 'null'
+            description: The URL of the online meeting for the appointment.
+          lastUpdatedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date, time, and time zone when the booking business was last updated. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          maximumAttendeesCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The maximum number of customers allowed in an appointment. If maximumAttendeesCount of the service is greater than 1, pass valid customer IDs while creating or updating an appointment. To create a customer, use the Create bookingCustomer operation.
+            format: int32
+          optOutOfCustomerEmail:
+            type: boolean
+            description: If true indicates that the bookingCustomer for this appointment doesn't wish to receive a confirmation for this appointment.
+          postBuffer:
+            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+            type: string
+            description: The amount of time to reserve after the appointment ends, for cleaning up, as an example. The value is expressed in ISO8601 format.
+            format: duration
+          preBuffer:
+            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+            type: string
+            description: The amount of time to reserve before the appointment begins, for preparation, as an example. The value is expressed in ISO8601 format.
+            format: duration
+          price:
+            oneOf:
+            - type:
+              - number
+              - 'null'
+              format: double
+            - type:
+              - string
+              - 'null'
+            - $ref: '#/components/schemas/ReferenceNumeric'
+            description: The regular price for an appointment for the specified bookingService.
+          priceType:
+            $ref: '#/components/schemas/microsoft.graph.bookingPriceType'
+          reminders:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.bookingReminder'
+            description: The collection of customer reminders sent for this appointment. The value of this property is available only when reading this bookingAppointment by its ID.
+          selfServiceAppointmentId:
+            type:
+            - string
+            - 'null'
+            description: Another tracking ID for the appointment, if the appointment was created directly by the customer on the scheduling page, as opposed to by a staff member on behalf of the customer.
+          serviceId:
+            type:
+            - string
+            - 'null'
+            description: The ID of the bookingService associated with this appointment.
+          serviceLocation:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.location'
+            - type:
+              - object
+              - 'null'
+            description: The location where the service is delivered.
+          serviceName:
+            type: string
+            description: The name of the bookingService associated with this appointment.This property is optional when creating a new appointment. If not specified, it's computed from the service associated with the appointment by the serviceId property.
+          serviceNotes:
+            type:
+            - string
+            - 'null'
+            description: Notes from a bookingStaffMember. The value of this property is available only when reading this bookingAppointment by its ID.
+          smsNotificationsEnabled:
+            type: boolean
+            description: If true, indicates SMS notifications will be sent to the customers for the appointment. Default value is false.
+          staffMemberIds:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: The ID of each bookingStaffMember who is scheduled in this appointment.
+          startDateTime:
+            $ref: '#/components/schemas/microsoft.graph.dateTimeTimeZone'
+          '@odata.type':
+            type: string
+        description: Represents a booked appointment of a service by a customer in a business.
+      x-ms-discriminator-value: '#microsoft.graph.bookingAppointment'
+    microsoft.graph.staffAvailabilityItem:
+      title: staffAvailabilityItem
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        availabilityItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.availabilityItem'
+          description: Each item in this collection indicates a slot and the status of the staff member.
+        staffId:
+          type:
+          - string
+          - 'null'
+          description: The ID of the staff member.
+        '@odata.type':
           type: string
-        target:
-          type: string
-          nullable: true
+    microsoft.graph.dayOfWeek:
+      title: dayOfWeek
+      enum:
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      type: string
+    microsoft.graph.bookingStaffMemberBaseCollectionResponse:
+      title: Collection of bookingStaffMemberBase
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.bookingStaffMemberBase'
     microsoft.graph.bookingPageSettings:
       title: bookingPageSettings
       required:
@@ -1904,73 +2187,38 @@ components:
           description: URL of a webpage that provides the terms and conditions of the business.
         '@odata.type':
           type: string
-    microsoft.graph.physicalAddress:
-      title: physicalAddress
+    microsoft.graph.dateTimeTimeZone:
+      title: dateTimeTimeZone
       required:
       - '@odata.type'
       type: object
       properties:
-        city:
+        dateTime:
           type: string
-          description: The city.
-          nullable: true
-        countryOrRegion:
-          type: string
-          description: The country or region. It's a free-format string value, for example, 'United States'.
-          nullable: true
-        postalCode:
-          type: string
-          description: The postal code.
-          nullable: true
-        state:
-          type: string
-          description: The state.
-          nullable: true
-        street:
-          type: string
-          description: The street.
-          nullable: true
+          description: A single point of time in a combined date and time representation ({date}T{time}; for example, 2017-08-29T04:00:00.0000000).
+        timeZone:
+          type:
+          - string
+          - 'null'
+          description: Represents a time zone, for example, 'Pacific Standard Time'. See below for more possible values.
         '@odata.type':
           type: string
-    microsoft.graph.bookingReminder:
-      title: bookingReminder
+    microsoft.graph.bookingWorkHours:
+      title: bookingWorkHours
       required:
       - '@odata.type'
       type: object
       properties:
-        message:
-          type: string
-          description: The message in the reminder.
-        offset:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type: string
-          description: The amount of time before the start of an appointment that the reminder should be sent. It's denoted in ISO 8601 format.
-          format: duration
-        recipients:
-          $ref: '#/components/schemas/microsoft.graph.bookingReminderRecipients'
+        day:
+          $ref: '#/components/schemas/microsoft.graph.dayOfWeek'
+        timeSlots:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.bookingWorkTimeSlot'
+          description: A list of start/end times during a day.
         '@odata.type':
           type: string
-      description: This type represents when and to whom to send an e-mail reminder.
-    microsoft.graph.locationUniqueIdType:
-      title: locationUniqueIdType
-      enum:
-      - unknown
-      - locationStore
-      - directory
-      - private
-      - bing
-      type: string
-    microsoft.graph.bookingCustomQuestionCollectionResponse:
-      title: Collection of bookingCustomQuestion
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.bookingCustomQuestion'
+      description: This type represents the set of working hours in a single day of the week.
     microsoft.graph.bookingsServiceAvailabilityType:
       title: bookingsServiceAvailabilityType
       enum:
@@ -1979,111 +2227,85 @@ components:
       - customWeeklyHours
       - unknownFutureValue
       type: string
-    microsoft.graph.outlookGeoCoordinates:
-      title: outlookGeoCoordinates
+    microsoft.graph.bookingCustomQuestion:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: bookingCustomQuestion
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          answerInputType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.answerInputType'
+            - type:
+              - object
+              - 'null'
+            description: 'The expected answer type. The possible values are: text, radioButton, unknownFutureValue.'
+          answerOptions:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: List of possible answer values.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date, time, and time zone when the custom question was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          displayName:
+            type: string
+            description: The question.
+          lastUpdatedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date, time, and time zone when the custom question was last updated. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          '@odata.type':
+            type: string
+        description: Represents a custom question of the business.
+      x-ms-discriminator-value: '#microsoft.graph.bookingCustomQuestion'
+    microsoft.graph.bookingQuestionAssignment:
+      title: bookingQuestionAssignment
       required:
       - '@odata.type'
       type: object
       properties:
-        accuracy:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The accuracy of the latitude and longitude. As an example, the accuracy can be measured in meters, such as the latitude and longitude are accurate to within 50 meters.
-        altitude:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The altitude of the location.
-        altitudeAccuracy:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The accuracy of the altitude.
-        latitude:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The latitude of the location.
-        longitude:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The longitude of the location.
+        isRequired:
+          type: boolean
+          description: Indicates whether it's mandatory to answer the custom question.
+        questionId:
+          type: string
+          description: The ID of the custom question.
         '@odata.type':
           type: string
-    microsoft.graph.location:
-      title: location
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        address:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.physicalAddress'
-          - type: object
-            nullable: true
-          description: The street address of the location.
-        coordinates:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.outlookGeoCoordinates'
-          - type: object
-            nullable: true
-          description: The geographic coordinates and elevation of the location.
-        displayName:
-          type: string
-          description: The name associated with the location.
-          nullable: true
-        locationEmailAddress:
-          type: string
-          description: Optional email address of the location.
-          nullable: true
-        locationType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.locationType'
-          - type: object
-            nullable: true
-          description: 'The type of location. The possible values are: default, conferenceRoom, homeAddress, businessAddress,geoCoordinates, streetAddress, hotel, restaurant, localBusiness, postalAddress. Read-only.'
-        locationUri:
-          type: string
-          description: Optional URI representing the location.
-          nullable: true
-        uniqueId:
-          type: string
-          description: For internal use only.
-          nullable: true
-        uniqueIdType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.locationUniqueIdType'
-          - type: object
-            nullable: true
-          description: For internal use only.
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.locationConstraintItem': '#/components/schemas/microsoft.graph.locationConstraintItem'
+    microsoft.graph.bookingStaffMemberBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: bookingStaffMemberBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+        description: Booking entities that provide a display name.
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.bookingStaffMember': '#/components/schemas/microsoft.graph.bookingStaffMember'
+    microsoft.graph.answerInputType:
+      title: answerInputType
+      enum:
+      - text
+      - radioButton
+      - unknownFutureValue
+      type: string
     microsoft.graph.bookingPriceType:
       title: bookingPriceType
       enum:
@@ -2126,30 +2348,6 @@ components:
         - value: notSet
           description: The price of the service is not set.
           name: notSet
-    microsoft.graph.staffAvailabilityItem:
-      title: staffAvailabilityItem
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        availabilityItems:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.availabilityItem'
-          description: Each item in this collection indicates a slot and the status of the staff member.
-        staffId:
-          type: string
-          description: The ID of the staff member.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.bookingPageAccessControl:
-      title: bookingPageAccessControl
-      enum:
-      - unrestricted
-      - restrictedToOrganization
-      - unknownFutureValue
-      type: string
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -2157,39 +2355,35 @@ components:
       type: object
       properties:
         request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Request Id as tracked internally by the service
-          nullable: true
         client-request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Client request Id as sent by the client application.
-          nullable: true
         date:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
+          type:
+          - string
+          - 'null'
           description: Date when the error occured.
           format: date-time
-          nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.bookingWorkTimeSlot:
-      title: bookingWorkTimeSlot
-      required:
-      - '@odata.type'
+    microsoft.graph.bookingCustomerBaseCollectionResponse:
+      title: Collection of bookingCustomerBase
       type: object
-      properties:
-        endTime:
-          pattern: ^([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?$
-          type: string
-          description: The time of the day when work stops. For example, 17:00:00.0000000.
-          format: time
-        startTime:
-          pattern: ^([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?$
-          type: string
-          description: The time of the day when work starts. For example, 08:00:00.0000000.
-          format: time
-        '@odata.type':
-          type: string
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.bookingCustomerBase'
     microsoft.graph.bookingBusiness:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -2201,14 +2395,16 @@ components:
           address:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.physicalAddress'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: The street address of the business. The address property, together with phone and webSiteUrl, appear in the footer of a business scheduling page. The attribute type of physicalAddress is not supported in v1.0. Internally we map the addresses to the type others.
           bookingPageSettings:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.bookingPageSettings'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Settings for the published booking page.
           businessHours:
             type: array
@@ -2216,60 +2412,71 @@ components:
               $ref: '#/components/schemas/microsoft.graph.bookingWorkHours'
             description: The hours of operation for the business.
           businessType:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The type of business.
-            nullable: true
           createdDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: The date, time, and time zone when the booking business was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
             format: date-time
-            nullable: true
           defaultCurrencyIso:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The code for the currency that the business operates in on Microsoft Bookings.
-            nullable: true
           displayName:
             type: string
             description: The name of the business, which interfaces with customers. This name appears at the top of the business scheduling page.
           email:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The email address for the business.
-            nullable: true
           isPublished:
-            type: boolean
+            type:
+            - boolean
+            - 'null'
             description: The scheduling page has been made available to external customers. Use the publish and unpublish actions to set this property. Read-only.
-            nullable: true
             readOnly: true
           languageTag:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The language of the self-service booking page.
-            nullable: true
           lastUpdatedDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: The date, time, and time zone when the booking business was last updated. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
             format: date-time
-            nullable: true
           phone:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The telephone number for the business. The phone property, together with address and webSiteUrl, appear in the footer of a business scheduling page.
-            nullable: true
           publicUrl:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The URL for the scheduling page, which is set after you publish or unpublish the page. Read-only.
-            nullable: true
             readOnly: true
           schedulingPolicy:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.bookingSchedulingPolicy'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Specifies how bookings can be created for this business.
           webSiteUrl:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The URL of the business web site. The webSiteUrl property, together with address, phone, appear in the footer of a business scheduling page.
-            nullable: true
           appointments:
             type: array
             items:
@@ -2310,102 +2517,33 @@ components:
             type: string
         description: Represents a Microsoft Bookings Business.
       x-ms-discriminator-value: '#microsoft.graph.bookingBusiness'
-    microsoft.graph.dateTimeTimeZone:
-      title: dateTimeTimeZone
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        dateTime:
-          type: string
-          description: A single point of time in a combined date and time representation ({date}T{time}; for example, 2017-08-29T04:00:00.0000000).
-        timeZone:
-          type: string
-          description: Represents a time zone, for example, 'Pacific Standard Time'. See below for more possible values.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.answerInputType:
-      title: answerInputType
-      enum:
-      - text
-      - radioButton
-      - unknownFutureValue
-      type: string
-    microsoft.graph.bookingAppointmentCollectionResponse:
-      title: Collection of bookingAppointment
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.bookingAppointment'
     ReferenceNumeric:
       enum:
       - -INF
       - INF
       - NaN
-      type: string
-      nullable: true
-    microsoft.graph.bookingServiceCollectionResponse:
-      title: Collection of bookingService
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.bookingService'
-    microsoft.graph.bookingSchedulingPolicy:
-      title: bookingSchedulingPolicy
+      type:
+      - string
+      - 'null'
+    microsoft.graph.bookingReminder:
+      title: bookingReminder
       required:
       - '@odata.type'
       type: object
       properties:
-        allowStaffSelection:
-          type: boolean
-          description: True to allow customers to choose a specific person for the booking.
-        customAvailabilities:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.bookingsAvailabilityWindow'
-          description: Custom availability of the service in a given time frame.
-        generalAvailability:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.bookingsAvailability'
-          - type: object
-            nullable: true
-          description: General availability of the service defined by the scheduling policy.
-        isMeetingInviteToCustomersEnabled:
-          type: boolean
-          description: Indicates whether the meeting invite is sent to the customers. The default value is false.
-          nullable: true
-        maximumAdvance:
+        message:
+          type: string
+          description: The message in the reminder.
+        offset:
           pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
           type: string
-          description: Maximum number of days in advance that a booking can be made. It follows the ISO 8601 format.
+          description: The amount of time before the start of an appointment that the reminder should be sent. It's denoted in ISO 8601 format.
           format: duration
-        minimumLeadTime:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type: string
-          description: The minimum amount of time before which bookings and cancellations must be made. It follows the ISO 8601 format.
-          format: duration
-        sendConfirmationsToOwner:
-          type: boolean
-          description: True to notify the business via email when a booking is created or changed. Use the email address specified in the email property of the bookingBusiness entity for the business.
-        timeSlotInterval:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type: string
-          description: Duration of each time slot, denoted in ISO 8601 format.
-          format: duration
+        recipients:
+          $ref: '#/components/schemas/microsoft.graph.bookingReminderRecipients'
         '@odata.type':
           type: string
-      description: This type represents the set of policies that dictate how bookings can be created in a Booking Calendar.
+      description: This type represents when and to whom to send an e-mail reminder.
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -2418,371 +2556,15 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.locationType:
-      title: locationType
-      enum:
-      - default
-      - conferenceRoom
-      - homeAddress
-      - businessAddress
-      - geoCoordinates
-      - streetAddress
-      - hotel
-      - restaurant
-      - localBusiness
-      - postalAddress
-      type: string
-    microsoft.graph.bookingAppointment:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: bookingAppointment
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          additionalInformation:
-            type: string
-            description: Additional information that is sent to the customer when an appointment is confirmed.
-            nullable: true
-          anonymousJoinWebUrl:
-            type: string
-            description: The URL of the meeting to join anonymously.
-            nullable: true
-          appointmentLabel:
-            type: string
-            description: The custom label that can be stamped on this appointment by users.
-            nullable: true
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date, time, and time zone when the appointment was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          customerEmailAddress:
-            type: string
-            description: The SMTP address of the bookingCustomer who books the appointment.
-            nullable: true
-          customerName:
-            type: string
-            description: The customer's name.
-            nullable: true
-          customerNotes:
-            type: string
-            description: Notes from the customer associated with this appointment. You can get the value only when you read this bookingAppointment by its ID. You can set this property only when you initially create an appointment with a new customer.
-            nullable: true
-          customerPhone:
-            type: string
-            description: The customer's phone number.
-            nullable: true
-          customers:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.bookingCustomerInformationBase'
-            description: A collection of customer properties for an appointment. An appointment contains a list of customer information and each unit will indicate the properties of a customer who is part of that appointment. Optional.
-          customerTimeZone:
-            type: string
-            description: The time zone of the customer. For a list of possible values, see dateTimeTimeZone.
-            nullable: true
-          duration:
-            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-            type: string
-            description: The length of the appointment, denoted in ISO8601 format.
-            format: duration
-            readOnly: true
-          endDateTime:
-            $ref: '#/components/schemas/microsoft.graph.dateTimeTimeZone'
-          filledAttendeesCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The current number of customers in the appointment.
-            format: int32
-            readOnly: true
-          isCustomerAllowedToManageBooking:
-            type: boolean
-            description: Indicates that the customer can manage bookings created by the staff. The default value is false.
-            nullable: true
-          isLocationOnline:
-            type: boolean
-            description: Indicates that the appointment is held online. The default value is false.
-          joinWebUrl:
-            type: string
-            description: The URL of the online meeting for the appointment.
-            nullable: true
-          lastUpdatedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date, time, and time zone when the booking business was last updated. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          maximumAttendeesCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The maximum number of customers allowed in an appointment. If maximumAttendeesCount of the service is greater than 1, pass valid customer IDs while creating or updating an appointment. To create a customer, use the Create bookingCustomer operation.
-            format: int32
-          optOutOfCustomerEmail:
-            type: boolean
-            description: If true indicates that the bookingCustomer for this appointment doesn't wish to receive a confirmation for this appointment.
-          postBuffer:
-            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-            type: string
-            description: The amount of time to reserve after the appointment ends, for cleaning up, as an example. The value is expressed in ISO8601 format.
-            format: duration
-          preBuffer:
-            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-            type: string
-            description: The amount of time to reserve before the appointment begins, for preparation, as an example. The value is expressed in ISO8601 format.
-            format: duration
-          price:
-            oneOf:
-            - type: number
-              format: double
-              nullable: true
-            - type: string
-              nullable: true
-            - $ref: '#/components/schemas/ReferenceNumeric'
-            description: The regular price for an appointment for the specified bookingService.
-          priceType:
-            $ref: '#/components/schemas/microsoft.graph.bookingPriceType'
-          reminders:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.bookingReminder'
-            description: The collection of customer reminders sent for this appointment. The value of this property is available only when reading this bookingAppointment by its ID.
-          selfServiceAppointmentId:
-            type: string
-            description: Another tracking ID for the appointment, if the appointment was created directly by the customer on the scheduling page, as opposed to by a staff member on behalf of the customer.
-            nullable: true
-          serviceId:
-            type: string
-            description: The ID of the bookingService associated with this appointment.
-            nullable: true
-          serviceLocation:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.location'
-            - type: object
-              nullable: true
-            description: The location where the service is delivered.
-          serviceName:
-            type: string
-            description: The name of the bookingService associated with this appointment.This property is optional when creating a new appointment. If not specified, it's computed from the service associated with the appointment by the serviceId property.
-          serviceNotes:
-            type: string
-            description: Notes from a bookingStaffMember. The value of this property is available only when reading this bookingAppointment by its ID.
-            nullable: true
-          smsNotificationsEnabled:
-            type: boolean
-            description: If true, indicates SMS notifications will be sent to the customers for the appointment. Default value is false.
-          staffMemberIds:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The ID of each bookingStaffMember who is scheduled in this appointment.
-          startDateTime:
-            $ref: '#/components/schemas/microsoft.graph.dateTimeTimeZone'
-          '@odata.type':
-            type: string
-        description: Represents a booked appointment of a service by a customer in a business.
-      x-ms-discriminator-value: '#microsoft.graph.bookingAppointment'
-    microsoft.graph.bookingReminderRecipients:
-      title: bookingReminderRecipients
-      enum:
-      - allAttendees
-      - staff
-      - customer
-      - unknownFutureValue
-      type: string
-    microsoft.graph.bookingsAvailabilityWindow:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.bookingsAvailability'
-      - title: bookingsAvailabilityWindow
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          endDate:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$
-            type: string
-            description: End date of the availability window.
-            format: date
-            nullable: true
-          startDate:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$
-            type: string
-            description: Start date of the availability window.
-            format: date
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.bookingsAvailabilityWindow'
-      x-ms-discriminator-value: '#microsoft.graph.bookingsAvailabilityWindow'
-    microsoft.graph.bookingQuestionAssignment:
-      title: bookingQuestionAssignment
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        isRequired:
-          type: boolean
-          description: Indicates whether it's mandatory to answer the custom question.
-        questionId:
-          type: string
-          description: The ID of the custom question.
-        '@odata.type':
-          type: string
-    microsoft.graph.dayOfWeek:
-      title: dayOfWeek
-      enum:
-      - sunday
-      - monday
-      - tuesday
-      - wednesday
-      - thursday
-      - friday
-      - saturday
-      type: string
-    microsoft.graph.bookingsAvailabilityStatus:
-      title: bookingsAvailabilityStatus
-      enum:
-      - available
-      - busy
-      - slotsAvailable
-      - outOfOffice
-      - unknownFutureValue
-      type: string
-    microsoft.graph.bookingService:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: bookingService
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          additionalInformation:
-            type: string
-            description: Additional information that is sent to the customer when an appointment is confirmed.
-            nullable: true
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date, time, and time zone when the service was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          customQuestions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.bookingQuestionAssignment'
-            description: Contains the set of custom questions associated with a particular service.
-          defaultDuration:
-            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-            type: string
-            description: The default length of the service, represented in numbers of days, hours, minutes, and seconds. For example, P11D23H59M59.999999999999S.
-            format: duration
-          defaultLocation:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.location'
-            - type: object
-              nullable: true
-            description: The default physical location for the service.
-          defaultPrice:
-            oneOf:
-            - type: number
-              format: double
-              nullable: true
-            - type: string
-              nullable: true
-            - $ref: '#/components/schemas/ReferenceNumeric'
-            description: The default monetary price for the service.
-          defaultPriceType:
-            $ref: '#/components/schemas/microsoft.graph.bookingPriceType'
-          defaultReminders:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.bookingReminder'
-            description: The default set of reminders for an appointment of this service. The value of this property is available only when reading this bookingService by its ID.
-          description:
-            type: string
-            description: A text description for the service.
-            nullable: true
-          displayName:
-            type: string
-            description: A service name.
-          isAnonymousJoinEnabled:
-            type: boolean
-            description: Indicates if an anonymousJoinWebUrl(webrtcUrl) is generated for the appointment booked for this service. The default value is false.
-          isCustomerAllowedToManageBooking:
-            type: boolean
-            description: Indicates that the customer can manage bookings created by the staff. The default value is false.
-            nullable: true
-          isHiddenFromCustomers:
-            type: boolean
-            description: True indicates that this service isn't available to customers for booking.
-          isLocationOnline:
-            type: boolean
-            description: Indicates that the appointments for the service are held online. The default value is false.
-          languageTag:
-            type: string
-            description: The language of the self-service booking page.
-          lastUpdatedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date, time, and time zone when the service was last updated. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          maximumAttendeesCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The maximum number of customers allowed in a service. If maximumAttendeesCount of the service is greater than 1, pass valid customer IDs while creating or updating an appointment. To create a customer, use the Create bookingCustomer operation.
-            format: int32
-          notes:
-            type: string
-            description: Additional information about this service.
-            nullable: true
-          postBuffer:
-            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-            type: string
-            description: The time to buffer after an appointment for this service ends, and before the next customer appointment can be booked.
-            format: duration
-          preBuffer:
-            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-            type: string
-            description: The time to buffer before an appointment for this service can start.
-            format: duration
-          schedulingPolicy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.bookingSchedulingPolicy'
-            - type: object
-              nullable: true
-            description: The set of policies that determine how appointments for this type of service should be created and managed.
-          smsNotificationsEnabled:
-            type: boolean
-            description: True indicates SMS notifications can be sent to the customers for the appointment of the service. Default value is false.
-          staffMemberIds:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: Represents those staff members who provide this service.
-          webUrl:
-            type: string
-            description: The URL a customer uses to access the service.
-            nullable: true
-            readOnly: true
-          '@odata.type':
-            type: string
-        description: Represents a particular service offered by a booking business.
-      x-ms-discriminator-value: '#microsoft.graph.bookingService'
     microsoft.graph.bookingCustomerBase:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -2798,180 +2580,6 @@ components:
           propertyName: '@odata.type'
           mapping:
             '#microsoft.graph.bookingCustomer': '#/components/schemas/microsoft.graph.bookingCustomer'
-    microsoft.graph.availabilityItem:
-      title: availabilityItem
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        endDateTime:
-          $ref: '#/components/schemas/microsoft.graph.dateTimeTimeZone'
-        serviceId:
-          type: string
-          description: Indicates the service ID for 1:n appointments. If the appointment is of type 1:n, this field is present, otherwise, null.
-          nullable: true
-        startDateTime:
-          $ref: '#/components/schemas/microsoft.graph.dateTimeTimeZone'
-        status:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.bookingsAvailabilityStatus'
-          - type: object
-            nullable: true
-          description: 'The status of the staff member. The possible values are: available, busy, slotsAvailable, outOfOffice, unknownFutureValue.'
-        '@odata.type':
-          type: string
-    microsoft.graph.bookingBusinessCollectionResponse:
-      title: Collection of bookingBusiness
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.bookingBusiness'
-    microsoft.graph.bookingCustomQuestion:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: bookingCustomQuestion
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          answerInputType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.answerInputType'
-            - type: object
-              nullable: true
-            description: 'The expected answer type. The possible values are: text, radioButton, unknownFutureValue.'
-          answerOptions:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: List of possible answer values.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date, time, and time zone when the custom question was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          displayName:
-            type: string
-            description: The question.
-          lastUpdatedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date, time, and time zone when the custom question was last updated. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          '@odata.type':
-            type: string
-        description: Represents a custom question of the business.
-      x-ms-discriminator-value: '#microsoft.graph.bookingCustomQuestion'
-    microsoft.graph.bookingStaffMemberBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: bookingStaffMemberBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-        description: Booking entities that provide a display name.
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.bookingStaffMember': '#/components/schemas/microsoft.graph.bookingStaffMember'
-    microsoft.graph.bookingCustomerInformationBase:
-      title: bookingCustomerInformationBase
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.bookingCustomerInformation': '#/components/schemas/microsoft.graph.bookingCustomerInformation'
-    microsoft.graph.bookingWorkHours:
-      title: bookingWorkHours
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        day:
-          $ref: '#/components/schemas/microsoft.graph.dayOfWeek'
-        timeSlots:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.bookingWorkTimeSlot'
-          description: A list of start/end times during a day.
-        '@odata.type':
-          type: string
-      description: This type represents the set of working hours in a single day of the week.
-    microsoft.graph.bookingsAvailability:
-      title: bookingsAvailability
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        availabilityType:
-          $ref: '#/components/schemas/microsoft.graph.bookingsServiceAvailabilityType'
-        businessHours:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.bookingWorkHours'
-          description: The hours of operation in a week. The business hours value is set to null if the availability type isn't customWeeklyHours.
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.bookingsAvailabilityWindow': '#/components/schemas/microsoft.graph.bookingsAvailabilityWindow'
-    microsoft.graph.bookingCustomerBaseCollectionResponse:
-      title: Collection of bookingCustomerBase
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.bookingCustomerBase'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.bookingStaffMemberBaseCollectionResponse:
-      title: Collection of bookingStaffMemberBase
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.bookingStaffMemberBase'
     microsoft.graph.entity:
       title: entity
       required:
@@ -4041,55 +3649,480 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-  responses:
+    microsoft.graph.bookingSchedulingPolicy:
+      title: bookingSchedulingPolicy
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        allowStaffSelection:
+          type: boolean
+          description: True to allow customers to choose a specific person for the booking.
+        customAvailabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.bookingsAvailabilityWindow'
+          description: Custom availability of the service in a given time frame.
+        generalAvailability:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.bookingsAvailability'
+          - type:
+            - object
+            - 'null'
+          description: General availability of the service defined by the scheduling policy.
+        isMeetingInviteToCustomersEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the meeting invite is sent to the customers. The default value is false.
+        maximumAdvance:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: Maximum number of days in advance that a booking can be made. It follows the ISO 8601 format.
+          format: duration
+        minimumLeadTime:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: The minimum amount of time before which bookings and cancellations must be made. It follows the ISO 8601 format.
+          format: duration
+        sendConfirmationsToOwner:
+          type: boolean
+          description: True to notify the business via email when a booking is created or changed. Use the email address specified in the email property of the bookingBusiness entity for the business.
+        timeSlotInterval:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: Duration of each time slot, denoted in ISO 8601 format.
+          format: duration
+        '@odata.type':
+          type: string
+      description: This type represents the set of policies that dictate how bookings can be created in a Booking Calendar.
     microsoft.graph.bookingCustomQuestionCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.bookingCustomQuestionCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.bookingServiceCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.bookingServiceCollectionResponse'
+      title: Collection of bookingCustomQuestion
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.bookingCustomQuestion'
+    microsoft.graph.locationUniqueIdType:
+      title: locationUniqueIdType
+      enum:
+      - unknown
+      - locationStore
+      - directory
+      - private
+      - bing
+      type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.bookingReminderRecipients:
+      title: bookingReminderRecipients
+      enum:
+      - allAttendees
+      - staff
+      - customer
+      - unknownFutureValue
+      type: string
+    microsoft.graph.outlookGeoCoordinates:
+      title: outlookGeoCoordinates
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        accuracy:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The accuracy of the latitude and longitude. As an example, the accuracy can be measured in meters, such as the latitude and longitude are accurate to within 50 meters.
+        altitude:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The altitude of the location.
+        altitudeAccuracy:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The accuracy of the altitude.
+        latitude:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The latitude of the location.
+        longitude:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The longitude of the location.
+        '@odata.type':
+          type: string
     microsoft.graph.bookingAppointmentCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.bookingAppointmentCollectionResponse'
-    microsoft.graph.bookingCustomerBaseCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.bookingCustomerBaseCollectionResponse'
-    microsoft.graph.bookingStaffMemberBaseCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.bookingStaffMemberBaseCollectionResponse'
+      title: Collection of bookingAppointment
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.bookingAppointment'
     ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
+      type: integer
+      format: int32
+    microsoft.graph.bookingCustomerInformationBase:
+      title: bookingCustomerInformationBase
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.bookingCustomerInformation': '#/components/schemas/microsoft.graph.bookingCustomerInformation'
+    microsoft.graph.bookingsAvailability:
+      title: bookingsAvailability
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        availabilityType:
+          $ref: '#/components/schemas/microsoft.graph.bookingsServiceAvailabilityType'
+        businessHours:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.bookingWorkHours'
+          description: The hours of operation in a week. The business hours value is set to null if the availability type isn't customWeeklyHours.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.bookingsAvailabilityWindow': '#/components/schemas/microsoft.graph.bookingsAvailabilityWindow'
+    microsoft.graph.physicalAddress:
+      title: physicalAddress
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        city:
+          type:
+          - string
+          - 'null'
+          description: The city.
+        countryOrRegion:
+          type:
+          - string
+          - 'null'
+          description: The country or region. It's a free-format string value, for example, 'United States'.
+        postalCode:
+          type:
+          - string
+          - 'null'
+          description: The postal code.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The state.
+        street:
+          type:
+          - string
+          - 'null'
+          description: The street.
+        '@odata.type':
+          type: string
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.location:
+      title: location
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        address:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.physicalAddress'
+          - type:
+            - object
+            - 'null'
+          description: The street address of the location.
+        coordinates:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.outlookGeoCoordinates'
+          - type:
+            - object
+            - 'null'
+          description: The geographic coordinates and elevation of the location.
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: The name associated with the location.
+        locationEmailAddress:
+          type:
+          - string
+          - 'null'
+          description: Optional email address of the location.
+        locationType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.locationType'
+          - type:
+            - object
+            - 'null'
+          description: 'The type of location. The possible values are: default, conferenceRoom, homeAddress, businessAddress,geoCoordinates, streetAddress, hotel, restaurant, localBusiness, postalAddress. Read-only.'
+        locationUri:
+          type:
+          - string
+          - 'null'
+          description: Optional URI representing the location.
+        uniqueId:
+          type:
+          - string
+          - 'null'
+          description: For internal use only.
+        uniqueIdType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.locationUniqueIdType'
+          - type:
+            - object
+            - 'null'
+          description: For internal use only.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.locationConstraintItem': '#/components/schemas/microsoft.graph.locationConstraintItem'
+    microsoft.graph.bookingWorkTimeSlot:
+      title: bookingWorkTimeSlot
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        endTime:
+          pattern: ^([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?$
+          type: string
+          description: The time of the day when work stops. For example, 17:00:00.0000000.
+          format: time
+        startTime:
+          pattern: ^([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?$
+          type: string
+          description: The time of the day when work starts. For example, 08:00:00.0000000.
+          format: time
+        '@odata.type':
+          type: string
     microsoft.graph.bookingBusinessCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.bookingBusinessCollectionResponse'
+      title: Collection of bookingBusiness
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.bookingBusiness'
+    microsoft.graph.bookingPageAccessControl:
+      title: bookingPageAccessControl
+      enum:
+      - unrestricted
+      - restrictedToOrganization
+      - unknownFutureValue
+      type: string
+    microsoft.graph.bookingService:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: bookingService
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          additionalInformation:
+            type:
+            - string
+            - 'null'
+            description: Additional information that is sent to the customer when an appointment is confirmed.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date, time, and time zone when the service was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          customQuestions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.bookingQuestionAssignment'
+            description: Contains the set of custom questions associated with a particular service.
+          defaultDuration:
+            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+            type: string
+            description: The default length of the service, represented in numbers of days, hours, minutes, and seconds. For example, P11D23H59M59.999999999999S.
+            format: duration
+          defaultLocation:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.location'
+            - type:
+              - object
+              - 'null'
+            description: The default physical location for the service.
+          defaultPrice:
+            oneOf:
+            - type:
+              - number
+              - 'null'
+              format: double
+            - type:
+              - string
+              - 'null'
+            - $ref: '#/components/schemas/ReferenceNumeric'
+            description: The default monetary price for the service.
+          defaultPriceType:
+            $ref: '#/components/schemas/microsoft.graph.bookingPriceType'
+          defaultReminders:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.bookingReminder'
+            description: The default set of reminders for an appointment of this service. The value of this property is available only when reading this bookingService by its ID.
+          description:
+            type:
+            - string
+            - 'null'
+            description: A text description for the service.
+          displayName:
+            type: string
+            description: A service name.
+          isAnonymousJoinEnabled:
+            type: boolean
+            description: Indicates if an anonymousJoinWebUrl(webrtcUrl) is generated for the appointment booked for this service. The default value is false.
+          isCustomerAllowedToManageBooking:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates that the customer can manage bookings created by the staff. The default value is false.
+          isHiddenFromCustomers:
+            type: boolean
+            description: True indicates that this service isn't available to customers for booking.
+          isLocationOnline:
+            type: boolean
+            description: Indicates that the appointments for the service are held online. The default value is false.
+          languageTag:
+            type: string
+            description: The language of the self-service booking page.
+          lastUpdatedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date, time, and time zone when the service was last updated. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          maximumAttendeesCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The maximum number of customers allowed in a service. If maximumAttendeesCount of the service is greater than 1, pass valid customer IDs while creating or updating an appointment. To create a customer, use the Create bookingCustomer operation.
+            format: int32
+          notes:
+            type:
+            - string
+            - 'null'
+            description: Additional information about this service.
+          postBuffer:
+            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+            type: string
+            description: The time to buffer after an appointment for this service ends, and before the next customer appointment can be booked.
+            format: duration
+          preBuffer:
+            pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+            type: string
+            description: The time to buffer before an appointment for this service can start.
+            format: duration
+          schedulingPolicy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.bookingSchedulingPolicy'
+            - type:
+              - object
+              - 'null'
+            description: The set of policies that determine how appointments for this type of service should be created and managed.
+          smsNotificationsEnabled:
+            type: boolean
+            description: True indicates SMS notifications can be sent to the customers for the appointment of the service. Default value is false.
+          staffMemberIds:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: Represents those staff members who provide this service.
+          webUrl:
+            type:
+            - string
+            - 'null'
+            description: The URL a customer uses to access the service.
+            readOnly: true
+          '@odata.type':
+            type: string
+        description: Represents a particular service offered by a booking business.
+      x-ms-discriminator-value: '#microsoft.graph.bookingService'
   parameters:
     filter:
       name: $filter
@@ -4099,16 +4132,14 @@ components:
       explode: false
       schema:
         type: string
-    top:
-      name: $top
+    search:
+      name: $search
       in: query
-      description: Show only the first n items
+      description: Search items by search phrases
       style: form
       explode: false
       schema:
-        minimum: 0
-        type: integer
-      example: 50
+        type: string
     skip:
       name: $skip
       in: query
@@ -4126,11 +4157,62 @@ components:
       explode: false
       schema:
         type: boolean
-    search:
-      name: $search
+    top:
+      name: $top
       in: query
-      description: Search items by search phrases
+      description: Show only the first n items
       style: form
       explode: false
       schema:
-        type: string
+        minimum: 0
+        type: integer
+      example: 50
+  responses:
+    microsoft.graph.bookingBusinessCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.bookingBusinessCollectionResponse'
+    microsoft.graph.bookingAppointmentCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.bookingAppointmentCollectionResponse'
+    microsoft.graph.bookingServiceCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.bookingServiceCollectionResponse'
+    microsoft.graph.bookingCustomerBaseCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.bookingCustomerBaseCollectionResponse'
+    microsoft.graph.bookingCustomQuestionCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.bookingCustomQuestionCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.bookingStaffMemberBaseCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.bookingStaffMemberBaseCollectionResponse'

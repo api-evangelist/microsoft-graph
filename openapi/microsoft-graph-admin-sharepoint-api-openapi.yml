@@ -1,20 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Admin.sharepoint API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: Admin.sharepoint
   x-ms-docs-toc-type: page
@@ -195,36 +188,6 @@ paths:
       x-ms-docs-operation-type: operation
 components:
   schemas:
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.sharepoint:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: sharepoint
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          settings:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.sharepointSettings'
-            - type: object
-              nullable: true
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.sharepoint'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -232,21 +195,57 @@ components:
       type: object
       properties:
         request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Request Id as tracked internally by the service
-          nullable: true
         client-request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Client request Id as sent by the client application.
-          nullable: true
         date:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
+          type:
+          - string
+          - 'null'
           description: Date when the error occured.
           format: date-time
-          nullable: true
         '@odata.type':
           type: string
+    microsoft.graph.idleSessionSignOut:
+      title: idleSessionSignOut
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        isEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the idle session sign-out policy is enabled.
+        signOutAfterInSeconds:
+          type:
+          - number
+          - 'null'
+          description: Number of seconds of inactivity after which a user is signed out.
+          format: int64
+        warnAfterInSeconds:
+          type:
+          - number
+          - 'null'
+          description: Number of seconds of inactivity after which a user is notified that they'll be signed out.
+          format: int64
+        '@odata.type':
+          type: string
+    microsoft.graph.sharingDomainRestrictionMode:
+      title: sharingDomainRestrictionMode
+      enum:
+      - none
+      - allowList
+      - blockList
+      - unknownFutureValue
+      type: string
     microsoft.graph.sharingCapabilities:
       title: sharingCapabilities
       enum:
@@ -254,14 +253,6 @@ components:
       - externalUserSharingOnly
       - externalUserAndGuestSharing
       - existingExternalUserSharingOnly
-      - unknownFutureValue
-      type: string
-    microsoft.graph.sharingDomainRestrictionMode:
-      title: sharingDomainRestrictionMode
-      enum:
-      - none
-      - allowList
-      - blockList
       - unknownFutureValue
       type: string
     microsoft.graph.imageTaggingChoice:
@@ -272,6 +263,13 @@ components:
       - enhanced
       - unknownFutureValue
       type: string
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -284,195 +282,33 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.idleSessionSignOut:
-      title: idleSessionSignOut
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        isEnabled:
-          type: boolean
-          description: Indicates whether the idle session sign-out policy is enabled.
-          nullable: true
-        signOutAfterInSeconds:
-          type: number
-          description: Number of seconds of inactivity after which a user is signed out.
-          format: int64
-          nullable: true
-        warnAfterInSeconds:
-          type: number
-          description: Number of seconds of inactivity after which a user is notified that they'll be signed out.
-          format: int64
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.sharepointSettings:
+    microsoft.graph.sharepoint:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: sharepointSettings
+      - title: sharepoint
         required:
         - '@odata.type'
         type: object
         properties:
-          allowedDomainGuidsForSyncApp:
-            type: array
-            items:
-              pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-              type: string
-              format: uuid
-              nullable: true
-            description: Collection of trusted domain GUIDs for the OneDrive sync app.
-          availableManagedPathsForSiteCreation:
-            type: array
-            items:
-              type: string
-            description: Collection of managed paths available for site creation. Read-only.
-          deletedUserPersonalSiteRetentionPeriodInDays:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The number of days for preserving a deleted user's OneDrive.
-            format: int32
-            nullable: true
-          excludedFileExtensionsForSyncApp:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: Collection of file extensions not uploaded by the OneDrive sync app.
-          idleSessionSignOut:
+          settings:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.idleSessionSignOut'
-            - type: object
-              nullable: true
-            description: Specifies the idle session sign-out policies for the tenant.
-          imageTaggingOption:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.imageTaggingChoice'
-            - type: object
-              nullable: true
-            description: 'Specifies the image tagging option for the tenant. The possible values are: disabled, basic, enhanced.'
-          isCommentingOnSitePagesEnabled:
-            type: boolean
-            description: Indicates whether comments are allowed on modern site pages in SharePoint.
-            nullable: true
-          isFileActivityNotificationEnabled:
-            type: boolean
-            description: Indicates whether push notifications are enabled for OneDrive events.
-            nullable: true
-          isLegacyAuthProtocolsEnabled:
-            type: boolean
-            description: Indicates whether legacy authentication protocols are enabled for the tenant.
-            nullable: true
-          isLoopEnabled:
-            type: boolean
-            description: Indicates whether if Fluid Framework is allowed on SharePoint sites.
-            nullable: true
-          isMacSyncAppEnabled:
-            type: boolean
-            description: Indicates whether files can be synced using the OneDrive sync app for Mac.
-            nullable: true
-          isRequireAcceptingUserToMatchInvitedUserEnabled:
-            type: boolean
-            description: Indicates whether guests must sign in using the same account to which sharing invitations are sent.
-            nullable: true
-          isResharingByExternalUsersEnabled:
-            type: boolean
-            description: Indicates whether guests are allowed to reshare files, folders, and sites they don't own.
-            nullable: true
-          isSharePointMobileNotificationEnabled:
-            type: boolean
-            description: Indicates whether mobile push notifications are enabled for SharePoint.
-            nullable: true
-          isSharePointNewsfeedEnabled:
-            type: boolean
-            description: Indicates whether the newsfeed is allowed on the modern site pages in SharePoint.
-            nullable: true
-          isSiteCreationEnabled:
-            type: boolean
-            description: Indicates whether users are allowed to create sites.
-            nullable: true
-          isSiteCreationUIEnabled:
-            type: boolean
-            description: Indicates whether the UI commands for creating sites are shown.
-            nullable: true
-          isSitePagesCreationEnabled:
-            type: boolean
-            description: Indicates whether creating new modern pages is allowed on SharePoint sites.
-            nullable: true
-          isSitesStorageLimitAutomatic:
-            type: boolean
-            description: Indicates whether site storage space is automatically managed or if specific storage limits are set per site.
-            nullable: true
-          isSyncButtonHiddenOnPersonalSite:
-            type: boolean
-            description: Indicates whether the sync button in OneDrive is hidden.
-            nullable: true
-          isUnmanagedSyncAppForTenantRestricted:
-            type: boolean
-            description: Indicates whether users are allowed to sync files only on PCs joined to specific domains.
-            nullable: true
-          personalSiteDefaultStorageLimitInMB:
-            type: number
-            description: The default OneDrive storage limit for all new and existing users who are assigned a qualifying license. Measured in megabytes (MB).
-            format: int64
-            nullable: true
-          sharingAllowedDomainList:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: Collection of email domains that are allowed for sharing outside the organization.
-          sharingBlockedDomainList:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: Collection of email domains that are blocked for sharing outside the organization.
-          sharingCapability:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.sharingCapabilities'
-            - type: object
-              nullable: true
-            description: 'Sharing capability for the tenant. The possible values are: disabled, externalUserSharingOnly, externalUserAndGuestSharing, existingExternalUserSharingOnly.'
-          sharingDomainRestrictionMode:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.sharingDomainRestrictionMode'
-            - type: object
-              nullable: true
-            description: 'Specifies the external sharing mode for domains. The possible values are: none, allowList, blockList.'
-          siteCreationDefaultManagedPath:
-            type: string
-            description: The value of the team site managed path. This is the path under which new team sites will be created.
-          siteCreationDefaultStorageLimitInMB:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The default storage quota for a new site upon creation. Measured in megabytes (MB).
-            format: int32
-            nullable: true
-          tenantDefaultTimezone:
-            type: string
-            description: The default timezone of a tenant for newly created sites. For a list of possible values, see SPRegionalSettings.TimeZones property.
-            nullable: true
+            - $ref: '#/components/schemas/microsoft.graph.sharepointSettings'
+            - type:
+              - object
+              - 'null'
+            x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.sharepointSettings'
+      x-ms-discriminator-value: '#microsoft.graph.sharepoint'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1542,6 +1378,199 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.sharepointSettings:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: sharepointSettings
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          allowedDomainGuidsForSyncApp:
+            type: array
+            items:
+              pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+              type:
+              - string
+              - 'null'
+              format: uuid
+            description: Collection of trusted domain GUIDs for the OneDrive sync app.
+          availableManagedPathsForSiteCreation:
+            type: array
+            items:
+              type: string
+            description: Collection of managed paths available for site creation. Read-only.
+          deletedUserPersonalSiteRetentionPeriodInDays:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: The number of days for preserving a deleted user's OneDrive.
+            format: int32
+          excludedFileExtensionsForSyncApp:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: Collection of file extensions not uploaded by the OneDrive sync app.
+          idleSessionSignOut:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.idleSessionSignOut'
+            - type:
+              - object
+              - 'null'
+            description: Specifies the idle session sign-out policies for the tenant.
+          imageTaggingOption:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.imageTaggingChoice'
+            - type:
+              - object
+              - 'null'
+            description: 'Specifies the image tagging option for the tenant. The possible values are: disabled, basic, enhanced.'
+          isCommentingOnSitePagesEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether comments are allowed on modern site pages in SharePoint.
+          isFileActivityNotificationEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether push notifications are enabled for OneDrive events.
+          isLegacyAuthProtocolsEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether legacy authentication protocols are enabled for the tenant.
+          isLoopEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether if Fluid Framework is allowed on SharePoint sites.
+          isMacSyncAppEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether files can be synced using the OneDrive sync app for Mac.
+          isRequireAcceptingUserToMatchInvitedUserEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether guests must sign in using the same account to which sharing invitations are sent.
+          isResharingByExternalUsersEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether guests are allowed to reshare files, folders, and sites they don't own.
+          isSharePointMobileNotificationEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether mobile push notifications are enabled for SharePoint.
+          isSharePointNewsfeedEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the newsfeed is allowed on the modern site pages in SharePoint.
+          isSiteCreationEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether users are allowed to create sites.
+          isSiteCreationUIEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the UI commands for creating sites are shown.
+          isSitePagesCreationEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether creating new modern pages is allowed on SharePoint sites.
+          isSitesStorageLimitAutomatic:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether site storage space is automatically managed or if specific storage limits are set per site.
+          isSyncButtonHiddenOnPersonalSite:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the sync button in OneDrive is hidden.
+          isUnmanagedSyncAppForTenantRestricted:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether users are allowed to sync files only on PCs joined to specific domains.
+          personalSiteDefaultStorageLimitInMB:
+            type:
+            - number
+            - 'null'
+            description: The default OneDrive storage limit for all new and existing users who are assigned a qualifying license. Measured in megabytes (MB).
+            format: int64
+          sharingAllowedDomainList:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: Collection of email domains that are allowed for sharing outside the organization.
+          sharingBlockedDomainList:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: Collection of email domains that are blocked for sharing outside the organization.
+          sharingCapability:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.sharingCapabilities'
+            - type:
+              - object
+              - 'null'
+            description: 'Sharing capability for the tenant. The possible values are: disabled, externalUserSharingOnly, externalUserAndGuestSharing, existingExternalUserSharingOnly.'
+          sharingDomainRestrictionMode:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.sharingDomainRestrictionMode'
+            - type:
+              - object
+              - 'null'
+            description: 'Specifies the external sharing mode for domains. The possible values are: none, allowList, blockList.'
+          siteCreationDefaultManagedPath:
+            type: string
+            description: The value of the team site managed path. This is the path under which new team sites will be created.
+          siteCreationDefaultStorageLimitInMB:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: The default storage quota for a new site upon creation. Measured in megabytes (MB).
+            format: int32
+          tenantDefaultTimezone:
+            type:
+            - string
+            - 'null'
+            description: The default timezone of a tenant for newly created sites. For a list of possible values, see SPRegionalSettings.TimeZones property.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.sharepointSettings'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
   responses:
     error:
       description: error

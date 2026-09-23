@@ -1,13 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Agreement File Localizations API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
+  title: Microsoft Graph Agreements Agreement File Localizations API
+  description: 'Microsoft Graph API for managing agreements in Microsoft Entra ID.
 
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
+    This API enables organizations to create, manage, and track terms of use agreements,
 
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
+    including agreement files, localizations, and user acceptances.'
   version: 1.0.0
   contact:
     name: Microsoft Graph API Support
@@ -322,70 +320,36 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: default
 components:
-  examples:
-    UpdateAgreementFileLocalizationRequest:
-      summary: Example request to update an agreement file localization
-      value:
-        displayName: Updated Terms of Use - Spanish
-        isMajorVersion: false
-        '@odata.type': '#microsoft.graph.agreementFileLocalization'
-    CreateAgreementFileLocalizationRequest:
-      summary: Example request to create an agreement file localization
-      value:
-        displayName: Terms of Use - Spanish
-        fileName: terms-of-use-es.pdf
-        language: es-ES
-        isDefault: false
-        isMajorVersion: true
-        '@odata.type': '#microsoft.graph.agreementFileLocalization'
-    UpdateAgreementFileLocalizationResponse:
-      summary: Example response for updated agreement file localization
-      value:
-        id: 00000000-0000-0000-0000-000000000006
-        displayName: Updated Terms of Use - Spanish
-        fileName: terms-of-use-es.pdf
-        language: es-ES
-        isDefault: false
-        isMajorVersion: false
-        createdDateTime: '2024-01-15T10:30:00Z'
-        '@odata.type': '#microsoft.graph.agreementFileLocalization'
-    CreateAgreementFileLocalizationResponse:
-      summary: Example response for created agreement file localization
-      value:
-        id: 00000000-0000-0000-0000-000000000006
-        displayName: Terms of Use - Spanish
-        fileName: terms-of-use-es.pdf
-        language: es-ES
-        isDefault: false
-        isMajorVersion: true
-        createdDateTime: '2024-01-15T10:30:00Z'
-        '@odata.type': '#microsoft.graph.agreementFileLocalization'
-    GetAgreementFileLocalizationResponse:
-      summary: Example response for getting an agreement file localization
-      value:
-        id: 00000000-0000-0000-0000-000000000006
-        displayName: Terms of Use - Spanish
-        fileName: terms-of-use-es.pdf
-        language: es-ES
-        isDefault: false
-        isMajorVersion: true
-        createdDateTime: '2024-01-15T10:30:00Z'
-        '@odata.type': '#microsoft.graph.agreementFileLocalization'
   schemas:
-    AgreementFileLocalizationCollectionResponse:
-      title: AgreementFileLocalizationCollectionResponse
+    ErrorDetail:
+      title: ErrorDetail
+      required:
+      - code
+      - message
       type: object
       properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementFileLocalization'
-        '@odata.nextLink':
+        code:
+          type: string
+        message:
+          type: string
+        target:
           type: string
           nullable: true
-        '@odata.count':
-          type: integer
-          format: int32
+    AgreementFileData:
+      title: AgreementFileData
+      type: object
+      properties:
+        data:
+          type: string
+          description: Data that represents the terms of use PDF document. Read-only.
+          format: base64url
+          nullable: true
+        '@odata.type':
+          type: string
+    InnerError:
+      title: InnerError
+      type: object
+      description: The structure of this object is service-specific
     AgreementFileLocalization:
       allOf:
       - $ref: '#/components/schemas/AgreementFileProperties'
@@ -403,52 +367,20 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementFileLocalization'
-    Entity:
-      title: Entity
+    AgreementFileLocalizationCollectionResponse:
+      title: AgreementFileLocalizationCollectionResponse
       type: object
       properties:
-        id:
-          type: string
-          description: The unique identifier for an entity. Read-only.
-        '@odata.type':
-          type: string
-    ErrorDetail:
-      title: ErrorDetail
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementFileLocalization'
+        '@odata.nextLink':
           type: string
           nullable: true
-    ODataError:
-      title: ODataError
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
-    AgreementFileData:
-      title: AgreementFileData
-      type: object
-      properties:
-        data:
-          type: string
-          description: Data that represents the terms of use PDF document. Read-only.
-          format: base64url
-          nullable: true
-        '@odata.type':
-          type: string
-    InnerError:
-      title: InnerError
-      type: object
-      description: The structure of this object is service-specific
+        '@odata.count':
+          type: integer
+          format: int32
     AgreementFileProperties:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -489,17 +421,23 @@ components:
             nullable: true
           '@odata.type':
             type: string
-    AgreementFileVersion:
-      allOf:
-      - $ref: '#/components/schemas/AgreementFileProperties'
-      - title: AgreementFileVersion
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity. Read-only.
+        '@odata.type':
+          type: string
+    ODataError:
+      title: ODataError
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
     MainError:
       title: MainError
       required:
@@ -521,24 +459,30 @@ components:
             $ref: '#/components/schemas/ErrorDetail'
         innerError:
           $ref: '#/components/schemas/InnerError'
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
-    AgreementFileLocalizationCollectionResponse:
-      description: Retrieved collection of agreement file localizations
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AgreementFileLocalizationCollectionResponse'
+    AgreementFileVersion:
+      allOf:
+      - $ref: '#/components/schemas/AgreementFileProperties'
+      - title: AgreementFileVersion
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
   parameters:
     Search:
       name: $search
       in: query
       description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    Filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
       style: form
       explode: false
       schema:
@@ -560,14 +504,14 @@ components:
       schema:
         type: string
       x-ms-docs-key-type: agreementFileLocalization
-    Filter:
-      name: $filter
+    Count:
+      name: $count
       in: query
-      description: Filter items by property values
+      description: Include count of items
       style: form
       explode: false
       schema:
-        type: string
+        type: boolean
     AgreementId:
       name: agreement-id
       in: path
@@ -586,11 +530,65 @@ components:
         minimum: 0
         type: integer
       example: 50
-    Count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+    AgreementFileLocalizationCollectionResponse:
+      description: Retrieved collection of agreement file localizations
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgreementFileLocalizationCollectionResponse'
+  examples:
+    UpdateAgreementFileLocalizationRequest:
+      summary: Example request to update an agreement file localization
+      value:
+        displayName: Updated Terms of Use - Spanish
+        isMajorVersion: false
+        '@odata.type': '#microsoft.graph.agreementFileLocalization'
+    UpdateAgreementFileLocalizationResponse:
+      summary: Example response for updated agreement file localization
+      value:
+        id: 00000000-0000-0000-0000-000000000006
+        displayName: Updated Terms of Use - Spanish
+        fileName: terms-of-use-es.pdf
+        language: es-ES
+        isDefault: false
+        isMajorVersion: false
+        createdDateTime: '2024-01-15T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileLocalization'
+    GetAgreementFileLocalizationResponse:
+      summary: Example response for getting an agreement file localization
+      value:
+        id: 00000000-0000-0000-0000-000000000006
+        displayName: Terms of Use - Spanish
+        fileName: terms-of-use-es.pdf
+        language: es-ES
+        isDefault: false
+        isMajorVersion: true
+        createdDateTime: '2024-01-15T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileLocalization'
+    CreateAgreementFileLocalizationRequest:
+      summary: Example request to create an agreement file localization
+      value:
+        displayName: Terms of Use - Spanish
+        fileName: terms-of-use-es.pdf
+        language: es-ES
+        isDefault: false
+        isMajorVersion: true
+        '@odata.type': '#microsoft.graph.agreementFileLocalization'
+    CreateAgreementFileLocalizationResponse:
+      summary: Example response for created agreement file localization
+      value:
+        id: 00000000-0000-0000-0000-000000000006
+        displayName: Terms of Use - Spanish
+        fileName: terms-of-use-es.pdf
+        language: es-ES
+        isDefault: false
+        isMajorVersion: true
+        createdDateTime: '2024-01-15T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileLocalization'

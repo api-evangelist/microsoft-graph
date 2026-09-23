@@ -1,20 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Reports.partners API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: Reports.partners
   x-ms-docs-toc-type: page
@@ -760,13 +753,15 @@ paths:
               type: object
               properties:
                 invoiceId:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                 attributeSet:
                   anyOf:
                   - $ref: '#/components/schemas/microsoft.graph.partners.billing.attributeSet'
-                  - type: object
-                    nullable: true
+                  - type:
+                    - object
+                    - 'null'
         required: true
       responses:
         2XX:
@@ -776,8 +771,9 @@ paths:
               schema:
                 anyOf:
                 - $ref: '#/components/schemas/microsoft.graph.partners.billing.operation'
-                - type: object
-                  nullable: true
+                - type:
+                  - object
+                  - 'null'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
@@ -890,18 +886,21 @@ paths:
               type: object
               properties:
                 currencyCode:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                 billingPeriod:
                   anyOf:
                   - $ref: '#/components/schemas/microsoft.graph.partners.billing.billingPeriod'
-                  - type: object
-                    nullable: true
+                  - type:
+                    - object
+                    - 'null'
                 attributeSet:
                   anyOf:
                   - $ref: '#/components/schemas/microsoft.graph.partners.billing.attributeSet'
-                  - type: object
-                    nullable: true
+                  - type:
+                    - object
+                    - 'null'
         required: true
       responses:
         2XX:
@@ -911,8 +910,9 @@ paths:
               schema:
                 anyOf:
                 - $ref: '#/components/schemas/microsoft.graph.partners.billing.operation'
-                - type: object
-                  nullable: true
+                - type:
+                  - object
+                  - 'null'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
@@ -1109,13 +1109,15 @@ paths:
               type: object
               properties:
                 invoiceId:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                 attributeSet:
                   anyOf:
                   - $ref: '#/components/schemas/microsoft.graph.partners.billing.attributeSet'
-                  - type: object
-                    nullable: true
+                  - type:
+                    - object
+                    - 'null'
         required: true
       responses:
         2XX:
@@ -1125,8 +1127,9 @@ paths:
               schema:
                 anyOf:
                 - $ref: '#/components/schemas/microsoft.graph.partners.billing.operation'
-                - type: object
-                  nullable: true
+                - type:
+                  - object
+                  - 'null'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
@@ -1239,18 +1242,21 @@ paths:
               type: object
               properties:
                 currencyCode:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                 billingPeriod:
                   anyOf:
                   - $ref: '#/components/schemas/microsoft.graph.partners.billing.billingPeriod'
-                  - type: object
-                    nullable: true
+                  - type:
+                    - object
+                    - 'null'
                 attributeSet:
                   anyOf:
                   - $ref: '#/components/schemas/microsoft.graph.partners.billing.attributeSet'
-                  - type: object
-                    nullable: true
+                  - type:
+                    - object
+                    - 'null'
         required: true
       responses:
         2XX:
@@ -1260,8 +1266,9 @@ paths:
               schema:
                 anyOf:
                 - $ref: '#/components/schemas/microsoft.graph.partners.billing.operation'
-                - type: object
-                  nullable: true
+                - type:
+                  - object
+                  - 'null'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
@@ -1269,37 +1276,76 @@ paths:
       x-ms-docs-operation-type: action
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.partners.billing.billingReconciliation:
+    microsoft.graph.partners.billing.billedReconciliation:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: billingReconciliation
+      - title: billedReconciliation
         required:
         - '@odata.type'
         type: object
         properties:
-          billed:
-            $ref: '#/components/schemas/microsoft.graph.partners.billing.billedReconciliation'
-          unbilled:
-            $ref: '#/components/schemas/microsoft.graph.partners.billing.unbilledReconciliation'
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.partners.billing.billingReconciliation'
+      x-ms-discriminator-value: '#microsoft.graph.partners.billing.billedReconciliation'
+    microsoft.graph.partners.billing.operation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: operation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The start time of the operation. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          lastActionDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The time of the last action of the operation. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.longRunningOperationStatus'
+            - type:
+              - object
+              - 'null'
+            description: 'The status of the operation. The possible values are: notStarted, running, completed, failed, unknownFutureValue.'
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.partners.billing.exportSuccessOperation': '#/components/schemas/microsoft.graph.partners.billing.exportSuccessOperation'
+            '#microsoft.graph.partners.billing.failedOperation': '#/components/schemas/microsoft.graph.partners.billing.failedOperation'
+            '#microsoft.graph.partners.billing.runningOperation': '#/components/schemas/microsoft.graph.partners.billing.runningOperation'
+    microsoft.graph.partners:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: partners
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          billing:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.partners.billing.billing'
+            - type:
+              - object
+              - 'null'
+            description: Represents billing details for billed and unbilled data.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.partners'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.partners.billing.azureUsage:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -1315,62 +1361,17 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.partners.billing.azureUsage'
-    microsoft.graph.partners.billing.billedReconciliation:
+    microsoft.graph.partners.billing.operationCollectionResponse:
+      title: Collection of operation
+      type: object
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: billedReconciliation
-        required:
-        - '@odata.type'
-        type: object
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
         properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.partners.billing.billedReconciliation'
-    microsoft.graph.partners.billing.billingPeriod:
-      title: billingPeriod
-      enum:
-      - current
-      - last
-      - unknownFutureValue
-      type: string
-    microsoft.graph.partners.billing.billing:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: billing
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          manifests:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.partners.billing.manifest'
-            description: Represents metadata for the exported data.
-            x-ms-navigationProperty: true
-          operations:
+          value:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.partners.billing.operation'
-            description: Represents an operation to export the billing data of a partner.
-            x-ms-navigationProperty: true
-          reconciliation:
-            $ref: '#/components/schemas/microsoft.graph.partners.billing.billingReconciliation'
-          usage:
-            $ref: '#/components/schemas/microsoft.graph.partners.billing.azureUsage'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.partners.billing.billing'
-    microsoft.graph.partners.billing.unbilledUsage:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: unbilledUsage
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.partners.billing.unbilledUsage'
     microsoft.graph.partners.billing.manifest:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -1419,6 +1420,71 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.partners.billing.manifest'
+    microsoft.graph.partners.billing.unbilledUsage:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: unbilledUsage
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.partners.billing.unbilledUsage'
+    microsoft.graph.partners.billing.unbilledReconciliation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: unbilledReconciliation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.partners.billing.unbilledReconciliation'
+    microsoft.graph.partners.billing.billingPeriod:
+      title: billingPeriod
+      enum:
+      - current
+      - last
+      - unknownFutureValue
+      type: string
+    microsoft.graph.longRunningOperationStatus:
+      title: longRunningOperationStatus
+      enum:
+      - notStarted
+      - running
+      - succeeded
+      - failed
+      - unknownFutureValue
+      type: string
+    microsoft.graph.partners.billing.billing:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: billing
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          manifests:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.partners.billing.manifest'
+            description: Represents metadata for the exported data.
+            x-ms-navigationProperty: true
+          operations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.partners.billing.operation'
+            description: Represents an operation to export the billing data of a partner.
+            x-ms-navigationProperty: true
+          reconciliation:
+            $ref: '#/components/schemas/microsoft.graph.partners.billing.billingReconciliation'
+          usage:
+            $ref: '#/components/schemas/microsoft.graph.partners.billing.azureUsage'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.partners.billing.billing'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -1426,78 +1492,24 @@ components:
       type: object
       properties:
         request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Request Id as tracked internally by the service
-          nullable: true
         client-request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Client request Id as sent by the client application.
-          nullable: true
         date:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
+          type:
+          - string
+          - 'null'
           description: Date when the error occured.
           format: date-time
-          nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.partners:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: partners
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          billing:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.partners.billing.billing'
-            - type: object
-              nullable: true
-            description: Represents billing details for billed and unbilled data.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.partners'
-    microsoft.graph.partners.billing.operation:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: operation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The start time of the operation. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          lastActionDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The time of the last action of the operation. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.longRunningOperationStatus'
-            - type: object
-              nullable: true
-            description: 'The status of the operation. The possible values are: notStarted, running, completed, failed, unknownFutureValue.'
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.partners.billing.exportSuccessOperation': '#/components/schemas/microsoft.graph.partners.billing.exportSuccessOperation'
-            '#microsoft.graph.partners.billing.failedOperation': '#/components/schemas/microsoft.graph.partners.billing.failedOperation'
-            '#microsoft.graph.partners.billing.runningOperation': '#/components/schemas/microsoft.graph.partners.billing.runningOperation'
-    microsoft.graph.partners.billing.attributeSet:
-      title: attributeSet
-      enum:
-      - full
-      - basic
-      - unknownFutureValue
-      type: string
     microsoft.graph.partners.billing.manifestCollectionResponse:
       title: Collection of manifest
       type: object
@@ -1521,88 +1533,15 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.partners.billing.blob:
-      title: blob
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        name:
-          type: string
-          description: The blob name.
-        partitionValue:
-          type: string
-          description: The partition that contains the file. A large partition is split into multiple files, each with the same partitionValue.
-        '@odata.type':
-          type: string
-    microsoft.graph.partners.billing.unbilledReconciliation:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: unbilledReconciliation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.partners.billing.unbilledReconciliation'
-    microsoft.graph.longRunningOperationStatus:
-      title: longRunningOperationStatus
-      enum:
-      - notStarted
-      - running
-      - succeeded
-      - failed
-      - unknownFutureValue
-      type: string
-    microsoft.graph.partners.billing.billedUsage:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: billedUsage
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.partners.billing.billedUsage'
-    microsoft.graph.partners.billing.operationCollectionResponse:
-      title: Collection of operation
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.partners.billing.operation'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -2672,6 +2611,83 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.partners.billing.attributeSet:
+      title: attributeSet
+      enum:
+      - full
+      - basic
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.partners.billing.billingReconciliation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: billingReconciliation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          billed:
+            $ref: '#/components/schemas/microsoft.graph.partners.billing.billedReconciliation'
+          unbilled:
+            $ref: '#/components/schemas/microsoft.graph.partners.billing.unbilledReconciliation'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.partners.billing.billingReconciliation'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.partners.billing.blob:
+      title: blob
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        name:
+          type: string
+          description: The blob name.
+        partitionValue:
+          type: string
+          description: The partition that contains the file. A large partition is split into multiple files, each with the same partitionValue.
+        '@odata.type':
+          type: string
+    microsoft.graph.partners.billing.billedUsage:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: billedUsage
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.partners.billing.billedUsage'
   responses:
     microsoft.graph.partners.billing.manifestCollectionResponse:
       description: Retrieved collection
@@ -2679,12 +2695,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.partners.billing.manifestCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
     microsoft.graph.partners.billing.operationCollectionResponse:
       description: Retrieved collection
       content:
@@ -2697,6 +2707,12 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/ODataCountResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   parameters:
     filter:
       name: $filter
@@ -2706,6 +2722,31 @@ components:
       explode: false
       schema:
         type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     top:
       name: $top
       in: query
@@ -2716,28 +2757,3 @@ components:
         minimum: 0
         type: integer
       example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string

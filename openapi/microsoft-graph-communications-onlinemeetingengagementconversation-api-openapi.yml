@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Communications.online Meeting Engagement Conversation API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: communications.onlineMeetingEngagementConversation
+  x-ms-docs-toc-type: page
 paths:
   /communications/onlineMeetingConversations:
     description: Provides operations to manage the onlineMeetingConversations property of the microsoft.graph.cloudCommunications entity.
@@ -76,7 +70,7 @@ paths:
     post:
       tags:
       - communications.onlineMeetingEngagementConversation
-      summary: Microsoft Graph Create new navigation property to onlineMeetingConversations for communications
+      summary: Microsoft Graph Create new navigation property to onlineMeetingConversations…
       operationId: communications.CreateOnlineMeetingConversations
       requestBody:
         description: New navigation property
@@ -149,7 +143,7 @@ paths:
     patch:
       tags:
       - communications.onlineMeetingEngagementConversation
-      summary: Microsoft Graph Update the navigation property onlineMeetingConversations in communications
+      summary: Microsoft Graph Update the navigation property onlineMeetingConversations in…
       operationId: communications.UpdateOnlineMeetingConversations
       requestBody:
         description: New navigation property values
@@ -173,7 +167,7 @@ paths:
     delete:
       tags:
       - communications.onlineMeetingEngagementConversation
-      summary: Microsoft Graph Delete navigation property onlineMeetingConversations for communications
+      summary: Microsoft Graph Delete navigation property onlineMeetingConversations for…
       operationId: communications.DeleteOnlineMeetingConversations
       parameters:
       - name: If-Match
@@ -1456,7 +1450,7 @@ paths:
     get:
       tags:
       - communications.onlineMeetingEngagementConversation
-      summary: Microsoft Graph Get attendeeReport for the navigation property onlineMeeting from communications
+      summary: Microsoft Graph Get attendeeReport for the navigation property onlineMeeting…
       description: The content stream of the attendee report of a Microsoft Teams live event. Read-only.
       operationId: communications.onlineMeetingConversations.GetOnlineMeetingAttendeeReport
       responses:
@@ -1474,7 +1468,7 @@ paths:
     put:
       tags:
       - communications.onlineMeetingEngagementConversation
-      summary: Microsoft Graph Update attendeeReport for the navigation property onlineMeeting in communications
+      summary: Microsoft Graph Update attendeeReport for the navigation property onlineMeeting…
       description: The content stream of the attendee report of a Microsoft Teams live event. Read-only.
       operationId: communications.onlineMeetingConversations.UpdateOnlineMeetingAttendeeReport
       requestBody:
@@ -1495,7 +1489,7 @@ paths:
     delete:
       tags:
       - communications.onlineMeetingEngagementConversation
-      summary: Microsoft Graph Delete attendeeReport for the navigation property onlineMeeting in communications
+      summary: Microsoft Graph Delete attendeeReport for the navigation property onlineMeeting…
       description: The content stream of the attendee report of a Microsoft Teams live event. Read-only.
       operationId: communications.onlineMeetingConversations.DeleteOnlineMeetingAttendeeReport
       parameters:
@@ -2522,280 +2516,173 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    microsoft.graph.onlineMeetingBase:
+    microsoft.graph.chatInfo:
+      title: chatInfo
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        messageId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of a message in a Microsoft Teams channel.
+        replyChainMessageId:
+          type:
+          - string
+          - 'null'
+          description: The ID of the reply message.
+        threadId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier for a thread in Microsoft Teams.
+        '@odata.type':
+          type: string
+    microsoft.graph.onlineMeetingPresenters:
+      title: onlineMeetingPresenters
+      enum:
+      - everyone
+      - organization
+      - roleIsPresenter
+      - organizer
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.engagementConversationMessage:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: onlineMeetingBase
+      - title: engagementConversationMessage
         required:
         - '@odata.type'
         type: object
         properties:
-          allowAttendeeToEnableCamera:
-            type: boolean
-            description: Indicates whether attendees can turn on their camera.
-            nullable: true
-          allowAttendeeToEnableMic:
-            type: boolean
-            description: Indicates whether attendees can turn on their microphone.
-            nullable: true
-          allowBreakoutRooms:
-            type: boolean
-            description: Indicates whether breakout rooms are enabled for the meeting.
-            nullable: true
-          allowCopyingAndSharingMeetingContent:
-            type: boolean
-            description: Indicates whether the ability to copy and share meeting content is enabled for the meeting.
-            nullable: true
-          allowedLobbyAdmitters:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.allowedLobbyAdmitterRoles'
-            - type: object
-              nullable: true
-            description: 'Specifies the users who can admit from the lobby. The possible values are: organizerAndCoOrganizersAndPresenters, organizerAndCoOrganizers, unknownFutureValue.'
-          allowedPresenters:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.onlineMeetingPresenters'
-            - type: object
-              nullable: true
-            description: 'Specifies who can be a presenter in a meeting. The possible values are: everyone, organization, roleIsPresenter, organizer, unknownFutureValue. Inherited from onlineMeetingBase.'
-          allowLiveShare:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.meetingLiveShareOptions'
-            - type: object
-              nullable: true
-            description: 'Indicates whether live share is enabled for the meeting. The possible values are: enabled, disabled, unknownFutureValue.'
-          allowMeetingChat:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.meetingChatMode'
-            - type: object
-              nullable: true
-            description: Specifies the mode of the meeting chat.
-          allowParticipantsToChangeName:
-            type: boolean
-            description: Specifies if participants are allowed to rename themselves in an instance of the meeting.
-            nullable: true
-          allowPowerPointSharing:
-            type: boolean
-            description: Indicates whether PowerPoint live is enabled for the meeting.
-            nullable: true
-          allowRecording:
-            type: boolean
-            description: Indicates whether recording is enabled for the meeting.
-            nullable: true
-          allowTeamworkReactions:
-            type: boolean
-            description: Indicates if Teams reactions are enabled for the meeting.
-            nullable: true
-          allowTranscription:
-            type: boolean
-            description: Indicates whether transcription is enabled for the meeting.
-            nullable: true
-          allowWhiteboard:
-            type: boolean
-            description: Indicates whether whiteboard is enabled for the meeting.
-            nullable: true
-          audioConferencing:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.audioConferencing'
-            - type: object
-              nullable: true
-            description: The phone access (dial-in) information for an online meeting. Read-only.
-          chatInfo:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.chatInfo'
-            - type: object
-              nullable: true
-            description: The chat information associated with this online meeting.
-          chatRestrictions:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.chatRestrictions'
-            - type: object
-              nullable: true
-            description: Specifies the configuration settings for meeting chat restrictions.
-          isEndToEndEncryptionEnabled:
-            type: boolean
-            description: Indicates whether end-to-end encryption (E2EE) is enabled for the online meeting.
-            nullable: true
-          isEntryExitAnnounced:
-            type: boolean
-            description: Indicates whether to announce when callers join or leave.
-            nullable: true
-          joinInformation:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.itemBody'
-            - type: object
-              nullable: true
-            description: The join information in the language and locale variant specified in 'Accept-Language' request HTTP header. Read-only.
-          joinMeetingIdSettings:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.joinMeetingIdSettings'
-            - type: object
-              nullable: true
-            description: Specifies the joinMeetingId, the meeting passcode, and the requirement for the passcode. Once an onlineMeeting is created, the joinMeetingIdSettings can't be modified. To make any changes to this property, you must cancel this meeting and create a new one.
-          joinWebUrl:
+          body:
+            $ref: '#/components/schemas/microsoft.graph.itemBody'
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
             type: string
-            description: The join URL of the online meeting. Read-only.
-            nullable: true
-          lobbyBypassSettings:
+            description: The date and time when the message was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            readOnly: true
+          creationMode:
+            $ref: '#/components/schemas/microsoft.graph.engagementCreationMode'
+          from:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.lobbyBypassSettings'
-            - type: object
-              nullable: true
-            description: Specifies which participants can bypass the meeting lobby.
-          recordAutomatically:
-            type: boolean
-            description: Indicates whether to record the meeting automatically.
-            nullable: true
-          shareMeetingChatHistoryDefault:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.meetingChatHistoryDefaultMode'
-            - type: object
-              nullable: true
-            description: 'Specifies whether meeting chat history is shared with participants.  The possible values are: all, none, unknownFutureValue.'
-          subject:
+            - $ref: '#/components/schemas/microsoft.graph.engagementIdentitySet'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the sender of the message.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
             type: string
-            description: The subject of the online meeting.
-            nullable: true
-          videoTeleconferenceId:
-            type: string
-            description: The video teleconferencing ID. Read-only.
-            nullable: true
-          watermarkProtection:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.watermarkProtectionValues'
-            - type: object
-              nullable: true
-            description: Specifies whether the client application should apply a watermark to a content type.
-          attendanceReports:
+            description: The date and time when message was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+            readOnly: true
+          replyToId:
+            type:
+            - string
+            - 'null'
+            description: The ID of the parent message to which this message is a reply, if applicable.
+          conversation:
+            $ref: '#/components/schemas/microsoft.graph.engagementConversation'
+          reactions:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.meetingAttendanceReport'
-            description: The attendance reports of an online meeting. Read-only.
+              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessageReaction'
+            description: A collection of reactions (such as like and smile) that users have applied to this message.
+            x-ms-navigationProperty: true
+          replies:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
+            description: A collection of messages that are replies to this message and form a threaded discussion.
+            x-ms-navigationProperty: true
+          replyTo:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
+            - type:
+              - object
+              - 'null'
+            description: The parent message to which this message is a reply, if it is part of a reply chain.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
+        description: A Viva Engage conversation message.
         discriminator:
           propertyName: '@odata.type'
           mapping:
-            '#microsoft.graph.onlineMeeting': '#/components/schemas/microsoft.graph.onlineMeeting'
-            '#microsoft.graph.virtualEventSession': '#/components/schemas/microsoft.graph.virtualEventSession'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.joinMeetingIdSettings:
-      title: joinMeetingIdSettings
+            '#microsoft.graph.engagementConversationDiscussionMessage': '#/components/schemas/microsoft.graph.engagementConversationDiscussionMessage'
+            '#microsoft.graph.engagementConversationQuestionMessage': '#/components/schemas/microsoft.graph.engagementConversationQuestionMessage'
+            '#microsoft.graph.engagementConversationSystemMessage': '#/components/schemas/microsoft.graph.engagementConversationSystemMessage'
+    microsoft.graph.lobbyBypassSettings:
+      title: lobbyBypassSettings
       required:
       - '@odata.type'
       type: object
       properties:
-        isPasscodeRequired:
-          type: boolean
-          description: Indicates whether a passcode is required to join a meeting when using joinMeetingId. Optional.
-          nullable: true
-        joinMeetingId:
-          type: string
-          description: The meeting ID to be used to join a meeting. Optional. Read-only.
-          nullable: true
-        passcode:
-          type: string
-          description: The passcode to join a meeting.  Optional. Read-only.
-          nullable: true
+        isDialInBypassEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Specifies whether or not to always let dial-in callers bypass the lobby. Optional.
+        scope:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.lobbyBypassScope'
+          - type:
+            - object
+            - 'null'
+          description: Specifies the type of participants that are automatically admitted into a meeting, bypassing the lobby. Optional.
         '@odata.type':
           type: string
-    microsoft.graph.attendanceRecord:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: attendanceRecord
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          attendanceIntervals:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.attendanceInterval'
-            description: List of time periods between joining and leaving a meeting.
-          emailAddress:
-            type: string
-            description: Email address of the user associated with this attendance record.
-            nullable: true
-          externalRegistrationInformation:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.virtualEventExternalRegistrationInformation'
-            - type: object
-              nullable: true
-            description: The external information for a virtualEventRegistration.
-          identity:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identity'
-            - type: object
-              nullable: true
-            description: 'The identity of the user associated with this attendance record. The specific type is one of the following derived types of identity, depending on the user type: communicationsUserIdentity, azureCommunicationServicesUserIdentity.'
-          registrationId:
-            type: string
-            description: Unique identifier of a virtualEventRegistration that is available to all participants registered for the virtualEventWebinar.
-            nullable: true
-          role:
-            type: string
-            description: 'Role of the attendee. The possible values are: None, Attendee, Presenter, and Organizer.'
-            nullable: true
-          totalAttendanceInSeconds:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Total duration of the attendances in seconds.
-            format: int32
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.attendanceRecord'
-    microsoft.graph.broadcastMeetingSettings:
-      title: broadcastMeetingSettings
+    microsoft.graph.bodyType:
+      title: bodyType
+      enum:
+      - text
+      - html
+      type: string
+    microsoft.graph.broadcastMeetingAudience:
+      title: broadcastMeetingAudience
+      enum:
+      - roleIsAttendee
+      - organization
+      - everyone
+      - unknownFutureValue
+      type: string
+    microsoft.graph.onlineMeetingRole:
+      title: onlineMeetingRole
+      enum:
+      - attendee
+      - presenter
+      - unknownFutureValue
+      - producer
+      - coorganizer
+      type: string
+    microsoft.graph.itemBody:
+      title: itemBody
       required:
       - '@odata.type'
       type: object
       properties:
-        allowedAudience:
+        content:
+          type:
+          - string
+          - 'null'
+          description: The content of the item.
+        contentType:
           anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.broadcastMeetingAudience'
-          - type: object
-            nullable: true
-          description: Defines who can join the Teams live event. Possible values are listed in the following table.
-        captions:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.broadcastMeetingCaptionSettings'
-          - type: object
-            nullable: true
-          description: Caption settings of a Teams live event.
-        isAttendeeReportEnabled:
-          type: boolean
-          description: Indicates whether attendee report is enabled for this Teams live event. Default value is false.
-          nullable: true
-        isQuestionAndAnswerEnabled:
-          type: boolean
-          description: Indicates whether Q&A is enabled for this Teams live event. Default value is false.
-          nullable: true
-        isRecordingEnabled:
-          type: boolean
-          description: Indicates whether recording is enabled for this Teams live event. Default value is false.
-          nullable: true
-        isVideoOnDemandEnabled:
-          type: boolean
-          description: Indicates whether video on demand is enabled for this Teams live event. Default value is false.
-          nullable: true
+          - $ref: '#/components/schemas/microsoft.graph.bodyType'
+          - type:
+            - object
+            - 'null'
+          description: The type of the content. Possible values are text and html.
         '@odata.type':
           type: string
     microsoft.graph.virtualEventExternalRegistrationInformation:
@@ -2805,54 +2692,49 @@ components:
       type: object
       properties:
         referrer:
-          type: string
+          type:
+          - string
+          - 'null'
           description: A URL or string that represents the location from which the registrant registered. Optional.
-          nullable: true
         registrationId:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The identifier for a virtualEventExternalRegistrationInformation object. Optional. If set, the maximum supported length is 256 characters.
-          nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.identity:
-      title: identity
+    microsoft.graph.broadcastMeetingCaptionSettings:
+      title: broadcastMeetingCaptionSettings
       required:
       - '@odata.type'
       type: object
       properties:
-        displayName:
-          type: string
-          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
-          nullable: true
-        id:
-          type: string
-          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
-          nullable: true
+        isCaptionEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether captions are enabled for this Teams live event.
+        spokenLanguage:
+          type:
+          - string
+          - 'null'
+          description: The spoken language.
+        translationLanguages:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+          description: The translation languages (choose up to 6).
         '@odata.type':
           type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
-          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
-          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
-          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
-          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
-          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
-          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
-          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
-          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
-          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
-          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
-          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
-          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
-          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
-          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
-          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
-          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
-          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
-          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
-          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
+    microsoft.graph.meetingLiveShareOptions:
+      title: meetingLiveShareOptions
+      enum:
+      - enabled
+      - disabled
+      - unknownFutureValue
+      type: string
     microsoft.graph.attendanceInterval:
       title: attendanceInterval
       required:
@@ -2862,240 +2744,27 @@ components:
         durationInSeconds:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type:
+          - number
+          - 'null'
           description: Duration of the meeting interval in seconds; that is, the difference between joinDateTime and leaveDateTime.
           format: int32
-          nullable: true
         joinDateTime:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
+          type:
+          - string
+          - 'null'
           description: The time the attendee joined in UTC.
           format: date-time
-          nullable: true
         leaveDateTime:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
+          type:
+          - string
+          - 'null'
           description: The time the attendee left in UTC.
           format: date-time
-          nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.onlineMeetingEngagementConversation:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.engagementConversation'
-      - title: onlineMeetingEngagementConversation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          moderationState:
-            $ref: '#/components/schemas/microsoft.graph.engagementConversationModerationState'
-          onlineMeetingId:
-            type: string
-            description: The unique identifier of the online meeting associated with this conversation. The online meeting ID links the conversation to a specific meeting instance.
-          organizer:
-            $ref: '#/components/schemas/microsoft.graph.engagementIdentitySet'
-          upvoteCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The number of upvotes the conversation received.
-            format: int32
-            readOnly: true
-          onlineMeeting:
-            $ref: '#/components/schemas/microsoft.graph.onlineMeeting'
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.onlineMeetingEngagementConversation'
-        description: A conversation for Teams QA online meeting.
-      x-ms-discriminator-value: '#microsoft.graph.onlineMeetingEngagementConversation'
-    microsoft.graph.engagementConversation:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: engagementConversation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          creationMode:
-            $ref: '#/components/schemas/microsoft.graph.engagementCreationMode'
-          starterId:
-            type: string
-            description: The unique ID of the first message in a Viva Engage conversation.
-          messages:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
-            description: The messages in a Viva Engage conversation.
-            x-ms-navigationProperty: true
-          starter:
-            $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
-          '@odata.type':
-            type: string
-        description: Represents a conversation in Viva Engage.
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.onlineMeetingEngagementConversation': '#/components/schemas/microsoft.graph.onlineMeetingEngagementConversation'
-    microsoft.graph.itemBody:
-      title: itemBody
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        content:
-          type: string
-          description: The content of the item.
-          nullable: true
-        contentType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.bodyType'
-          - type: object
-            nullable: true
-          description: The type of the content. Possible values are text and html.
-        '@odata.type':
-          type: string
-    microsoft.graph.engagementConversationModerationState:
-      title: engagementConversationModerationState
-      enum:
-      - published
-      - pendingReview
-      - dismissed
-      - unknownFutureValue
-      type: string
-      description: Represents the moderation state of an Engage conversation message.
-      x-ms-enum:
-        name: engagementConversationModerationState
-        modelAsString: false
-        values:
-        - value: published
-          description: The content is published.
-          name: published
-        - value: pendingReview
-          description: The content is pending review by a moderator.
-          name: pendingReview
-        - value: dismissed
-          description: he content has been rejected by a moderator.
-          name: dismissed
-        - value: unknownFutureValue
-          description: A marker value for members added after the release of this API.
-          name: unknownFutureValue
-    microsoft.graph.callTranscript:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: callTranscript
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          callId:
-            type: string
-            description: The unique identifier for the call that is related to this transcript. Read-only.
-            nullable: true
-          content:
-            type: string
-            description: The content of the transcript. Read-only.
-            format: base64url
-            nullable: true
-          contentCorrelationId:
-            type: string
-            description: The unique identifier that links the transcript with its corresponding recording. Read-only.
-            nullable: true
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time at which the transcript was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
-            format: date-time
-            nullable: true
-          endDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time at which the transcription ends. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
-            format: date-time
-            nullable: true
-          meetingId:
-            type: string
-            description: The unique identifier of the online meeting related to this transcript. Read-only.
-            nullable: true
-          meetingOrganizer:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
-            description: The identity information of the organizer of the onlineMeeting related to this transcript. Read-only.
-          metadataContent:
-            type: string
-            description: The time-aligned metadata of the utterances in the transcript. Read-only.
-            format: base64url
-            nullable: true
-          transcriptContentUrl:
-            type: string
-            description: The URL that can be used to access the content of the transcript. Read-only.
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.callTranscript'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.engagementCreationMode:
-      title: engagementCreationMode
-      enum:
-      - none
-      - migration
-      - unknownFutureValue
-      type: string
-      description: Indicates that the resource is in migration state and is currently being used for migration purposes.
-      x-ms-enum:
-        name: engagementCreationMode
-        modelAsString: false
-        values:
-        - value: none
-          description: Unspecified creation mode.
-          name: none
-        - value: migration
-          description: Creation is a migration.
-          name: migration
-        - value: unknownFutureValue
-          description: A marker value for members added after the release of this API.
-          name: unknownFutureValue
-    microsoft.graph.allowedLobbyAdmitterRoles:
-      title: allowedLobbyAdmitterRoles
-      enum:
-      - organizerAndCoOrganizersAndPresenters
-      - organizerAndCoOrganizers
-      - unknownFutureValue
-      type: string
     microsoft.graph.engagementConversationMessageReactionType:
       title: engagementConversationMessageReactionType
       enum:
@@ -3229,34 +2898,84 @@ components:
         - value: unknownFutureValue
           description: A marker value for members added after the release of this API.
           name: unknownFutureValue
-    microsoft.graph.meetingParticipantInfo:
-      title: meetingParticipantInfo
+    microsoft.graph.onlineMeetingEngagementConversationCollectionResponse:
+      title: Collection of onlineMeetingEngagementConversation
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.onlineMeetingEngagementConversation'
+    microsoft.graph.broadcastMeetingSettings:
+      title: broadcastMeetingSettings
       required:
       - '@odata.type'
       type: object
       properties:
-        identity:
+        allowedAudience:
           anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identitySet'
-          - type: object
-            nullable: true
-          description: Identity information of the participant.
-        role:
+          - $ref: '#/components/schemas/microsoft.graph.broadcastMeetingAudience'
+          - type:
+            - object
+            - 'null'
+          description: Defines who can join the Teams live event. Possible values are listed in the following table.
+        captions:
           anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.onlineMeetingRole'
-          - type: object
-            nullable: true
-          description: Specifies the participant's role in the meeting.
-        upn:
-          type: string
-          description: User principal name of the participant.
-          nullable: true
+          - $ref: '#/components/schemas/microsoft.graph.broadcastMeetingCaptionSettings'
+          - type:
+            - object
+            - 'null'
+          description: Caption settings of a Teams live event.
+        isAttendeeReportEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether attendee report is enabled for this Teams live event. Default value is false.
+        isQuestionAndAnswerEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether Q&A is enabled for this Teams live event. Default value is false.
+        isRecordingEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether recording is enabled for this Teams live event. Default value is false.
+        isVideoOnDemandEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether video on demand is enabled for this Teams live event. Default value is false.
         '@odata.type':
           type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.virtualEventPresenterInfo': '#/components/schemas/microsoft.graph.virtualEventPresenterInfo'
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
     microsoft.graph.callRecording:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -3266,89 +2985,83 @@ components:
         type: object
         properties:
           callId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The unique identifier for the call that is related to this recording. Read-only.
-            nullable: true
           content:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The content of the recording. Read-only.
             format: base64url
-            nullable: true
           contentCorrelationId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The unique identifier that links the transcript with its corresponding recording. Read-only.
-            nullable: true
           createdDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date and time at which the recording was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
             format: date-time
-            nullable: true
           endDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date and time at which the recording ends. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
             format: date-time
-            nullable: true
           meetingId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The unique identifier of the onlineMeeting related to this recording. Read-only.
-            nullable: true
           meetingOrganizer:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: The identity information of the organizer of the onlineMeeting related to this recording. Read-only.
           recordingContentUrl:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The URL that can be used to access the content of the recording. Read-only.
-            nullable: true
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.callRecording'
-    microsoft.graph.engagementIdentitySet:
+    microsoft.graph.engagementConversation:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.identitySet'
-      - title: engagementIdentitySet
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: engagementConversation
         required:
         - '@odata.type'
         type: object
         properties:
-          audience:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identity'
-            - type: object
-              nullable: true
-            description: Optional. The audience associated with this action.
-          group:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identity'
-            - type: object
-              nullable: true
-            description: Optional. The group associated with this action.
-          '@odata.type':
+          creationMode:
+            $ref: '#/components/schemas/microsoft.graph.engagementCreationMode'
+          starterId:
             type: string
-            default: '#microsoft.graph.engagementIdentitySet'
-        description: The Viva Engage identities.
-      x-ms-discriminator-value: '#microsoft.graph.engagementIdentitySet'
-    microsoft.graph.engagementConversationMessageCollectionResponse:
-      title: Collection of engagementConversationMessage
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
+            description: The unique ID of the first message in a Viva Engage conversation.
+          messages:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
-    microsoft.graph.bodyType:
-      title: bodyType
-      enum:
-      - text
-      - html
-      type: string
+            description: The messages in a Viva Engage conversation.
+            x-ms-navigationProperty: true
+          starter:
+            $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
+          '@odata.type':
+            type: string
+        description: Represents a conversation in Viva Engage.
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.onlineMeetingEngagementConversation': '#/components/schemas/microsoft.graph.onlineMeetingEngagementConversation'
     microsoft.graph.audioConferencing:
       title: audioConferencing
       required:
@@ -3356,42 +3069,169 @@ components:
       type: object
       properties:
         conferenceId:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The conference id of the online meeting.
-          nullable: true
         dialinUrl:
-          type: string
+          type:
+          - string
+          - 'null'
           description: A URL to the externally-accessible web page that contains dial-in information.
-          nullable: true
         tollFreeNumber:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The toll-free number that connects to the Audio Conference Provider.
-          nullable: true
         tollFreeNumbers:
           type: array
           items:
-            type: string
-            nullable: true
+            type:
+            - string
+            - 'null'
           description: List of toll-free numbers that are displayed in the meeting invite.
         tollNumber:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The toll number that connects to the Audio Conference Provider.
-          nullable: true
         tollNumbers:
           type: array
           items:
-            type: string
-            nullable: true
+            type:
+            - string
+            - 'null'
           description: List of toll numbers that are displayed in the meeting invite.
         '@odata.type':
           type: string
-    microsoft.graph.meetingLiveShareOptions:
-      title: meetingLiveShareOptions
+    microsoft.graph.engagementConversationModerationState:
+      title: engagementConversationModerationState
       enum:
-      - enabled
-      - disabled
+      - published
+      - pendingReview
+      - dismissed
       - unknownFutureValue
       type: string
+      description: Represents the moderation state of an Engage conversation message.
+      x-ms-enum:
+        name: engagementConversationModerationState
+        modelAsString: false
+        values:
+        - value: published
+          description: The content is published.
+          name: published
+        - value: pendingReview
+          description: The content is pending review by a moderator.
+          name: pendingReview
+        - value: dismissed
+          description: he content has been rejected by a moderator.
+          name: dismissed
+        - value: unknownFutureValue
+          description: A marker value for members added after the release of this API.
+          name: unknownFutureValue
+    microsoft.graph.joinMeetingIdSettings:
+      title: joinMeetingIdSettings
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        isPasscodeRequired:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether a passcode is required to join a meeting when using joinMeetingId. Optional.
+        joinMeetingId:
+          type:
+          - string
+          - 'null'
+          description: The meeting ID to be used to join a meeting. Optional. Read-only.
+        passcode:
+          type:
+          - string
+          - 'null'
+          description: The passcode to join a meeting.  Optional. Read-only.
+        '@odata.type':
+          type: string
+    microsoft.graph.identity:
+      title: identity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
+        id:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
+          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
+          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
+          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
+          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
+          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
+          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
+          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
+          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
+          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
+          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
+          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
+          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
+          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
+          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
+          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
+          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
+          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
+          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
+          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
+    microsoft.graph.identitySet:
+      title: identitySet
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        application:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type:
+            - object
+            - 'null'
+          description: Optional. The application associated with this action.
+        device:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type:
+            - object
+            - 'null'
+          description: Optional. The device associated with this action.
+        user:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type:
+            - object
+            - 'null'
+          description: Optional. The user associated with this action.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.aiInteractionMentionedIdentitySet': '#/components/schemas/microsoft.graph.aiInteractionMentionedIdentitySet'
+          '#microsoft.graph.chatMessageFromIdentitySet': '#/components/schemas/microsoft.graph.chatMessageFromIdentitySet'
+          '#microsoft.graph.chatMessageMentionedIdentitySet': '#/components/schemas/microsoft.graph.chatMessageMentionedIdentitySet'
+          '#microsoft.graph.chatMessageReactionIdentitySet': '#/components/schemas/microsoft.graph.chatMessageReactionIdentitySet'
+          '#microsoft.graph.communicationsIdentitySet': '#/components/schemas/microsoft.graph.communicationsIdentitySet'
+          '#microsoft.graph.engagementIdentitySet': '#/components/schemas/microsoft.graph.engagementIdentitySet'
+          '#microsoft.graph.sharePointIdentitySet': '#/components/schemas/microsoft.graph.sharePointIdentitySet'
     microsoft.graph.engagementConversationMessageReaction:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -3414,70 +3254,6 @@ components:
             type: string
         description: A reaction to a conversation message.
       x-ms-discriminator-value: '#microsoft.graph.engagementConversationMessageReaction'
-    microsoft.graph.meetingAttendanceReport:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: meetingAttendanceReport
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          externalEventInformation:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.virtualEventExternalInformation'
-            description: The external information of a virtual event. Returned only for event organizers or coorganizers. Read-only.
-          meetingEndDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: UTC time when the meeting ended. Read-only.
-            format: date-time
-            nullable: true
-          meetingStartDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: UTC time when the meeting started. Read-only.
-            format: date-time
-            nullable: true
-          totalParticipantCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Total number of participants. Read-only.
-            format: int32
-            nullable: true
-          attendanceRecords:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.attendanceRecord'
-            description: List of attendance records of an attendance report. Read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.meetingAttendanceReport'
-    microsoft.graph.chatRestrictions:
-      title: chatRestrictions
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        allowTextOnly:
-          type: boolean
-          description: Indicates whether only text is allowed in the meeting chat. Optional.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.onlineMeetingEngagementConversationCollectionResponse:
-      title: Collection of onlineMeetingEngagementConversation
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.onlineMeetingEngagementConversation'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -3490,193 +3266,200 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.meetingParticipants:
-      title: meetingParticipants
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        attendees:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.meetingParticipantInfo'
-          description: Information about the meeting attendees.
-        organizer:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.meetingParticipantInfo'
-          - type: object
-            nullable: true
-          description: Information about the meeting organizer.
-        '@odata.type':
-          type: string
-    microsoft.graph.engagementConversationMessageReactionCollectionResponse:
-      title: Collection of engagementConversationMessageReaction
-      type: object
+    microsoft.graph.onlineMeetingBase:
       allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessageReaction'
-    microsoft.graph.chatInfo:
-      title: chatInfo
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        messageId:
-          type: string
-          description: The unique identifier of a message in a Microsoft Teams channel.
-          nullable: true
-        replyChainMessageId:
-          type: string
-          description: The ID of the reply message.
-          nullable: true
-        threadId:
-          type: string
-          description: The unique identifier for a thread in Microsoft Teams.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.lobbyBypassScope:
-      title: lobbyBypassScope
-      enum:
-      - organizer
-      - organization
-      - organizationAndFederated
-      - everyone
-      - unknownFutureValue
-      - invited
-      - organizationExcludingGuests
-      type: string
-    microsoft.graph.onlineMeeting:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.onlineMeetingBase'
-      - title: onlineMeeting
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: onlineMeetingBase
         required:
         - '@odata.type'
         type: object
         properties:
-          attendeeReport:
-            type: string
-            description: The content stream of the attendee report of a Microsoft Teams live event. Read-only.
-            format: base64url
-            nullable: true
-          broadcastSettings:
+          allowAttendeeToEnableCamera:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether attendees can turn on their camera.
+          allowAttendeeToEnableMic:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether attendees can turn on their microphone.
+          allowBreakoutRooms:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether breakout rooms are enabled for the meeting.
+          allowCopyingAndSharingMeetingContent:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the ability to copy and share meeting content is enabled for the meeting.
+          allowedLobbyAdmitters:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.broadcastMeetingSettings'
-            - type: object
-              nullable: true
-            description: Settings related to a live event.
-          creationDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The meeting creation time in UTC. Read-only.
-            format: date-time
-            nullable: true
-          endDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The meeting end time in UTC. Required when you create an online meeting.
-            format: date-time
-            nullable: true
-          externalId:
-            type: string
-            description: The external ID that is a custom identifier. Optional.
-            nullable: true
-          isBroadcast:
-            type: boolean
-            description: Indicates whether this meeting is a Teams live event.
-            nullable: true
-          meetingTemplateId:
-            type: string
-            description: The ID of the meeting template.
-            nullable: true
-          participants:
+            - $ref: '#/components/schemas/microsoft.graph.allowedLobbyAdmitterRoles'
+            - type:
+              - object
+              - 'null'
+            description: 'Specifies the users who can admit from the lobby. The possible values are: organizerAndCoOrganizersAndPresenters, organizerAndCoOrganizers, unknownFutureValue.'
+          allowedPresenters:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.meetingParticipants'
-            - type: object
-              nullable: true
-            description: The participants associated with the online meeting, including the organizer and the attendees.
-          startDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The meeting start time in UTC.
-            format: date-time
-            nullable: true
-          recordings:
+            - $ref: '#/components/schemas/microsoft.graph.onlineMeetingPresenters'
+            - type:
+              - object
+              - 'null'
+            description: 'Specifies who can be a presenter in a meeting. The possible values are: everyone, organization, roleIsPresenter, organizer, unknownFutureValue. Inherited from onlineMeetingBase.'
+          allowLiveShare:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.meetingLiveShareOptions'
+            - type:
+              - object
+              - 'null'
+            description: 'Indicates whether live share is enabled for the meeting. The possible values are: enabled, disabled, unknownFutureValue.'
+          allowMeetingChat:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.meetingChatMode'
+            - type:
+              - object
+              - 'null'
+            description: Specifies the mode of the meeting chat.
+          allowParticipantsToChangeName:
+            type:
+            - boolean
+            - 'null'
+            description: Specifies if participants are allowed to rename themselves in an instance of the meeting.
+          allowPowerPointSharing:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether PowerPoint live is enabled for the meeting.
+          allowRecording:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether recording is enabled for the meeting.
+          allowTeamworkReactions:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates if Teams reactions are enabled for the meeting.
+          allowTranscription:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether transcription is enabled for the meeting.
+          allowWhiteboard:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether whiteboard is enabled for the meeting.
+          audioConferencing:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.audioConferencing'
+            - type:
+              - object
+              - 'null'
+            description: The phone access (dial-in) information for an online meeting. Read-only.
+          chatInfo:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.chatInfo'
+            - type:
+              - object
+              - 'null'
+            description: The chat information associated with this online meeting.
+          chatRestrictions:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.chatRestrictions'
+            - type:
+              - object
+              - 'null'
+            description: Specifies the configuration settings for meeting chat restrictions.
+          isEndToEndEncryptionEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether end-to-end encryption (E2EE) is enabled for the online meeting.
+          isEntryExitAnnounced:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether to announce when callers join or leave.
+          joinInformation:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.itemBody'
+            - type:
+              - object
+              - 'null'
+            description: The join information in the language and locale variant specified in 'Accept-Language' request HTTP header. Read-only.
+          joinMeetingIdSettings:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.joinMeetingIdSettings'
+            - type:
+              - object
+              - 'null'
+            description: Specifies the joinMeetingId, the meeting passcode, and the requirement for the passcode. Once an onlineMeeting is created, the joinMeetingIdSettings can't be modified. To make any changes to this property, you must cancel this meeting and create a new one.
+          joinWebUrl:
+            type:
+            - string
+            - 'null'
+            description: The join URL of the online meeting. Read-only.
+          lobbyBypassSettings:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.lobbyBypassSettings'
+            - type:
+              - object
+              - 'null'
+            description: Specifies which participants can bypass the meeting lobby.
+          recordAutomatically:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether to record the meeting automatically.
+          shareMeetingChatHistoryDefault:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.meetingChatHistoryDefaultMode'
+            - type:
+              - object
+              - 'null'
+            description: 'Specifies whether meeting chat history is shared with participants.  The possible values are: all, none, unknownFutureValue.'
+          subject:
+            type:
+            - string
+            - 'null'
+            description: The subject of the online meeting.
+          videoTeleconferenceId:
+            type:
+            - string
+            - 'null'
+            description: The video teleconferencing ID. Read-only.
+          watermarkProtection:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.watermarkProtectionValues'
+            - type:
+              - object
+              - 'null'
+            description: Specifies whether the client application should apply a watermark to a content type.
+          attendanceReports:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.callRecording'
-            description: The recordings of an online meeting. Read-only.
-            x-ms-navigationProperty: true
-          transcripts:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.callTranscript'
-            description: The transcripts of an online meeting. Read-only.
+              $ref: '#/components/schemas/microsoft.graph.meetingAttendanceReport'
+            description: The attendance reports of an online meeting. Read-only.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-            default: '#microsoft.graph.onlineMeeting'
-        description: Represents a Microsoft online meeting.
-      x-ms-discriminator-value: '#microsoft.graph.onlineMeeting'
-    microsoft.graph.broadcastMeetingCaptionSettings:
-      title: broadcastMeetingCaptionSettings
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        isCaptionEnabled:
-          type: boolean
-          description: Indicates whether captions are enabled for this Teams live event.
-          nullable: true
-        spokenLanguage:
-          type: string
-          description: The spoken language.
-          nullable: true
-        translationLanguages:
-          type: array
-          items:
-            type: string
-            nullable: true
-          description: The translation languages (choose up to 6).
-        '@odata.type':
-          type: string
-    microsoft.graph.virtualEventExternalInformation:
-      title: virtualEventExternalInformation
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        applicationId:
-          type: string
-          description: Identifier of the application that hosts the externalEventId. Read-only.
-          nullable: true
-        externalEventId:
-          type: string
-          description: The identifier for a virtualEventExternalInformation object that associates the virtual event with an event ID in an external application. This association bundles all the information (both supported and not supported in virtualEvent) into one virtual event object. Optional. If set, the maximum supported length is 256 characters.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.meetingChatMode:
-      title: meetingChatMode
-      enum:
-      - enabled
-      - disabled
-      - limited
-      - unknownFutureValue
-      type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.onlineMeeting': '#/components/schemas/microsoft.graph.onlineMeeting'
+            '#microsoft.graph.virtualEventSession': '#/components/schemas/microsoft.graph.virtualEventSession'
     microsoft.graph.watermarkProtectionValues:
       title: watermarkProtectionValues
       required:
@@ -3684,173 +3467,17 @@ components:
       type: object
       properties:
         isEnabledForContentSharing:
-          type: boolean
+          type:
+          - boolean
+          - 'null'
           description: Indicates whether to apply a watermark to any shared content.
-          nullable: true
         isEnabledForVideo:
-          type: boolean
+          type:
+          - boolean
+          - 'null'
           description: Indicates whether to apply a watermark to everyone's video feed.
-          nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.engagementConversationMessage:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: engagementConversationMessage
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          body:
-            $ref: '#/components/schemas/microsoft.graph.itemBody'
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when the message was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            readOnly: true
-          creationMode:
-            $ref: '#/components/schemas/microsoft.graph.engagementCreationMode'
-          from:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.engagementIdentitySet'
-            - type: object
-              nullable: true
-            description: Identity of the sender of the message.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when message was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            readOnly: true
-          replyToId:
-            type: string
-            description: The ID of the parent message to which this message is a reply, if applicable.
-            nullable: true
-          conversation:
-            $ref: '#/components/schemas/microsoft.graph.engagementConversation'
-          reactions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessageReaction'
-            description: A collection of reactions (such as like and smile) that users have applied to this message.
-            x-ms-navigationProperty: true
-          replies:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
-            description: A collection of messages that are replies to this message and form a threaded discussion.
-            x-ms-navigationProperty: true
-          replyTo:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
-            - type: object
-              nullable: true
-            description: The parent message to which this message is a reply, if it is part of a reply chain.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-        description: A Viva Engage conversation message.
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.engagementConversationDiscussionMessage': '#/components/schemas/microsoft.graph.engagementConversationDiscussionMessage'
-            '#microsoft.graph.engagementConversationQuestionMessage': '#/components/schemas/microsoft.graph.engagementConversationQuestionMessage'
-            '#microsoft.graph.engagementConversationSystemMessage': '#/components/schemas/microsoft.graph.engagementConversationSystemMessage'
-    microsoft.graph.broadcastMeetingAudience:
-      title: broadcastMeetingAudience
-      enum:
-      - roleIsAttendee
-      - organization
-      - everyone
-      - unknownFutureValue
-      type: string
-    microsoft.graph.onlineMeetingPresenters:
-      title: onlineMeetingPresenters
-      enum:
-      - everyone
-      - organization
-      - roleIsPresenter
-      - organizer
-      - unknownFutureValue
-      type: string
-    microsoft.graph.lobbyBypassSettings:
-      title: lobbyBypassSettings
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        isDialInBypassEnabled:
-          type: boolean
-          description: Specifies whether or not to always let dial-in callers bypass the lobby. Optional.
-          nullable: true
-        scope:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.lobbyBypassScope'
-          - type: object
-            nullable: true
-          description: Specifies the type of participants that are automatically admitted into a meeting, bypassing the lobby. Optional.
-        '@odata.type':
-          type: string
-    microsoft.graph.meetingChatHistoryDefaultMode:
-      title: meetingChatHistoryDefaultMode
-      enum:
-      - none
-      - all
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.identitySet:
-      title: identitySet
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        application:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
-          description: Optional. The application associated with this action.
-        device:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
-          description: Optional. The device associated with this action.
-        user:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
-          description: Optional. The user associated with this action.
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.aiInteractionMentionedIdentitySet': '#/components/schemas/microsoft.graph.aiInteractionMentionedIdentitySet'
-          '#microsoft.graph.chatMessageFromIdentitySet': '#/components/schemas/microsoft.graph.chatMessageFromIdentitySet'
-          '#microsoft.graph.chatMessageMentionedIdentitySet': '#/components/schemas/microsoft.graph.chatMessageMentionedIdentitySet'
-          '#microsoft.graph.chatMessageReactionIdentitySet': '#/components/schemas/microsoft.graph.chatMessageReactionIdentitySet'
-          '#microsoft.graph.communicationsIdentitySet': '#/components/schemas/microsoft.graph.communicationsIdentitySet'
-          '#microsoft.graph.engagementIdentitySet': '#/components/schemas/microsoft.graph.engagementIdentitySet'
-          '#microsoft.graph.sharePointIdentitySet': '#/components/schemas/microsoft.graph.sharePointIdentitySet'
-    microsoft.graph.onlineMeetingRole:
-      title: onlineMeetingRole
-      enum:
-      - attendee
-      - presenter
-      - unknownFutureValue
-      - producer
-      - coorganizer
-      type: string
     microsoft.graph.entity:
       title: entity
       required:
@@ -4920,37 +4547,492 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.engagementConversationMessageReactionCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.engagementConversationMessageReactionCollectionResponse'
-    microsoft.graph.onlineMeetingEngagementConversationCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.onlineMeetingEngagementConversationCollectionResponse'
+    microsoft.graph.meetingAttendanceReport:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: meetingAttendanceReport
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          externalEventInformation:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.virtualEventExternalInformation'
+            description: The external information of a virtual event. Returned only for event organizers or coorganizers. Read-only.
+          meetingEndDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: UTC time when the meeting ended. Read-only.
+            format: date-time
+          meetingStartDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: UTC time when the meeting started. Read-only.
+            format: date-time
+          totalParticipantCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Total number of participants. Read-only.
+            format: int32
+          attendanceRecords:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.attendanceRecord'
+            description: List of attendance records of an attendance report. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.meetingAttendanceReport'
+    microsoft.graph.virtualEventExternalInformation:
+      title: virtualEventExternalInformation
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        applicationId:
+          type:
+          - string
+          - 'null'
+          description: Identifier of the application that hosts the externalEventId. Read-only.
+        externalEventId:
+          type:
+          - string
+          - 'null'
+          description: The identifier for a virtualEventExternalInformation object that associates the virtual event with an event ID in an external application. This association bundles all the information (both supported and not supported in virtualEvent) into one virtual event object. Optional. If set, the maximum supported length is 256 characters.
+        '@odata.type':
+          type: string
+    microsoft.graph.engagementCreationMode:
+      title: engagementCreationMode
+      enum:
+      - none
+      - migration
+      - unknownFutureValue
+      type: string
+      description: Indicates that the resource is in migration state and is currently being used for migration purposes.
+      x-ms-enum:
+        name: engagementCreationMode
+        modelAsString: false
+        values:
+        - value: none
+          description: Unspecified creation mode.
+          name: none
+        - value: migration
+          description: Creation is a migration.
+          name: migration
+        - value: unknownFutureValue
+          description: A marker value for members added after the release of this API.
+          name: unknownFutureValue
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.lobbyBypassScope:
+      title: lobbyBypassScope
+      enum:
+      - organizer
+      - organization
+      - organizationAndFederated
+      - everyone
+      - unknownFutureValue
+      - invited
+      - organizationExcludingGuests
+      type: string
+    microsoft.graph.allowedLobbyAdmitterRoles:
+      title: allowedLobbyAdmitterRoles
+      enum:
+      - organizerAndCoOrganizersAndPresenters
+      - organizerAndCoOrganizers
+      - unknownFutureValue
+      type: string
+    microsoft.graph.attendanceRecord:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: attendanceRecord
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          attendanceIntervals:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.attendanceInterval'
+            description: List of time periods between joining and leaving a meeting.
+          emailAddress:
+            type:
+            - string
+            - 'null'
+            description: Email address of the user associated with this attendance record.
+          externalRegistrationInformation:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.virtualEventExternalRegistrationInformation'
+            - type:
+              - object
+              - 'null'
+            description: The external information for a virtualEventRegistration.
+          identity:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identity'
+            - type:
+              - object
+              - 'null'
+            description: 'The identity of the user associated with this attendance record. The specific type is one of the following derived types of identity, depending on the user type: communicationsUserIdentity, azureCommunicationServicesUserIdentity.'
+          registrationId:
+            type:
+            - string
+            - 'null'
+            description: Unique identifier of a virtualEventRegistration that is available to all participants registered for the virtualEventWebinar.
+          role:
+            type:
+            - string
+            - 'null'
+            description: 'Role of the attendee. The possible values are: None, Attendee, Presenter, and Organizer.'
+          totalAttendanceInSeconds:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Total duration of the attendances in seconds.
+            format: int32
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.attendanceRecord'
     ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
+      type: integer
+      format: int32
     microsoft.graph.engagementConversationMessageCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.engagementConversationMessageCollectionResponse'
+      title: Collection of engagementConversationMessage
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessage'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.meetingParticipantInfo:
+      title: meetingParticipantInfo
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        identity:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identitySet'
+          - type:
+            - object
+            - 'null'
+          description: Identity information of the participant.
+        role:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.onlineMeetingRole'
+          - type:
+            - object
+            - 'null'
+          description: Specifies the participant's role in the meeting.
+        upn:
+          type:
+          - string
+          - 'null'
+          description: User principal name of the participant.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.virtualEventPresenterInfo': '#/components/schemas/microsoft.graph.virtualEventPresenterInfo'
+    microsoft.graph.callTranscript:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: callTranscript
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          callId:
+            type:
+            - string
+            - 'null'
+            description: The unique identifier for the call that is related to this transcript. Read-only.
+          content:
+            type:
+            - string
+            - 'null'
+            description: The content of the transcript. Read-only.
+            format: base64url
+          contentCorrelationId:
+            type:
+            - string
+            - 'null'
+            description: The unique identifier that links the transcript with its corresponding recording. Read-only.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time at which the transcript was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
+            format: date-time
+          endDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time at which the transcription ends. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
+            format: date-time
+          meetingId:
+            type:
+            - string
+            - 'null'
+            description: The unique identifier of the online meeting related to this transcript. Read-only.
+          meetingOrganizer:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type:
+              - object
+              - 'null'
+            description: The identity information of the organizer of the onlineMeeting related to this transcript. Read-only.
+          metadataContent:
+            type:
+            - string
+            - 'null'
+            description: The time-aligned metadata of the utterances in the transcript. Read-only.
+            format: base64url
+          transcriptContentUrl:
+            type:
+            - string
+            - 'null'
+            description: The URL that can be used to access the content of the transcript. Read-only.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.callTranscript'
+    microsoft.graph.chatRestrictions:
+      title: chatRestrictions
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        allowTextOnly:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether only text is allowed in the meeting chat. Optional.
+        '@odata.type':
+          type: string
+    microsoft.graph.engagementIdentitySet:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.identitySet'
+      - title: engagementIdentitySet
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          audience:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identity'
+            - type:
+              - object
+              - 'null'
+            description: Optional. The audience associated with this action.
+          group:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identity'
+            - type:
+              - object
+              - 'null'
+            description: Optional. The group associated with this action.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.engagementIdentitySet'
+        description: The Viva Engage identities.
+      x-ms-discriminator-value: '#microsoft.graph.engagementIdentitySet'
+    microsoft.graph.engagementConversationMessageReactionCollectionResponse:
+      title: Collection of engagementConversationMessageReaction
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.engagementConversationMessageReaction'
+    microsoft.graph.onlineMeeting:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.onlineMeetingBase'
+      - title: onlineMeeting
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          attendeeReport:
+            type:
+            - string
+            - 'null'
+            description: The content stream of the attendee report of a Microsoft Teams live event. Read-only.
+            format: base64url
+          broadcastSettings:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.broadcastMeetingSettings'
+            - type:
+              - object
+              - 'null'
+            description: Settings related to a live event.
+          creationDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The meeting creation time in UTC. Read-only.
+            format: date-time
+          endDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The meeting end time in UTC. Required when you create an online meeting.
+            format: date-time
+          externalId:
+            type:
+            - string
+            - 'null'
+            description: The external ID that is a custom identifier. Optional.
+          isBroadcast:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether this meeting is a Teams live event.
+          meetingTemplateId:
+            type:
+            - string
+            - 'null'
+            description: The ID of the meeting template.
+          participants:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.meetingParticipants'
+            - type:
+              - object
+              - 'null'
+            description: The participants associated with the online meeting, including the organizer and the attendees.
+          startDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The meeting start time in UTC.
+            format: date-time
+          recordings:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.callRecording'
+            description: The recordings of an online meeting. Read-only.
+            x-ms-navigationProperty: true
+          transcripts:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.callTranscript'
+            description: The transcripts of an online meeting. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.onlineMeeting'
+        description: Represents a Microsoft online meeting.
+      x-ms-discriminator-value: '#microsoft.graph.onlineMeeting'
+    microsoft.graph.meetingChatHistoryDefaultMode:
+      title: meetingChatHistoryDefaultMode
+      enum:
+      - none
+      - all
+      - unknownFutureValue
+      type: string
+    microsoft.graph.onlineMeetingEngagementConversation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.engagementConversation'
+      - title: onlineMeetingEngagementConversation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          moderationState:
+            $ref: '#/components/schemas/microsoft.graph.engagementConversationModerationState'
+          onlineMeetingId:
+            type: string
+            description: The unique identifier of the online meeting associated with this conversation. The online meeting ID links the conversation to a specific meeting instance.
+          organizer:
+            $ref: '#/components/schemas/microsoft.graph.engagementIdentitySet'
+          upvoteCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The number of upvotes the conversation received.
+            format: int32
+            readOnly: true
+          onlineMeeting:
+            $ref: '#/components/schemas/microsoft.graph.onlineMeeting'
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.onlineMeetingEngagementConversation'
+        description: A conversation for Teams QA online meeting.
+      x-ms-discriminator-value: '#microsoft.graph.onlineMeetingEngagementConversation'
+    microsoft.graph.meetingParticipants:
+      title: meetingParticipants
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        attendees:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.meetingParticipantInfo'
+          description: Information about the meeting attendees.
+        organizer:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.meetingParticipantInfo'
+          - type:
+            - object
+            - 'null'
+          description: Information about the meeting organizer.
+        '@odata.type':
+          type: string
+    microsoft.graph.meetingChatMode:
+      title: meetingChatMode
+      enum:
+      - enabled
+      - disabled
+      - limited
+      - unknownFutureValue
+      type: string
   parameters:
     filter:
       name: $filter
@@ -4960,6 +5042,31 @@ components:
       explode: false
       schema:
         type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     top:
       name: $top
       in: query
@@ -4970,28 +5077,34 @@ components:
         minimum: 0
         type: integer
       example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+  responses:
+    microsoft.graph.onlineMeetingEngagementConversationCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.onlineMeetingEngagementConversationCollectionResponse'
+    microsoft.graph.engagementConversationMessageReactionCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.engagementConversationMessageReactionCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.engagementConversationMessageCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.engagementConversationMessageCollectionResponse'

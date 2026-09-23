@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Identity Protection.identity Protection Root API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: identityProtection.identityProtectionRoot
+  x-ms-docs-toc-type: page
 paths:
   /identityProtection:
     description: Provides operations to manage the identityProtectionRoot singleton.
@@ -84,52 +78,352 @@ paths:
       x-ms-docs-operation-type: operation
 components:
   schemas:
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.riskState:
-      title: riskState
+    microsoft.graph.riskyServicePrincipalHistoryItem:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipal'
+      - title: riskyServicePrincipalHistoryItem
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          activity:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskServicePrincipalActivity'
+            - type:
+              - object
+              - 'null'
+            description: The activity related to service principal risk level change.
+          initiatedBy:
+            type:
+            - string
+            - 'null'
+            description: The identifier of the actor of the operation.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.riskyServicePrincipalHistoryItem'
+    microsoft.graph.riskyUser:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: riskyUser
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          isDeleted:
+            type:
+            - boolean
+            - 'null'
+            description: 'Indicates whether the user is deleted. The possible values are: true, false.'
+          isProcessing:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the backend is processing a user's risky state.
+          riskDetail:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskDetail'
+            - type:
+              - object
+              - 'null'
+            description: Details of the detected risk.
+          riskLastUpdatedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date and time that the risky user was last updated. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          riskLevel:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskLevel'
+            - type:
+              - object
+              - 'null'
+            description: 'Level of the detected risky user. The possible values are: low, medium, high, hidden, none, unknownFutureValue.'
+          riskState:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskState'
+            - type:
+              - object
+              - 'null'
+            description: 'State of the user''s risk. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue.'
+          userDisplayName:
+            type:
+            - string
+            - 'null'
+            description: Risky user display name.
+          userPrincipalName:
+            type:
+            - string
+            - 'null'
+            description: Risky user principal name.
+          history:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.riskyUserHistoryItem'
+            description: The activity related to user risk level change
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.riskyUserHistoryItem': '#/components/schemas/microsoft.graph.riskyUserHistoryItem'
+    microsoft.graph.riskDetail:
+      title: riskDetail
       enum:
       - none
-      - confirmedSafe
-      - remediated
-      - dismissed
-      - atRisk
-      - confirmedCompromised
+      - adminGeneratedTemporaryPassword
+      - userPerformedSecuredPasswordChange
+      - userPerformedSecuredPasswordReset
+      - adminConfirmedSigninSafe
+      - aiConfirmedSigninSafe
+      - userPassedMFADrivenByRiskBasedPolicy
+      - adminDismissedAllRiskForUser
+      - adminConfirmedSigninCompromised
+      - hidden
+      - adminConfirmedUserCompromised
       - unknownFutureValue
+      - m365DAdminDismissedDetection
+      - adminConfirmedServicePrincipalCompromised
+      - adminDismissedAllRiskForServicePrincipal
+      - userChangedPasswordOnPremises
+      - adminDismissedRiskForSignIn
+      - adminConfirmedAccountSafe
       type: string
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - '@odata.type'
+      - error
       type: object
       properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.tokenIssuerType:
+      title: tokenIssuerType
+      enum:
+      - AzureAD
+      - ADFederationServices
+      - UnknownFutureValue
+      - AzureADBackupAuth
+      - ADFederationServicesMFAAdapter
+      - NPSExtension
+      type: string
+    microsoft.graph.riskyServicePrincipal:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: riskyServicePrincipal
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          appId:
+            type:
+            - string
+            - 'null'
+            description: The globally unique identifier for the associated application (its appId property), if any.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: The display name for the service principal.
+          isEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: true if the service principal account is enabled; otherwise, false.
+          isProcessing:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether Microsoft Entra ID is currently processing the service principal's risky state.
+          riskDetail:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskDetail'
+            - type:
+              - object
+              - 'null'
+            description: 'Details of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden.'
+          riskLastUpdatedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date and time that the risk state was last updated. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2021 is 2021-01-01T00:00:00Z. Supports $filter (eq).
+            format: date-time
+          riskLevel:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskLevel'
+            - type:
+              - object
+              - 'null'
+            description: 'Level of the detected risky workload identity. The possible values are: low, medium, high, hidden, none, unknownFutureValue. Supports $filter (eq).'
+          riskState:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskState'
+            - type:
+              - object
+              - 'null'
+            description: 'State of the service principal''s risk. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue.'
+          servicePrincipalType:
+            type:
+            - string
+            - 'null'
+            description: Identifies whether the service principal represents an Application, a ManagedIdentity, or a legacy application (socialIdp). This is set by Microsoft Entra ID internally and is inherited from servicePrincipal.
+          history:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItem'
+            description: Represents the risk history of Microsoft Entra service principals.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.riskyServicePrincipalHistoryItem': '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItem'
+    microsoft.graph.riskLevel:
+      title: riskLevel
+      enum:
+      - low
+      - medium
+      - high
+      - hidden
+      - none
+      - unknownFutureValue
+      type: string
+    microsoft.graph.servicePrincipalRiskDetection:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: servicePrincipalRiskDetection
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          activity:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.activityType'
+            - type:
+              - object
+              - 'null'
+            description: Indicates the activity type the detected risk is linked to.
+          activityDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the risky activity occurred. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+            format: date-time
+          additionalInfo:
+            type:
+            - string
+            - 'null'
+            description: Additional information associated with the risk detection. This string value is represented as a JSON object with the quotations escaped.
+          appId:
+            type:
+            - string
+            - 'null'
+            description: The unique identifier for the associated application.
+          correlationId:
+            type:
+            - string
+            - 'null'
+            description: Correlation ID of the sign-in activity associated with the risk detection. This property is null if the risk detection is not associated with a sign-in activity.
+          detectedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the risk was detected. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          detectionTimingType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskDetectionTimingType'
+            - type:
+              - object
+              - 'null'
+            description: 'Timing of the detected risk , whether real-time or offline. The possible values are: notDefined, realtime, nearRealtime, offline, unknownFutureValue.'
+          ipAddress:
+            type:
+            - string
+            - 'null'
+            description: Provides the IP address of the client from where the risk occurred.
+          keyIds:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: The unique identifier for the key credential associated with the risk detection.
+          lastUpdatedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the risk detection was last updated.
+            format: date-time
+          location:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.signInLocation'
+            - type:
+              - object
+              - 'null'
+            description: Location from where the sign-in was initiated.
+          requestId:
+            type:
+            - string
+            - 'null'
+            description: Request identifier of the sign-in activity associated with the risk detection. This property is null if the risk detection is not associated with a sign-in activity. Supports $filter (eq).
+          riskDetail:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskDetail'
+            - type:
+              - object
+              - 'null'
+            description: 'Details of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden.'
+          riskEventType:
+            type:
+            - string
+            - 'null'
+            description: 'The type of risk event detected. The possible values are: investigationsThreatIntelligence, generic, adminConfirmedServicePrincipalCompromised, suspiciousSignins, leakedCredentials, anomalousServicePrincipalActivity, maliciousApplication, suspiciousApplication.'
+          riskLevel:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskLevel'
+            - type:
+              - object
+              - 'null'
+            description: 'Level of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden. The possible values are: low, medium, high, hidden, none.'
+          riskState:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskState'
+            - type:
+              - object
+              - 'null'
+            description: 'The state of a detected risky service principal or sign-in activity. The possible values are: none, dismissed, atRisk, confirmedCompromised.'
+          servicePrincipalDisplayName:
+            type:
+            - string
+            - 'null'
+            description: The display name for the service principal.
+          servicePrincipalId:
+            type:
+            - string
+            - 'null'
+            description: The unique identifier for the service principal. Supports $filter (eq).
+          source:
+            type:
+            - string
+            - 'null'
+            description: Source of the risk detection. For example, identityProtection.
+          tokenIssuerType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.tokenIssuerType'
+            - type:
+              - object
+              - 'null'
+            description: 'Indicates the type of token issuer for the detected sign-in risk. The possible values are: AzureAD.'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.servicePrincipalRiskDetection'
     microsoft.graph.geoCoordinates:
       title: geoCoordinates
       required:
@@ -138,31 +432,112 @@ components:
       properties:
         altitude:
           oneOf:
-          - type: number
+          - type:
+            - number
+            - 'null'
             format: double
-            nullable: true
-          - type: string
-            nullable: true
+          - type:
+            - string
+            - 'null'
           - $ref: '#/components/schemas/ReferenceNumeric'
           description: Optional. The altitude (height), in feet,  above sea level for the item. Read-only.
         latitude:
           oneOf:
-          - type: number
+          - type:
+            - number
+            - 'null'
             format: double
-            nullable: true
-          - type: string
-            nullable: true
+          - type:
+            - string
+            - 'null'
           - $ref: '#/components/schemas/ReferenceNumeric'
           description: Optional. The latitude, in decimal, for the item. Read-only.
         longitude:
           oneOf:
-          - type: number
+          - type:
+            - number
+            - 'null'
             format: double
-            nullable: true
-          - type: string
-            nullable: true
+          - type:
+            - string
+            - 'null'
           - $ref: '#/components/schemas/ReferenceNumeric'
           description: Optional. The longitude, in decimal, for the item. Read-only.
+        '@odata.type':
+          type: string
+    microsoft.graph.riskyUserHistoryItem:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.riskyUser'
+      - title: riskyUserHistoryItem
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          activity:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskUserActivity'
+            - type:
+              - object
+              - 'null'
+            description: The activity related to user risk level change.
+          initiatedBy:
+            type:
+            - string
+            - 'null'
+            description: The ID of actor that does the operation.
+          userId:
+            type:
+            - string
+            - 'null'
+            description: The ID of the user.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.riskyUserHistoryItem'
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.riskServicePrincipalActivity:
+      title: riskServicePrincipalActivity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        detail:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.riskDetail'
+          - type:
+            - object
+            - 'null'
+          description: 'Details of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden.'
+        riskEventTypes:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+          description: 'The type of risk event detected. The possible values are: investigationsThreatIntelligence, generic, adminConfirmedServicePrincipalCompromised, suspiciousSignins, leakedCredentials, anomalousServicePrincipalActivity, maliciousApplication, suspiciousApplication.'
         '@odata.type':
           type: string
     microsoft.graph.identityProtectionRoot:
@@ -197,177 +572,14 @@ components:
           x-ms-navigationProperty: true
         '@odata.type':
           type: string
-    microsoft.graph.riskyUser:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: riskyUser
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          isDeleted:
-            type: boolean
-            description: 'Indicates whether the user is deleted. The possible values are: true, false.'
-            nullable: true
-          isProcessing:
-            type: boolean
-            description: Indicates whether the backend is processing a user's risky state.
-            nullable: true
-          riskDetail:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskDetail'
-            - type: object
-              nullable: true
-            description: Details of the detected risk.
-          riskLastUpdatedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time that the risky user was last updated. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          riskLevel:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskLevel'
-            - type: object
-              nullable: true
-            description: 'Level of the detected risky user. The possible values are: low, medium, high, hidden, none, unknownFutureValue.'
-          riskState:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskState'
-            - type: object
-              nullable: true
-            description: 'State of the user''s risk. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue.'
-          userDisplayName:
-            type: string
-            description: Risky user display name.
-            nullable: true
-          userPrincipalName:
-            type: string
-            description: Risky user principal name.
-            nullable: true
-          history:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.riskyUserHistoryItem'
-            description: The activity related to user risk level change
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.riskyUserHistoryItem': '#/components/schemas/microsoft.graph.riskyUserHistoryItem'
-    microsoft.graph.riskyServicePrincipalHistoryItem:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipal'
-      - title: riskyServicePrincipalHistoryItem
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          activity:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskServicePrincipalActivity'
-            - type: object
-              nullable: true
-            description: The activity related to service principal risk level change.
-          initiatedBy:
-            type: string
-            description: The identifier of the actor of the operation.
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.riskyServicePrincipalHistoryItem'
-    microsoft.graph.riskyServicePrincipal:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: riskyServicePrincipal
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          appId:
-            type: string
-            description: The globally unique identifier for the associated application (its appId property), if any.
-            nullable: true
-          displayName:
-            type: string
-            description: The display name for the service principal.
-            nullable: true
-          isEnabled:
-            type: boolean
-            description: true if the service principal account is enabled; otherwise, false.
-            nullable: true
-          isProcessing:
-            type: boolean
-            description: Indicates whether Microsoft Entra ID is currently processing the service principal's risky state.
-            nullable: true
-          riskDetail:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskDetail'
-            - type: object
-              nullable: true
-            description: 'Details of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden.'
-          riskLastUpdatedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time that the risk state was last updated. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2021 is 2021-01-01T00:00:00Z. Supports $filter (eq).
-            format: date-time
-            nullable: true
-          riskLevel:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskLevel'
-            - type: object
-              nullable: true
-            description: 'Level of the detected risky workload identity. The possible values are: low, medium, high, hidden, none, unknownFutureValue. Supports $filter (eq).'
-          riskState:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskState'
-            - type: object
-              nullable: true
-            description: 'State of the service principal''s risk. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue.'
-          servicePrincipalType:
-            type: string
-            description: Identifies whether the service principal represents an Application, a ManagedIdentity, or a legacy application (socialIdp). This is set by Microsoft Entra ID internally and is inherited from servicePrincipal.
-            nullable: true
-          history:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItem'
-            description: Represents the risk history of Microsoft Entra service principals.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.riskyServicePrincipalHistoryItem': '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItem'
     ReferenceNumeric:
       enum:
       - -INF
       - INF
       - NaN
-      type: string
-      nullable: true
-    microsoft.graph.tokenIssuerType:
-      title: tokenIssuerType
-      enum:
-      - AzureAD
-      - ADFederationServices
-      - UnknownFutureValue
-      - AzureADBackupAuth
-      - ADFederationServicesMFAAdapter
-      - NPSExtension
-      type: string
-    microsoft.graph.riskDetectionTimingType:
-      title: riskDetectionTimingType
-      enum:
-      - notDefined
-      - realtime
-      - nearRealtime
-      - offline
-      - unknownFutureValue
-      type: string
+      type:
+      - string
+      - 'null'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -380,372 +592,15 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.riskDetail:
-      title: riskDetail
-      enum:
-      - none
-      - adminGeneratedTemporaryPassword
-      - userPerformedSecuredPasswordChange
-      - userPerformedSecuredPasswordReset
-      - adminConfirmedSigninSafe
-      - aiConfirmedSigninSafe
-      - userPassedMFADrivenByRiskBasedPolicy
-      - adminDismissedAllRiskForUser
-      - adminConfirmedSigninCompromised
-      - hidden
-      - adminConfirmedUserCompromised
-      - unknownFutureValue
-      - m365DAdminDismissedDetection
-      - adminConfirmedServicePrincipalCompromised
-      - adminDismissedAllRiskForServicePrincipal
-      - userChangedPasswordOnPremises
-      - adminDismissedRiskForSignIn
-      - adminConfirmedAccountSafe
-      type: string
-    microsoft.graph.activityType:
-      title: activityType
-      enum:
-      - signin
-      - user
-      - unknownFutureValue
-      - servicePrincipal
-      type: string
-    microsoft.graph.servicePrincipalRiskDetection:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: servicePrincipalRiskDetection
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          activity:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.activityType'
-            - type: object
-              nullable: true
-            description: Indicates the activity type the detected risk is linked to.
-          activityDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the risky activity occurred. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-            format: date-time
-            nullable: true
-          additionalInfo:
-            type: string
-            description: Additional information associated with the risk detection. This string value is represented as a JSON object with the quotations escaped.
-            nullable: true
-          appId:
-            type: string
-            description: The unique identifier for the associated application.
-            nullable: true
-          correlationId:
-            type: string
-            description: Correlation ID of the sign-in activity associated with the risk detection. This property is null if the risk detection is not associated with a sign-in activity.
-            nullable: true
-          detectedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the risk was detected. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          detectionTimingType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskDetectionTimingType'
-            - type: object
-              nullable: true
-            description: 'Timing of the detected risk , whether real-time or offline. The possible values are: notDefined, realtime, nearRealtime, offline, unknownFutureValue.'
-          ipAddress:
-            type: string
-            description: Provides the IP address of the client from where the risk occurred.
-            nullable: true
-          keyIds:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The unique identifier for the key credential associated with the risk detection.
-          lastUpdatedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the risk detection was last updated.
-            format: date-time
-            nullable: true
-          location:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.signInLocation'
-            - type: object
-              nullable: true
-            description: Location from where the sign-in was initiated.
-          requestId:
-            type: string
-            description: Request identifier of the sign-in activity associated with the risk detection. This property is null if the risk detection is not associated with a sign-in activity. Supports $filter (eq).
-            nullable: true
-          riskDetail:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskDetail'
-            - type: object
-              nullable: true
-            description: 'Details of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden.'
-          riskEventType:
-            type: string
-            description: 'The type of risk event detected. The possible values are: investigationsThreatIntelligence, generic, adminConfirmedServicePrincipalCompromised, suspiciousSignins, leakedCredentials, anomalousServicePrincipalActivity, maliciousApplication, suspiciousApplication.'
-            nullable: true
-          riskLevel:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskLevel'
-            - type: object
-              nullable: true
-            description: 'Level of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden. The possible values are: low, medium, high, hidden, none.'
-          riskState:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskState'
-            - type: object
-              nullable: true
-            description: 'The state of a detected risky service principal or sign-in activity. The possible values are: none, dismissed, atRisk, confirmedCompromised.'
-          servicePrincipalDisplayName:
-            type: string
-            description: The display name for the service principal.
-            nullable: true
-          servicePrincipalId:
-            type: string
-            description: The unique identifier for the service principal. Supports $filter (eq).
-            nullable: true
-          source:
-            type: string
-            description: Source of the risk detection. For example, identityProtection.
-            nullable: true
-          tokenIssuerType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.tokenIssuerType'
-            - type: object
-              nullable: true
-            description: 'Indicates the type of token issuer for the detected sign-in risk. The possible values are: AzureAD.'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.servicePrincipalRiskDetection'
-    microsoft.graph.riskLevel:
-      title: riskLevel
-      enum:
-      - low
-      - medium
-      - high
-      - hidden
-      - none
-      - unknownFutureValue
-      type: string
-    microsoft.graph.riskDetection:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: riskDetection
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          activity:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.activityType'
-            - type: object
-              nullable: true
-            description: Indicates the activity type the detected risk is linked to.
-          activityDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: 'Date and time that the risky activity occurred. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is look like this: 2014-01-01T00:00:00Z'
-            format: date-time
-            nullable: true
-          additionalInfo:
-            type: string
-            description: 'Additional information associated with the risk detection in JSON format. For example, ''[{/''Key/'':/''userAgent/'',/''Value/'':/''Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36/''}]''. Possible keys in the additionalInfo JSON string are: userAgent, alertUrl, relatedEventTimeInUtc, relatedUserAgent, deviceInformation, relatedLocation, requestId, correlationId, lastActivityTimeInUtc, malwareName, clientLocation, clientIp, riskReasons. For more information about riskReasons and possible values, see riskReasons values.'
-            nullable: true
-          correlationId:
-            type: string
-            description: Correlation ID of the sign-in associated with the risk detection. This property is null if the risk detection is not associated with a sign-in.
-            nullable: true
-          detectedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: 'Date and time that the risk was detected. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 looks like this: 2014-01-01T00:00:00Z'
-            format: date-time
-            nullable: true
-          detectionTimingType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskDetectionTimingType'
-            - type: object
-              nullable: true
-            description: 'Timing of the detected risk (real-time/offline). The possible values are: notDefined, realtime, nearRealtime, offline, unknownFutureValue.'
-          ipAddress:
-            type: string
-            description: Provides the IP address of the client from where the risk occurred.
-            nullable: true
-          lastUpdatedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: 'Date and time that the risk detection was last updated. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is look like this: 2014-01-01T00:00:00Z'
-            format: date-time
-            nullable: true
-          location:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.signInLocation'
-            - type: object
-              nullable: true
-            description: Location of the sign-in.
-          requestId:
-            type: string
-            description: Request ID of the sign-in associated with the risk detection. This property is null if the risk detection is not associated with a sign-in.
-            nullable: true
-          riskDetail:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskDetail'
-            - type: object
-              nullable: true
-            description: Details of the detected risk.
-          riskEventType:
-            type: string
-            description: The type of risk event detected. The possible values are adminConfirmedUserCompromised, anomalousToken, anomalousUserActivity, anonymizedIPAddress, generic, impossibleTravel, investigationsThreatIntelligence, suspiciousSendingPatterns, leakedCredentials, maliciousIPAddress,malwareInfectedIPAddress, mcasSuspiciousInboxManipulationRules, newCountry, passwordSpray,riskyIPAddress, suspiciousAPITraffic, suspiciousBrowser,suspiciousInboxForwarding, suspiciousIPAddress, tokenIssuerAnomaly, unfamiliarFeatures, unlikelyTravel. If the risk detection is a premium detection, will show generic. For more information about each value, see Risk types and detection.
-            nullable: true
-          riskLevel:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskLevel'
-            - type: object
-              nullable: true
-            description: 'Level of the detected risk. The possible values are: low, medium, high, hidden, none, unknownFutureValue.'
-          riskState:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskState'
-            - type: object
-              nullable: true
-            description: 'The state of a detected risky user or sign-in. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue.'
-          source:
-            type: string
-            description: Source of the risk detection. For example, activeDirectory.
-            nullable: true
-          tokenIssuerType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.tokenIssuerType'
-            - type: object
-              nullable: true
-            description: 'Indicates the type of token issuer for the detected sign-in risk. The possible values are: AzureAD, ADFederationServices, UnknownFutureValue.'
-          userDisplayName:
-            type: string
-            description: The user principal name (UPN) of the user.
-            nullable: true
-          userId:
-            type: string
-            description: Unique ID of the user.
-            nullable: true
-          userPrincipalName:
-            type: string
-            description: The user principal name (UPN) of the user.
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.riskDetection'
-    microsoft.graph.riskServicePrincipalActivity:
-      title: riskServicePrincipalActivity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        detail:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.riskDetail'
-          - type: object
-            nullable: true
-          description: 'Details of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden.'
-        riskEventTypes:
-          type: array
-          items:
-            type: string
-            nullable: true
-          description: 'The type of risk event detected. The possible values are: investigationsThreatIntelligence, generic, adminConfirmedServicePrincipalCompromised, suspiciousSignins, leakedCredentials, anomalousServicePrincipalActivity, maliciousApplication, suspiciousApplication.'
-        '@odata.type':
-          type: string
-    microsoft.graph.signInLocation:
-      title: signInLocation
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        city:
-          type: string
-          description: Provides the city where the sign-in originated and is determined using latitude/longitude information from the sign-in activity.
-          nullable: true
-        countryOrRegion:
-          type: string
-          description: Provides the country code info (two letter code) where the sign-in originated.  This is calculated using latitude/longitude information from the sign-in activity.
-          nullable: true
-        geoCoordinates:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.geoCoordinates'
-          - type: object
-            nullable: true
-          description: Provides the latitude, longitude and altitude where the sign-in originated.
-        state:
-          type: string
-          description: Provides the State where the sign-in originated. This is calculated using latitude/longitude information from the sign-in activity.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.riskyUserHistoryItem:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.riskyUser'
-      - title: riskyUserHistoryItem
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          activity:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskUserActivity'
-            - type: object
-              nullable: true
-            description: The activity related to user risk level change.
-          initiatedBy:
-            type: string
-            description: The ID of actor that does the operation.
-            nullable: true
-          userId:
-            type: string
-            description: The ID of the user.
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.riskyUserHistoryItem'
-    microsoft.graph.riskUserActivity:
-      title: riskUserActivity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        detail:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.riskDetail'
-          - type: object
-            nullable: true
-          description: For more information, see riskDetail.
-        riskEventTypes:
-          type: array
-          items:
-            type: string
-            nullable: true
-          description: The type of risk event detected.
-        '@odata.type':
-          type: string
     microsoft.graph.entity:
       title: entity
       required:
@@ -1815,6 +1670,226 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.signInLocation:
+      title: signInLocation
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        city:
+          type:
+          - string
+          - 'null'
+          description: Provides the city where the sign-in originated and is determined using latitude/longitude information from the sign-in activity.
+        countryOrRegion:
+          type:
+          - string
+          - 'null'
+          description: Provides the country code info (two letter code) where the sign-in originated.  This is calculated using latitude/longitude information from the sign-in activity.
+        geoCoordinates:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.geoCoordinates'
+          - type:
+            - object
+            - 'null'
+          description: Provides the latitude, longitude and altitude where the sign-in originated.
+        state:
+          type:
+          - string
+          - 'null'
+          description: Provides the State where the sign-in originated. This is calculated using latitude/longitude information from the sign-in activity.
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.riskDetection:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: riskDetection
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          activity:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.activityType'
+            - type:
+              - object
+              - 'null'
+            description: Indicates the activity type the detected risk is linked to.
+          activityDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: 'Date and time that the risky activity occurred. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is look like this: 2014-01-01T00:00:00Z'
+            format: date-time
+          additionalInfo:
+            type:
+            - string
+            - 'null'
+            description: 'Additional information associated with the risk detection in JSON format. For example, ''[{/''Key/'':/''userAgent/'',/''Value/'':/''Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36/''}]''. Possible keys in the additionalInfo JSON string are: userAgent, alertUrl, relatedEventTimeInUtc, relatedUserAgent, deviceInformation, relatedLocation, requestId, correlationId, lastActivityTimeInUtc, malwareName, clientLocation, clientIp, riskReasons. For more information about riskReasons and possible values, see riskReasons values.'
+          correlationId:
+            type:
+            - string
+            - 'null'
+            description: Correlation ID of the sign-in associated with the risk detection. This property is null if the risk detection is not associated with a sign-in.
+          detectedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: 'Date and time that the risk was detected. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 looks like this: 2014-01-01T00:00:00Z'
+            format: date-time
+          detectionTimingType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskDetectionTimingType'
+            - type:
+              - object
+              - 'null'
+            description: 'Timing of the detected risk (real-time/offline). The possible values are: notDefined, realtime, nearRealtime, offline, unknownFutureValue.'
+          ipAddress:
+            type:
+            - string
+            - 'null'
+            description: Provides the IP address of the client from where the risk occurred.
+          lastUpdatedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: 'Date and time that the risk detection was last updated. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is look like this: 2014-01-01T00:00:00Z'
+            format: date-time
+          location:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.signInLocation'
+            - type:
+              - object
+              - 'null'
+            description: Location of the sign-in.
+          requestId:
+            type:
+            - string
+            - 'null'
+            description: Request ID of the sign-in associated with the risk detection. This property is null if the risk detection is not associated with a sign-in.
+          riskDetail:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskDetail'
+            - type:
+              - object
+              - 'null'
+            description: Details of the detected risk.
+          riskEventType:
+            type:
+            - string
+            - 'null'
+            description: The type of risk event detected. The possible values are adminConfirmedUserCompromised, anomalousToken, anomalousUserActivity, anonymizedIPAddress, generic, impossibleTravel, investigationsThreatIntelligence, suspiciousSendingPatterns, leakedCredentials, maliciousIPAddress,malwareInfectedIPAddress, mcasSuspiciousInboxManipulationRules, newCountry, passwordSpray,riskyIPAddress, suspiciousAPITraffic, suspiciousBrowser,suspiciousInboxForwarding, suspiciousIPAddress, tokenIssuerAnomaly, unfamiliarFeatures, unlikelyTravel. If the risk detection is a premium detection, will show generic. For more information about each value, see Risk types and detection.
+          riskLevel:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskLevel'
+            - type:
+              - object
+              - 'null'
+            description: 'Level of the detected risk. The possible values are: low, medium, high, hidden, none, unknownFutureValue.'
+          riskState:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskState'
+            - type:
+              - object
+              - 'null'
+            description: 'The state of a detected risky user or sign-in. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue.'
+          source:
+            type:
+            - string
+            - 'null'
+            description: Source of the risk detection. For example, activeDirectory.
+          tokenIssuerType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.tokenIssuerType'
+            - type:
+              - object
+              - 'null'
+            description: 'Indicates the type of token issuer for the detected sign-in risk. The possible values are: AzureAD, ADFederationServices, UnknownFutureValue.'
+          userDisplayName:
+            type:
+            - string
+            - 'null'
+            description: The user principal name (UPN) of the user.
+          userId:
+            type:
+            - string
+            - 'null'
+            description: Unique ID of the user.
+          userPrincipalName:
+            type:
+            - string
+            - 'null'
+            description: The user principal name (UPN) of the user.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.riskDetection'
+    microsoft.graph.riskState:
+      title: riskState
+      enum:
+      - none
+      - confirmedSafe
+      - remediated
+      - dismissed
+      - atRisk
+      - confirmedCompromised
+      - unknownFutureValue
+      type: string
+    microsoft.graph.riskDetectionTimingType:
+      title: riskDetectionTimingType
+      enum:
+      - notDefined
+      - realtime
+      - nearRealtime
+      - offline
+      - unknownFutureValue
+      type: string
+    microsoft.graph.activityType:
+      title: activityType
+      enum:
+      - signin
+      - user
+      - unknownFutureValue
+      - servicePrincipal
+      type: string
+    microsoft.graph.riskUserActivity:
+      title: riskUserActivity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        detail:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.riskDetail'
+          - type:
+            - object
+            - 'null'
+          description: For more information, see riskDetail.
+        riskEventTypes:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+          description: The type of risk event detected.
+        '@odata.type':
+          type: string
   responses:
     error:
       description: error

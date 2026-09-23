@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Teams.conversation Member API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: teams.conversationMember
+  x-ms-docs-toc-type: page
 paths:
   /teams/{team-id}/members:
     description: Provides operations to manage the members property of the microsoft.graph.team entity.
@@ -367,138 +361,6 @@ paths:
         operationName: listMore
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.publicErrorDetail:
-      title: publicErrorDetail
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        code:
-          type: string
-          description: The error code.
-          nullable: true
-        message:
-          type: string
-          description: The error message.
-          nullable: true
-        target:
-          type: string
-          description: The target of the error.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.publicInnerError:
-      title: publicInnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        code:
-          type: string
-          description: The error code.
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.publicErrorDetail'
-          description: A collection of error details.
-        message:
-          type: string
-          description: The error message.
-          nullable: true
-        target:
-          type: string
-          description: The target of the error.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.actionResultPart:
-      title: actionResultPart
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        error:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.publicError'
-          - type: object
-            nullable: true
-          description: The error that occurred, if any, during the bulk operation.
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.aadUserConversationMemberResult': '#/components/schemas/microsoft.graph.aadUserConversationMemberResult'
-    microsoft.graph.conversationMemberCollectionResponse:
-      title: Collection of conversationMember
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.conversationMember'
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.conversationMember:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -508,21 +370,24 @@ components:
         type: object
         properties:
           displayName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The display name of the user.
-            nullable: true
           roles:
             type: array
             items:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             description: The roles for that user. This property contains more qualifiers only when relevant - for example, if the member has owner privileges, the roles property contains owner as one of the values. Similarly, if the member is an in-tenant guest, the roles property contains guest as one of the values. A basic member shouldn't have any values specified in the roles property. An Out-of-tenant external member is assigned the owner role.
           visibleHistoryStartDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: The timestamp denoting how far back a conversation's history is shared with the conversation member. This property is settable only for members of a chat.
             format: date-time
-            nullable: true
           '@odata.type':
             type: string
         discriminator:
@@ -535,17 +400,6 @@ components:
             '#microsoft.graph.phoneUserConversationMember': '#/components/schemas/microsoft.graph.phoneUserConversationMember'
             '#microsoft.graph.skypeForBusinessUserConversationMember': '#/components/schemas/microsoft.graph.skypeForBusinessUserConversationMember'
             '#microsoft.graph.skypeUserConversationMember': '#/components/schemas/microsoft.graph.skypeUserConversationMember'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
     microsoft.graph.ODataErrors.ODataError:
       required:
       - error
@@ -553,6 +407,59 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.publicInnerError:
+      title: publicInnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+          description: The error code.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.publicErrorDetail'
+          description: A collection of error details.
+        message:
+          type:
+          - string
+          - 'null'
+          description: The error message.
+        target:
+          type:
+          - string
+          - 'null'
+          description: The target of the error.
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
     microsoft.graph.publicError:
       title: publicError
       required:
@@ -560,9 +467,10 @@ components:
       type: object
       properties:
         code:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Represents the error code.
-          nullable: true
         details:
           type: array
           items:
@@ -571,19 +479,43 @@ components:
         innerError:
           anyOf:
           - $ref: '#/components/schemas/microsoft.graph.publicInnerError'
-          - type: object
-            nullable: true
+          - type:
+            - object
+            - 'null'
           description: Details of the inner error.
         message:
-          type: string
+          type:
+          - string
+          - 'null'
           description: A non-localized message for the developer.
-          nullable: true
         target:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The target of the error.
-          nullable: true
         '@odata.type':
           type: string
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1653,13 +1585,134 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.publicErrorDetail:
+      title: publicErrorDetail
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+          description: The error code.
+        message:
+          type:
+          - string
+          - 'null'
+          description: The error message.
+        target:
+          type:
+          - string
+          - 'null'
+          description: The target of the error.
+        '@odata.type':
+          type: string
+    microsoft.graph.actionResultPart:
+      title: actionResultPart
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        error:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.publicError'
+          - type:
+            - object
+            - 'null'
+          description: The error that occurred, if any, during the bulk operation.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.aadUserConversationMemberResult': '#/components/schemas/microsoft.graph.aadUserConversationMemberResult'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.conversationMemberCollectionResponse:
+      title: Collection of conversationMember
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.conversationMember'
+  parameters:
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
     microsoft.graph.conversationMemberCollectionResponse:
       description: Retrieved collection
       content:
@@ -1672,47 +1725,9 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/ODataCountResponse'
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

@@ -1,23 +1,399 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Me.contact Folder API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: me.contactFolder
+  x-ms-docs-toc-type: page
 paths:
+  /me/contactFolders:
+    description: Provides operations to manage the contactFolders property of the microsoft.graph.user entity.
+    get:
+      tags:
+      - me.contactFolder
+      summary: Microsoft Graph List contactFolders
+      description: Get the contact folder collection in the default Contacts folder of the signed-in user.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/user-list-contactfolders?view=graph-rest-1.0
+      operationId: me.ListContactFolders
+      parameters:
+      - $ref: '#/components/parameters/top'
+      - $ref: '#/components/parameters/skip'
+      - $ref: '#/components/parameters/search'
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/count'
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          $ref: '#/components/responses/microsoft.graph.contactFolderCollectionResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    post:
+      tags:
+      - me.contactFolder
+      summary: Microsoft Graph Create ContactFolder
+      description: Create a new contactFolder under the user's default contacts folder. You can also create a new contactfolder as a child of any specified contact folder.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/user-post-contactfolders?view=graph-rest-1.0
+      operationId: me.CreateContactFolders
+      requestBody:
+        description: New navigation property
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.contactFolder'
+        required: true
+      responses:
+        2XX:
+          description: Created navigation property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.contactFolder'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+  /me/contactFolders/{contactFolder-id}:
+    description: Provides operations to manage the contactFolders property of the microsoft.graph.user entity.
+    parameters:
+    - name: contactFolder-id
+      in: path
+      description: The unique identifier of contactFolder
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: contactFolder
+    get:
+      tags:
+      - me.contactFolder
+      summary: Microsoft Graph Get contactFolder
+      description: 'Get a contact folder by using the contact folder ID. There are two scenarios where an app can get another user''s contact folder:'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/contactfolder-get?view=graph-rest-1.0
+      operationId: me.GetContactFolders
+      parameters:
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.contactFolder'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+      - me.contactFolder
+      summary: Microsoft Graph Update contactfolder
+      description: Update the properties of contactfolder object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/contactfolder-update?view=graph-rest-1.0
+      operationId: me.UpdateContactFolders
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.contactFolder'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.contactFolder'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+      - me.contactFolder
+      summary: Microsoft Graph Delete contactFolder
+      description: Delete contactFolder other than the default contactFolder.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/contactfolder-delete?view=graph-rest-1.0
+      operationId: me.DeleteContactFolders
+      parameters:
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+  /me/contactFolders/{contactFolder-id}/childFolders:
+    description: Provides operations to manage the childFolders property of the microsoft.graph.contactFolder entity.
+    parameters:
+    - name: contactFolder-id
+      in: path
+      description: The unique identifier of contactFolder
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: contactFolder
+    get:
+      tags:
+      - me.contactFolder
+      summary: Microsoft Graph List childFolders
+      description: Get a collection of child folders under the specified contact folder.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/contactfolder-list-childfolders?view=graph-rest-1.0
+      operationId: me.contactFolders.ListChildFolders
+      parameters:
+      - $ref: '#/components/parameters/top'
+      - $ref: '#/components/parameters/skip'
+      - $ref: '#/components/parameters/search'
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/count'
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          $ref: '#/components/responses/microsoft.graph.contactFolderCollectionResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+      x-ms-docs-operation-type: operation
+    post:
+      tags:
+      - me.contactFolder
+      summary: Microsoft Graph Create ContactFolder
+      description: Create a new contactFolder as a child of a specified folder. You can also create a new contactFolder under the user's default contact folder.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/contactfolder-post-childfolders?view=graph-rest-1.0
+      operationId: me.contactFolders.CreateChildFolders
+      requestBody:
+        description: New navigation property
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.contactFolder'
+        required: true
+      responses:
+        2XX:
+          description: Created navigation property.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.contactFolder'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+  /me/contactFolders/{contactFolder-id}/childFolders/{contactFolder-id1}:
+    description: Provides operations to manage the childFolders property of the microsoft.graph.contactFolder entity.
+    parameters:
+    - name: contactFolder-id
+      in: path
+      description: The unique identifier of contactFolder
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: contactFolder
+    - name: contactFolder-id1
+      in: path
+      description: The unique identifier of contactFolder
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: contactFolder
+    get:
+      tags:
+      - me.contactFolder
+      summary: Microsoft Graph Get childFolders from me
+      description: The collection of child folders in the folder. Navigation property. Read-only. Nullable.
+      operationId: me.contactFolders.GetChildFolders
+      parameters:
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Retrieved navigation property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.contactFolder'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+      - me.contactFolder
+      summary: Microsoft Graph Update the navigation property childFolders in me
+      operationId: me.contactFolders.UpdateChildFolders
+      requestBody:
+        description: New navigation property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/microsoft.graph.contactFolder'
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.contactFolder'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+      - me.contactFolder
+      summary: Microsoft Graph Delete navigation property childFolders for me
+      operationId: me.contactFolders.DeleteChildFolders
+      parameters:
+      - name: If-Match
+        in: header
+        description: ETag
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
   /me/contactFolders/{contactFolder-id}/childFolders/{contactFolder-id1}/contacts:
     description: Provides operations to manage the contacts property of the microsoft.graph.contactFolder entity.
     parameters:
@@ -792,7 +1168,15 @@ paths:
       tags:
       - me.contactFolder
       summary: Microsoft Graph Invoke function delta
-      description: "Get a set of contacts that have been added, deleted, or updated in a specified folder. A delta function call for contacts in a folder is similar to a GET request, except that by appropriately \napplying state tokens in one or more of these calls, \nyou can query for incremental changes in the contacts in \nthat folder. This allows you to maintain and synchronize a local store of a user's contacts without \nhaving to fetch the entire set of contacts from the server every time.  "
+      description: 'Get a set of contacts that have been added, deleted, or updated in a specified folder. A delta function call for contacts in a folder is similar to a GET request, except that by appropriately
+
+        applying state tokens in one or more of these calls,
+
+        you can query for incremental changes in the contacts in
+
+        that folder. This allows you to maintain and synchronize a local store of a user''s contacts without
+
+        having to fetch the entire set of contacts from the server every time.'
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/contact-delta?view=graph-rest-1.0
@@ -849,6 +1233,195 @@ paths:
                       type: array
                       items:
                         $ref: '#/components/schemas/microsoft.graph.contact'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
+  /me/contactFolders/{contactFolder-id}/childFolders/{contactFolder-id1}/permanentDelete:
+    description: Provides operations to call the permanentDelete method.
+    parameters:
+    - name: contactFolder-id
+      in: path
+      description: The unique identifier of contactFolder
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: contactFolder
+    - name: contactFolder-id1
+      in: path
+      description: The unique identifier of contactFolder
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: contactFolder
+    x-ms-docs-grouped-path:
+    - /me/calendar/events/{event-id}/permanentDelete
+    - /me/calendar/permanentDelete
+    - /me/calendarGroups/{calendarGroup-id}/calendars/{calendar-id}/events/{event-id}/permanentDelete
+    - /me/calendarGroups/{calendarGroup-id}/calendars/{calendar-id}/permanentDelete
+    - /me/calendars/{calendar-id}/events/{event-id}/permanentDelete
+    - /me/calendars/{calendar-id}/permanentDelete
+    - /me/contactFolders/{contactFolder-id}/childFolders/{contactFolder-id1}/contacts/{contact-id}/permanentDelete
+    - /me/contactFolders/{contactFolder-id}/contacts/{contact-id}/permanentDelete
+    - /me/contactFolders/{contactFolder-id}/permanentDelete
+    - /me/contacts/{contact-id}/permanentDelete
+    - /me/events/{event-id}/permanentDelete
+    - /me/mailFolders/{mailFolder-id}/childFolders/{mailFolder-id1}/messages/{message-id}/permanentDelete
+    - /me/mailFolders/{mailFolder-id}/childFolders/{mailFolder-id1}/permanentDelete
+    - /me/mailFolders/{mailFolder-id}/messages/{message-id}/permanentDelete
+    - /me/mailFolders/{mailFolder-id}/permanentDelete
+    - /me/messages/{message-id}/permanentDelete
+    post:
+      tags:
+      - me.contactFolder
+      summary: Microsoft Graph Invoke action permanentDelete
+      operationId: me.contactFolders.contactFolder.childFolders.contactFolder.permanentDelete
+      responses:
+        '204':
+          description: Success
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  /me/contactFolders/{contactFolder-id}/childFolders/$count:
+    description: Provides operations to count the resources in the collection.
+    parameters:
+    - name: contactFolder-id
+      in: path
+      description: The unique identifier of contactFolder
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: contactFolder
+    get:
+      tags:
+      - me.contactFolder
+      summary: Microsoft Graph Get the number of the resource
+      operationId: me.contactFolders.childFolders.GetCount-bbef
+      parameters:
+      - $ref: '#/components/parameters/search'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        2XX:
+          $ref: '#/components/responses/ODataCountResponse'
+        4XX:
+          $ref: '#/components/responses/error'
+        5XX:
+          $ref: '#/components/responses/error'
+  /me/contactFolders/{contactFolder-id}/childFolders/delta():
+    description: Provides operations to call the delta method.
+    parameters:
+    - name: contactFolder-id
+      in: path
+      description: The unique identifier of contactFolder
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: contactFolder
+    x-ms-docs-grouped-path:
+    - /me/calendar/calendarView/delta()
+    - /me/calendar/events/{event-id}/instances/delta()
+    - /me/calendar/events/delta()
+    - /me/calendarGroups/{calendarGroup-id}/calendars/{calendar-id}/calendarView/delta()
+    - /me/calendarGroups/{calendarGroup-id}/calendars/{calendar-id}/events/{event-id}/instances/delta()
+    - /me/calendarGroups/{calendarGroup-id}/calendars/{calendar-id}/events/delta()
+    - /me/calendars/{calendar-id}/calendarView/delta()
+    - /me/calendars/{calendar-id}/events/{event-id}/instances/delta()
+    - /me/calendars/{calendar-id}/events/delta()
+    - /me/calendarView/delta()
+    - /me/chats/{chat-id}/messages/{chatMessage-id}/replies/delta()
+    - /me/chats/{chat-id}/messages/delta()
+    - /me/contactFolders/{contactFolder-id}/childFolders/{contactFolder-id1}/contacts/delta()
+    - /me/contactFolders/{contactFolder-id}/contacts/delta()
+    - /me/contactFolders/delta()
+    - /me/contacts/delta()
+    - /me/events/{event-id}/instances/delta()
+    - /me/events/delta()
+    - /me/joinedTeams/{team-id}/channels/{channel-id}/messages/{chatMessage-id}/replies/delta()
+    - /me/joinedTeams/{team-id}/channels/{channel-id}/messages/delta()
+    - /me/joinedTeams/{team-id}/primaryChannel/messages/{chatMessage-id}/replies/delta()
+    - /me/joinedTeams/{team-id}/primaryChannel/messages/delta()
+    - /me/mailFolders/{mailFolder-id}/childFolders/{mailFolder-id1}/messages/delta()
+    - /me/mailFolders/{mailFolder-id}/childFolders/delta()
+    - /me/mailFolders/{mailFolder-id}/messages/delta()
+    - /me/mailFolders/delta()
+    - /me/messages/delta()
+    - /me/onlineMeetings/{onlineMeeting-id}/recordings/delta()
+    - /me/onlineMeetings/{onlineMeeting-id}/transcripts/delta()
+    - /me/todo/lists/{todoTaskList-id}/tasks/delta()
+    - /me/todo/lists/delta()
+    get:
+      tags:
+      - me.contactFolder
+      summary: Microsoft Graph Invoke function delta
+      description: 'Get a set of contact folders that have been added, deleted, or removed from the user''s mailbox. A delta function call for contact folders in a mailbox is similar to a GET request, except that by appropriately
+
+        applying state tokens in one or more of these calls,
+
+        you can query for incremental changes in the contact folders. This allows you to maintain and synchronize
+
+        a local store of a user''s contact folders without having to fetch all the contact folders of that mailbox from the server every time.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/contactfolder-delta?view=graph-rest-1.0
+      operationId: me.contactFolders.contactFolder.childFolders.delta
+      parameters:
+      - $ref: '#/components/parameters/top'
+      - $ref: '#/components/parameters/skip'
+      - $ref: '#/components/parameters/search'
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/count'
+      - name: $select
+        in: query
+        description: Select properties to be returned
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $orderby
+        in: query
+        description: Order items by property values
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: $expand
+        in: query
+        description: Expand related entities
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of contactFolder
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/BaseDeltaFunctionResponse'
+                - type: object
+                  properties:
+                    value:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/microsoft.graph.contactFolder'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
@@ -1568,7 +2141,15 @@ paths:
       tags:
       - me.contactFolder
       summary: Microsoft Graph Invoke function delta
-      description: "Get a set of contacts that have been added, deleted, or updated in a specified folder. A delta function call for contacts in a folder is similar to a GET request, except that by appropriately \napplying state tokens in one or more of these calls, \nyou can query for incremental changes in the contacts in \nthat folder. This allows you to maintain and synchronize a local store of a user's contacts without \nhaving to fetch the entire set of contacts from the server every time.  "
+      description: 'Get a set of contacts that have been added, deleted, or updated in a specified folder. A delta function call for contacts in a folder is similar to a GET request, except that by appropriately
+
+        applying state tokens in one or more of these calls,
+
+        you can query for incremental changes in the contacts in
+
+        that folder. This allows you to maintain and synchronize a local store of a user''s contacts without
+
+        having to fetch the entire set of contacts from the server every time.'
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/contact-delta?view=graph-rest-1.0
@@ -1625,571 +2206,6 @@ paths:
                       type: array
                       items:
                         $ref: '#/components/schemas/microsoft.graph.contact'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: function
-      x-ms-pageable:
-        nextLinkName: '@odata.nextLink'
-        operationName: listMore
-  /me/contactFolders:
-    description: Provides operations to manage the contactFolders property of the microsoft.graph.user entity.
-    get:
-      tags:
-      - me.contactFolder
-      summary: Microsoft Graph List contactFolders
-      description: Get the contact folder collection in the default Contacts folder of the signed-in user.
-      externalDocs:
-        description: Find more info here
-        url: https://learn.microsoft.com/graph/api/user-list-contactfolders?view=graph-rest-1.0
-      operationId: me.ListContactFolders
-      parameters:
-      - $ref: '#/components/parameters/top'
-      - $ref: '#/components/parameters/skip'
-      - $ref: '#/components/parameters/search'
-      - $ref: '#/components/parameters/filter'
-      - $ref: '#/components/parameters/count'
-      - name: $orderby
-        in: query
-        description: Order items by property values
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      - name: $select
-        in: query
-        description: Select properties to be returned
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      - name: $expand
-        in: query
-        description: Expand related entities
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      responses:
-        2XX:
-          $ref: '#/components/responses/microsoft.graph.contactFolderCollectionResponse'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-pageable:
-        nextLinkName: '@odata.nextLink'
-        operationName: listMore
-      x-ms-docs-operation-type: operation
-    post:
-      tags:
-      - me.contactFolder
-      summary: Microsoft Graph Create ContactFolder
-      description: Create a new contactFolder under the user's default contacts folder. You can also create a new contactfolder as a child of any specified contact folder.
-      externalDocs:
-        description: Find more info here
-        url: https://learn.microsoft.com/graph/api/user-post-contactfolders?view=graph-rest-1.0
-      operationId: me.CreateContactFolders
-      requestBody:
-        description: New navigation property
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.contactFolder'
-        required: true
-      responses:
-        2XX:
-          description: Created navigation property.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.contactFolder'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-  /me/contactFolders/{contactFolder-id}:
-    description: Provides operations to manage the contactFolders property of the microsoft.graph.user entity.
-    parameters:
-    - name: contactFolder-id
-      in: path
-      description: The unique identifier of contactFolder
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: contactFolder
-    get:
-      tags:
-      - me.contactFolder
-      summary: Microsoft Graph Get contactFolder
-      description: 'Get a contact folder by using the contact folder ID. There are two scenarios where an app can get another user''s contact folder:'
-      externalDocs:
-        description: Find more info here
-        url: https://learn.microsoft.com/graph/api/contactfolder-get?view=graph-rest-1.0
-      operationId: me.GetContactFolders
-      parameters:
-      - name: $select
-        in: query
-        description: Select properties to be returned
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      - name: $expand
-        in: query
-        description: Expand related entities
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      responses:
-        2XX:
-          description: Retrieved navigation property
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.contactFolder'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    patch:
-      tags:
-      - me.contactFolder
-      summary: Microsoft Graph Update contactfolder
-      description: Update the properties of contactfolder object.
-      externalDocs:
-        description: Find more info here
-        url: https://learn.microsoft.com/graph/api/contactfolder-update?view=graph-rest-1.0
-      operationId: me.UpdateContactFolders
-      requestBody:
-        description: New navigation property values
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.contactFolder'
-        required: true
-      responses:
-        2XX:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.contactFolder'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    delete:
-      tags:
-      - me.contactFolder
-      summary: Microsoft Graph Delete contactFolder
-      description: Delete contactFolder other than the default contactFolder.
-      externalDocs:
-        description: Find more info here
-        url: https://learn.microsoft.com/graph/api/contactfolder-delete?view=graph-rest-1.0
-      operationId: me.DeleteContactFolders
-      parameters:
-      - name: If-Match
-        in: header
-        description: ETag
-        schema:
-          type: string
-      responses:
-        '204':
-          description: Success
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-  /me/contactFolders/{contactFolder-id}/childFolders:
-    description: Provides operations to manage the childFolders property of the microsoft.graph.contactFolder entity.
-    parameters:
-    - name: contactFolder-id
-      in: path
-      description: The unique identifier of contactFolder
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: contactFolder
-    get:
-      tags:
-      - me.contactFolder
-      summary: Microsoft Graph List childFolders
-      description: Get a collection of child folders under the specified contact folder.
-      externalDocs:
-        description: Find more info here
-        url: https://learn.microsoft.com/graph/api/contactfolder-list-childfolders?view=graph-rest-1.0
-      operationId: me.contactFolders.ListChildFolders
-      parameters:
-      - $ref: '#/components/parameters/top'
-      - $ref: '#/components/parameters/skip'
-      - $ref: '#/components/parameters/search'
-      - $ref: '#/components/parameters/filter'
-      - $ref: '#/components/parameters/count'
-      - name: $orderby
-        in: query
-        description: Order items by property values
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      - name: $select
-        in: query
-        description: Select properties to be returned
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      - name: $expand
-        in: query
-        description: Expand related entities
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      responses:
-        2XX:
-          $ref: '#/components/responses/microsoft.graph.contactFolderCollectionResponse'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-pageable:
-        nextLinkName: '@odata.nextLink'
-        operationName: listMore
-      x-ms-docs-operation-type: operation
-    post:
-      tags:
-      - me.contactFolder
-      summary: Microsoft Graph Create ContactFolder
-      description: Create a new contactFolder as a child of a specified folder.  You can also create a new contactFolder under the user's default contact folder.
-      externalDocs:
-        description: Find more info here
-        url: https://learn.microsoft.com/graph/api/contactfolder-post-childfolders?view=graph-rest-1.0
-      operationId: me.contactFolders.CreateChildFolders
-      requestBody:
-        description: New navigation property
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.contactFolder'
-        required: true
-      responses:
-        2XX:
-          description: Created navigation property.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.contactFolder'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-  /me/contactFolders/{contactFolder-id}/childFolders/{contactFolder-id1}:
-    description: Provides operations to manage the childFolders property of the microsoft.graph.contactFolder entity.
-    parameters:
-    - name: contactFolder-id
-      in: path
-      description: The unique identifier of contactFolder
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: contactFolder
-    - name: contactFolder-id1
-      in: path
-      description: The unique identifier of contactFolder
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: contactFolder
-    get:
-      tags:
-      - me.contactFolder
-      summary: Microsoft Graph Get childFolders from me
-      description: The collection of child folders in the folder. Navigation property. Read-only. Nullable.
-      operationId: me.contactFolders.GetChildFolders
-      parameters:
-      - name: $select
-        in: query
-        description: Select properties to be returned
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      - name: $expand
-        in: query
-        description: Expand related entities
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      responses:
-        2XX:
-          description: Retrieved navigation property
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.contactFolder'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    patch:
-      tags:
-      - me.contactFolder
-      summary: Microsoft Graph Update the navigation property childFolders in me
-      operationId: me.contactFolders.UpdateChildFolders
-      requestBody:
-        description: New navigation property values
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/microsoft.graph.contactFolder'
-        required: true
-      responses:
-        2XX:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/microsoft.graph.contactFolder'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-    delete:
-      tags:
-      - me.contactFolder
-      summary: Microsoft Graph Delete navigation property childFolders for me
-      operationId: me.contactFolders.DeleteChildFolders
-      parameters:
-      - name: If-Match
-        in: header
-        description: ETag
-        schema:
-          type: string
-      responses:
-        '204':
-          description: Success
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: operation
-  /me/contactFolders/{contactFolder-id}/childFolders/{contactFolder-id1}/permanentDelete:
-    description: Provides operations to call the permanentDelete method.
-    parameters:
-    - name: contactFolder-id
-      in: path
-      description: The unique identifier of contactFolder
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: contactFolder
-    - name: contactFolder-id1
-      in: path
-      description: The unique identifier of contactFolder
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: contactFolder
-    x-ms-docs-grouped-path:
-    - /me/calendar/events/{event-id}/permanentDelete
-    - /me/calendar/permanentDelete
-    - /me/calendarGroups/{calendarGroup-id}/calendars/{calendar-id}/events/{event-id}/permanentDelete
-    - /me/calendarGroups/{calendarGroup-id}/calendars/{calendar-id}/permanentDelete
-    - /me/calendars/{calendar-id}/events/{event-id}/permanentDelete
-    - /me/calendars/{calendar-id}/permanentDelete
-    - /me/contactFolders/{contactFolder-id}/childFolders/{contactFolder-id1}/contacts/{contact-id}/permanentDelete
-    - /me/contactFolders/{contactFolder-id}/contacts/{contact-id}/permanentDelete
-    - /me/contactFolders/{contactFolder-id}/permanentDelete
-    - /me/contacts/{contact-id}/permanentDelete
-    - /me/events/{event-id}/permanentDelete
-    - /me/mailFolders/{mailFolder-id}/childFolders/{mailFolder-id1}/messages/{message-id}/permanentDelete
-    - /me/mailFolders/{mailFolder-id}/childFolders/{mailFolder-id1}/permanentDelete
-    - /me/mailFolders/{mailFolder-id}/messages/{message-id}/permanentDelete
-    - /me/mailFolders/{mailFolder-id}/permanentDelete
-    - /me/messages/{message-id}/permanentDelete
-    post:
-      tags:
-      - me.contactFolder
-      summary: Microsoft Graph Invoke action permanentDelete
-      operationId: me.contactFolders.contactFolder.childFolders.contactFolder.permanentDelete
-      responses:
-        '204':
-          description: Success
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: action
-  /me/contactFolders/{contactFolder-id}/childFolders/$count:
-    description: Provides operations to count the resources in the collection.
-    parameters:
-    - name: contactFolder-id
-      in: path
-      description: The unique identifier of contactFolder
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: contactFolder
-    get:
-      tags:
-      - me.contactFolder
-      summary: Microsoft Graph Get the number of the resource
-      operationId: me.contactFolders.childFolders.GetCount-bbef
-      parameters:
-      - $ref: '#/components/parameters/search'
-      - $ref: '#/components/parameters/filter'
-      responses:
-        2XX:
-          $ref: '#/components/responses/ODataCountResponse'
-        4XX:
-          $ref: '#/components/responses/error'
-        5XX:
-          $ref: '#/components/responses/error'
-  /me/contactFolders/{contactFolder-id}/childFolders/delta():
-    description: Provides operations to call the delta method.
-    parameters:
-    - name: contactFolder-id
-      in: path
-      description: The unique identifier of contactFolder
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: contactFolder
-    x-ms-docs-grouped-path:
-    - /me/calendar/calendarView/delta()
-    - /me/calendar/events/{event-id}/instances/delta()
-    - /me/calendar/events/delta()
-    - /me/calendarGroups/{calendarGroup-id}/calendars/{calendar-id}/calendarView/delta()
-    - /me/calendarGroups/{calendarGroup-id}/calendars/{calendar-id}/events/{event-id}/instances/delta()
-    - /me/calendarGroups/{calendarGroup-id}/calendars/{calendar-id}/events/delta()
-    - /me/calendars/{calendar-id}/calendarView/delta()
-    - /me/calendars/{calendar-id}/events/{event-id}/instances/delta()
-    - /me/calendars/{calendar-id}/events/delta()
-    - /me/calendarView/delta()
-    - /me/chats/{chat-id}/messages/{chatMessage-id}/replies/delta()
-    - /me/chats/{chat-id}/messages/delta()
-    - /me/contactFolders/{contactFolder-id}/childFolders/{contactFolder-id1}/contacts/delta()
-    - /me/contactFolders/{contactFolder-id}/contacts/delta()
-    - /me/contactFolders/delta()
-    - /me/contacts/delta()
-    - /me/events/{event-id}/instances/delta()
-    - /me/events/delta()
-    - /me/joinedTeams/{team-id}/channels/{channel-id}/messages/{chatMessage-id}/replies/delta()
-    - /me/joinedTeams/{team-id}/channels/{channel-id}/messages/delta()
-    - /me/joinedTeams/{team-id}/primaryChannel/messages/{chatMessage-id}/replies/delta()
-    - /me/joinedTeams/{team-id}/primaryChannel/messages/delta()
-    - /me/mailFolders/{mailFolder-id}/childFolders/{mailFolder-id1}/messages/delta()
-    - /me/mailFolders/{mailFolder-id}/childFolders/delta()
-    - /me/mailFolders/{mailFolder-id}/messages/delta()
-    - /me/mailFolders/delta()
-    - /me/messages/delta()
-    - /me/onlineMeetings/{onlineMeeting-id}/recordings/delta()
-    - /me/onlineMeetings/{onlineMeeting-id}/transcripts/delta()
-    - /me/todo/lists/{todoTaskList-id}/tasks/delta()
-    - /me/todo/lists/delta()
-    get:
-      tags:
-      - me.contactFolder
-      summary: Microsoft Graph Invoke function delta
-      description: "Get a set of contact folders that have been added, deleted, or removed from the user's mailbox. A delta function call for contact folders in a mailbox is similar to a GET request, except that by appropriately \napplying state tokens in one or more of these calls, \nyou can query for incremental changes in the contact folders. This allows you to maintain and synchronize \na local store of a user's contact folders without having to fetch all the contact folders of that mailbox from the server every time."
-      externalDocs:
-        description: Find more info here
-        url: https://learn.microsoft.com/graph/api/contactfolder-delta?view=graph-rest-1.0
-      operationId: me.contactFolders.contactFolder.childFolders.delta
-      parameters:
-      - $ref: '#/components/parameters/top'
-      - $ref: '#/components/parameters/skip'
-      - $ref: '#/components/parameters/search'
-      - $ref: '#/components/parameters/filter'
-      - $ref: '#/components/parameters/count'
-      - name: $select
-        in: query
-        description: Select properties to be returned
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      - name: $orderby
-        in: query
-        description: Order items by property values
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      - name: $expand
-        in: query
-        description: Expand related entities
-        style: form
-        explode: false
-        schema:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-      responses:
-        2XX:
-          description: Success
-          content:
-            application/json:
-              schema:
-                title: Collection of contactFolder
-                type: object
-                allOf:
-                - $ref: '#/components/schemas/BaseDeltaFunctionResponse'
-                - type: object
-                  properties:
-                    value:
-                      type: array
-                      items:
-                        $ref: '#/components/schemas/microsoft.graph.contactFolder'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
@@ -2293,7 +2309,13 @@ paths:
       tags:
       - me.contactFolder
       summary: Microsoft Graph Invoke function delta
-      description: "Get a set of contact folders that have been added, deleted, or removed from the user's mailbox. A delta function call for contact folders in a mailbox is similar to a GET request, except that by appropriately \napplying state tokens in one or more of these calls, \nyou can query for incremental changes in the contact folders. This allows you to maintain and synchronize \na local store of a user's contact folders without having to fetch all the contact folders of that mailbox from the server every time."
+      description: 'Get a set of contact folders that have been added, deleted, or removed from the user''s mailbox. A delta function call for contact folders in a mailbox is similar to a GET request, except that by appropriately
+
+        applying state tokens in one or more of these calls,
+
+        you can query for incremental changes in the contact folders. This allows you to maintain and synchronize
+
+        a local store of a user''s contact folders without having to fetch all the contact folders of that mailbox from the server every time.'
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/contactfolder-delta?view=graph-rest-1.0
@@ -2360,68 +2382,24 @@ paths:
         operationName: listMore
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.emailAddress:
-      title: emailAddress
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        address:
-          type: string
-          description: The email address of the person or entity.
-          nullable: true
-        name:
-          type: string
-          description: The display name of the person or entity.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.physicalAddress:
-      title: physicalAddress
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        city:
-          type: string
-          description: The city.
-          nullable: true
-        countryOrRegion:
-          type: string
-          description: The country or region. It's a free-format string value, for example, 'United States'.
-          nullable: true
-        postalCode:
-          type: string
-          description: The postal code.
-          nullable: true
-        state:
-          type: string
-          description: The state.
-          nullable: true
-        street:
-          type: string
-          description: The street.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.extensionCollectionResponse:
-      title: Collection of extension
+    microsoft.graph.singleValueLegacyExtendedProperty:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: singleValueLegacyExtendedProperty
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          value:
+            type:
+            - string
+            - 'null'
+            description: A property value.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.singleValueLegacyExtendedProperty'
+    microsoft.graph.contactCollectionResponse:
+      title: Collection of contact
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -2430,43 +2408,7 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.extension'
-    microsoft.graph.extension:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: extension
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.openTypeExtension': '#/components/schemas/microsoft.graph.openTypeExtension'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
+              $ref: '#/components/schemas/microsoft.graph.contact'
     microsoft.graph.contactFolder:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -2476,13 +2418,15 @@ components:
         type: object
         properties:
           displayName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The folder's display name.
-            nullable: true
           parentFolderId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The ID of the folder's parent folder.
-            nullable: true
           childFolders:
             type: array
             items:
@@ -2510,6 +2454,74 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.contactFolder'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.multiValueLegacyExtendedProperty:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: multiValueLegacyExtendedProperty
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          value:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: A collection of property values.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.multiValueLegacyExtendedProperty'
+    microsoft.graph.emailAddress:
+      title: emailAddress
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        address:
+          type:
+          - string
+          - 'null'
+          description: The email address of the person or entity.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The display name of the person or entity.
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
     microsoft.graph.contact:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.outlookItem'
@@ -2519,154 +2531,186 @@ components:
         type: object
         properties:
           assistantName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The name of the contact's assistant.
-            nullable: true
           birthday:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: The contact's birthday. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
             format: date-time
-            nullable: true
           businessAddress:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.physicalAddress'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: The contact's business address.
           businessHomePage:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The business home page of the contact.
-            nullable: true
           businessPhones:
             type: array
             items:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             description: The contact's business phone numbers.
           children:
             type: array
             items:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             description: The names of the contact's children.
           companyName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The name of the contact's company.
-            nullable: true
           department:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The contact's department.
-            nullable: true
           displayName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The contact's display name. You can specify the display name in a create or update operation. Note that later updates to other properties may cause an automatically generated value to overwrite the displayName value you have specified. To preserve a pre-existing value, always include it as displayName in an update operation.
-            nullable: true
           emailAddresses:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.emailAddress'
             description: The contact's email addresses.
           fileAs:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The name the contact is filed under.
-            nullable: true
           generation:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The contact's suffix.
-            nullable: true
           givenName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The contact's given name.
-            nullable: true
           homeAddress:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.physicalAddress'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: The contact's home address.
           homePhones:
             type: array
             items:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             description: The contact's home phone numbers.
           imAddresses:
             type: array
             items:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             description: The contact's instant messaging (IM) addresses.
           initials:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The contact's initials.
-            nullable: true
           jobTitle:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The contact’s job title.
-            nullable: true
           manager:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The name of the contact's manager.
-            nullable: true
           middleName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The contact's middle name.
-            nullable: true
           mobilePhone:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The contact's mobile phone number.
-            nullable: true
           nickName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The contact's nickname.
-            nullable: true
           officeLocation:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The location of the contact's office.
-            nullable: true
           otherAddress:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.physicalAddress'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Other addresses for the contact.
           parentFolderId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The ID of the contact's parent folder.
-            nullable: true
           personalNotes:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The user's notes about the contact.
-            nullable: true
           profession:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The contact's profession.
-            nullable: true
           spouseName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The name of the contact's spouse/partner.
-            nullable: true
           surname:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The contact's surname.
-            nullable: true
           title:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The contact's title.
-            nullable: true
           yomiCompanyName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The phonetic Japanese company name of the contact.
-            nullable: true
           yomiGivenName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The phonetic Japanese given name (first name) of the contact.
-            nullable: true
           yomiSurname:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The phonetic Japanese surname (last name)  of the contact.
-            nullable: true
           extensions:
             type: array
             items:
@@ -2682,8 +2726,9 @@ components:
           photo:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.profilePhoto'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Optional contact picture. You can get or set a photo for a contact.
             x-ms-navigationProperty: true
           singleValueExtendedProperties:
@@ -2696,23 +2741,17 @@ components:
             type: string
             default: '#microsoft.graph.contact'
       x-ms-discriminator-value: '#microsoft.graph.contact'
-    microsoft.graph.multiValueLegacyExtendedProperty:
+    microsoft.graph.contactFolderCollectionResponse:
+      title: Collection of contactFolder
+      type: object
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: multiValueLegacyExtendedProperty
-        required:
-        - '@odata.type'
-        type: object
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
         properties:
           value:
             type: array
             items:
-              type: string
-              nullable: true
-            description: A collection of property values.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.multiValueLegacyExtendedProperty'
+              $ref: '#/components/schemas/microsoft.graph.contactFolder'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -2725,147 +2764,15 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.contactFolderCollectionResponse:
-      title: Collection of contactFolder
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.contactFolder'
-    BaseDeltaFunctionResponse:
-      title: Base delta function response
-      type: object
-      properties:
-        '@odata.nextLink':
-          type: string
-          nullable: true
-        '@odata.deltaLink':
-          type: string
-          nullable: true
-    microsoft.graph.contactCollectionResponse:
-      title: Collection of contact
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.contact'
-    microsoft.graph.singleValueLegacyExtendedProperty:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: singleValueLegacyExtendedProperty
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          value:
-            type: string
-            description: A property value.
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.singleValueLegacyExtendedProperty'
-    microsoft.graph.outlookItem:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: outlookItem
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          categories:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: The categories associated with the item
-          changeKey:
-            type: string
-            description: Identifies the version of the item. Every time the item is changed, changeKey changes as well. This allows Exchange to apply changes to the correct version of the object. Read-only.
-            nullable: true
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-            format: date-time
-            nullable: true
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-            format: date-time
-            nullable: true
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.contact': '#/components/schemas/microsoft.graph.contact'
-            '#microsoft.graph.event': '#/components/schemas/microsoft.graph.event'
-            '#microsoft.graph.message': '#/components/schemas/microsoft.graph.message'
-            '#microsoft.graph.calendarSharingMessage': '#/components/schemas/microsoft.graph.calendarSharingMessage'
-            '#microsoft.graph.eventMessage': '#/components/schemas/microsoft.graph.eventMessage'
-            '#microsoft.graph.eventMessageRequest': '#/components/schemas/microsoft.graph.eventMessageRequest'
-            '#microsoft.graph.eventMessageResponse': '#/components/schemas/microsoft.graph.eventMessageResponse'
-            '#microsoft.graph.post': '#/components/schemas/microsoft.graph.post'
-    microsoft.graph.profilePhoto:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: profilePhoto
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          height:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The height of the photo. Read-only.
-            format: int32
-            nullable: true
-          width:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The width of the photo. Read-only.
-            format: int32
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.profilePhoto'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -3935,13 +3842,231 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.extensionCollectionResponse:
+      title: Collection of extension
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.extension'
+    microsoft.graph.outlookItem:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: outlookItem
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          categories:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: The categories associated with the item
+          changeKey:
+            type:
+            - string
+            - 'null'
+            description: Identifies the version of the item. Every time the item is changed, changeKey changes as well. This allows Exchange to apply changes to the correct version of the object. Read-only.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+            format: date-time
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+            format: date-time
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.contact': '#/components/schemas/microsoft.graph.contact'
+            '#microsoft.graph.event': '#/components/schemas/microsoft.graph.event'
+            '#microsoft.graph.message': '#/components/schemas/microsoft.graph.message'
+            '#microsoft.graph.calendarSharingMessage': '#/components/schemas/microsoft.graph.calendarSharingMessage'
+            '#microsoft.graph.eventMessage': '#/components/schemas/microsoft.graph.eventMessage'
+            '#microsoft.graph.eventMessageRequest': '#/components/schemas/microsoft.graph.eventMessageRequest'
+            '#microsoft.graph.eventMessageResponse': '#/components/schemas/microsoft.graph.eventMessageResponse'
+            '#microsoft.graph.post': '#/components/schemas/microsoft.graph.post'
+    microsoft.graph.extension:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: extension
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.openTypeExtension': '#/components/schemas/microsoft.graph.openTypeExtension'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.profilePhoto:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: profilePhoto
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          height:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: The height of the photo. Read-only.
+            format: int32
+          width:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: The width of the photo. Read-only.
+            format: int32
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.profilePhoto'
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.physicalAddress:
+      title: physicalAddress
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        city:
+          type:
+          - string
+          - 'null'
+          description: The city.
+        countryOrRegion:
+          type:
+          - string
+          - 'null'
+          description: The country or region. It's a free-format string value, for example, 'United States'.
+        postalCode:
+          type:
+          - string
+          - 'null'
+          description: The postal code.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The state.
+        street:
+          type:
+          - string
+          - 'null'
+          description: The street.
+        '@odata.type':
+          type: string
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    BaseDeltaFunctionResponse:
+      title: Base delta function response
+      type: object
+      properties:
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+        '@odata.deltaLink':
+          type:
+          - string
+          - 'null'
+  parameters:
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   responses:
-    error:
-      description: error
+    ODataCountResponse:
+      description: The count of the resource
       content:
-        application/json:
+        text/plain:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+            $ref: '#/components/schemas/ODataCountResponse'
     microsoft.graph.extensionCollectionResponse:
       description: Retrieved collection
       content:
@@ -3954,59 +4079,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.contactFolderCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
+    error:
+      description: error
       content:
-        text/plain:
+        application/json:
           schema:
-            $ref: '#/components/schemas/ODataCountResponse'
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
     microsoft.graph.contactCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.contactCollectionResponse'
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string

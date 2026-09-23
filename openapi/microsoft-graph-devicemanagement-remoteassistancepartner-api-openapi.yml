@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Device Management.remote Assistance Partner API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: deviceManagement.remoteAssistancePartner
+  x-ms-docs-toc-type: page
 paths:
   /deviceManagement/remoteAssistancePartners:
     description: Provides operations to manage the remoteAssistancePartners property of the microsoft.graph.deviceManagement entity.
@@ -221,7 +215,7 @@ paths:
       tags:
       - deviceManagement.remoteAssistancePartner
       summary: Microsoft Graph Invoke action beginOnboarding
-      description: A request to start onboarding.  Must be coupled with the appropriate TeamViewer account information
+      description: A request to start onboarding. Must be coupled with the appropriate TeamViewer account information
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/intune-remoteassistance-remoteassistancepartner-beginonboarding?view=graph-rest-1.0
@@ -280,33 +274,35 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
+    microsoft.graph.remoteAssistancePartner:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: remoteAssistancePartner
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Display name of the partner.
+          lastConnectionDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Timestamp of the last request sent to Intune by the TEM partner.
+            format: date-time
+          onboardingStatus:
+            $ref: '#/components/schemas/microsoft.graph.remoteAssistanceOnboardingStatus'
+          onboardingUrl:
+            type:
+            - string
+            - 'null'
+            description: URL of the partner's onboarding portal, where an administrator can configure their Remote Assistance service.
+          '@odata.type':
+            type: string
+        description: RemoteAssistPartner resources represent the metadata and status of a given Remote Assistance partner service.
+      x-ms-discriminator-value: '#microsoft.graph.remoteAssistancePartner'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -314,19 +310,22 @@ components:
       type: object
       properties:
         request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Request Id as tracked internally by the service
-          nullable: true
         client-request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Client request Id as sent by the client application.
-          nullable: true
         date:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
+          type:
+          - string
+          - 'null'
           description: Date when the error occured.
           format: date-time
-          nullable: true
         '@odata.type':
           type: string
     microsoft.graph.remoteAssistancePartnerCollectionResponse:
@@ -340,6 +339,29 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.remoteAssistancePartner'
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -352,69 +374,15 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.remoteAssistanceOnboardingStatus:
-      title: remoteAssistanceOnboardingStatus
-      enum:
-      - notOnboarded
-      - onboarding
-      - onboarded
-      type: string
-      description: The current TeamViewer connector status
-      x-ms-enum:
-        name: remoteAssistanceOnboardingStatus
-        modelAsString: false
-        values:
-        - value: notOnboarded
-          description: The status reported when there is no active TeamViewer connector configured or active
-          name: notOnboarded
-        - value: onboarding
-          description: The status reported when the system has initiated a TeamViewer connection, but the service has not yet completed the confirmation of a connector
-          name: onboarding
-        - value: onboarded
-          description: The status reported when the system has successfully exchanged account information with TeamViewer and can now initiate remote assistance sessions with clients
-          name: onboarded
-    microsoft.graph.remoteAssistancePartner:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: remoteAssistancePartner
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          displayName:
-            type: string
-            description: Display name of the partner.
-            nullable: true
-          lastConnectionDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Timestamp of the last request sent to Intune by the TEM partner.
-            format: date-time
-          onboardingStatus:
-            $ref: '#/components/schemas/microsoft.graph.remoteAssistanceOnboardingStatus'
-          onboardingUrl:
-            type: string
-            description: URL of the partner's onboarding portal, where an administrator can configure their Remote Assistance service.
-            nullable: true
-          '@odata.type':
-            type: string
-        description: RemoteAssistPartner resources represent the metadata and status of a given Remote Assistance partner service.
-      x-ms-discriminator-value: '#microsoft.graph.remoteAssistancePartner'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1484,7 +1452,51 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.remoteAssistanceOnboardingStatus:
+      title: remoteAssistanceOnboardingStatus
+      enum:
+      - notOnboarded
+      - onboarding
+      - onboarded
+      type: string
+      description: The current TeamViewer connector status
+      x-ms-enum:
+        name: remoteAssistanceOnboardingStatus
+        modelAsString: false
+        values:
+        - value: notOnboarded
+          description: The status reported when there is no active TeamViewer connector configured or active
+          name: notOnboarded
+        - value: onboarding
+          description: The status reported when the system has initiated a TeamViewer connection, but the service has not yet completed the confirmation of a connector
+          name: onboarding
+        - value: onboarded
+          description: The status reported when the system has successfully exchanged account information with TeamViewer and can now initiate remote assistance sessions with clients
+          name: onboarded
   parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
     filter:
       name: $filter
       in: query
@@ -1519,15 +1531,6 @@ components:
       explode: false
       schema:
         type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
   responses:
     ODataCountResponse:
       description: The count of the resource
@@ -1535,15 +1538,15 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.remoteAssistancePartnerCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.remoteAssistancePartnerCollectionResponse'
     error:
       description: error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.remoteAssistancePartnerCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.remoteAssistancePartnerCollectionResponse'

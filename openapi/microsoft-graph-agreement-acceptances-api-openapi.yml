@@ -1,17 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Agreement Acceptances API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
+  title: Microsoft Graph Agreement Acceptances API
   version: 1.0.0
   contact:
     name: Microsoft Graph API Support
     url: https://developer.microsoft.com/graph
+  description: 'Operations tagged Agreement Acceptances across 2 of this provider''s published API definitions: agreementacceptances-openapi-original.yml, agreements-openapi-original.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://graph.microsoft.com/v1.0
   description: Microsoft Graph API v1.0 endpoint
@@ -113,6 +107,9 @@ paths:
         delay: 100
         dispatcher: FALLBACK
         dispatcherRules: default
+    servers:
+    - url: https://graph.microsoft.com/v1.0
+      description: Microsoft Graph API v1.0 endpoint
   /agreementAcceptances/{agreementAcceptance-id}:
     description: Provides operations to manage a specific agreementAcceptance entity.
     parameters:
@@ -212,6 +209,9 @@ paths:
         delay: 100
         dispatcher: FALLBACK
         dispatcherRules: default
+    servers:
+    - url: https://graph.microsoft.com/v1.0
+      description: Microsoft Graph API v1.0 endpoint
   /agreementAcceptances/$count:
     description: Get the count of agreement acceptances.
     get:
@@ -235,6 +235,9 @@ paths:
         delay: 100
         dispatcher: FALLBACK
         dispatcherRules: default
+    servers:
+    - url: https://graph.microsoft.com/v1.0
+      description: Microsoft Graph API v1.0 endpoint
   /agreements/{agreement-id}/acceptances:
     description: Provides operations to manage the acceptances property of an agreement entity.
     parameters:
@@ -331,6 +334,9 @@ paths:
         delay: 100
         dispatcher: FALLBACK
         dispatcherRules: default
+    servers:
+    - url: https://graph.microsoft.com/v1.0
+      description: Microsoft Graph API v1.0 endpoint
   /agreements/{agreement-id}/acceptances/{agreementAcceptance-id}:
     description: Provides operations to manage a specific acceptance of an agreement.
     parameters:
@@ -441,6 +447,9 @@ paths:
         delay: 100
         dispatcher: FALLBACK
         dispatcherRules: default
+    servers:
+    - url: https://graph.microsoft.com/v1.0
+      description: Microsoft Graph API v1.0 endpoint
   /agreements/{agreement-id}/acceptances/$count:
     description: Get the count of agreement acceptances.
     parameters:
@@ -466,41 +475,11 @@ paths:
         delay: 100
         dispatcher: FALLBACK
         dispatcherRules: default
+    servers:
+    - url: https://graph.microsoft.com/v1.0
+      description: Microsoft Graph API v1.0 endpoint
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    AgreementAcceptanceCollectionResponse:
-      title: AgreementAcceptanceCollectionResponse
-      type: object
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementAcceptance'
-        '@odata.nextLink':
-          type: string
-          nullable: true
-        '@odata.count':
-          type: integer
-          format: int32
-    AgreementAcceptanceState:
-      title: AgreementAcceptanceState
-      type: string
-      enum:
-      - accepted
-      - declined
-      description: The state of the agreement acceptance.
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for an entity. Read-only.
-        '@odata.type':
-          type: string
     ErrorDetail:
       title: ErrorDetail
       required:
@@ -515,14 +494,17 @@ components:
         target:
           type: string
           nullable: true
-    ODataError:
-      title: ODataError
-      required:
-      - error
+    InnerError:
+      title: InnerError
       type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
+      description: The structure of this object is service-specific
+    AgreementAcceptanceState:
+      title: AgreementAcceptanceState
+      type: string
+      enum:
+      - accepted
+      - declined
+      description: The state of the agreement acceptance.
     AgreementAcceptance:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -592,10 +574,40 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementAcceptance'
-    InnerError:
-      title: InnerError
+    Entity:
+      title: Entity
       type: object
-      description: The structure of this object is service-specific
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity. Read-only.
+        '@odata.type':
+          type: string
+    ODataCountResponse:
+      type: integer
+      format: int32
+    ODataError:
+      title: ODataError
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    AgreementAcceptanceCollectionResponse:
+      title: AgreementAcceptanceCollectionResponse
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementAcceptance'
+        '@odata.nextLink':
+          type: string
+          nullable: true
+        '@odata.count':
+          type: integer
+          format: int32
     MainError:
       title: MainError
       required:
@@ -617,6 +629,66 @@ components:
             $ref: '#/components/schemas/ErrorDetail'
         innerError:
           $ref: '#/components/schemas/InnerError'
+  parameters:
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    AgreementAcceptanceId:
+      name: agreementAcceptance-id
+      in: path
+      description: The unique identifier of the agreement acceptance
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreementAcceptance
+    Filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    Skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    Count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    Top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    AgreementId:
+      name: agreement-id
+      in: path
+      description: The unique identifier of the agreement
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreement
   responses:
     ErrorResponse:
       description: Error response
@@ -624,18 +696,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ODataError'
-    AgreementAcceptanceCollectionResponse_2:
-      description: Retrieved collection of agreement acceptances
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AgreementAcceptanceCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
     AgreementAcceptanceCollectionResponse:
       description: Retrieved collection of agreement acceptances
       content:
@@ -645,25 +705,19 @@ components:
           examples:
             AgreementAcceptanceCollectionExample:
               $ref: '#/components/examples/AgreementAcceptanceCollectionExample'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    AgreementAcceptanceCollectionResponse_2:
+      description: Retrieved collection of agreement acceptances
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgreementAcceptanceCollectionResponse'
   examples:
-    GetAgreementAcceptanceResponse:
-      summary: Example response for getting an agreement acceptance
-      value:
-        id: 00000000-0000-0000-0000-000000000005
-        agreementId: 00000000-0000-0000-0000-000000000001
-        agreementFileId: 00000000-0000-0000-0000-000000000002
-        userId: 00000000-0000-0000-0000-000000000003
-        userDisplayName: John Doe
-        userEmail: john.doe@example.com
-        userPrincipalName: john.doe@example.com
-        deviceDisplayName: John's Laptop
-        deviceId: 00000000-0000-0000-0000-000000000004
-        deviceOSType: Windows
-        deviceOSVersion: 10.0.19041
-        recordedDateTime: '2024-01-15T10:30:00Z'
-        expirationDateTime: '2024-04-15T10:30:00Z'
-        state: accepted
-        '@odata.type': '#microsoft.graph.agreementAcceptance'
     UpdateAgreementAcceptanceResponse:
       summary: Example response for updated agreement acceptance
       value:
@@ -698,8 +752,8 @@ components:
         recordedDateTime: '2024-01-15T10:30:00Z'
         state: accepted
         '@odata.type': '#microsoft.graph.agreementAcceptance'
-    CreateAgreementAcceptanceResponse:
-      summary: Example response for created agreement acceptance
+    GetAgreementAcceptanceResponse:
+      summary: Example response for getting an agreement acceptance
       value:
         id: 00000000-0000-0000-0000-000000000005
         agreementId: 00000000-0000-0000-0000-000000000001
@@ -715,6 +769,11 @@ components:
         recordedDateTime: '2024-01-15T10:30:00Z'
         expirationDateTime: '2024-04-15T10:30:00Z'
         state: accepted
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    UpdateAgreementAcceptanceRequest:
+      summary: Example request to update an agreement acceptance
+      value:
+        state: declined
         '@odata.type': '#microsoft.graph.agreementAcceptance'
     AgreementAcceptanceCollectionExample:
       summary: Example collection of agreement acceptances
@@ -736,68 +795,24 @@ components:
           state: accepted
           '@odata.type': '#microsoft.graph.agreementAcceptance'
         '@odata.count': 1
-    UpdateAgreementAcceptanceRequest:
-      summary: Example request to update an agreement acceptance
+    CreateAgreementAcceptanceResponse:
+      summary: Example response for created agreement acceptance
       value:
-        state: declined
+        id: 00000000-0000-0000-0000-000000000005
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000003
+        userDisplayName: John Doe
+        userEmail: john.doe@example.com
+        userPrincipalName: john.doe@example.com
+        deviceDisplayName: John's Laptop
+        deviceId: 00000000-0000-0000-0000-000000000004
+        deviceOSType: Windows
+        deviceOSVersion: 10.0.19041
+        recordedDateTime: '2024-01-15T10:30:00Z'
+        expirationDateTime: '2024-04-15T10:30:00Z'
+        state: accepted
         '@odata.type': '#microsoft.graph.agreementAcceptance'
-  parameters:
-    AgreementAcceptanceId:
-      name: agreementAcceptance-id
-      in: path
-      description: The unique identifier of the agreement acceptance
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreementAcceptance
-    Search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    Skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    Filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    AgreementId:
-      name: agreement-id
-      in: path
-      description: The unique identifier of the agreement
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreement
-    Top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-    Count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
+x-refined-from:
+- agreementacceptances-openapi-original.yml
+- agreements-openapi-original.yml

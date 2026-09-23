@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Education.reports Root API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: education.reportsRoot
+  x-ms-docs-toc-type: page
 paths:
   /education/reports:
     description: Provides operations to manage the reports property of the microsoft.graph.educationRoot entity.
@@ -162,7 +156,7 @@ paths:
     post:
       tags:
       - education.reportsRoot
-      summary: Microsoft Graph Create new navigation property to readingAssignmentSubmissions for education
+      summary: Microsoft Graph Create new navigation property to readingAssignmentSubmissions…
       operationId: education.reports.CreateReadingAssignmentSubmissions
       requestBody:
         description: New navigation property
@@ -235,7 +229,7 @@ paths:
     patch:
       tags:
       - education.reportsRoot
-      summary: Microsoft Graph Update the navigation property readingAssignmentSubmissions in education
+      summary: Microsoft Graph Update the navigation property readingAssignmentSubmissions in…
       operationId: education.reports.UpdateReadingAssignmentSubmissions
       requestBody:
         description: New navigation property values
@@ -259,7 +253,7 @@ paths:
     delete:
       tags:
       - education.reportsRoot
-      summary: Microsoft Graph Delete navigation property readingAssignmentSubmissions for education
+      summary: Microsoft Graph Delete navigation property readingAssignmentSubmissions for…
       operationId: education.reports.DeleteReadingAssignmentSubmissions
       parameters:
       - name: If-Match
@@ -353,7 +347,7 @@ paths:
     post:
       tags:
       - education.reportsRoot
-      summary: Microsoft Graph Create new navigation property to readingCoachPassages for education
+      summary: Microsoft Graph Create new navigation property to readingCoachPassages for…
       operationId: education.reports.CreateReadingCoachPassages
       requestBody:
         description: New navigation property
@@ -544,7 +538,7 @@ paths:
     post:
       tags:
       - education.reportsRoot
-      summary: Microsoft Graph Create new navigation property to reflectCheckInResponses for education
+      summary: Microsoft Graph Create new navigation property to reflectCheckInResponses for…
       operationId: education.reports.CreateReflectCheckInResponses
       requestBody:
         description: New navigation property
@@ -617,7 +611,7 @@ paths:
     patch:
       tags:
       - education.reportsRoot
-      summary: Microsoft Graph Update the navigation property reflectCheckInResponses in education
+      summary: Microsoft Graph Update the navigation property reflectCheckInResponses in…
       operationId: education.reports.UpdateReflectCheckInResponses
       requestBody:
         description: New navigation property values
@@ -735,7 +729,7 @@ paths:
     post:
       tags:
       - education.reportsRoot
-      summary: Microsoft Graph Create new navigation property to speakerAssignmentSubmissions for education
+      summary: Microsoft Graph Create new navigation property to speakerAssignmentSubmissions…
       operationId: education.reports.CreateSpeakerAssignmentSubmissions
       requestBody:
         description: New navigation property
@@ -808,7 +802,7 @@ paths:
     patch:
       tags:
       - education.reportsRoot
-      summary: Microsoft Graph Update the navigation property speakerAssignmentSubmissions in education
+      summary: Microsoft Graph Update the navigation property speakerAssignmentSubmissions in…
       operationId: education.reports.UpdateSpeakerAssignmentSubmissions
       requestBody:
         description: New navigation property values
@@ -832,7 +826,7 @@ paths:
     delete:
       tags:
       - education.reportsRoot
-      summary: Microsoft Graph Delete navigation property speakerAssignmentSubmissions for education
+      summary: Microsoft Graph Delete navigation property speakerAssignmentSubmissions for…
       operationId: education.reports.DeleteSpeakerAssignmentSubmissions
       parameters:
       - name: If-Match
@@ -866,239 +860,170 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
-  schemas:
+  responses:
+    microsoft.graph.reflectCheckInResponseCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.reflectCheckInResponseCollectionResponse'
+    microsoft.graph.speakerAssignmentSubmissionCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.speakerAssignmentSubmissionCollectionResponse'
+    microsoft.graph.readingAssignmentSubmissionCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.readingAssignmentSubmissionCollectionResponse'
+    microsoft.graph.readingCoachPassageCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.readingCoachPassageCollectionResponse'
     ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+  schemas:
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.readingCoachPassage:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.readingAssignmentSubmission:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: readingCoachPassage
+      - title: readingAssignmentSubmission
         required:
         - '@odata.type'
         type: object
         properties:
-          isReadingCompleted:
-            type: boolean
-            description: Indicates if the reading passage was completed.
-          languageTag:
+          accuracyScore:
+            oneOf:
+            - type:
+              - number
+              - 'null'
+              format: double
+            - type:
+              - string
+              - 'null'
+            - $ref: '#/components/schemas/ReferenceNumeric'
+            description: Accuracy score of the reading progress.
+          action:
             type: string
-            description: The language of the reading passage.
-          practicedAtDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            description: Indicates whether the submission is an attempt by the student or a miscue edit done by the educator. The possible values are Attempt and EditMiscue.
+          assignmentId:
             type: string
-            description: The date and time when the Reading Coach passage was practiced. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          practiceWords:
+            description: ID of the assignment with which this submission is associated.
+          challengingWords:
             type: array
             items:
-              type: string
-            description: The list of challenging words for the student that they can practice further.
-          storyType:
-            $ref: '#/components/schemas/microsoft.graph.readingCoachStoryType'
+              $ref: '#/components/schemas/microsoft.graph.challengingWord'
+            description: List of words that the student found challenging during the reading session.
+          classId:
+            type:
+            - string
+            - 'null'
+            description: ID of the class this reading progress is associated with.
+          insertions:
+            type: number
+            description: Insertions of the reading progress.
+            format: int64
+          mispronunciations:
+            type: number
+            description: Mispronunciations of the reading progress.
+            format: int64
+          missedExclamationMarks:
+            type: number
+            description: Number of exclamation marks missed in the reading passage.
+            format: int64
+          missedPeriods:
+            type: number
+            description: Number of periods missed in the reading passage.
+            format: int64
+          missedQuestionMarks:
+            type: number
+            description: Number of question marks missed in the reading passage.
+            format: int64
+          missedShorts:
+            type: number
+            description: Number of short words missed during the reading session.
+            format: int64
+          monotoneScore:
+            oneOf:
+            - type:
+              - number
+              - 'null'
+              format: double
+            - type:
+              - string
+              - 'null'
+            - $ref: '#/components/schemas/ReferenceNumeric'
+            description: Score that reflects the student's use of intonation and expression. Lower scores indicate more monotone reading.
+          omissions:
+            type: number
+            description: Omissions of the reading progress.
+            format: int64
+          repetitions:
+            type: number
+            description: Number of times the student repeated words or phrases during the reading session.
+            format: int64
+          selfCorrections:
+            type: number
+            description: Number of times the student self-corrected their reading errors.
+            format: int64
           studentId:
+            type:
+            - string
+            - 'null'
+            description: ID of the user this reading progress is associated with.
+          submissionDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
             type: string
-            description: ID of the student that practiced the reading passage.
-            nullable: true
-          timeSpentReadingInSeconds:
-            oneOf:
-            - type: number
-              format: double
-              nullable: true
-            - type: string
-              nullable: true
-            - $ref: '#/components/schemas/ReferenceNumeric'
-            description: The time the student spent reading in seconds.
-          wordsAccuracyPercentage:
-            oneOf:
-            - type: number
-              format: double
-              nullable: true
-            - type: string
-              nullable: true
-            - $ref: '#/components/schemas/ReferenceNumeric'
-            description: The percentage of words that the student read correctly.
+            description: Date and time of the submission this reading progress is associated with. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          submissionId:
+            type:
+            - string
+            - 'null'
+            description: ID of the submission this reading progress is associated with.
+          unexpectedPauses:
+            type: number
+            description: Number of unexpected pauses made during the reading session.
+            format: int64
+          wordCount:
+            type: number
+            description: Words count of the reading progress.
+            format: int64
           wordsPerMinute:
             oneOf:
-            - type: number
+            - type:
+              - number
+              - 'null'
               format: double
-              nullable: true
-            - type: string
-              nullable: true
+            - type:
+              - string
+              - 'null'
             - $ref: '#/components/schemas/ReferenceNumeric'
-            description: The rate the student read at in words per minute.
+            description: Words per minute of the reading progress.
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.readingCoachPassage'
-    microsoft.graph.reflectCheckInResponseCollectionResponse:
-      title: Collection of reflectCheckInResponse
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.reflectCheckInResponse'
-    microsoft.graph.reportsRoot:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: reportsRoot
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          readingAssignmentSubmissions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.readingAssignmentSubmission'
-            description: Details of submitted reading assignments.
-            x-ms-navigationProperty: true
-          readingCoachPassages:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.readingCoachPassage'
-            description: Details of practiced Reading Coach passages.
-            x-ms-navigationProperty: true
-          reflectCheckInResponses:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.reflectCheckInResponse'
-            description: Details of check-in responses.
-            x-ms-navigationProperty: true
-          speakerAssignmentSubmissions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.speakerAssignmentSubmission'
-            description: Details of submitted speaker assignments.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.reportsRoot'
-    microsoft.graph.readingCoachPassageCollectionResponse:
-      title: Collection of readingCoachPassage
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.readingCoachPassage'
-    microsoft.graph.responseFeedbackType:
-      title: responseFeedbackType
-      enum:
-      - none
-      - notDetected
-      - veryUnpleasant
-      - unpleasant
-      - neutral
-      - pleasant
-      - veryPleasant
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.speakerAssignmentSubmissionCollectionResponse:
-      title: Collection of speakerAssignmentSubmission
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.speakerAssignmentSubmission'
-    microsoft.graph.reflectCheckInResponse:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: reflectCheckInResponse
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          checkInId:
-            type: string
-            description: Identifier for the Reflect check-in.
-            nullable: true
-          checkInTitle:
-            type: string
-            description: The question or prompt of the Reflect check-in that this response addresses.
-          classId:
-            type: string
-            description: ID of the class associated with the Reflect check-in.
-            nullable: true
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the Reflect check-in was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          creatorId:
-            type: string
-            description: ID of the user who created the Reflect check-in.
-            nullable: true
-          isClosed:
-            type: boolean
-            description: Indicates whether the Reflect check-in is closed (true) or open (false).
-          responderId:
-            type: string
-            description: ID of the user who responded to the Reflect check-in.
-            nullable: true
-          responseEmotion:
-            $ref: '#/components/schemas/microsoft.graph.responseEmotionType'
-          responseFeedback:
-            $ref: '#/components/schemas/microsoft.graph.responseFeedbackType'
-          submitDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the response to the Reflect check-in was submitted. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.reflectCheckInResponse'
-    ReferenceNumeric:
-      enum:
-      - -INF
-      - INF
-      - NaN
-      type: string
-      nullable: true
+      x-ms-discriminator-value: '#microsoft.graph.readingAssignmentSubmission'
     microsoft.graph.responseEmotionType:
       title: responseEmotionType
       enum:
@@ -1161,138 +1086,8 @@ components:
       - sad
       - unknownFutureValue
       type: string
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.readingAssignmentSubmission:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: readingAssignmentSubmission
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          accuracyScore:
-            oneOf:
-            - type: number
-              format: double
-              nullable: true
-            - type: string
-              nullable: true
-            - $ref: '#/components/schemas/ReferenceNumeric'
-            description: Accuracy score of the reading progress.
-          action:
-            type: string
-            description: Indicates whether the submission is an attempt by the student or a miscue edit done by the educator. The possible values are Attempt and EditMiscue.
-          assignmentId:
-            type: string
-            description: ID of the assignment with which this submission is associated.
-          challengingWords:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.challengingWord'
-            description: List of words that the student found challenging during the reading session.
-          classId:
-            type: string
-            description: ID of the class this reading progress is associated with.
-            nullable: true
-          insertions:
-            type: number
-            description: Insertions of the reading progress.
-            format: int64
-          mispronunciations:
-            type: number
-            description: Mispronunciations of the reading progress.
-            format: int64
-          missedExclamationMarks:
-            type: number
-            description: Number of exclamation marks missed in the reading passage.
-            format: int64
-          missedPeriods:
-            type: number
-            description: Number of periods missed in the reading passage.
-            format: int64
-          missedQuestionMarks:
-            type: number
-            description: Number of question marks missed in the reading passage.
-            format: int64
-          missedShorts:
-            type: number
-            description: Number of short words missed during the reading session.
-            format: int64
-          monotoneScore:
-            oneOf:
-            - type: number
-              format: double
-              nullable: true
-            - type: string
-              nullable: true
-            - $ref: '#/components/schemas/ReferenceNumeric'
-            description: Score that reflects the student's use of intonation and expression. Lower scores indicate more monotone reading.
-          omissions:
-            type: number
-            description: Omissions of the reading progress.
-            format: int64
-          repetitions:
-            type: number
-            description: Number of times the student repeated words or phrases during the reading session.
-            format: int64
-          selfCorrections:
-            type: number
-            description: Number of times the student self-corrected their reading errors.
-            format: int64
-          studentId:
-            type: string
-            description: ID of the user this reading progress is associated with.
-            nullable: true
-          submissionDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time of the submission this reading progress is associated with. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          submissionId:
-            type: string
-            description: ID of the submission this reading progress is associated with.
-            nullable: true
-          unexpectedPauses:
-            type: number
-            description: Number of unexpected pauses made during the reading session.
-            format: int64
-          wordCount:
-            type: number
-            description: Words count of the reading progress.
-            format: int64
-          wordsPerMinute:
-            oneOf:
-            - type: number
-              format: double
-              nullable: true
-            - type: string
-              nullable: true
-            - $ref: '#/components/schemas/ReferenceNumeric'
-            description: Words per minute of the reading progress.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.readingAssignmentSubmission'
-    microsoft.graph.readingAssignmentSubmissionCollectionResponse:
-      title: Collection of readingAssignmentSubmission
+    microsoft.graph.reflectCheckInResponseCollectionResponse:
+      title: Collection of reflectCheckInResponse
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -1301,48 +1096,7 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.readingAssignmentSubmission'
-    microsoft.graph.challengingWord:
-      title: challengingWord
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        count:
-          type: number
-          description: Number of times the word was found challenging by the student during the reading session.
-          format: int64
-        word:
-          type: string
-          description: The specific word that the student found challenging during the reading session.
-        '@odata.type':
-          type: string
-    microsoft.graph.readingCoachStoryType:
-      title: readingCoachStoryType
-      enum:
-      - aiGenerated
-      - readWorks
-      - userProvided
-      - unknownFutureValue
-      type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+              $ref: '#/components/schemas/microsoft.graph.reflectCheckInResponse'
     microsoft.graph.speakerAssignmentSubmission:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -1355,71 +1109,84 @@ components:
             type: string
             description: ID of the assignment with which this submission is associated.
           averageWordsPerMinutePace:
-            type: number
+            type:
+            - number
+            - 'null'
             description: The average speaking pace of the student, measured in words per minute.
             format: int64
-            nullable: true
           classId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: ID of the class this speaker progress is associated with.
-            nullable: true
           fillerWordsOccurrencesCount:
-            type: number
+            type:
+            - number
+            - 'null'
             description: The number of times the student was flagged by Speaker Coach for using a filler word.
             format: int64
-            nullable: true
           incorrectCameraDistanceOccurrencesCount:
-            type: number
+            type:
+            - number
+            - 'null'
             description: The number of times the student was flagged by Speaker Coach for being either too close or too far away from the camera.
             format: int64
-            nullable: true
           lengthOfSubmissionInSeconds:
             oneOf:
-            - type: number
+            - type:
+              - number
+              - 'null'
               format: double
-              nullable: true
-            - type: string
-              nullable: true
+            - type:
+              - string
+              - 'null'
             - $ref: '#/components/schemas/ReferenceNumeric'
             description: The length of the student submission in seconds.
           lostEyeContactOccurrencesCount:
-            type: number
+            type:
+            - number
+            - 'null'
             description: The number of times the student was flagged by Speaker Coach for losing eye contact with the camera.
             format: int64
-            nullable: true
           monotoneOccurrencesCount:
-            type: number
+            type:
+            - number
+            - 'null'
             description: The number of times the student was flagged by Speaker Coach for speaking in monotone.
             format: int64
-            nullable: true
           nonInclusiveLanguageOccurrencesCount:
-            type: number
+            type:
+            - number
+            - 'null'
             description: The number of times the student was flagged by Speaker Coach for using non-inclusive or sensitive language.
             format: int64
-            nullable: true
           obstructedViewOccurrencesCount:
-            type: number
+            type:
+            - number
+            - 'null'
             description: The number of times the student was flagged by Speaker Coach for obstructing the view of their face.
             format: int64
-            nullable: true
           repetitiveLanguageOccurrencesCount:
-            type: number
+            type:
+            - number
+            - 'null'
             description: The number of times the student was flagged by Speaker Coach for using repetitive language.
             format: int64
-            nullable: true
           studentId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: ID of the user this speaker progress is associated with.
-            nullable: true
           submissionDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
             type: string
             description: Date and time of the submission this speaker progress is associated with. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
             format: date-time
           submissionId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: ID of the submission this speaker progress is associated with.
-            nullable: true
           topFillerWords:
             type: array
             items:
@@ -1447,6 +1214,243 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.speakerAssignmentSubmission'
+    microsoft.graph.readingCoachStoryType:
+      title: readingCoachStoryType
+      enum:
+      - aiGenerated
+      - readWorks
+      - userProvided
+      - unknownFutureValue
+      type: string
+    microsoft.graph.speakerAssignmentSubmissionCollectionResponse:
+      title: Collection of speakerAssignmentSubmission
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.speakerAssignmentSubmission'
+    microsoft.graph.readingCoachPassage:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: readingCoachPassage
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          isReadingCompleted:
+            type: boolean
+            description: Indicates if the reading passage was completed.
+          languageTag:
+            type: string
+            description: The language of the reading passage.
+          practicedAtDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when the Reading Coach passage was practiced. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          practiceWords:
+            type: array
+            items:
+              type: string
+            description: The list of challenging words for the student that they can practice further.
+          storyType:
+            $ref: '#/components/schemas/microsoft.graph.readingCoachStoryType'
+          studentId:
+            type:
+            - string
+            - 'null'
+            description: ID of the student that practiced the reading passage.
+          timeSpentReadingInSeconds:
+            oneOf:
+            - type:
+              - number
+              - 'null'
+              format: double
+            - type:
+              - string
+              - 'null'
+            - $ref: '#/components/schemas/ReferenceNumeric'
+            description: The time the student spent reading in seconds.
+          wordsAccuracyPercentage:
+            oneOf:
+            - type:
+              - number
+              - 'null'
+              format: double
+            - type:
+              - string
+              - 'null'
+            - $ref: '#/components/schemas/ReferenceNumeric'
+            description: The percentage of words that the student read correctly.
+          wordsPerMinute:
+            oneOf:
+            - type:
+              - number
+              - 'null'
+              format: double
+            - type:
+              - string
+              - 'null'
+            - $ref: '#/components/schemas/ReferenceNumeric'
+            description: The rate the student read at in words per minute.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.readingCoachPassage'
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.reportsRoot:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: reportsRoot
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          readingAssignmentSubmissions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.readingAssignmentSubmission'
+            description: Details of submitted reading assignments.
+            x-ms-navigationProperty: true
+          readingCoachPassages:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.readingCoachPassage'
+            description: Details of practiced Reading Coach passages.
+            x-ms-navigationProperty: true
+          reflectCheckInResponses:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.reflectCheckInResponse'
+            description: Details of check-in responses.
+            x-ms-navigationProperty: true
+          speakerAssignmentSubmissions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.speakerAssignmentSubmission'
+            description: Details of submitted speaker assignments.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.reportsRoot'
+    ReferenceNumeric:
+      enum:
+      - -INF
+      - INF
+      - NaN
+      type:
+      - string
+      - 'null'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.reflectCheckInResponse:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: reflectCheckInResponse
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          checkInId:
+            type:
+            - string
+            - 'null'
+            description: Identifier for the Reflect check-in.
+          checkInTitle:
+            type: string
+            description: The question or prompt of the Reflect check-in that this response addresses.
+          classId:
+            type:
+            - string
+            - 'null'
+            description: ID of the class associated with the Reflect check-in.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Date and time when the Reflect check-in was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          creatorId:
+            type:
+            - string
+            - 'null'
+            description: ID of the user who created the Reflect check-in.
+          isClosed:
+            type: boolean
+            description: Indicates whether the Reflect check-in is closed (true) or open (false).
+          responderId:
+            type:
+            - string
+            - 'null'
+            description: ID of the user who responded to the Reflect check-in.
+          responseEmotion:
+            $ref: '#/components/schemas/microsoft.graph.responseEmotionType'
+          responseFeedback:
+            $ref: '#/components/schemas/microsoft.graph.responseFeedbackType'
+          submitDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Date and time when the response to the Reflect check-in was submitted. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.reflectCheckInResponse'
+    microsoft.graph.readingAssignmentSubmissionCollectionResponse:
+      title: Collection of readingAssignmentSubmission
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.readingAssignmentSubmission'
     microsoft.graph.entity:
       title: entity
       required:
@@ -2516,43 +2520,74 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-  responses:
-    microsoft.graph.readingCoachPassageCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.readingCoachPassageCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.readingAssignmentSubmissionCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.readingAssignmentSubmissionCollectionResponse'
-    microsoft.graph.reflectCheckInResponseCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.reflectCheckInResponseCollectionResponse'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.challengingWord:
+      title: challengingWord
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        count:
+          type: number
+          description: Number of times the word was found challenging by the student during the reading session.
+          format: int64
+        word:
+          type: string
+          description: The specific word that the student found challenging during the reading session.
+        '@odata.type':
+          type: string
+    microsoft.graph.responseFeedbackType:
+      title: responseFeedbackType
+      enum:
+      - none
+      - notDetected
+      - veryUnpleasant
+      - unpleasant
+      - neutral
+      - pleasant
+      - veryPleasant
+      - unknownFutureValue
+      type: string
     ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.speakerAssignmentSubmissionCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.speakerAssignmentSubmissionCollectionResponse'
+      type: integer
+      format: int32
+    microsoft.graph.readingCoachPassageCollectionResponse:
+      title: Collection of readingCoachPassage
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.readingCoachPassage'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
   parameters:
     filter:
       name: $filter
@@ -2562,6 +2597,31 @@ components:
       explode: false
       schema:
         type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     top:
       name: $top
       in: query
@@ -2572,28 +2632,3 @@ components:
         minimum: 0
         type: integer
       example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string

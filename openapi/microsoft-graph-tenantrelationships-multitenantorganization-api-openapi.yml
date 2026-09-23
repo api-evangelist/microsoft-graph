@@ -1,20 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Tenant Relationships.multi Tenant Organization API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: tenantRelationships.multiTenantOrganization
   x-ms-docs-toc-type: page
@@ -367,145 +360,6 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.multiTenantOrganizationMemberTransitionDetails:
-      title: multiTenantOrganizationMemberTransitionDetails
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        desiredRole:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberRole'
-          - type: object
-            nullable: true
-          description: 'Role of the tenant in the multitenant organization. The possible values are: owner, member, unknownFutureValue.'
-        desiredState:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberState'
-          - type: object
-            nullable: true
-          description: 'State of the tenant in the multitenant organization currently being processed. The possible values are: pending, active, removed, unknownFutureValue. Read-only.'
-        details:
-          type: string
-          description: Details that explain the processing status if any. Read-only.
-          nullable: true
-        status:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberProcessingStatus'
-          - type: object
-            nullable: true
-          description: 'Processing state of the asynchronous job. The possible values are: notStarted, running, succeeded, failed, unknownFutureValue. Read-only.'
-        '@odata.type':
-          type: string
-    microsoft.graph.multiTenantOrganizationJoinRequestRecord:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: multiTenantOrganizationJoinRequestRecord
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          addedByTenantId:
-            type: string
-            description: Tenant ID of the Microsoft Entra tenant that added a tenant to the multitenant organization. To reset a failed join request, set addedByTenantId to 00000000-0000-0000-0000-000000000000. Required.
-            nullable: true
-          memberState:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberState'
-            - type: object
-              nullable: true
-            description: 'State of the tenant in the multitenant organization. The possible values are: pending, active, removed, unknownFutureValue. Tenants in the pending state must join the multitenant organization to participate in the multitenant organization. Tenants in the active state can participate in the multitenant organization. Tenants in the removed state are in the process of being removed from the multitenant organization. Read-only.'
-          role:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberRole'
-            - type: object
-              nullable: true
-            description: 'Role of the tenant in the multitenant organization. The possible values are: owner, member (default), unknownFutureValue. Tenants with the owner role can manage the multitenant organization. There can be multiple tenants with the owner role in a multitenant organization. Tenants with the member role can participate in a multitenant organization.'
-          transitionDetails:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationJoinRequestTransitionDetails'
-            - type: object
-              nullable: true
-            description: Details of the processing status for a tenant joining a multitenant organization. Read-only.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.multiTenantOrganizationJoinRequestRecord'
-    microsoft.graph.multiTenantOrganizationMemberRole:
-      title: multiTenantOrganizationMemberRole
-      enum:
-      - owner
-      - member
-      - unknownFutureValue
-      type: string
-    microsoft.graph.multiTenantOrganizationState:
-      title: multiTenantOrganizationState
-      enum:
-      - active
-      - inactive
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.multiTenantOrganizationJoinRequestTransitionDetails:
-      title: multiTenantOrganizationJoinRequestTransitionDetails
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        desiredMemberState:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberState'
-          - type: object
-            nullable: true
-          description: 'State of the tenant in the multitenant organization currently being processed. The possible values are: pending, active, removed, unknownFutureValue. Read-only.'
-        details:
-          type: string
-          description: Details that explain the processing status if any. Read-only.
-          nullable: true
-        status:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberProcessingStatus'
-          - type: object
-            nullable: true
-          description: 'Processing state of the asynchronous job. The possible values are: notStarted, running, succeeded, failed, unknownFutureValue. Read-only.'
-        '@odata.type':
-          type: string
     microsoft.graph.multiTenantOrganizationMemberProcessingStatus:
       title: multiTenantOrganizationMemberProcessingStatus
       enum:
@@ -515,61 +369,24 @@ components:
       - failed
       - unknownFutureValue
       type: string
-    microsoft.graph.multiTenantOrganizationMember:
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.multiTenantOrganizationMemberCollectionResponse:
+      title: Collection of multiTenantOrganizationMember
+      type: object
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
-      - title: multiTenantOrganizationMember
-        required:
-        - '@odata.type'
-        type: object
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
         properties:
-          addedByTenantId:
-            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-            type: string
-            description: Tenant ID of the tenant that added the tenant to the multitenant organization. Read-only.
-            format: uuid
-            nullable: true
-          addedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the tenant was added to the multitenant organization. Read-only.
-            format: date-time
-            nullable: true
-          displayName:
-            type: string
-            description: Display name of the tenant added to the multitenant organization.
-            nullable: true
-          joinedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the tenant joined the multitenant organization. Read-only.
-            format: date-time
-            nullable: true
-          role:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberRole'
-            - type: object
-              nullable: true
-            description: 'Role of the tenant in the multitenant organization. The possible values are: owner, member (default), unknownFutureValue. Tenants with the owner role can manage the multitenant organization but tenants with the member role can only participate in a multitenant organization. There can be multiple tenants with the owner role in a multitenant organization.'
-          state:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberState'
-            - type: object
-              nullable: true
-            description: 'State of the tenant in the multitenant organization. The possible values are: pending, active, removed, unknownFutureValue. Tenants in the pending state must join the multitenant organization to participate in the multitenant organization. Tenants in the active state can participate in the multitenant organization. Tenants in the removed state are in the process of being removed from the multitenant organization. Read-only.'
-          tenantId:
-            type: string
-            description: Tenant ID of the Microsoft Entra tenant added to the multitenant organization. Set at the time tenant is added.Supports $filter. Key.
-          transitionDetails:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberTransitionDetails'
-            - type: object
-              nullable: true
-            description: Details of the processing status for a tenant in a multitenant organization. Read-only. Nullable.
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.multiTenantOrganizationMember'
-      x-ms-discriminator-value: '#microsoft.graph.multiTenantOrganizationMember'
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMember'
     microsoft.graph.directoryObject:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -580,10 +397,11 @@ components:
         properties:
           deletedDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date and time when this object was deleted. Always null when the object hasn't been deleted.
             format: date-time
-            nullable: true
           '@odata.type':
             type: string
         discriminator:
@@ -622,6 +440,206 @@ components:
             '#microsoft.graph.resourceSpecificPermissionGrant': '#/components/schemas/microsoft.graph.resourceSpecificPermissionGrant'
             '#microsoft.graph.servicePrincipal': '#/components/schemas/microsoft.graph.servicePrincipal'
             '#microsoft.graph.user': '#/components/schemas/microsoft.graph.user'
+    microsoft.graph.multiTenantOrganizationJoinRequestTransitionDetails:
+      title: multiTenantOrganizationJoinRequestTransitionDetails
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        desiredMemberState:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberState'
+          - type:
+            - object
+            - 'null'
+          description: 'State of the tenant in the multitenant organization currently being processed. The possible values are: pending, active, removed, unknownFutureValue. Read-only.'
+        details:
+          type:
+          - string
+          - 'null'
+          description: Details that explain the processing status if any. Read-only.
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberProcessingStatus'
+          - type:
+            - object
+            - 'null'
+          description: 'Processing state of the asynchronous job. The possible values are: notStarted, running, succeeded, failed, unknownFutureValue. Read-only.'
+        '@odata.type':
+          type: string
+    microsoft.graph.multiTenantOrganizationMemberTransitionDetails:
+      title: multiTenantOrganizationMemberTransitionDetails
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        desiredRole:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberRole'
+          - type:
+            - object
+            - 'null'
+          description: 'Role of the tenant in the multitenant organization. The possible values are: owner, member, unknownFutureValue.'
+        desiredState:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberState'
+          - type:
+            - object
+            - 'null'
+          description: 'State of the tenant in the multitenant organization currently being processed. The possible values are: pending, active, removed, unknownFutureValue. Read-only.'
+        details:
+          type:
+          - string
+          - 'null'
+          description: Details that explain the processing status if any. Read-only.
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberProcessingStatus'
+          - type:
+            - object
+            - 'null'
+          description: 'Processing state of the asynchronous job. The possible values are: notStarted, running, succeeded, failed, unknownFutureValue. Read-only.'
+        '@odata.type':
+          type: string
+    microsoft.graph.multiTenantOrganizationMember:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
+      - title: multiTenantOrganizationMember
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          addedByTenantId:
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+            type:
+            - string
+            - 'null'
+            description: Tenant ID of the tenant that added the tenant to the multitenant organization. Read-only.
+            format: uuid
+          addedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the tenant was added to the multitenant organization. Read-only.
+            format: date-time
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Display name of the tenant added to the multitenant organization.
+          joinedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the tenant joined the multitenant organization. Read-only.
+            format: date-time
+          role:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberRole'
+            - type:
+              - object
+              - 'null'
+            description: 'Role of the tenant in the multitenant organization. The possible values are: owner, member (default), unknownFutureValue. Tenants with the owner role can manage the multitenant organization but tenants with the member role can only participate in a multitenant organization. There can be multiple tenants with the owner role in a multitenant organization.'
+          state:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberState'
+            - type:
+              - object
+              - 'null'
+            description: 'State of the tenant in the multitenant organization. The possible values are: pending, active, removed, unknownFutureValue. Tenants in the pending state must join the multitenant organization to participate in the multitenant organization. Tenants in the active state can participate in the multitenant organization. Tenants in the removed state are in the process of being removed from the multitenant organization. Read-only.'
+          tenantId:
+            type: string
+            description: Tenant ID of the Microsoft Entra tenant added to the multitenant organization. Set at the time tenant is added.Supports $filter. Key.
+          transitionDetails:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberTransitionDetails'
+            - type:
+              - object
+              - 'null'
+            description: Details of the processing status for a tenant in a multitenant organization. Read-only. Nullable.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.multiTenantOrganizationMember'
+      x-ms-discriminator-value: '#microsoft.graph.multiTenantOrganizationMember'
+    microsoft.graph.multiTenantOrganizationState:
+      title: multiTenantOrganizationState
+      enum:
+      - active
+      - inactive
+      - unknownFutureValue
+      type: string
+    microsoft.graph.multiTenantOrganizationJoinRequestRecord:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: multiTenantOrganizationJoinRequestRecord
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          addedByTenantId:
+            type:
+            - string
+            - 'null'
+            description: Tenant ID of the Microsoft Entra tenant that added a tenant to the multitenant organization. To reset a failed join request, set addedByTenantId to 00000000-0000-0000-0000-000000000000. Required.
+          memberState:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberState'
+            - type:
+              - object
+              - 'null'
+            description: 'State of the tenant in the multitenant organization. The possible values are: pending, active, removed, unknownFutureValue. Tenants in the pending state must join the multitenant organization to participate in the multitenant organization. Tenants in the active state can participate in the multitenant organization. Tenants in the removed state are in the process of being removed from the multitenant organization. Read-only.'
+          role:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMemberRole'
+            - type:
+              - object
+              - 'null'
+            description: 'Role of the tenant in the multitenant organization. The possible values are: owner, member (default), unknownFutureValue. Tenants with the owner role can manage the multitenant organization. There can be multiple tenants with the owner role in a multitenant organization. Tenants with the member role can participate in a multitenant organization.'
+          transitionDetails:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationJoinRequestTransitionDetails'
+            - type:
+              - object
+              - 'null'
+            description: Details of the processing status for a tenant joining a multitenant organization. Read-only.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.multiTenantOrganizationJoinRequestRecord'
+    microsoft.graph.multiTenantOrganizationMemberState:
+      title: multiTenantOrganizationMemberState
+      enum:
+      - pending
+      - active
+      - removed
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
     microsoft.graph.multiTenantOrganization:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -632,29 +650,34 @@ components:
         properties:
           createdDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date when multitenant organization was created. Read-only.
             format: date-time
-            nullable: true
           description:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Description of the multitenant organization.
-            nullable: true
           displayName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Display name of the multitenant organization.
-            nullable: true
           state:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationState'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: 'State of the multitenant organization. The possible values are: active, inactive, unknownFutureValue. active indicates the multitenant organization is created. inactive indicates the multitenant organization isn''t created. Read-only.'
           joinRequest:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationJoinRequestRecord'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Defines the status of a tenant joining a multitenant organization.
             x-ms-navigationProperty: true
           tenants:
@@ -666,25 +689,6 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.multiTenantOrganization'
-    microsoft.graph.multiTenantOrganizationMemberState:
-      title: multiTenantOrganizationMemberState
-      enum:
-      - pending
-      - active
-      - removed
-      - unknownFutureValue
-      type: string
-    microsoft.graph.multiTenantOrganizationMemberCollectionResponse:
-      title: Collection of multiTenantOrganizationMember
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.multiTenantOrganizationMember'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -697,32 +701,15 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1792,13 +1779,88 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.multiTenantOrganizationMemberRole:
+      title: multiTenantOrganizationMemberRole
+      enum:
+      - owner
+      - member
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    ODataCountResponse:
+      type: integer
+      format: int32
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+  parameters:
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
     microsoft.graph.multiTenantOrganizationMemberCollectionResponse:
       description: Retrieved collection
       content:
@@ -1811,47 +1873,9 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/ODataCountResponse'
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

@@ -1,28 +1,22 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Directory.directory API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
-- name: Directory.directory
+- name: Directory directory
+  x-ms-docs-toc-type: page
 paths:
   /directory:
     description: Provides operations to manage the directory singleton.
     get:
       tags:
-      - Directory.directory
+      - Directory directory
       summary: Microsoft Graph Get directory
       operationId: directory.directory.GetDirectory
       parameters:
@@ -60,7 +54,7 @@ paths:
       x-ms-docs-operation-type: operation
     patch:
       tags:
-      - Directory.directory
+      - Directory directory
       summary: Microsoft Graph Update directory
       operationId: directory.directory.UpdateDirectory
       requestBody:
@@ -84,439 +78,51 @@ paths:
       x-ms-docs-operation-type: operation
 components:
   schemas:
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.onPremisesDirectorySynchronizationDeletionPreventionType:
-      title: onPremisesDirectorySynchronizationDeletionPreventionType
-      enum:
-      - disabled
-      - enabledForCount
-      - enabledForPercentage
-      - unknownFutureValue
-      type: string
-    microsoft.graph.deviceLocalCredentialInfo:
+    microsoft.graph.certificateBasedAuthPki:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: deviceLocalCredentialInfo
+      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
+      - title: certificateBasedAuthPki
         required:
         - '@odata.type'
         type: object
         properties:
-          credentials:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.deviceLocalCredential'
-            description: The credentials of the device's local administrator account backed up to Azure Active Directory.
-          deviceName:
-            type: string
-            description: Display name of the device that the local credentials are associated with.
-          lastBackupDateTime:
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: The name of the object. Maximum length is 256 characters.
+          lastModifiedDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
             type: string
-            description: When the local administrator account credential was backed up to Azure Active Directory.
+            description: The date and time when the object was created or last modified.
             format: date-time
-          refreshDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: When the local administrator account credential will be refreshed and backed up to Azure Active Directory.
-            format: date-time
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.deviceLocalCredentialInfo'
-    microsoft.graph.deviceLocalCredential:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: deviceLocalCredential
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          accountName:
-            type: string
-            description: The name of the local admin account for which LAPS is enabled.
-          accountSid:
-            type: string
-            description: The SID of the local admin account for which LAPS is enabled.
-          backupDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: When the local administrator account credential for the device object was backed up to Azure Active Directory.
-            format: date-time
-          passwordBase64:
-            type: string
-            description: The password for the local administrator account that is backed up to Azure Active Directory and returned as a Base64 encoded value.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.deviceLocalCredential'
-    microsoft.graph.identity:
-      title: identity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
-          nullable: true
-        id:
-          type: string
-          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
-          nullable: true
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
-          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
-          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
-          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
-          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
-          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
-          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
-          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
-          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
-          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
-          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
-          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
-          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
-          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
-          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
-          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
-          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
-          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
-          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
-          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
-    microsoft.graph.certificateAuthorityType:
-      title: certificateAuthorityType
-      enum:
-      - root
-      - intermediate
-      - unknownFutureValue
-      type: string
-    microsoft.graph.attributeSet:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: attributeSet
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          description:
-            type: string
-            description: Description of the attribute set. Can be up to 128 characters long and include Unicode characters. Can be changed later.
-            nullable: true
-          maxAttributesPerSet:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Maximum number of custom security attributes that can be defined in this attribute set. Default value is null. If not specified, the administrator can add up to the maximum of 500 active attributes per tenant. Can be changed later.
-            format: int32
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.attributeSet'
-    microsoft.graph.scopedRoleMembership:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: scopedRoleMembership
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          administrativeUnitId:
-            type: string
-            description: Unique identifier for the administrative unit that the directory role is scoped to
-          roleId:
-            type: string
-            description: Unique identifier for the directory role that the member is in.
-          roleMemberInfo:
-            $ref: '#/components/schemas/microsoft.graph.identity'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.scopedRoleMembership'
-    microsoft.graph.extension:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: extension
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.openTypeExtension': '#/components/schemas/microsoft.graph.openTypeExtension'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.customSecurityAttributeDefinition:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: customSecurityAttributeDefinition
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          attributeSet:
-            type: string
-            description: Name of the attribute set. Case insensitive.
-          description:
-            type: string
-            description: Description of the custom security attribute. Can be up to 128 characters long and include Unicode characters. Can be changed later.
-            nullable: true
-          isCollection:
-            type: boolean
-            description: Indicates whether multiple values can be assigned to the custom security attribute. Cannot be changed later. If type is set to Boolean, isCollection cannot be set to true.
-          isSearchable:
-            type: boolean
-            description: Indicates whether custom security attribute values are indexed for searching on objects that are assigned attribute values. Cannot be changed later.
-            nullable: true
-          name:
-            type: string
-            description: Name of the custom security attribute. Must be unique within an attribute set. Can be up to 32 characters long and include Unicode characters. Cannot contain spaces or special characters. Cannot be changed later. Case insensitive.
           status:
-            type: string
-            description: 'Specifies whether the custom security attribute is active or deactivated. Acceptable values are: Available and Deprecated. Can be changed later.'
-          type:
-            type: string
-            description: 'Data type for the custom security attribute values. Supported types are: Boolean, Integer, and String. Cannot be changed later.'
-          usePreDefinedValuesOnly:
-            type: boolean
-            description: Indicates whether only predefined values can be assigned to the custom security attribute. If set to false, free-form values are allowed. Can later be changed from true to false, but cannot be changed from false to true. If type is set to Boolean, usePreDefinedValuesOnly cannot be set to true.
-            nullable: true
-          allowedValues:
+            type:
+            - string
+            - 'null'
+            description: The status of any asynchronous jobs runs on the object which can be upload or delete.
+          statusDetails:
+            type:
+            - string
+            - 'null'
+            description: The status details of the upload/deleted operation of PKI (Public Key Infrastructure).
+          certificateAuthorities:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.allowedValue'
-            description: Values that are predefined for this custom security attribute. This navigation property is not returned by default and must be specified in an $expand query. For example, /directory/customSecurityAttributeDefinitions?$expand=allowedValues.
+              $ref: '#/components/schemas/microsoft.graph.certificateAuthorityDetail'
+            description: The collection of certificate authorities contained in this public key infrastructure resource.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.customSecurityAttributeDefinition'
-    microsoft.graph.servicePlanInfo:
-      title: servicePlanInfo
+            default: '#microsoft.graph.certificateBasedAuthPki'
+      x-ms-discriminator-value: '#microsoft.graph.certificateBasedAuthPki'
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - '@odata.type'
+      - error
       type: object
       properties:
-        appliesTo:
-          type: string
-          description: The object the service plan can be assigned to. The possible values are:User - service plan can be assigned to individual users.Company - service plan can be assigned to the entire tenant.
-          nullable: true
-        provisioningStatus:
-          type: string
-          description: The provisioning status of the service plan. The possible values are:Success - Service is fully provisioned.Disabled - Service is disabled.Error - The service plan isn't provisioned and is in an error state.PendingInput - The service isn't provisioned and is awaiting service confirmation.PendingActivation - The service is provisioned but requires explicit activation by an administrator (for example, Intune_O365 service plan)PendingProvisioning - Microsoft has added a new service to the product SKU and it isn't activated in the tenant.
-          nullable: true
-        servicePlanId:
-          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-          type: string
-          description: The unique identifier of the service plan.
-          format: uuid
-          nullable: true
-        servicePlanName:
-          type: string
-          description: The name of the service plan.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.administrativeUnit:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
-      - title: administrativeUnit
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          description:
-            type: string
-            description: An optional description for the administrative unit. Supports $filter (eq, ne, in, startsWith), $search.
-            nullable: true
-          displayName:
-            type: string
-            description: Display name for the administrative unit. Maximum length is 256 characters. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values), $search, and $orderby.
-            nullable: true
-          isMemberManagementRestricted:
-            type: boolean
-            description: true if members of this administrative unit should be treated as sensitive, which requires specific permissions to manage. If not set, the default value is null and the default behavior is false. Use this property to define administrative units with roles that don't inherit from tenant-level administrators, and where the management of individual member objects is limited to administrators scoped to a restricted management administrative unit. This property is immutable and can't be changed later.  For more information on how to work with restricted management administrative units, see Restricted management administrative units in Microsoft Entra ID.
-            nullable: true
-          membershipRule:
-            type: string
-            description: The dynamic membership rule for the administrative unit. For more information about the rules you can use for dynamic administrative units and dynamic groups, see Manage rules for dynamic membership groups in Microsoft Entra ID.
-            nullable: true
-          membershipRuleProcessingState:
-            type: string
-            description: Controls whether the dynamic membership rule is actively processed. Set to On to activate the dynamic membership rule, or Paused to stop updating membership dynamically.
-            nullable: true
-          membershipType:
-            type: string
-            description: 'Indicates the membership type for the administrative unit. The possible values are: dynamic, assigned. If not set, the default value is null and the default behavior is assigned.'
-            nullable: true
-          visibility:
-            type: string
-            description: Controls whether the administrative unit and its members are hidden or public. Can be set to HiddenMembership. If not set, the default value is null and the default behavior is public. When set to HiddenMembership, only members of the administrative unit can list other members of the administrative unit.
-            nullable: true
-          extensions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.extension'
-            description: The collection of open extensions defined for this administrative unit. Nullable.
-            x-ms-navigationProperty: true
-          members:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.directoryObject'
-            description: Users and groups that are members of this administrative unit. Supports $expand.
-            x-ms-navigationProperty: true
-          scopedRoleMembers:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.scopedRoleMembership'
-            description: Scoped-role members of this administrative unit.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.administrativeUnit'
-      x-ms-discriminator-value: '#microsoft.graph.administrativeUnit'
-    microsoft.graph.certificateAuthorityDetail:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
-      - title: certificateAuthorityDetail
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          certificate:
-            type: string
-            description: The public key of the certificate authority.
-            format: base64url
-          certificateAuthorityType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.certificateAuthorityType'
-            - type: object
-              nullable: true
-            description: 'The type of certificate authority. The possible values are: root, intermediate, unknownFutureValue. Supports $filter (eq).'
-          certificateRevocationListUrl:
-            type: string
-            description: The URL to check if the certificate is revoked.
-            nullable: true
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when the certificate authority was created.
-            format: date-time
-            nullable: true
-          deltaCertificateRevocationListUrl:
-            type: string
-            nullable: true
-          displayName:
-            type: string
-            description: The display name of the certificate authority.
-            nullable: true
-          expirationDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when the certificate authority expires. Supports $filter (eq) and $orderby.
-            format: date-time
-          isIssuerHintEnabled:
-            type: boolean
-            description: Indicates whether the certificate picker presents the certificate authority to the user to use for authentication. Default value is false. Optional.
-            nullable: true
-          issuer:
-            type: string
-            description: The issuer of the certificate authority.
-            nullable: true
-          issuerSubjectKeyIdentifier:
-            type: string
-            description: The subject key identifier of certificate authority.
-            nullable: true
-          thumbprint:
-            type: string
-            description: The thumbprint of certificate authority certificate. Supports $filter (eq, startswith).
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.certificateAuthorityDetail'
-      x-ms-discriminator-value: '#microsoft.graph.certificateAuthorityDetail'
-    microsoft.graph.onPremisesDirectorySynchronization:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: onPremisesDirectorySynchronization
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          configuration:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronizationConfiguration'
-            - type: object
-              nullable: true
-            description: Consists of configurations that can be fine-tuned and impact the on-premises directory synchronization process for a tenant. Nullable.
-          features:
-            $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronizationFeature'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.onPremisesDirectorySynchronization'
-    microsoft.graph.allowedValue:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: allowedValue
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          isActive:
-            type: boolean
-            description: Indicates whether the predefined value is active or deactivated. If set to false, this predefined value can't be assigned to any other supported directory objects.
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.allowedValue'
-    microsoft.graph.onPremisesDirectorySynchronizationConfiguration:
-      title: onPremisesDirectorySynchronizationConfiguration
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        accidentalDeletionPrevention:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.onPremisesAccidentalDeletionPrevention'
-          - type: object
-            nullable: true
-          description: Contains the accidental deletion prevention configuration for a tenant.
-        '@odata.type':
-          type: string
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.directoryObject:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -527,10 +133,11 @@ components:
         properties:
           deletedDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date and time when this object was deleted. Always null when the object hasn't been deleted.
             format: date-time
-            nullable: true
           '@odata.type':
             type: string
         discriminator:
@@ -569,257 +176,178 @@ components:
             '#microsoft.graph.resourceSpecificPermissionGrant': '#/components/schemas/microsoft.graph.resourceSpecificPermissionGrant'
             '#microsoft.graph.servicePrincipal': '#/components/schemas/microsoft.graph.servicePrincipal'
             '#microsoft.graph.user': '#/components/schemas/microsoft.graph.user'
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.publicKeyInfrastructureRoot:
+    microsoft.graph.deviceLocalCredential:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: publicKeyInfrastructureRoot
+      - title: deviceLocalCredential
         required:
         - '@odata.type'
         type: object
         properties:
-          certificateBasedAuthConfigurations:
+          accountName:
+            type: string
+            description: The name of the local admin account for which LAPS is enabled.
+          accountSid:
+            type: string
+            description: The SID of the local admin account for which LAPS is enabled.
+          backupDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: When the local administrator account credential for the device object was backed up to Azure Active Directory.
+            format: date-time
+          passwordBase64:
+            type: string
+            description: The password for the local administrator account that is backed up to Azure Active Directory and returned as a Base64 encoded value.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.deviceLocalCredential'
+    microsoft.graph.onPremisesDirectorySynchronizationDeletionPreventionType:
+      title: onPremisesDirectorySynchronizationDeletionPreventionType
+      enum:
+      - disabled
+      - enabledForCount
+      - enabledForPercentage
+      - unknownFutureValue
+      type: string
+    microsoft.graph.customSecurityAttributeDefinition:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: customSecurityAttributeDefinition
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          attributeSet:
+            type: string
+            description: Name of the attribute set. Case insensitive.
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description of the custom security attribute. Can be up to 128 characters long and include Unicode characters. Can be changed later.
+          isCollection:
+            type: boolean
+            description: Indicates whether multiple values can be assigned to the custom security attribute. Cannot be changed later. If type is set to Boolean, isCollection cannot be set to true.
+          isSearchable:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether custom security attribute values are indexed for searching on objects that are assigned attribute values. Cannot be changed later.
+          name:
+            type: string
+            description: Name of the custom security attribute. Must be unique within an attribute set. Can be up to 32 characters long and include Unicode characters. Cannot contain spaces or special characters. Cannot be changed later. Case insensitive.
+          status:
+            type: string
+            description: 'Specifies whether the custom security attribute is active or deactivated. Acceptable values are: Available and Deprecated. Can be changed later.'
+          type:
+            type: string
+            description: 'Data type for the custom security attribute values. Supported types are: Boolean, Integer, and String. Cannot be changed later.'
+          usePreDefinedValuesOnly:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether only predefined values can be assigned to the custom security attribute. If set to false, free-form values are allowed. Can later be changed from true to false, but cannot be changed from false to true. If type is set to Boolean, usePreDefinedValuesOnly cannot be set to true.
+          allowedValues:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.certificateBasedAuthPki'
-            description: The collection of public key infrastructure instances for the certificate-based authentication feature for users.
+              $ref: '#/components/schemas/microsoft.graph.allowedValue'
+            description: Values that are predefined for this custom security attribute. This navigation property is not returned by default and must be specified in an $expand query. For example, /directory/customSecurityAttributeDefinitions?$expand=allowedValues.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.publicKeyInfrastructureRoot'
-    microsoft.graph.certificateBasedAuthPki:
+      x-ms-discriminator-value: '#microsoft.graph.customSecurityAttributeDefinition'
+    microsoft.graph.administrativeUnit:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.directoryObject'
-      - title: certificateBasedAuthPki
+      - title: administrativeUnit
         required:
         - '@odata.type'
         type: object
         properties:
+          description:
+            type:
+            - string
+            - 'null'
+            description: An optional description for the administrative unit. Supports $filter (eq, ne, in, startsWith), $search.
           displayName:
-            type: string
-            description: The name of the object. Maximum length is 256 characters.
-            nullable: true
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when the object was created or last modified.
-            format: date-time
-          status:
-            type: string
-            description: The status of any asynchronous jobs runs on the object which can be upload or delete.
-            nullable: true
-          statusDetails:
-            type: string
-            description: The status details of the upload/deleted operation of PKI (Public Key Infrastructure).
-            nullable: true
-          certificateAuthorities:
+            type:
+            - string
+            - 'null'
+            description: Display name for the administrative unit. Maximum length is 256 characters. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values), $search, and $orderby.
+          isMemberManagementRestricted:
+            type:
+            - boolean
+            - 'null'
+            description: true if members of this administrative unit should be treated as sensitive, which requires specific permissions to manage. If not set, the default value is null and the default behavior is false. Use this property to define administrative units with roles that don't inherit from tenant-level administrators, and where the management of individual member objects is limited to administrators scoped to a restricted management administrative unit. This property is immutable and can't be changed later.  For more information on how to work with restricted management administrative units, see Restricted management administrative units in Microsoft Entra ID.
+          membershipRule:
+            type:
+            - string
+            - 'null'
+            description: The dynamic membership rule for the administrative unit. For more information about the rules you can use for dynamic administrative units and dynamic groups, see Manage rules for dynamic membership groups in Microsoft Entra ID.
+          membershipRuleProcessingState:
+            type:
+            - string
+            - 'null'
+            description: Controls whether the dynamic membership rule is actively processed. Set to On to activate the dynamic membership rule, or Paused to stop updating membership dynamically.
+          membershipType:
+            type:
+            - string
+            - 'null'
+            description: 'Indicates the membership type for the administrative unit. The possible values are: dynamic, assigned. If not set, the default value is null and the default behavior is assigned.'
+          visibility:
+            type:
+            - string
+            - 'null'
+            description: Controls whether the administrative unit and its members are hidden or public. Can be set to HiddenMembership. If not set, the default value is null and the default behavior is public. When set to HiddenMembership, only members of the administrative unit can list other members of the administrative unit.
+          extensions:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.certificateAuthorityDetail'
-            description: The collection of certificate authorities contained in this public key infrastructure resource.
+              $ref: '#/components/schemas/microsoft.graph.extension'
+            description: The collection of open extensions defined for this administrative unit. Nullable.
+            x-ms-navigationProperty: true
+          members:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.directoryObject'
+            description: Users and groups that are members of this administrative unit. Supports $expand.
+            x-ms-navigationProperty: true
+          scopedRoleMembers:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.scopedRoleMembership'
+            description: Scoped-role members of this administrative unit.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-            default: '#microsoft.graph.certificateBasedAuthPki'
-      x-ms-discriminator-value: '#microsoft.graph.certificateBasedAuthPki'
-    microsoft.graph.onPremisesDirectorySynchronizationFeature:
-      title: onPremisesDirectorySynchronizationFeature
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        blockCloudObjectTakeoverThroughHardMatchEnabled:
-          type: boolean
-          description: Used to block cloud object takeover via source anchor hard match if enabled.
-          nullable: true
-        blockSoftMatchEnabled:
-          type: boolean
-          description: Use to block soft match for all objects if enabled for the  tenant. Customers are encouraged to enable this feature and keep it enabled until soft matching is required again for their tenancy. This flag should be enabled again after any soft matching has been completed and is no longer needed.
-          nullable: true
-        bypassDirSyncOverridesEnabled:
-          type: boolean
-          description: When true, persists the values of Mobile and OtherMobile in on-premises AD during sync cycles instead of values of MobilePhone or AlternateMobilePhones in Microsoft Entra ID.
-          nullable: true
-        cloudPasswordPolicyForPasswordSyncedUsersEnabled:
-          type: boolean
-          description: Used to indicate that cloud password policy applies to users whose passwords are synchronized from on-premises.
-          nullable: true
-        concurrentCredentialUpdateEnabled:
-          type: boolean
-          description: Used to enable concurrent user credentials update in OrgId.
-          nullable: true
-        concurrentOrgIdProvisioningEnabled:
-          type: boolean
-          description: Used to enable concurrent user creation in OrgId.
-          nullable: true
-        deviceWritebackEnabled:
-          type: boolean
-          description: Used to indicate that device write-back is enabled.
-          nullable: true
-        directoryExtensionsEnabled:
-          type: boolean
-          description: Used to indicate that directory extensions are being synced from on-premises AD to Microsoft Entra ID.
-          nullable: true
-        fopeConflictResolutionEnabled:
-          type: boolean
-          description: Used to indicate that for a Microsoft Forefront Online Protection for Exchange (FOPE) migrated tenant, the conflicting proxy address should be migrated over.
-          nullable: true
-        groupWriteBackEnabled:
-          type: boolean
-          description: Used to enable object-level group writeback feature for additional group types.
-          nullable: true
-        passwordSyncEnabled:
-          type: boolean
-          description: Used to indicate on-premise password synchronization is enabled.
-          nullable: true
-        passwordWritebackEnabled:
-          type: boolean
-          description: Used to indicate that writeback of password resets from Microsoft Entra ID to on-premises AD is enabled. This property isn't in use and updating it isn't supported.
-          nullable: true
-        quarantineUponProxyAddressesConflictEnabled:
-          type: boolean
-          description: Used to indicate that we should quarantine objects with conflicting proxy address.
-          nullable: true
-        quarantineUponUpnConflictEnabled:
-          type: boolean
-          description: Used to indicate that we should quarantine objects conflicting with duplicate userPrincipalName.
-          nullable: true
-        softMatchOnUpnEnabled:
-          type: boolean
-          description: Used to indicate that we should soft match objects based on userPrincipalName.
-          nullable: true
-        synchronizeUpnForManagedUsersEnabled:
-          type: boolean
-          description: Used to indicate that we should synchronize userPrincipalName objects for managed users with licenses.
-          nullable: true
-        unifiedGroupWritebackEnabled:
-          type: boolean
-          description: Used to indicate that Microsoft 365 Group write-back is enabled.
-          nullable: true
-        userForcePasswordChangeOnLogonEnabled:
-          type: boolean
-          description: Used to indicate that feature to force password change for a user on logon is enabled while synchronizing on-premise credentials.
-          nullable: true
-        userWritebackEnabled:
-          type: boolean
-          description: Used to indicate that user writeback is enabled.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.companySubscription:
+            default: '#microsoft.graph.administrativeUnit'
+      x-ms-discriminator-value: '#microsoft.graph.administrativeUnit'
+    microsoft.graph.onPremisesDirectorySynchronization:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: companySubscription
+      - title: onPremisesDirectorySynchronization
         required:
         - '@odata.type'
         type: object
         properties:
-          commerceSubscriptionId:
-            type: string
-            description: The ID of this subscription in the commerce system. Alternate key.
-            nullable: true
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when this subscription was created. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          isTrial:
-            type: boolean
-            description: Whether the subscription is a free trial or purchased.
-            nullable: true
-          nextLifecycleDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when the subscription will move to the next state (as defined by the status property) if not renewed by the tenant. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          ownerId:
-            type: string
-            description: The object ID of the account admin.
-            nullable: true
-          ownerTenantId:
-            type: string
-            description: The unique identifier for the Microsoft partner tenant that created the subscription on a customer tenant.
-            nullable: true
-          ownerType:
-            type: string
-            description: Indicates the entity that ownerId belongs to, for example, 'User'.
-            nullable: true
-          serviceStatus:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.servicePlanInfo'
-            description: The provisioning status of each service included in this subscription.
-          skuId:
-            type: string
-            description: The object ID of the SKU associated with this subscription.
-            nullable: true
-          skuPartNumber:
-            type: string
-            description: The SKU associated with this subscription.
-            nullable: true
-          status:
-            type: string
-            description: 'The status of this subscription. The possible values are: Enabled, Deleted, Suspended, Warning, LockedOut.'
-            nullable: true
-          totalLicenses:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The number of licenses included in this subscription.
-            format: int32
-            nullable: true
+          configuration:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronizationConfiguration'
+            - type:
+              - object
+              - 'null'
+            description: Consists of configurations that can be fine-tuned and impact the on-premises directory synchronization process for a tenant. Nullable.
+          features:
+            $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronizationFeature'
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.companySubscription'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.onPremisesAccidentalDeletionPrevention:
-      title: onPremisesAccidentalDeletionPrevention
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        alertThreshold:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Threshold value which triggers accidental deletion prevention. The threshold is either an absolute number of objects or a percentage number of objects.
-          format: int32
-          nullable: true
-        synchronizationPreventionType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronizationDeletionPreventionType'
-          - type: object
-            nullable: true
-          description: 'The status of the accidental deletion prevention feature. The possible values are: disabled, enabledForCount, enabledForPercentage, unknownFutureValue.'
-        '@odata.type':
-          type: string
+      x-ms-discriminator-value: '#microsoft.graph.onPremisesDirectorySynchronization'
+    microsoft.graph.certificateAuthorityType:
+      title: certificateAuthorityType
+      enum:
+      - root
+      - intermediate
+      - unknownFutureValue
+      type: string
     microsoft.graph.identityProviderBase:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -829,9 +357,10 @@ components:
         type: object
         properties:
           displayName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The display name of the identity provider.
-            nullable: true
           '@odata.type':
             type: string
         discriminator:
@@ -843,6 +372,61 @@ components:
             '#microsoft.graph.internalDomainFederation': '#/components/schemas/microsoft.graph.internalDomainFederation'
             '#microsoft.graph.samlOrWsFedExternalDomainFederation': '#/components/schemas/microsoft.graph.samlOrWsFedExternalDomainFederation'
             '#microsoft.graph.socialIdentityProvider': '#/components/schemas/microsoft.graph.socialIdentityProvider'
+    microsoft.graph.servicePlanInfo:
+      title: servicePlanInfo
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        appliesTo:
+          type:
+          - string
+          - 'null'
+          description: The object the service plan can be assigned to. The possible values are:User - service plan can be assigned to individual users.Company - service plan can be assigned to the entire tenant.
+        provisioningStatus:
+          type:
+          - string
+          - 'null'
+          description: The provisioning status of the service plan. The possible values are:Success - Service is fully provisioned.Disabled - Service is disabled.Error - The service plan isn't provisioned and is in an error state.PendingInput - The service isn't provisioned and is awaiting service confirmation.PendingActivation - The service is provisioned but requires explicit activation by an administrator (for example, Intune_O365 service plan)PendingProvisioning - Microsoft has added a new service to the product SKU and it isn't activated in the tenant.
+        servicePlanId:
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the service plan.
+          format: uuid
+        servicePlanName:
+          type:
+          - string
+          - 'null'
+          description: The name of the service plan.
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
     microsoft.graph.directory:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -896,8 +480,9 @@ components:
           publicKeyInfrastructure:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.publicKeyInfrastructureRoot'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: The collection of public key infrastructure instances for the certificate-based authentication feature for users in a Microsoft Entra tenant.
             x-ms-navigationProperty: true
           subscriptions:
@@ -909,6 +494,228 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.directory'
+    microsoft.graph.onPremisesDirectorySynchronizationFeature:
+      title: onPremisesDirectorySynchronizationFeature
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        blockCloudObjectTakeoverThroughHardMatchEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to block cloud object takeover via source anchor hard match if enabled.
+        blockSoftMatchEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Use to block soft match for all objects if enabled for the  tenant. Customers are encouraged to enable this feature and keep it enabled until soft matching is required again for their tenancy. This flag should be enabled again after any soft matching has been completed and is no longer needed.
+        bypassDirSyncOverridesEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: When true, persists the values of Mobile and OtherMobile in on-premises AD during sync cycles instead of values of MobilePhone or AlternateMobilePhones in Microsoft Entra ID.
+        cloudPasswordPolicyForPasswordSyncedUsersEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that cloud password policy applies to users whose passwords are synchronized from on-premises.
+        concurrentCredentialUpdateEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to enable concurrent user credentials update in OrgId.
+        concurrentOrgIdProvisioningEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to enable concurrent user creation in OrgId.
+        deviceWritebackEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that device write-back is enabled.
+        directoryExtensionsEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that directory extensions are being synced from on-premises AD to Microsoft Entra ID.
+        fopeConflictResolutionEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that for a Microsoft Forefront Online Protection for Exchange (FOPE) migrated tenant, the conflicting proxy address should be migrated over.
+        groupWriteBackEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to enable object-level group writeback feature for additional group types.
+        passwordSyncEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate on-premise password synchronization is enabled.
+        passwordWritebackEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that writeback of password resets from Microsoft Entra ID to on-premises AD is enabled. This property isn't in use and updating it isn't supported.
+        quarantineUponProxyAddressesConflictEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that we should quarantine objects with conflicting proxy address.
+        quarantineUponUpnConflictEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that we should quarantine objects conflicting with duplicate userPrincipalName.
+        softMatchOnUpnEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that we should soft match objects based on userPrincipalName.
+        synchronizeUpnForManagedUsersEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that we should synchronize userPrincipalName objects for managed users with licenses.
+        unifiedGroupWritebackEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that Microsoft 365 Group write-back is enabled.
+        userForcePasswordChangeOnLogonEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that feature to force password change for a user on logon is enabled while synchronizing on-premise credentials.
+        userWritebackEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that user writeback is enabled.
+        '@odata.type':
+          type: string
+    microsoft.graph.publicKeyInfrastructureRoot:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: publicKeyInfrastructureRoot
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          certificateBasedAuthConfigurations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.certificateBasedAuthPki'
+            description: The collection of public key infrastructure instances for the certificate-based authentication feature for users.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.publicKeyInfrastructureRoot'
+    microsoft.graph.identity:
+      title: identity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
+        id:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
+          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
+          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
+          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
+          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
+          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
+          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
+          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
+          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
+          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
+          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
+          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
+          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
+          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
+          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
+          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
+          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
+          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
+          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
+          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.allowedValue:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: allowedValue
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          isActive:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the predefined value is active or deactivated. If set to false, this predefined value can't be assigned to any other supported directory objects.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.allowedValue'
+    microsoft.graph.attributeSet:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: attributeSet
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description of the attribute set. Can be up to 128 characters long and include Unicode characters. Can be changed later.
+          maxAttributesPerSet:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Maximum number of custom security attributes that can be defined in this attribute set. Default value is null. If not specified, the administrator can add up to the maximum of 500 active attributes per tenant. Can be changed later.
+            format: int32
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.attributeSet'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1978,6 +1785,265 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.onPremisesDirectorySynchronizationConfiguration:
+      title: onPremisesDirectorySynchronizationConfiguration
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        accidentalDeletionPrevention:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.onPremisesAccidentalDeletionPrevention'
+          - type:
+            - object
+            - 'null'
+          description: Contains the accidental deletion prevention configuration for a tenant.
+        '@odata.type':
+          type: string
+    microsoft.graph.companySubscription:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: companySubscription
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          commerceSubscriptionId:
+            type:
+            - string
+            - 'null'
+            description: The ID of this subscription in the commerce system. Alternate key.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date and time when this subscription was created. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          isTrial:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the subscription is a free trial or purchased.
+          nextLifecycleDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date and time when the subscription will move to the next state (as defined by the status property) if not renewed by the tenant. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          ownerId:
+            type:
+            - string
+            - 'null'
+            description: The object ID of the account admin.
+          ownerTenantId:
+            type:
+            - string
+            - 'null'
+            description: The unique identifier for the Microsoft partner tenant that created the subscription on a customer tenant.
+          ownerType:
+            type:
+            - string
+            - 'null'
+            description: Indicates the entity that ownerId belongs to, for example, 'User'.
+          serviceStatus:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.servicePlanInfo'
+            description: The provisioning status of each service included in this subscription.
+          skuId:
+            type:
+            - string
+            - 'null'
+            description: The object ID of the SKU associated with this subscription.
+          skuPartNumber:
+            type:
+            - string
+            - 'null'
+            description: The SKU associated with this subscription.
+          status:
+            type:
+            - string
+            - 'null'
+            description: 'The status of this subscription. The possible values are: Enabled, Deleted, Suspended, Warning, LockedOut.'
+          totalLicenses:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: The number of licenses included in this subscription.
+            format: int32
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.companySubscription'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.scopedRoleMembership:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: scopedRoleMembership
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          administrativeUnitId:
+            type: string
+            description: Unique identifier for the administrative unit that the directory role is scoped to
+          roleId:
+            type: string
+            description: Unique identifier for the directory role that the member is in.
+          roleMemberInfo:
+            $ref: '#/components/schemas/microsoft.graph.identity'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.scopedRoleMembership'
+    microsoft.graph.extension:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: extension
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.openTypeExtension': '#/components/schemas/microsoft.graph.openTypeExtension'
+    microsoft.graph.onPremisesAccidentalDeletionPrevention:
+      title: onPremisesAccidentalDeletionPrevention
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        alertThreshold:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: Threshold value which triggers accidental deletion prevention. The threshold is either an absolute number of objects or a percentage number of objects.
+          format: int32
+        synchronizationPreventionType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronizationDeletionPreventionType'
+          - type:
+            - object
+            - 'null'
+          description: 'The status of the accidental deletion prevention feature. The possible values are: disabled, enabledForCount, enabledForPercentage, unknownFutureValue.'
+        '@odata.type':
+          type: string
+    microsoft.graph.deviceLocalCredentialInfo:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: deviceLocalCredentialInfo
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          credentials:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.deviceLocalCredential'
+            description: The credentials of the device's local administrator account backed up to Azure Active Directory.
+          deviceName:
+            type: string
+            description: Display name of the device that the local credentials are associated with.
+          lastBackupDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: When the local administrator account credential was backed up to Azure Active Directory.
+            format: date-time
+          refreshDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: When the local administrator account credential will be refreshed and backed up to Azure Active Directory.
+            format: date-time
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.deviceLocalCredentialInfo'
+    microsoft.graph.certificateAuthorityDetail:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
+      - title: certificateAuthorityDetail
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          certificate:
+            type: string
+            description: The public key of the certificate authority.
+            format: base64url
+          certificateAuthorityType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.certificateAuthorityType'
+            - type:
+              - object
+              - 'null'
+            description: 'The type of certificate authority. The possible values are: root, intermediate, unknownFutureValue. Supports $filter (eq).'
+          certificateRevocationListUrl:
+            type:
+            - string
+            - 'null'
+            description: The URL to check if the certificate is revoked.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date and time when the certificate authority was created.
+            format: date-time
+          deltaCertificateRevocationListUrl:
+            type:
+            - string
+            - 'null'
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: The display name of the certificate authority.
+          expirationDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when the certificate authority expires. Supports $filter (eq) and $orderby.
+            format: date-time
+          isIssuerHintEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the certificate picker presents the certificate authority to the user to use for authentication. Default value is false. Optional.
+          issuer:
+            type:
+            - string
+            - 'null'
+            description: The issuer of the certificate authority.
+          issuerSubjectKeyIdentifier:
+            type:
+            - string
+            - 'null'
+            description: The subject key identifier of certificate authority.
+          thumbprint:
+            type: string
+            description: The thumbprint of certificate authority certificate. Supports $filter (eq, startswith).
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.certificateAuthorityDetail'
+      x-ms-discriminator-value: '#microsoft.graph.certificateAuthorityDetail'
   responses:
     error:
       description: error

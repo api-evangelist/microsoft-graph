@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Me.item Insights API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: me.itemInsights
+  x-ms-docs-toc-type: page
 paths:
   /me/insights:
     description: Provides operations to manage the insights property of the microsoft.graph.user entity.
@@ -636,7 +630,11 @@ paths:
       tags:
       - me.itemInsights
       summary: Microsoft Graph List used
-      description: "Calculate and list the documents that a user has viewed or modified.  For the signed-in user:\n- This method includes documents that the user has modified; see example 1. \n- Using an $orderby query parameter on the lastAccessedDateTime property returns the most recently viewed documents that the user might or might not not have modified; see example 2. For other users, this method includes only documents that the user has modified."
+      description: 'Calculate and list the documents that a user has viewed or modified. For the signed-in user:
+
+        - This method includes documents that the user has modified; see example 1.
+
+        - Using an $orderby query parameter on the lastAccessedDateTime property returns the most recently viewed documents that the user might or might not not have modified; see example 2. For other users, this method includes only documents that the user has modified.'
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/insights-list-used?view=graph-rest-1.0
@@ -872,33 +870,89 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.itemInsights:
+    microsoft.graph.usedInsight:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.officeGraphInsights'
-      - title: itemInsights
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: usedInsight
         required:
         - '@odata.type'
         type: object
         properties:
+          lastUsed:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.usageDetails'
+            - type:
+              - object
+              - 'null'
+            description: Information about when the item was last viewed or modified by the user. Read-only.
+          resourceReference:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.resourceReference'
+            - type:
+              - object
+              - 'null'
+            description: Reference properties of the used document, such as the URL and type of the document. Read-only
+            readOnly: true
+          resourceVisualization:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.resourceVisualization'
+            - type:
+              - object
+              - 'null'
+            description: Properties that you can use to visualize the document in your experience. Read-only
+            readOnly: true
+          resource:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.entity'
+            - type:
+              - object
+              - 'null'
+            description: Used for navigating to the item that was used. For file attachments, the type is fileAttachment. For linked attachments, the type is driveItem.
+            x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.itemInsights'
+      x-ms-discriminator-value: '#microsoft.graph.usedInsight'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.resourceReference:
+      title: resourceReference
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: The item's unique identifier.
+        type:
+          type:
+          - string
+          - 'null'
+          description: A string value that can be used to classify the item, such as 'microsoft.graph.driveItem'
+        webUrl:
+          type:
+          - string
+          - 'null'
+          description: A URL leading to the referenced item.
+        '@odata.type':
+          type: string
+    microsoft.graph.sharedInsightCollectionResponse:
+      title: Collection of sharedInsight
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.sharedInsight'
     microsoft.graph.trending:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -909,38 +963,44 @@ components:
         properties:
           lastModifiedDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
             format: date-time
-            nullable: true
           resourceReference:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.resourceReference'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Reference properties of the trending document, such as the url and type of the document.
             readOnly: true
           resourceVisualization:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.resourceVisualization'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Properties that you can use to visualize the document in your experience.
             readOnly: true
           weight:
             oneOf:
-            - type: number
+            - type:
+              - number
+              - 'null'
               format: double
-              nullable: true
-            - type: string
-              nullable: true
+            - type:
+              - string
+              - 'null'
             - $ref: '#/components/schemas/ReferenceNumeric'
             description: Value indicating how much the document is currently trending. The larger the number, the more the document is currently trending around the user (the more relevant it is). Returned documents are sorted by this value.
           resource:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.entity'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Used for navigating to the trending document.
             x-ms-navigationProperty: true
           '@odata.type':
@@ -953,57 +1013,110 @@ components:
       type: object
       properties:
         containerDisplayName:
-          type: string
+          type:
+          - string
+          - 'null'
           description: A string describing where the item is stored. For example, the name of a SharePoint site or the user name identifying the owner of the OneDrive storing the item.
-          nullable: true
         containerType:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Can be used for filtering by the type of container in which the file is stored. Such as Site or OneDriveBusiness.
-          nullable: true
         containerWebUrl:
-          type: string
+          type:
+          - string
+          - 'null'
           description: A path leading to the folder in which the item is stored.
-          nullable: true
         mediaType:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The item's media type. Can be used for filtering for a specific type of file based on supported IANA Media Mime Types. Not all Media Mime Types are supported.
-          nullable: true
         previewImageUrl:
-          type: string
+          type:
+          - string
+          - 'null'
           description: A URL leading to the preview image for the item.
-          nullable: true
         previewText:
-          type: string
+          type:
+          - string
+          - 'null'
           description: A preview text for the item.
-          nullable: true
         title:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The item's title text.
-          nullable: true
         type:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The item's media type. Can be used for filtering for a specific file based on a specific type. See the section Type property values for supported types.
-          nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.usageDetails:
-      title: usageDetails
+    microsoft.graph.sharingDetail:
+      title: sharingDetail
       required:
       - '@odata.type'
       type: object
       properties:
-        lastAccessedDateTime:
+        sharedBy:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.insightIdentity'
+          - type:
+            - object
+            - 'null'
+          description: The user who shared the document.
+        sharedDateTime:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The date and time the resource was last accessed by the user. The timestamp represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
+          type:
+          - string
+          - 'null'
+          description: The date and time the file was last shared. The timestamp represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
           format: date-time
-          nullable: true
-        lastModifiedDateTime:
+        sharingReference:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.resourceReference'
+          - type:
+            - object
+            - 'null'
+          description: Reference properties of the document, such as the URL and type of the document. Read-only
+          readOnly: true
+        sharingSubject:
+          type:
+          - string
+          - 'null'
+          description: The subject with which the document was shared.
+        sharingType:
+          type:
+          - string
+          - 'null'
+          description: Determines the way the document was shared. Can be by a 1Link1, 1Attachment1, 1Group1, 1Site1.
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The date and time the resource was last modified by the user. The timestamp represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
           format: date-time
-          nullable: true
         '@odata.type':
           type: string
     microsoft.graph.officeGraphInsights:
@@ -1038,121 +1151,14 @@ components:
           propertyName: '@odata.type'
           mapping:
             '#microsoft.graph.itemInsights': '#/components/schemas/microsoft.graph.itemInsights'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.resourceReference:
-      title: resourceReference
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        id:
-          type: string
-          description: The item's unique identifier.
-          nullable: true
-        type:
-          type: string
-          description: A string value that can be used to classify the item, such as 'microsoft.graph.driveItem'
-          nullable: true
-        webUrl:
-          type: string
-          description: A URL leading to the referenced item.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.sharedInsightCollectionResponse:
-      title: Collection of sharedInsight
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.sharedInsight'
-    microsoft.graph.sharingDetail:
-      title: sharingDetail
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        sharedBy:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.insightIdentity'
-          - type: object
-            nullable: true
-          description: The user who shared the document.
-        sharedDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The date and time the file was last shared. The timestamp represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
-          format: date-time
-          nullable: true
-        sharingReference:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.resourceReference'
-          - type: object
-            nullable: true
-          description: Reference properties of the document, such as the URL and type of the document. Read-only
-          readOnly: true
-        sharingSubject:
-          type: string
-          description: The subject with which the document was shared.
-          nullable: true
-        sharingType:
-          type: string
-          description: Determines the way the document was shared. Can be by a 1Link1, 1Attachment1, 1Group1, 1Site1.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.insightIdentity:
-      title: insightIdentity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        address:
-          type: string
-          description: The email address of the user who shared the item.
-          nullable: true
-        displayName:
-          type: string
-          description: The display name of the user who shared the item.
-          nullable: true
-        id:
-          type: string
-          description: The ID of the user who shared the item.
-          nullable: true
-        '@odata.type':
-          type: string
     ReferenceNumeric:
       enum:
       - -INF
       - INF
       - NaN
-      type: string
-      nullable: true
+      type:
+      - string
+      - 'null'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -1165,140 +1171,15 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.usedInsight:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: usedInsight
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          lastUsed:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.usageDetails'
-            - type: object
-              nullable: true
-            description: Information about when the item was last viewed or modified by the user. Read-only.
-          resourceReference:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.resourceReference'
-            - type: object
-              nullable: true
-            description: Reference properties of the used document, such as the URL and type of the document. Read-only
-            readOnly: true
-          resourceVisualization:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.resourceVisualization'
-            - type: object
-              nullable: true
-            description: Properties that you can use to visualize the document in your experience. Read-only
-            readOnly: true
-          resource:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.entity'
-            - type: object
-              nullable: true
-            description: Used for navigating to the item that was used. For file attachments, the type is fileAttachment. For linked attachments, the type is driveItem.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.usedInsight'
-    microsoft.graph.trendingCollectionResponse:
-      title: Collection of trending
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.trending'
-    microsoft.graph.usedInsightCollectionResponse:
-      title: Collection of usedInsight
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.usedInsight'
-    microsoft.graph.sharedInsight:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: sharedInsight
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          lastShared:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.sharingDetail'
-            - type: object
-              nullable: true
-            description: Details about the shared item. Read only.
-          resourceReference:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.resourceReference'
-            - type: object
-              nullable: true
-            description: Reference properties of the shared document, such as the url and type of the document. Read-only
-            readOnly: true
-          resourceVisualization:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.resourceVisualization'
-            - type: object
-              nullable: true
-            description: Properties that you can use to visualize the document in your experience. Read-only
-            readOnly: true
-          sharingHistory:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.sharingDetail'
-          lastSharedMethod:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.entity'
-            - type: object
-              nullable: true
-            x-ms-navigationProperty: true
-          resource:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.entity'
-            - type: object
-              nullable: true
-            description: Used for navigating to the item that was shared. For file attachments, the type is fileAttachment. For linked attachments, the type is driveItem.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.sharedInsight'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -2368,37 +2249,167 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.trendingCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.trendingCollectionResponse'
+    microsoft.graph.usageDetails:
+      title: usageDetails
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        lastAccessedDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: The date and time the resource was last accessed by the user. The timestamp represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
+          format: date-time
+        lastModifiedDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: The date and time the resource was last modified by the user. The timestamp represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Read-only.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.itemInsights:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.officeGraphInsights'
+      - title: itemInsights
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.itemInsights'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.sharedInsight:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: sharedInsight
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          lastShared:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.sharingDetail'
+            - type:
+              - object
+              - 'null'
+            description: Details about the shared item. Read only.
+          resourceReference:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.resourceReference'
+            - type:
+              - object
+              - 'null'
+            description: Reference properties of the shared document, such as the url and type of the document. Read-only
+            readOnly: true
+          resourceVisualization:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.resourceVisualization'
+            - type:
+              - object
+              - 'null'
+            description: Properties that you can use to visualize the document in your experience. Read-only
+            readOnly: true
+          sharingHistory:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.sharingDetail'
+          lastSharedMethod:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.entity'
+            - type:
+              - object
+              - 'null'
+            x-ms-navigationProperty: true
+          resource:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.entity'
+            - type:
+              - object
+              - 'null'
+            description: Used for navigating to the item that was shared. For file attachments, the type is fileAttachment. For linked attachments, the type is driveItem.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.sharedInsight'
     microsoft.graph.usedInsightCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.usedInsightCollectionResponse'
+      title: Collection of usedInsight
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.usedInsight'
     ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.sharedInsightCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.sharedInsightCollectionResponse'
+      type: integer
+      format: int32
+    microsoft.graph.trendingCollectionResponse:
+      title: Collection of trending
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.trending'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.insightIdentity:
+      title: insightIdentity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        address:
+          type:
+          - string
+          - 'null'
+          description: The email address of the user who shared the item.
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: The display name of the user who shared the item.
+        id:
+          type:
+          - string
+          - 'null'
+          description: The ID of the user who shared the item.
+        '@odata.type':
+          type: string
   parameters:
     filter:
       name: $filter
@@ -2408,6 +2419,31 @@ components:
       explode: false
       schema:
         type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     top:
       name: $top
       in: query
@@ -2418,28 +2454,34 @@ components:
         minimum: 0
         type: integer
       example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+  responses:
+    microsoft.graph.usedInsightCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.usedInsightCollectionResponse'
+    microsoft.graph.trendingCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.trendingCollectionResponse'
+    microsoft.graph.sharedInsightCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.sharedInsightCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

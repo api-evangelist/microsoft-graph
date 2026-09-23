@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Authentication Methods Policy.authentication Methods Policy API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: authenticationMethodsPolicy.authenticationMethodsPolicy
+  x-ms-docs-toc-type: page
 paths:
   /authenticationMethodsPolicy:
     description: Provides operations to manage the authenticationMethodsPolicy singleton.
@@ -84,27 +78,6 @@ paths:
       x-ms-docs-operation-type: operation
 components:
   schemas:
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.advancedConfigState:
-      title: advancedConfigState
-      enum:
-      - default
-      - enabled
-      - disabled
-      - unknownFutureValue
-      type: string
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -112,41 +85,22 @@ components:
       type: object
       properties:
         request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Request Id as tracked internally by the service
-          nullable: true
         client-request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Client request Id as sent by the client application.
-          nullable: true
         date:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
+          type:
+          - string
+          - 'null'
           description: Date when the error occured.
           format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.authenticationMethodsPolicyMigrationState:
-      title: authenticationMethodsPolicyMigrationState
-      enum:
-      - preMigration
-      - migrationInProgress
-      - migrationComplete
-      - unknownFutureValue
-      type: string
-    microsoft.graph.registrationEnforcement:
-      title: registrationEnforcement
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        authenticationMethodsRegistrationCampaign:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.authenticationMethodsRegistrationCampaign'
-          - type: object
-            nullable: true
-          description: Run campaigns to remind users to set up targeted authentication methods.
         '@odata.type':
           type: string
     microsoft.graph.excludeTarget:
@@ -162,85 +116,60 @@ components:
           $ref: '#/components/schemas/microsoft.graph.authenticationMethodTargetType'
         '@odata.type':
           type: string
-    microsoft.graph.authenticationMethodsPolicy:
+    microsoft.graph.authenticationMethodState:
+      title: authenticationMethodState
+      enum:
+      - enabled
+      - disabled
+      type: string
+    microsoft.graph.advancedConfigState:
+      title: advancedConfigState
+      enum:
+      - default
+      - enabled
+      - disabled
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.authenticationMethodConfiguration:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: authenticationMethodsPolicy
+      - title: authenticationMethodConfiguration
         required:
         - '@odata.type'
         type: object
         properties:
-          description:
-            type: string
-            description: A description of the policy. Read-only.
-            nullable: true
-          displayName:
-            type: string
-            description: The name of the policy. Read-only.
-            nullable: true
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time of the last update to the policy. Read-only.
-            format: date-time
-            nullable: true
-          policyMigrationState:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.authenticationMethodsPolicyMigrationState'
-            - type: object
-              nullable: true
-            description: 'The state of migration of the authentication methods policy from the legacy multifactor authentication and self-service password reset (SSPR) policies. The possible values are: premigration - means the authentication methods policy is used for authentication only, legacy policies are respected. migrationInProgress - means the authentication methods policy is used for both authentication and SSPR, legacy policies are respected. migrationComplete - means the authentication methods policy is used for authentication and SSPR, legacy policies are ignored. unknownFutureValue - Evolvable enumeration sentinel value. Do not use.'
-          policyVersion:
-            type: string
-            description: The version of the policy in use. Read-only.
-            nullable: true
-          reconfirmationInDays:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            format: int32
-            nullable: true
-          registrationEnforcement:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.registrationEnforcement'
-            - type: object
-              nullable: true
-            description: Enforce registration at sign-in time. This property can be used to remind users to set up targeted authentication methods.
-          authenticationMethodConfigurations:
+          excludeTargets:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationMethodConfiguration'
-            description: Represents the settings for each authentication method. Automatically expanded on GET /policies/authenticationMethodsPolicy.
-            x-ms-navigationProperty: true
+              $ref: '#/components/schemas/microsoft.graph.excludeTarget'
+            description: Groups of users that are excluded from a policy.
+          state:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.authenticationMethodState'
+            - type:
+              - object
+              - 'null'
+            description: 'The state of the policy. The possible values are: enabled, disabled.'
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.authenticationMethodsPolicy'
-    microsoft.graph.authenticationMethodsRegistrationCampaign:
-      title: authenticationMethodsRegistrationCampaign
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        excludeTargets:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.excludeTarget'
-          description: Users and groups of users that are excluded from being prompted to set up the authentication method.
-        includeTargets:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.authenticationMethodsRegistrationCampaignIncludeTarget'
-          description: Users and groups of users that are prompted to set up the authentication method.
-        snoozeDurationInDays:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: 'Specifies the number of days that the user sees a prompt again if they select ''Not now'' and snoozes the prompt. Minimum: 0 days. Maximum: 14 days. If the value is ''0'', the user is prompted during every MFA attempt.'
-          format: int32
-        state:
-          $ref: '#/components/schemas/microsoft.graph.advancedConfigState'
-        '@odata.type':
-          type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.emailAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.emailAuthenticationMethodConfiguration'
+            '#microsoft.graph.fido2AuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.fido2AuthenticationMethodConfiguration'
+            '#microsoft.graph.microsoftAuthenticatorAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.microsoftAuthenticatorAuthenticationMethodConfiguration'
+            '#microsoft.graph.smsAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.smsAuthenticationMethodConfiguration'
+            '#microsoft.graph.softwareOathAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.softwareOathAuthenticationMethodConfiguration'
+            '#microsoft.graph.temporaryAccessPassAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.temporaryAccessPassAuthenticationMethodConfiguration'
+            '#microsoft.graph.voiceAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.voiceAuthenticationMethodConfiguration'
+            '#microsoft.graph.x509CertificateAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.x509CertificateAuthenticationMethodConfiguration'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -253,8 +182,9 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
@@ -1330,19 +1260,21 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ODataError:
+    microsoft.graph.registrationEnforcement:
+      title: registrationEnforcement
       required:
-      - error
+      - '@odata.type'
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.authenticationMethodState:
-      title: authenticationMethodState
-      enum:
-      - enabled
-      - disabled
-      type: string
+        authenticationMethodsRegistrationCampaign:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.authenticationMethodsRegistrationCampaign'
+          - type:
+            - object
+            - 'null'
+          description: Run campaigns to remind users to set up targeted authentication methods.
+        '@odata.type':
+          type: string
     microsoft.graph.authenticationMethodsRegistrationCampaignIncludeTarget:
       title: authenticationMethodsRegistrationCampaignIncludeTarget
       required:
@@ -1353,9 +1285,10 @@ components:
           type: string
           description: The object identifier of a Microsoft Entra user or group.
         targetedAuthenticationMethod:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The authentication method that the user is prompted to register. The value must be microsoftAuthenticator.
-          nullable: true
         targetType:
           $ref: '#/components/schemas/microsoft.graph.authenticationMethodTargetType'
         '@odata.type':
@@ -1367,38 +1300,114 @@ components:
       - group
       - unknownFutureValue
       type: string
-    microsoft.graph.authenticationMethodConfiguration:
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.authenticationMethodsPolicyMigrationState:
+      title: authenticationMethodsPolicyMigrationState
+      enum:
+      - preMigration
+      - migrationInProgress
+      - migrationComplete
+      - unknownFutureValue
+      type: string
+    microsoft.graph.authenticationMethodsPolicy:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: authenticationMethodConfiguration
+      - title: authenticationMethodsPolicy
         required:
         - '@odata.type'
         type: object
         properties:
-          excludeTargets:
+          description:
+            type:
+            - string
+            - 'null'
+            description: A description of the policy. Read-only.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: The name of the policy. Read-only.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date and time of the last update to the policy. Read-only.
+            format: date-time
+          policyMigrationState:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.authenticationMethodsPolicyMigrationState'
+            - type:
+              - object
+              - 'null'
+            description: 'The state of migration of the authentication methods policy from the legacy multifactor authentication and self-service password reset (SSPR) policies. The possible values are: premigration - means the authentication methods policy is used for authentication only, legacy policies are respected. migrationInProgress - means the authentication methods policy is used for both authentication and SSPR, legacy policies are respected. migrationComplete - means the authentication methods policy is used for authentication and SSPR, legacy policies are ignored. unknownFutureValue - Evolvable enumeration sentinel value. Do not use.'
+          policyVersion:
+            type:
+            - string
+            - 'null'
+            description: The version of the policy in use. Read-only.
+          reconfirmationInDays:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            format: int32
+          registrationEnforcement:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.registrationEnforcement'
+            - type:
+              - object
+              - 'null'
+            description: Enforce registration at sign-in time. This property can be used to remind users to set up targeted authentication methods.
+          authenticationMethodConfigurations:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.excludeTarget'
-            description: Groups of users that are excluded from a policy.
-          state:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.authenticationMethodState'
-            - type: object
-              nullable: true
-            description: 'The state of the policy. The possible values are: enabled, disabled.'
+              $ref: '#/components/schemas/microsoft.graph.authenticationMethodConfiguration'
+            description: Represents the settings for each authentication method. Automatically expanded on GET /policies/authenticationMethodsPolicy.
+            x-ms-navigationProperty: true
           '@odata.type':
             type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.emailAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.emailAuthenticationMethodConfiguration'
-            '#microsoft.graph.fido2AuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.fido2AuthenticationMethodConfiguration'
-            '#microsoft.graph.microsoftAuthenticatorAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.microsoftAuthenticatorAuthenticationMethodConfiguration'
-            '#microsoft.graph.smsAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.smsAuthenticationMethodConfiguration'
-            '#microsoft.graph.softwareOathAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.softwareOathAuthenticationMethodConfiguration'
-            '#microsoft.graph.temporaryAccessPassAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.temporaryAccessPassAuthenticationMethodConfiguration'
-            '#microsoft.graph.voiceAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.voiceAuthenticationMethodConfiguration'
-            '#microsoft.graph.x509CertificateAuthenticationMethodConfiguration': '#/components/schemas/microsoft.graph.x509CertificateAuthenticationMethodConfiguration'
+      x-ms-discriminator-value: '#microsoft.graph.authenticationMethodsPolicy'
+    microsoft.graph.authenticationMethodsRegistrationCampaign:
+      title: authenticationMethodsRegistrationCampaign
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        excludeTargets:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.excludeTarget'
+          description: Users and groups of users that are excluded from being prompted to set up the authentication method.
+        includeTargets:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.authenticationMethodsRegistrationCampaignIncludeTarget'
+          description: Users and groups of users that are prompted to set up the authentication method.
+        snoozeDurationInDays:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: 'Specifies the number of days that the user sees a prompt again if they select ''Not now'' and snoozes the prompt. Minimum: 0 days. Maximum: 14 days. If the value is ''0'', the user is prompted during every MFA attempt.'
+          format: int32
+        state:
+          $ref: '#/components/schemas/microsoft.graph.advancedConfigState'
+        '@odata.type':
+          type: string
   responses:
     error:
       description: error

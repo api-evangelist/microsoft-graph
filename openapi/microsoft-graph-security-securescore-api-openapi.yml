@@ -1,20 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Security.secure Score API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: security.secureScore
   x-ms-docs-toc-type: page
@@ -215,230 +208,6 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.securityVendorInformation:
-      title: securityVendorInformation
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        provider:
-          type: string
-          description: Specific provider (product/service - not vendor company); for example, WindowsDefenderATP.
-          nullable: true
-        providerVersion:
-          type: string
-          description: Version of the provider or subprovider, if it exists, that generated the alert. Required
-          nullable: true
-        subProvider:
-          type: string
-          description: Specific subprovider (under aggregating provider); for example, WindowsDefenderATP.SmartScreen.
-          nullable: true
-        vendor:
-          type: string
-          description: Name of the alert vendor (for example, Microsoft, Dell, FireEye). Required
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.controlScore:
-      title: controlScore
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        controlCategory:
-          type: string
-          description: Control action category (Identity, Data, Device, Apps, Infrastructure).
-          nullable: true
-        controlName:
-          type: string
-          description: Control unique name.
-          nullable: true
-        description:
-          type: string
-          description: Description of the control.
-          nullable: true
-        score:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Tenant achieved score for the control (it varies day by day depending on tenant operations on the control).
-        '@odata.type':
-          type: string
-    microsoft.graph.secureScore:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: secureScore
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          activeUserCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Active user count of the given tenant.
-            format: int32
-            nullable: true
-          averageComparativeScores:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.averageComparativeScore'
-            description: Average score by different scopes (for example, average by industry, average by seating) and control category (Identity, Data, Device, Apps, Infrastructure) within the scope.
-          azureTenantId:
-            type: string
-            description: GUID string for tenant ID.
-          controlScores:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.controlScore'
-            description: Contains tenant scores for a set of controls.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: When the report was created.
-            format: date-time
-            nullable: true
-          currentScore:
-            oneOf:
-            - type: number
-              format: double
-              nullable: true
-            - type: string
-              nullable: true
-            - $ref: '#/components/schemas/ReferenceNumeric'
-            description: Tenant current attained score on specified date.
-          enabledServices:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: Microsoft-provided services for the tenant (for example, Exchange online, Skype, Sharepoint).
-          licensedUserCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Licensed user count of the given tenant.
-            format: int32
-            nullable: true
-          maxScore:
-            oneOf:
-            - type: number
-              format: double
-              nullable: true
-            - type: string
-              nullable: true
-            - $ref: '#/components/schemas/ReferenceNumeric'
-            description: Tenant maximum possible score on specified date.
-          vendorInformation:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.securityVendorInformation'
-            - type: object
-              nullable: true
-            description: Complex type containing details about the security product/service vendor, provider, and subprovider (for example, vendor=Microsoft; provider=SecureScore). Required.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.secureScore'
-    ReferenceNumeric:
-      enum:
-      - -INF
-      - INF
-      - NaN
-      type: string
-      nullable: true
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.averageComparativeScore:
-      title: averageComparativeScore
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        averageScore:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Average score within specified basis.
-        basis:
-          type: string
-          description: 'Scope type. The possible values are: AllTenants, TotalSeats, IndustryTypes.'
-          nullable: true
-        '@odata.type':
-          type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
     microsoft.graph.ODataErrors.ODataError:
       required:
       - error
@@ -457,6 +226,60 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.secureScore'
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    ReferenceNumeric:
+      enum:
+      - -INF
+      - INF
+      - NaN
+      type:
+      - string
+      - 'null'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1526,25 +1349,205 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.secureScoreCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.secureScoreCollectionResponse'
+    microsoft.graph.averageComparativeScore:
+      title: averageComparativeScore
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        averageScore:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Average score within specified basis.
+        basis:
+          type:
+          - string
+          - 'null'
+          description: 'Scope type. The possible values are: AllTenants, TotalSeats, IndustryTypes.'
+        '@odata.type':
+          type: string
+    microsoft.graph.secureScore:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: secureScore
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          activeUserCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Active user count of the given tenant.
+            format: int32
+          averageComparativeScores:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.averageComparativeScore'
+            description: Average score by different scopes (for example, average by industry, average by seating) and control category (Identity, Data, Device, Apps, Infrastructure) within the scope.
+          azureTenantId:
+            type: string
+            description: GUID string for tenant ID.
+          controlScores:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.controlScore'
+            description: Contains tenant scores for a set of controls.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: When the report was created.
+            format: date-time
+          currentScore:
+            oneOf:
+            - type:
+              - number
+              - 'null'
+              format: double
+            - type:
+              - string
+              - 'null'
+            - $ref: '#/components/schemas/ReferenceNumeric'
+            description: Tenant current attained score on specified date.
+          enabledServices:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: Microsoft-provided services for the tenant (for example, Exchange online, Skype, Sharepoint).
+          licensedUserCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Licensed user count of the given tenant.
+            format: int32
+          maxScore:
+            oneOf:
+            - type:
+              - number
+              - 'null'
+              format: double
+            - type:
+              - string
+              - 'null'
+            - $ref: '#/components/schemas/ReferenceNumeric'
+            description: Tenant maximum possible score on specified date.
+          vendorInformation:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.securityVendorInformation'
+            - type:
+              - object
+              - 'null'
+            description: Complex type containing details about the security product/service vendor, provider, and subprovider (for example, vendor=Microsoft; provider=SecureScore). Required.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.secureScore'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.controlScore:
+      title: controlScore
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        controlCategory:
+          type:
+          - string
+          - 'null'
+          description: Control action category (Identity, Data, Device, Apps, Infrastructure).
+        controlName:
+          type:
+          - string
+          - 'null'
+          description: Control unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the control.
+        score:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Tenant achieved score for the control (it varies day by day depending on tenant operations on the control).
+        '@odata.type':
+          type: string
     ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
+      type: integer
+      format: int32
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.securityVendorInformation:
+      title: securityVendorInformation
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        provider:
+          type:
+          - string
+          - 'null'
+          description: Specific provider (product/service - not vendor company); for example, WindowsDefenderATP.
+        providerVersion:
+          type:
+          - string
+          - 'null'
+          description: Version of the provider or subprovider, if it exists, that generated the alert. Required
+        subProvider:
+          type:
+          - string
+          - 'null'
+          description: Specific subprovider (under aggregating provider); for example, WindowsDefenderATP.SmartScreen.
+        vendor:
+          type:
+          - string
+          - 'null'
+          description: Name of the alert vendor (for example, Microsoft, Dell, FireEye). Required
+        '@odata.type':
+          type: string
   parameters:
     filter:
       name: $filter
@@ -1554,6 +1557,31 @@ components:
       explode: false
       schema:
         type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     top:
       name: $top
       in: query
@@ -1564,28 +1592,22 @@ components:
         minimum: 0
         type: integer
       example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+  responses:
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.secureScoreCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.secureScoreCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

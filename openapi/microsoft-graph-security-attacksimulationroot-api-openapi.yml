@@ -1,20 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Security.attack Simulation Root API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: security.attackSimulationRoot
   x-ms-docs-toc-type: page
@@ -163,7 +156,7 @@ paths:
     post:
       tags:
       - security.attackSimulationRoot
-      summary: Microsoft Graph Create new navigation property to endUserNotifications for security
+      summary: Microsoft Graph Create new navigation property to endUserNotifications for…
       operationId: security.attackSimulation.CreateEndUserNotifications
       requestBody:
         description: New navigation property
@@ -1547,7 +1540,7 @@ paths:
     post:
       tags:
       - security.attackSimulationRoot
-      summary: Microsoft Graph Create new navigation property to simulationAutomations for security
+      summary: Microsoft Graph Create new navigation property to simulationAutomations for…
       operationId: security.attackSimulation.CreateSimulationAutomations
       requestBody:
         description: New navigation property
@@ -2657,48 +2650,1085 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.positiveReinforcementNotification:
+    microsoft.graph.endUserNotification:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.baseEndUserNotification'
-      - title: positiveReinforcementNotification
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: endUserNotification
         required:
         - '@odata.type'
         type: object
         properties:
-          deliveryPreference:
+          createdBy:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.notificationDeliveryPreference'
-            - type: object
-              nullable: true
-            description: 'Delivery preference. The possible values are: unknown, deliverImmedietly, deliverAfterCampaignEnd, unknownFutureValue.'
+            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the user who created the notification.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the notification was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description of the notification as defined by the user.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Name of the notification as defined by the user.
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the user who last modified the notification.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the notification was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          notificationType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.endUserNotificationType'
+            - type:
+              - object
+              - 'null'
+            description: 'Type of notification. The possible values are: unknown, positiveReinforcement, noTraining, trainingAssignment, trainingReminder, unknownFutureValue.'
+          source:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.simulationContentSource'
+            - type:
+              - object
+              - 'null'
+            description: 'The source of the content. The possible values are: unknown, global, tenant, unknownFutureValue.'
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.simulationContentStatus'
+            - type:
+              - object
+              - 'null'
+            description: 'The status of the notification. The possible values are: unknown, draft, ready, archive, delete, unknownFutureValue.'
+          supportedLocales:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: Supported locales for endUserNotification content.
+          details:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.endUserNotificationDetail'
+            x-ms-navigationProperty: true
           '@odata.type':
             type: string
-            default: '#microsoft.graph.positiveReinforcementNotification'
-      x-ms-discriminator-value: '#microsoft.graph.positiveReinforcementNotification'
-    microsoft.graph.landingPageDetail:
+      x-ms-discriminator-value: '#microsoft.graph.endUserNotification'
+    microsoft.graph.simulationAttackTechnique:
+      title: simulationAttackTechnique
+      enum:
+      - unknown
+      - credentialHarvesting
+      - attachmentMalware
+      - driveByUrl
+      - linkInAttachment
+      - linkToMalwareFile
+      - unknownFutureValue
+      type: string
+    microsoft.graph.training:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: landingPageDetail
+      - title: training
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          availabilityStatus:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.trainingAvailabilityStatus'
+            - type:
+              - object
+              - 'null'
+            description: 'Training availability status. The possible values are: unknown, notAvailable, available, archive, delete, unknownFutureValue.'
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the user who created the training.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the training was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          description:
+            type:
+            - string
+            - 'null'
+            description: The description for the training.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: The display name for the training.
+          durationInMinutes:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Training duration.
+            format: int32
+          hasEvaluation:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the training has any evaluation.
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the user who last modified the training.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the training was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          source:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.simulationContentSource'
+            - type:
+              - object
+              - 'null'
+            description: 'Training content source. The possible values are: unknown, global, tenant, unknownFutureValue.'
+          supportedLocales:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: Supported locales for content for the associated training.
+          tags:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: Training tags.
+          type:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.trainingType'
+            - type:
+              - object
+              - 'null'
+            description: 'The type of training. The possible values are: unknown, phishing, unknownFutureValue.'
+          languageDetails:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.trainingLanguageDetail'
+            description: Language specific details on a training.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.training'
+    microsoft.graph.payload:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: payload
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          brand:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.payloadBrand'
+            - type:
+              - object
+              - 'null'
+            description: 'The branch of a payload. The possible values are: unknown, other, americanExpress, capitalOne, dhl, docuSign, dropbox, facebook, firstAmerican, microsoft, netflix, scotiabank, sendGrid, stewartTitle, tesco, wellsFargo, syrinxCloud, adobe, teams, zoom, unknownFutureValue.'
+          complexity:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.payloadComplexity'
+            - type:
+              - object
+              - 'null'
+            description: 'The complexity of a payload. The possible values are: unknown, low, medium, high, unknownFutureValue.'
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the user who created the attack simulation and training campaign payload.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the attack simulation and training campaign payload. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description of the attack simulation and training campaign payload.
+          detail:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.payloadDetail'
+            - type:
+              - object
+              - 'null'
+            description: Additional details about the payload.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Display name of the attack simulation and training campaign payload. Supports $filter and $orderby.
+          industry:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.payloadIndustry'
+            - type:
+              - object
+              - 'null'
+            description: 'Industry of a payload. The possible values are: unknown, other, banking, businessServices, consumerServices, education, energy, construction, consulting, financialServices, government, hospitality, insurance, legal, courierServices, IT, healthcare, manufacturing, retail, telecom, realEstate, unknownFutureValue.'
+          isAutomated:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the attack simulation and training campaign payload was created from an automation flow. Supports $filter and $orderby.
+          isControversial:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the payload is controversial.
+          isCurrentEvent:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the payload is from any recent event.
+          language:
+            type:
+            - string
+            - 'null'
+            description: Payload language.
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the user who most recently modified the attack simulation and training campaign payload.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the attack simulation and training campaign payload was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          payloadTags:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: Free text tags for a payload.
+          platform:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.payloadDeliveryPlatform'
+            - type:
+              - object
+              - 'null'
+            description: 'The payload delivery platform for a simulation. The possible values are: unknown, sms, email, teams, unknownFutureValue.'
+          predictedCompromiseRate:
+            oneOf:
+            - type:
+              - number
+              - 'null'
+              format: double
+            - type:
+              - string
+              - 'null'
+            - $ref: '#/components/schemas/ReferenceNumeric'
+            description: Predicted probability for a payload to phish a targeted user.
+          simulationAttackType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.simulationAttackType'
+            - type:
+              - object
+              - 'null'
+            description: 'Attack type of the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, social, cloud, endpoint, unknownFutureValue.'
+          source:
+            $ref: '#/components/schemas/microsoft.graph.simulationContentSource'
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.simulationContentStatus'
+            - type:
+              - object
+              - 'null'
+            description: 'Simulation content status. Supports $filter and $orderby. The possible values are: unknown, draft, ready, archive, delete, unknownFutureValue.'
+          technique:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.simulationAttackTechnique'
+            - type:
+              - object
+              - 'null'
+            description: 'The social engineering technique used in the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, credentialHarvesting, attachmentMalware, driveByUrl, linkInAttachment, linkToMalwareFile, unknownFutureValue, oAuthConsentGrant. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: oAuthConsentGrant. For more information on the types of social engineering attack techniques, see simulations.'
+          theme:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.payloadTheme'
+            - type:
+              - object
+              - 'null'
+            description: 'The theme of a payload. The possible values are: unknown, other, accountActivation, accountVerification, billing, cleanUpMail, controversial, documentReceived, expense, fax, financeReport, incomingMessages, invoice, itemReceived, loginAlert, mailReceived, password, payment, payroll, personalizedOffer, quarantine, remoteWork, reviewMessage, securityUpdate, serviceSuspended, signatureRequired, upgradeMailboxStorage, verifyMailbox, voicemail, advertisement, employeeEngagement, unknownFutureValue.'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.payload'
+    microsoft.graph.payloadCoachmark:
+      title: payloadCoachmark
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        coachmarkLocation:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.coachmarkLocation'
+          - type:
+            - object
+            - 'null'
+          description: The coachmark location.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description about the coachmark.
+        indicator:
+          type:
+          - string
+          - 'null'
+          description: The coachmark indicator.
+        isValid:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the coachmark is valid or not.
+        language:
+          type:
+          - string
+          - 'null'
+          description: The coachmark language.
+        order:
+          type:
+          - string
+          - 'null'
+          description: The coachmark order.
+        '@odata.type':
+          type: string
+    microsoft.graph.payloadComplexity:
+      title: payloadComplexity
+      enum:
+      - unknown
+      - low
+      - medium
+      - high
+      - unknownFutureValue
+      type: string
+    microsoft.graph.attackSimulationOperation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.longRunningOperation'
+      - title: attackSimulationOperation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          percentageCompleted:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: Percentage of completion of the respective operation.
+            format: int32
+          tenantId:
+            type:
+            - string
+            - 'null'
+            description: Tenant identifier.
+          type:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.attackSimulationOperationType'
+            - type:
+              - object
+              - 'null'
+            description: 'The attack simulation operation type. The possible values are: createSimulation, updateSimulation, unknownFutureValue.'
+          '@odata.type':
+            type: string
+        description: The status of a long-running operation.
+      x-ms-discriminator-value: '#microsoft.graph.attackSimulationOperation'
+    microsoft.graph.emailIdentity:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.identity'
+      - title: emailIdentity
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          email:
+            type:
+            - string
+            - 'null'
+            description: Email address of the user.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.emailIdentity'
+      x-ms-discriminator-value: '#microsoft.graph.emailIdentity'
+    microsoft.graph.landingPage:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: landingPage
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the user who created the landing page.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the landing page was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description of the landing page as defined by the user.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: The display name of the landing page.
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
+            - type:
+              - object
+              - 'null'
+            description: Email identity of the user who last modified the landing page.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the landing page was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          locale:
+            type:
+            - string
+            - 'null'
+            description: Content locale.
+          source:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.simulationContentSource'
+            - type:
+              - object
+              - 'null'
+            description: 'The source of the content. The possible values are: unknown, global, tenant, unknownFutureValue.'
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.simulationContentStatus'
+            - type:
+              - object
+              - 'null'
+            description: 'The status of the simulation. The possible values are: unknown, draft, ready, archive, delete, unknownFutureValue.'
+          supportedLocales:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: Supported locales.
+          details:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.landingPageDetail'
+            description: The detail information for a landing page associated with a simulation during its creation.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.landingPage'
+    microsoft.graph.trainingLanguageDetail:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: trainingLanguageDetail
         required:
         - '@odata.type'
         type: object
         properties:
           content:
             type: string
-            description: Landing page detail content.
+            description: Language specific content for the training.
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the user who created the language details.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the language details were created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description as defined by the user.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Display name as defined by the user.
           isDefaultLangauge:
-            type: boolean
-            description: Indicates whether this language detail is default for the landing page.
-            nullable: true
-          language:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the training has a default language.
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the user who last modified the details.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the trainingLanguageDetail was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          locale:
             type: string
-            description: The content language for the landing page.
+            description: Content locale for the training detail.
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.landingPageDetail'
+      x-ms-discriminator-value: '#microsoft.graph.trainingLanguageDetail'
+    microsoft.graph.attackSimulationUser:
+      title: attackSimulationUser
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Display name of the user.
+        email:
+          type:
+          - string
+          - 'null'
+          description: Email address of the user.
+        userId:
+          type:
+          - string
+          - 'null'
+          description: This is the id property value of the user resource that represents the user in the Microsoft Entra tenant.
+        '@odata.type':
+          type: string
+    microsoft.graph.endUserNotificationDetailCollectionResponse:
+      title: Collection of endUserNotificationDetail
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.endUserNotificationDetail'
+    microsoft.graph.attackSimulationRoot:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: attackSimulationRoot
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          endUserNotifications:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.endUserNotification'
+            description: Represents an end user's notification for an attack simulation training.
+            x-ms-navigationProperty: true
+          landingPages:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.landingPage'
+            description: Represents an attack simulation training landing page.
+            x-ms-navigationProperty: true
+          loginPages:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.loginPage'
+            description: Represents an attack simulation training login page.
+            x-ms-navigationProperty: true
+          operations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.attackSimulationOperation'
+            description: Represents an attack simulation training operation.
+            x-ms-navigationProperty: true
+          payloads:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.payload'
+            description: Represents an attack simulation training campaign payload in a tenant.
+            x-ms-navigationProperty: true
+          simulationAutomations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.simulationAutomation'
+            description: Represents simulation automation created to run on a tenant.
+            x-ms-navigationProperty: true
+          simulations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.simulation'
+            description: Represents an attack simulation training campaign in a tenant.
+            x-ms-navigationProperty: true
+          trainings:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.training'
+            description: Represents details about attack simulation trainings.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.attackSimulationRoot'
+    microsoft.graph.simulation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: simulation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          attackTechnique:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.simulationAttackTechnique'
+            - type:
+              - object
+              - 'null'
+            description: 'The social engineering technique used in the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, credentialHarvesting, attachmentMalware, driveByUrl, linkInAttachment, linkToMalwareFile, unknownFutureValue, oAuthConsentGrant. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: oAuthConsentGrant. For more information on the types of social engineering attack techniques, see simulations.'
+          attackType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.simulationAttackType'
+            - type:
+              - object
+              - 'null'
+            description: 'Attack type of the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, social, cloud, endpoint, unknownFutureValue.'
+          automationId:
+            type:
+            - string
+            - 'null'
+            description: Unique identifier for the attack simulation automation.
+          completionDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time of completion of the attack simulation and training campaign. Supports $filter and $orderby.
+            format: date-time
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the user who created the attack simulation and training campaign.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time of creation of the attack simulation and training campaign.
+            format: date-time
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description of the attack simulation and training campaign.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Display name of the attack simulation and training campaign. Supports $filter and $orderby.
+          durationInDays:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Simulation duration in days.
+            format: int32
+          endUserNotificationSetting:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.endUserNotificationSetting'
+            - type:
+              - object
+              - 'null'
+            description: Details about the end user notification setting.
+          excludedAccountTarget:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.accountTargetContent'
+            - type:
+              - object
+              - 'null'
+            description: Users excluded from the simulation.
+          includedAccountTarget:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.accountTargetContent'
+            - type:
+              - object
+              - 'null'
+            description: Users targeted in the simulation.
+          isAutomated:
+            type:
+            - boolean
+            - 'null'
+            description: Flag that represents if the attack simulation and training campaign was created from a simulation automation flow. Supports $filter and $orderby.
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the user who most recently modified the attack simulation and training campaign.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time of the most recent modification of the attack simulation and training campaign.
+            format: date-time
+          launchDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time of the launch/start of the attack simulation and training campaign. Supports $filter and $orderby.
+            format: date-time
+          oAuthConsentAppDetail:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.oAuthConsentAppDetail'
+            - type:
+              - object
+              - 'null'
+            description: OAuth app details for the OAuth technique.
+          payloadDeliveryPlatform:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.payloadDeliveryPlatform'
+            - type:
+              - object
+              - 'null'
+            description: 'Method of delivery of the phishing payload used in the attack simulation and training campaign. The possible values are: unknown, sms, email, teams, unknownFutureValue.'
+          report:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.simulationReport'
+            - type:
+              - object
+              - 'null'
+            description: Report of the attack simulation and training campaign.
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.simulationStatus'
+            - type:
+              - object
+              - 'null'
+            description: 'Status of the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, draft, running, scheduled, succeeded, failed, cancelled, excluded, unknownFutureValue.'
+          trainingSetting:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.trainingSetting'
+            - type:
+              - object
+              - 'null'
+            description: Details about the training settings for a simulation.
+          landingPage:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.landingPage'
+            - type:
+              - object
+              - 'null'
+            description: The landing page associated with a simulation during its creation.
+            x-ms-navigationProperty: true
+          loginPage:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.loginPage'
+            - type:
+              - object
+              - 'null'
+            description: The login page associated with a simulation during its creation.
+            x-ms-navigationProperty: true
+          payload:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.payload'
+            - type:
+              - object
+              - 'null'
+            description: The payload associated with a simulation during its creation.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.simulation'
+    microsoft.graph.trainingSetting:
+      title: trainingSetting
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        settingType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.trainingSettingType'
+          - type:
+            - object
+            - 'null'
+          description: 'Type of setting. The possible values are: microsoftCustom, microsoftManaged, noTraining, custom, unknownFutureValue.'
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.customTrainingSetting': '#/components/schemas/microsoft.graph.customTrainingSetting'
+          '#microsoft.graph.microsoftCustomTrainingSetting': '#/components/schemas/microsoft.graph.microsoftCustomTrainingSetting'
+          '#microsoft.graph.microsoftManagedTrainingSetting': '#/components/schemas/microsoft.graph.microsoftManagedTrainingSetting'
+          '#microsoft.graph.microsoftTrainingAssignmentMapping': '#/components/schemas/microsoft.graph.microsoftTrainingAssignmentMapping'
+          '#microsoft.graph.noTrainingSetting': '#/components/schemas/microsoft.graph.noTrainingSetting'
+    microsoft.graph.oAuthAppScope:
+      title: oAuthAppScope
+      enum:
+      - unknown
+      - readCalendar
+      - readContact
+      - readMail
+      - readAllChat
+      - readAllFile
+      - readAndWriteMail
+      - sendMail
+      - unknownFutureValue
+      type: string
+    microsoft.graph.trainingLanguageDetailCollectionResponse:
+      title: Collection of trainingLanguageDetail
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.trainingLanguageDetail'
+    microsoft.graph.endUserNotificationPreference:
+      title: endUserNotificationPreference
+      enum:
+      - unknown
+      - microsoft
+      - custom
+      - unknownFutureValue
+      type: string
+    microsoft.graph.endUserNotificationCollectionResponse:
+      title: Collection of endUserNotification
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.endUserNotification'
+    microsoft.graph.landingPageDetailCollectionResponse:
+      title: Collection of landingPageDetail
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.landingPageDetail'
+    microsoft.graph.userTrainingContentEventInfo:
+      title: userTrainingContentEventInfo
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        browser:
+          type:
+          - string
+          - 'null'
+          description: Browser of the user from where the training event was generated.
+        contentDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date and time of the training content playback by the user.
+          format: date-time
+        ipAddress:
+          type:
+          - string
+          - 'null'
+          description: IP address of the user for the training event.
+        osPlatformDeviceDetails:
+          type:
+          - string
+          - 'null'
+          description: The operating system, platform, and device details of the user for the training event.
+        potentialScoreImpact:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Potential improvement in the tenant security posture after completion of the training by the user.
+        '@odata.type':
+          type: string
+    microsoft.graph.attackSimulationOperationType:
+      title: attackSimulationOperationType
+      enum:
+      - createSimualation
+      - updateSimulation
+      - unknownFutureValue
+      type: string
+    microsoft.graph.simulationAutomationCollectionResponse:
+      title: Collection of simulationAutomation
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.simulationAutomation'
+    microsoft.graph.simulationContentStatus:
+      title: simulationContentStatus
+      enum:
+      - unknown
+      - draft
+      - ready
+      - archive
+      - delete
+      - unknownFutureValue
+      type: string
+    microsoft.graph.simulationAutomationRunStatus:
+      title: simulationAutomationRunStatus
+      enum:
+      - unknown
+      - running
+      - succeeded
+      - failed
+      - skipped
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.simulationAutomationRun:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: simulationAutomationRun
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          endDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the run ends in an attack simulation automation.
+            format: date-time
+          simulationId:
+            type:
+            - string
+            - 'null'
+            description: Unique identifier for the attack simulation campaign initiated in the attack simulation automation run.
+          startDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when the run starts in an attack simulation automation.
+            format: date-time
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.simulationAutomationRunStatus'
+            - type:
+              - object
+              - 'null'
+            description: 'Status of the attack simulation automation run. The possible values are: unknown, running, succeeded, failed, skipped, unknownFutureValue.'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.simulationAutomationRun'
+    ReferenceNumeric:
+      enum:
+      - -INF
+      - INF
+      - NaN
+      type:
+      - string
+      - 'null'
     microsoft.graph.identity:
       title: identity
       required:
@@ -2706,13 +3736,15 @@ components:
       type: object
       properties:
         displayName:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
-          nullable: true
         id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
-          nullable: true
         '@odata.type':
           type: string
       discriminator:
@@ -2738,925 +3770,25 @@ components:
           '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
           '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
           '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
-    microsoft.graph.endUserNotificationDetail:
+    microsoft.graph.positiveReinforcementNotification:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: endUserNotificationDetail
+      - $ref: '#/components/schemas/microsoft.graph.baseEndUserNotification'
+      - title: positiveReinforcementNotification
         required:
         - '@odata.type'
         type: object
         properties:
-          emailContent:
-            type: string
-            description: Email HTML content.
-          isDefaultLangauge:
-            type: boolean
-            description: Indicates whether this language is default.
-            nullable: true
-          language:
-            type: string
-            description: Notification language.
-          locale:
-            type: string
-            description: Notification locale.
-          sentFrom:
-            $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-          subject:
-            type: string
-            description: Mail subject.
+          deliveryPreference:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.notificationDeliveryPreference'
+            - type:
+              - object
+              - 'null'
+            description: 'Delivery preference. The possible values are: unknown, deliverImmedietly, deliverAfterCampaignEnd, unknownFutureValue.'
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.endUserNotificationDetail'
-    microsoft.graph.trainingAvailabilityStatus:
-      title: trainingAvailabilityStatus
-      enum:
-      - unknown
-      - notAvailable
-      - available
-      - archive
-      - delete
-      - unknownFutureValue
-      type: string
-    microsoft.graph.assignedTrainingInfo:
-      title: assignedTrainingInfo
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        assignedUserCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of users who were assigned the training in an attack simulation and training campaign.
-          format: int32
-          nullable: true
-        completedUserCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of users who completed the training in an attack simulation and training campaign.
-          format: int32
-          nullable: true
-        displayName:
-          type: string
-          description: Display name of the training in an attack simulation and training campaign.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.simulationStatus:
-      title: simulationStatus
-      enum:
-      - unknown
-      - draft
-      - running
-      - scheduled
-      - succeeded
-      - failed
-      - cancelled
-      - excluded
-      - unknownFutureValue
-      type: string
-    microsoft.graph.simulationReportOverview:
-      title: simulationReportOverview
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        recommendedActions:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.recommendedAction'
-          description: List of recommended actions for a tenant to improve its security posture based on the attack simulation and training campaign attack type.
-        resolvedTargetsCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of valid users in the attack simulation and training campaign.
-          format: int32
-          nullable: true
-        simulationEventsContent:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.simulationEventsContent'
-          - type: object
-            nullable: true
-          description: Summary of simulation events in the attack simulation and training campaign.
-        trainingEventsContent:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.trainingEventsContent'
-          - type: object
-            nullable: true
-          description: Summary of assigned trainings in the attack simulation and training campaign.
-        '@odata.type':
-          type: string
-    microsoft.graph.training:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: training
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          availabilityStatus:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.trainingAvailabilityStatus'
-            - type: object
-              nullable: true
-            description: 'Training availability status. The possible values are: unknown, notAvailable, available, archive, delete, unknownFutureValue.'
-          createdBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
-            description: Identity of the user who created the training.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the training was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          description:
-            type: string
-            description: The description for the training.
-            nullable: true
-          displayName:
-            type: string
-            description: The display name for the training.
-            nullable: true
-          durationInMinutes:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Training duration.
-            format: int32
-            nullable: true
-          hasEvaluation:
-            type: boolean
-            description: Indicates whether the training has any evaluation.
-            nullable: true
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
-            description: Identity of the user who last modified the training.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the training was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          source:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.simulationContentSource'
-            - type: object
-              nullable: true
-            description: 'Training content source. The possible values are: unknown, global, tenant, unknownFutureValue.'
-          supportedLocales:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: Supported locales for content for the associated training.
-          tags:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: Training tags.
-          type:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.trainingType'
-            - type: object
-              nullable: true
-            description: 'The type of training. The possible values are: unknown, phishing, unknownFutureValue.'
-          languageDetails:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.trainingLanguageDetail'
-            description: Language specific details on a training.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.training'
-    microsoft.graph.trainingLanguageDetail:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: trainingLanguageDetail
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          content:
-            type: string
-            description: Language specific content for the training.
-          createdBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
-            description: Identity of the user who created the language details.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the language details were created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          description:
-            type: string
-            description: Description as defined by the user.
-            nullable: true
-          displayName:
-            type: string
-            description: Display name as defined by the user.
-            nullable: true
-          isDefaultLangauge:
-            type: boolean
-            description: Indicates whether the training has a default language.
-            nullable: true
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
-            description: Identity of the user who last modified the details.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the trainingLanguageDetail was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          locale:
-            type: string
-            description: Content locale for the training detail.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.trainingLanguageDetail'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.payloadDeliveryPlatform:
-      title: payloadDeliveryPlatform
-      enum:
-      - unknown
-      - sms
-      - email
-      - teams
-      - unknownFutureValue
-      type: string
-    microsoft.graph.baseEndUserNotification:
-      title: baseEndUserNotification
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        defaultLanguage:
-          type: string
-          description: The default language for the end user notification.
-          nullable: true
-        endUserNotification:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.endUserNotification'
-          - type: object
-            nullable: true
-          x-ms-navigationProperty: true
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.positiveReinforcementNotification': '#/components/schemas/microsoft.graph.positiveReinforcementNotification'
-          '#microsoft.graph.simulationNotification': '#/components/schemas/microsoft.graph.simulationNotification'
-          '#microsoft.graph.trainingReminderNotification': '#/components/schemas/microsoft.graph.trainingReminderNotification'
-    microsoft.graph.payloadDetail:
-      title: payloadDetail
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        coachmarks:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.payloadCoachmark'
-        content:
-          type: string
-          description: Payload content details.
-          nullable: true
-        phishingUrl:
-          type: string
-          description: The phishing URL used to target a user.
-          nullable: true
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.emailPayloadDetail': '#/components/schemas/microsoft.graph.emailPayloadDetail'
-    microsoft.graph.simulationEventsContent:
-      title: simulationEventsContent
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        compromisedRate:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Actual percentage of users who fell for the simulated attack in an attack simulation and training campaign.
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.simulationEvent'
-          description: List of simulation events in an attack simulation and training campaign.
-        '@odata.type':
-          type: string
-    microsoft.graph.trainingSetting:
-      title: trainingSetting
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        settingType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.trainingSettingType'
-          - type: object
-            nullable: true
-          description: 'Type of setting. The possible values are: microsoftCustom, microsoftManaged, noTraining, custom, unknownFutureValue.'
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.customTrainingSetting': '#/components/schemas/microsoft.graph.customTrainingSetting'
-          '#microsoft.graph.microsoftCustomTrainingSetting': '#/components/schemas/microsoft.graph.microsoftCustomTrainingSetting'
-          '#microsoft.graph.microsoftManagedTrainingSetting': '#/components/schemas/microsoft.graph.microsoftManagedTrainingSetting'
-          '#microsoft.graph.microsoftTrainingAssignmentMapping': '#/components/schemas/microsoft.graph.microsoftTrainingAssignmentMapping'
-          '#microsoft.graph.noTrainingSetting': '#/components/schemas/microsoft.graph.noTrainingSetting'
-    microsoft.graph.longRunningOperation:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: longRunningOperation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The start time of the operation. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          lastActionDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The time of the last action in the operation. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          resourceLocation:
-            type: string
-            description: URI of the resource that the operation is performed on.
-            nullable: true
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.longRunningOperationStatus'
-            - type: object
-              nullable: true
-            description: 'The status of the operation. The possible values are: notStarted, running, succeeded, failed, unknownFutureValue.'
-          statusDetail:
-            type: string
-            description: Details about the status of the operation.
-            nullable: true
-          '@odata.type':
-            type: string
-        description: The status of a long-running operation.
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.attackSimulationOperation': '#/components/schemas/microsoft.graph.attackSimulationOperation'
-            '#microsoft.graph.engagementAsyncOperation': '#/components/schemas/microsoft.graph.engagementAsyncOperation'
-            '#microsoft.graph.richLongRunningOperation': '#/components/schemas/microsoft.graph.richLongRunningOperation'
-    microsoft.graph.endUserNotificationDetailCollectionResponse:
-      title: Collection of endUserNotificationDetail
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.endUserNotificationDetail'
-    microsoft.graph.simulation:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: simulation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          attackTechnique:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.simulationAttackTechnique'
-            - type: object
-              nullable: true
-            description: 'The social engineering technique used in the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, credentialHarvesting, attachmentMalware, driveByUrl, linkInAttachment, linkToMalwareFile, unknownFutureValue, oAuthConsentGrant. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: oAuthConsentGrant. For more information on the types of social engineering attack techniques, see simulations.'
-          attackType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.simulationAttackType'
-            - type: object
-              nullable: true
-            description: 'Attack type of the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, social, cloud, endpoint, unknownFutureValue.'
-          automationId:
-            type: string
-            description: Unique identifier for the attack simulation automation.
-            nullable: true
-          completionDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time of completion of the attack simulation and training campaign. Supports $filter and $orderby.
-            format: date-time
-            nullable: true
-          createdBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
-            description: Identity of the user who created the attack simulation and training campaign.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time of creation of the attack simulation and training campaign.
-            format: date-time
-            nullable: true
-          description:
-            type: string
-            description: Description of the attack simulation and training campaign.
-            nullable: true
-          displayName:
-            type: string
-            description: Display name of the attack simulation and training campaign. Supports $filter and $orderby.
-            nullable: true
-          durationInDays:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Simulation duration in days.
-            format: int32
-            nullable: true
-          endUserNotificationSetting:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.endUserNotificationSetting'
-            - type: object
-              nullable: true
-            description: Details about the end user notification setting.
-          excludedAccountTarget:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.accountTargetContent'
-            - type: object
-              nullable: true
-            description: Users excluded from the simulation.
-          includedAccountTarget:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.accountTargetContent'
-            - type: object
-              nullable: true
-            description: Users targeted in the simulation.
-          isAutomated:
-            type: boolean
-            description: Flag that represents if the attack simulation and training campaign was created from a simulation automation flow. Supports $filter and $orderby.
-            nullable: true
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
-            description: Identity of the user who most recently modified the attack simulation and training campaign.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time of the most recent modification of the attack simulation and training campaign.
-            format: date-time
-            nullable: true
-          launchDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time of the launch/start of the attack simulation and training campaign. Supports $filter and $orderby.
-            format: date-time
-            nullable: true
-          oAuthConsentAppDetail:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.oAuthConsentAppDetail'
-            - type: object
-              nullable: true
-            description: OAuth app details for the OAuth technique.
-          payloadDeliveryPlatform:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.payloadDeliveryPlatform'
-            - type: object
-              nullable: true
-            description: 'Method of delivery of the phishing payload used in the attack simulation and training campaign. The possible values are: unknown, sms, email, teams, unknownFutureValue.'
-          report:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.simulationReport'
-            - type: object
-              nullable: true
-            description: Report of the attack simulation and training campaign.
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.simulationStatus'
-            - type: object
-              nullable: true
-            description: 'Status of the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, draft, running, scheduled, succeeded, failed, cancelled, excluded, unknownFutureValue.'
-          trainingSetting:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.trainingSetting'
-            - type: object
-              nullable: true
-            description: Details about the training settings for a simulation.
-          landingPage:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.landingPage'
-            - type: object
-              nullable: true
-            description: The landing page associated with a simulation during its creation.
-            x-ms-navigationProperty: true
-          loginPage:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.loginPage'
-            - type: object
-              nullable: true
-            description: The login page associated with a simulation during its creation.
-            x-ms-navigationProperty: true
-          payload:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.payload'
-            - type: object
-              nullable: true
-            description: The payload associated with a simulation during its creation.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.simulation'
-    microsoft.graph.payloadCoachmark:
-      title: payloadCoachmark
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        coachmarkLocation:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.coachmarkLocation'
-          - type: object
-            nullable: true
-          description: The coachmark location.
-        description:
-          type: string
-          description: The description about the coachmark.
-          nullable: true
-        indicator:
-          type: string
-          description: The coachmark indicator.
-          nullable: true
-        isValid:
-          type: boolean
-          description: Indicates whether the coachmark is valid or not.
-          nullable: true
-        language:
-          type: string
-          description: The coachmark language.
-          nullable: true
-        order:
-          type: string
-          description: The coachmark order.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.simulationEvent:
-      title: simulationEvent
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        count:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Count of the simulation event occurrence in an attack simulation and training campaign.
-          format: int32
-          nullable: true
-        eventName:
-          type: string
-          description: Name of the simulation event in an attack simulation and training campaign.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.trainingEventsContent:
-      title: trainingEventsContent
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        assignedTrainingsInfos:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.assignedTrainingInfo'
-          description: List of assigned trainings and their information in an attack simulation and training campaign.
-        trainingsAssignedUserCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of users who were assigned trainings in an attack simulation and training campaign.
-          format: int32
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.simulationAutomationStatus:
-      title: simulationAutomationStatus
-      enum:
-      - unknown
-      - draft
-      - notRunning
-      - running
-      - completed
-      - unknownFutureValue
-      type: string
-    microsoft.graph.trainingType:
-      title: trainingType
-      enum:
-      - unknown
-      - phishing
-      - unknownFutureValue
-      type: string
-    microsoft.graph.endUserNotificationPreference:
-      title: endUserNotificationPreference
-      enum:
-      - unknown
-      - microsoft
-      - custom
-      - unknownFutureValue
-      type: string
-    microsoft.graph.landingPage:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: landingPage
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
-            description: Identity of the user who created the landing page.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the landing page was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          description:
-            type: string
-            description: Description of the landing page as defined by the user.
-            nullable: true
-          displayName:
-            type: string
-            description: The display name of the landing page.
-            nullable: true
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
-            description: Email identity of the user who last modified the landing page.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the landing page was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          locale:
-            type: string
-            description: Content locale.
-            nullable: true
-          source:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.simulationContentSource'
-            - type: object
-              nullable: true
-            description: 'The source of the content. The possible values are: unknown, global, tenant, unknownFutureValue.'
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.simulationContentStatus'
-            - type: object
-              nullable: true
-            description: 'The status of the simulation. The possible values are: unknown, draft, ready, archive, delete, unknownFutureValue.'
-          supportedLocales:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: Supported locales.
-          details:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.landingPageDetail'
-            description: The detail information for a landing page associated with a simulation during its creation.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.landingPage'
-    microsoft.graph.simulationAutomationRunStatus:
-      title: simulationAutomationRunStatus
-      enum:
-      - unknown
-      - running
-      - succeeded
-      - failed
-      - skipped
-      - unknownFutureValue
-      type: string
-    microsoft.graph.payloadBrand:
-      title: payloadBrand
-      enum:
-      - unknown
-      - other
-      - americanExpress
-      - capitalOne
-      - dhl
-      - docuSign
-      - dropbox
-      - facebook
-      - firstAmerican
-      - microsoft
-      - netflix
-      - scotiabank
-      - sendGrid
-      - stewartTitle
-      - tesco
-      - wellsFargo
-      - syrinxCloud
-      - adobe
-      - teams
-      - zoom
-      - unknownFutureValue
-      type: string
-    microsoft.graph.endUserNotificationCollectionResponse:
-      title: Collection of endUserNotification
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.endUserNotification'
-    microsoft.graph.userTrainingContentEventInfo:
-      title: userTrainingContentEventInfo
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        browser:
-          type: string
-          description: Browser of the user from where the training event was generated.
-          nullable: true
-        contentDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date and time of the training content playback by the user.
-          format: date-time
-          nullable: true
-        ipAddress:
-          type: string
-          description: IP address of the user for the training event.
-          nullable: true
-        osPlatformDeviceDetails:
-          type: string
-          description: The operating system, platform, and device details of the user for the training event.
-          nullable: true
-        potentialScoreImpact:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Potential improvement in the tenant security posture after completion of the training by the user.
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.simulationAutomationRun:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: simulationAutomationRun
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          endDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the run ends in an attack simulation automation.
-            format: date-time
-            nullable: true
-          simulationId:
-            type: string
-            description: Unique identifier for the attack simulation campaign initiated in the attack simulation automation run.
-            nullable: true
-          startDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the run starts in an attack simulation automation.
-            format: date-time
-            nullable: true
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.simulationAutomationRunStatus'
-            - type: object
-              nullable: true
-            description: 'Status of the attack simulation automation run. The possible values are: unknown, running, succeeded, failed, skipped, unknownFutureValue.'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.simulationAutomationRun'
-    microsoft.graph.payloadIndustry:
-      title: payloadIndustry
-      enum:
-      - unknown
-      - other
-      - banking
-      - businessServices
-      - consumerServices
-      - education
-      - energy
-      - construction
-      - consulting
-      - financialServices
-      - government
-      - hospitality
-      - insurance
-      - legal
-      - courierServices
-      - IT
-      - healthcare
-      - manufacturing
-      - retail
-      - telecom
-      - realEstate
-      - unknownFutureValue
-      type: string
-    microsoft.graph.emailIdentity:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.identity'
-      - title: emailIdentity
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          email:
-            type: string
-            description: Email address of the user.
-            nullable: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.emailIdentity'
-      x-ms-discriminator-value: '#microsoft.graph.emailIdentity'
+            default: '#microsoft.graph.positiveReinforcementNotification'
+      x-ms-discriminator-value: '#microsoft.graph.positiveReinforcementNotification'
     microsoft.graph.simulationAutomation:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -3668,52 +3800,61 @@ components:
           createdBy:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Identity of the user who created the attack simulation automation.
           createdDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date and time when the attack simulation automation was created.
             format: date-time
-            nullable: true
           description:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Description of the attack simulation automation.
-            nullable: true
           displayName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Display name of the attack simulation automation. Supports $filter and $orderby.
-            nullable: true
           lastModifiedBy:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Identity of the user who most recently modified the attack simulation automation.
           lastModifiedDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date and time when the attack simulation automation was most recently modified.
             format: date-time
-            nullable: true
           lastRunDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date and time of the latest run of the attack simulation automation.
             format: date-time
-            nullable: true
           nextRunDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date and time of the upcoming run of the attack simulation automation.
             format: date-time
-            nullable: true
           status:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.simulationAutomationStatus'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: 'Status of the attack simulation automation. Supports $filter and $orderby. The possible values are: unknown, draft, notRunning, running, completed, unknownFutureValue.'
           runs:
             type: array
@@ -3724,194 +3865,27 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.simulationAutomation'
-    microsoft.graph.userSimulationEventInfo:
-      title: userSimulationEventInfo
+    microsoft.graph.ODataErrors.MainError:
       required:
-      - '@odata.type'
+      - code
+      - message
       type: object
       properties:
-        browser:
+        code:
           type: string
-          description: Browser information from where the simulation event was initiated by a user in an attack simulation and training campaign.
-          nullable: true
-        clickSource:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.clickSource'
-          - type: object
-            nullable: true
-        eventDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+        message:
           type: string
-          description: Date and time of the simulation event by a user in an attack simulation and training campaign.
-          format: date-time
-          nullable: true
-        eventName:
-          type: string
-          description: Name of the simulation event by a user in an attack simulation and training campaign.
-          nullable: true
-        ipAddress:
-          type: string
-          description: IP address from where the simulation event was initiated by a user in an attack simulation and training campaign.
-          nullable: true
-        osPlatformDeviceDetails:
-          type: string
-          description: The operating system, platform, and device details from where the simulation event was initiated by a user in an attack simulation and training campaign.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.trainingLanguageDetailCollectionResponse:
-      title: Collection of trainingLanguageDetail
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.trainingLanguageDetail'
-    microsoft.graph.trainingStatus:
-      title: trainingStatus
-      enum:
-      - unknown
-      - assigned
-      - inProgress
-      - completed
-      - overdue
-      - unknownFutureValue
-      type: string
-    microsoft.graph.attackSimulationOperation:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.longRunningOperation'
-      - title: attackSimulationOperation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          percentageCompleted:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Percentage of completion of the respective operation.
-            format: int32
-          tenantId:
-            type: string
-            description: Tenant identifier.
-            nullable: true
+          x-ms-primary-error-message: true
+        target:
           type:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.attackSimulationOperationType'
-            - type: object
-              nullable: true
-            description: 'The attack simulation operation type. The possible values are: createSimulation, updateSimulation, unknownFutureValue.'
-          '@odata.type':
-            type: string
-        description: The status of a long-running operation.
-      x-ms-discriminator-value: '#microsoft.graph.attackSimulationOperation'
-    ReferenceNumeric:
-      enum:
-      - -INF
-      - INF
-      - NaN
-      type: string
-      nullable: true
-    microsoft.graph.endUserNotificationSetting:
-      title: endUserNotificationSetting
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        notificationPreference:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.endUserNotificationPreference'
-          - type: object
-            nullable: true
-          description: 'Notification preference. The possible values are: unknown, microsoft, custom, unknownFutureValue.'
-        positiveReinforcement:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.positiveReinforcementNotification'
-          - type: object
-            nullable: true
-          description: Positive reinforcement detail.
-        settingType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.endUserNotificationSettingType'
-          - type: object
-            nullable: true
-          description: 'End user notification type. The possible values are: unknown, noTraining, trainingSelected, noNotification, unknownFutureValue.'
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.noTrainingNotificationSetting': '#/components/schemas/microsoft.graph.noTrainingNotificationSetting'
-          '#microsoft.graph.trainingNotificationSetting': '#/components/schemas/microsoft.graph.trainingNotificationSetting'
-    microsoft.graph.simulationAutomationCollectionResponse:
-      title: Collection of simulationAutomation
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.simulationAutomation'
-    microsoft.graph.accountTargetContentType:
-      title: accountTargetContentType
-      enum:
-      - unknown
-      - includeAll
-      - addressBook
-      - unknownFutureValue
-      type: string
-    microsoft.graph.userTrainingEventInfo:
-      title: userTrainingEventInfo
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: Display name of the training.
-          nullable: true
-        latestTrainingStatus:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.trainingStatus'
-          - type: object
-            nullable: true
-          description: 'Latest status of the training assigned to the user. The possible values are: unknown, assigned, inProgress, completed, overdue, unknownFutureValue.'
-        trainingAssignedProperties:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.userTrainingContentEventInfo'
-          - type: object
-            nullable: true
-          description: Event details of the training when it was assigned to the user.
-        trainingCompletedProperties:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.userTrainingContentEventInfo'
-          - type: object
-            nullable: true
-          description: Event details of the training when it was completed by the user.
-        trainingUpdatedProperties:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.userTrainingContentEventInfo'
-          - type: object
-            nullable: true
-          description: Event details of the training when it was updated/in-progress by the user.
-        '@odata.type':
-          type: string
-    microsoft.graph.trainingCollectionResponse:
-      title: Collection of training
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.training'
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -4981,97 +4955,34 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.attackSimulationUser:
-      title: attackSimulationUser
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: Display name of the user.
-          nullable: true
-        email:
-          type: string
-          description: Email address of the user.
-          nullable: true
-        userId:
-          type: string
-          description: This is the id property value of the user resource that represents the user in the Microsoft Entra tenant.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.simulationAutomationRunCollectionResponse:
-      title: Collection of simulationAutomationRun
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.simulationAutomationRun'
-    microsoft.graph.simulationContentSource:
-      title: simulationContentSource
+    microsoft.graph.notificationDeliveryPreference:
+      title: notificationDeliveryPreference
       enum:
       - unknown
-      - global
-      - tenant
+      - deliverImmedietly
+      - deliverAfterCampaignEnd
       - unknownFutureValue
       type: string
-    microsoft.graph.simulationReport:
-      title: simulationReport
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        overview:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.simulationReportOverview'
-          - type: object
-            nullable: true
-          description: Overview of an attack simulation and training campaign.
-        simulationUsers:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.userSimulationDetails'
-          description: The tenant users and their online actions in an attack simulation and training campaign.
-        '@odata.type':
-          type: string
-    microsoft.graph.oAuthConsentAppDetail:
-      title: oAuthConsentAppDetail
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        appScope:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.oAuthAppScope'
-          - type: object
-            nullable: true
-          description: 'App scope. The possible values are: unknown, readCalendar, readContact, readMail, readAllChat, readAllFile, readAndWriteMail, sendMail, unknownFutureValue.'
-        displayLogo:
-          type: string
-          description: App display logo.
-          nullable: true
-        displayName:
-          type: string
-          description: App name.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.payloadCollectionResponse:
-      title: Collection of payload
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.payload'
+    microsoft.graph.clickSource:
+      title: clickSource
+      enum:
+      - unknown
+      - qrCode
+      - phishingUrl
+      - unknownFutureValue
+      type: string
+    microsoft.graph.trainingSettingType:
+      title: trainingSettingType
+      enum:
+      - microsoftCustom
+      - microsoftManaged
+      - noTraining
+      - custom
+      - unknownFutureValue
+      type: string
+    ODataCountResponse:
+      type: integer
+      format: int32
     microsoft.graph.simulationCollectionResponse:
       title: Collection of simulation
       type: object
@@ -5083,14 +4994,128 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.simulation'
-    microsoft.graph.notificationDeliveryPreference:
-      title: notificationDeliveryPreference
+    microsoft.graph.endUserNotificationDetail:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: endUserNotificationDetail
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          emailContent:
+            type: string
+            description: Email HTML content.
+          isDefaultLangauge:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether this language is default.
+          language:
+            type: string
+            description: Notification language.
+          locale:
+            type: string
+            description: Notification locale.
+          sentFrom:
+            $ref: '#/components/schemas/microsoft.graph.emailIdentity'
+          subject:
+            type: string
+            description: Mail subject.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.endUserNotificationDetail'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.simulationStatus:
+      title: simulationStatus
       enum:
       - unknown
-      - deliverImmedietly
-      - deliverAfterCampaignEnd
+      - draft
+      - running
+      - scheduled
+      - succeeded
+      - failed
+      - cancelled
+      - excluded
       - unknownFutureValue
       type: string
+    microsoft.graph.simulationEvent:
+      title: simulationEvent
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        count:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: Count of the simulation event occurrence in an attack simulation and training campaign.
+          format: int32
+        eventName:
+          type:
+          - string
+          - 'null'
+          description: Name of the simulation event in an attack simulation and training campaign.
+        '@odata.type':
+          type: string
+    microsoft.graph.simulationAutomationStatus:
+      title: simulationAutomationStatus
+      enum:
+      - unknown
+      - draft
+      - notRunning
+      - running
+      - completed
+      - unknownFutureValue
+      type: string
+    microsoft.graph.simulationEventsContent:
+      title: simulationEventsContent
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        compromisedRate:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Actual percentage of users who fell for the simulated attack in an attack simulation and training campaign.
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.simulationEvent'
+          description: List of simulation events in an attack simulation and training campaign.
+        '@odata.type':
+          type: string
+    microsoft.graph.trainingCollectionResponse:
+      title: Collection of training
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.training'
     microsoft.graph.loginPage:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -5100,241 +5125,72 @@ components:
         type: object
         properties:
           content:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The HTML content of the login page.
-            nullable: true
           createdBy:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Identity of the user who created the login page.
           createdDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date and time when the login page was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
             format: date-time
-            nullable: true
           description:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Description about the login page.
-            nullable: true
           displayName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Display name of the login page.
-            nullable: true
           language:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The content language of the login page.
-            nullable: true
           lastModifiedBy:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Identity of the user who last modified the login page.
           lastModifiedDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date and time when the login page was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
             format: date-time
-            nullable: true
           source:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.simulationContentSource'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: 'The source of the content. The possible values are: unknown, global, tenant, unknownFutureValue.'
           status:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.simulationContentStatus'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: 'The login page status. The possible values are: unknown, draft, ready, archive, delete, unknownFutureValue.'
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.loginPage'
-    microsoft.graph.endUserNotification:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: endUserNotification
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
-            description: Identity of the user who created the notification.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the notification was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          description:
-            type: string
-            description: Description of the notification as defined by the user.
-            nullable: true
-          displayName:
-            type: string
-            description: Name of the notification as defined by the user.
-            nullable: true
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
-            description: Identity of the user who last modified the notification.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the notification was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          notificationType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.endUserNotificationType'
-            - type: object
-              nullable: true
-            description: 'Type of notification. The possible values are: unknown, positiveReinforcement, noTraining, trainingAssignment, trainingReminder, unknownFutureValue.'
-          source:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.simulationContentSource'
-            - type: object
-              nullable: true
-            description: 'The source of the content. The possible values are: unknown, global, tenant, unknownFutureValue.'
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.simulationContentStatus'
-            - type: object
-              nullable: true
-            description: 'The status of the notification. The possible values are: unknown, draft, ready, archive, delete, unknownFutureValue.'
-          supportedLocales:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: Supported locales for endUserNotification content.
-          details:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.endUserNotificationDetail'
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.endUserNotification'
-    microsoft.graph.endUserNotificationType:
-      title: endUserNotificationType
-      enum:
-      - unknown
-      - positiveReinforcement
-      - noTraining
-      - trainingAssignment
-      - trainingReminder
-      - unknownFutureValue
-      type: string
-    microsoft.graph.payloadComplexity:
-      title: payloadComplexity
-      enum:
-      - unknown
-      - low
-      - medium
-      - high
-      - unknownFutureValue
-      type: string
-    microsoft.graph.simulationAttackType:
-      title: simulationAttackType
-      enum:
-      - unknown
-      - social
-      - cloud
-      - endpoint
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.attackSimulationRoot:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: attackSimulationRoot
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          endUserNotifications:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.endUserNotification'
-            description: Represents an end user's notification for an attack simulation training.
-            x-ms-navigationProperty: true
-          landingPages:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.landingPage'
-            description: Represents an attack simulation training landing page.
-            x-ms-navigationProperty: true
-          loginPages:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.loginPage'
-            description: Represents an attack simulation training login page.
-            x-ms-navigationProperty: true
-          operations:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.attackSimulationOperation'
-            description: Represents an attack simulation training operation.
-            x-ms-navigationProperty: true
-          payloads:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.payload'
-            description: Represents an attack simulation training campaign payload in a tenant.
-            x-ms-navigationProperty: true
-          simulationAutomations:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.simulationAutomation'
-            description: Represents simulation automation created to run on a tenant.
-            x-ms-navigationProperty: true
-          simulations:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.simulation'
-            description: Represents an attack simulation training campaign in a tenant.
-            x-ms-navigationProperty: true
-          trainings:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.training'
-            description: Represents details about attack simulation trainings.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.attackSimulationRoot'
-    microsoft.graph.landingPageCollectionResponse:
-      title: Collection of landingPage
+    microsoft.graph.simulationAutomationRunCollectionResponse:
+      title: Collection of simulationAutomationRun
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -5343,148 +5199,7 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.landingPage'
-    microsoft.graph.coachmarkLocationType:
-      title: coachmarkLocationType
-      enum:
-      - unknown
-      - fromEmail
-      - subject
-      - externalTag
-      - displayName
-      - messageBody
-      - unknownFutureValue
-      type: string
-    microsoft.graph.recommendedAction:
-      title: recommendedAction
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        actionWebUrl:
-          type: string
-          description: Web URL to the recommended action.
-          nullable: true
-        potentialScoreImpact:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Potential improvement in the tenant security score from the recommended action.
-        title:
-          type: string
-          description: Title of the recommended action.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.attackSimulationOperationCollectionResponse:
-      title: Collection of attackSimulationOperation
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.attackSimulationOperation'
-    microsoft.graph.accountTargetContent:
-      title: accountTargetContent
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        type:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.accountTargetContentType'
-          - type: object
-            nullable: true
-          description: 'The type of account target content. The possible values are: unknown, includeAll, addressBook, unknownFutureValue.'
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.addressBookAccountTargetContent': '#/components/schemas/microsoft.graph.addressBookAccountTargetContent'
-          '#microsoft.graph.includeAllAccountTargetContent': '#/components/schemas/microsoft.graph.includeAllAccountTargetContent'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.attackSimulationOperationType:
-      title: attackSimulationOperationType
-      enum:
-      - createSimualation
-      - updateSimulation
-      - unknownFutureValue
-      type: string
-    microsoft.graph.userSimulationDetails:
-      title: userSimulationDetails
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        assignedTrainingsCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of trainings assigned to a user in an attack simulation and training campaign.
-          format: int32
-          nullable: true
-        completedTrainingsCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of trainings completed by a user in an attack simulation and training campaign.
-          format: int32
-          nullable: true
-        compromisedDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date and time of the compromising online action by a user in an attack simulation and training campaign.
-          format: date-time
-          nullable: true
-        inProgressTrainingsCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of trainings in progress by a user in an attack simulation and training campaign.
-          format: int32
-          nullable: true
-        isCompromised:
-          type: boolean
-          description: Indicates whether a user was compromised in an attack simulation and training campaign.
-          nullable: true
-        reportedPhishDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date and time when a user reported the delivered payload as phishing in the attack simulation and training campaign.
-          format: date-time
-          nullable: true
-        simulationEvents:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.userSimulationEventInfo'
-          description: List of simulation events of a user in the attack simulation and training campaign.
-        simulationUser:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.attackSimulationUser'
-          - type: object
-            nullable: true
-          description: User in an attack simulation and training campaign.
-        trainingEvents:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.userTrainingEventInfo'
-          description: List of training events of a user in the attack simulation and training campaign.
-        '@odata.type':
-          type: string
+              $ref: '#/components/schemas/microsoft.graph.simulationAutomationRun'
     microsoft.graph.loginPageCollectionResponse:
       title: Collection of loginPage
       type: object
@@ -5496,30 +5211,98 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.loginPage'
-    microsoft.graph.trainingSettingType:
-      title: trainingSettingType
-      enum:
-      - microsoftCustom
-      - microsoftManaged
-      - noTraining
-      - custom
-      - unknownFutureValue
-      type: string
-    microsoft.graph.oAuthAppScope:
-      title: oAuthAppScope
-      enum:
-      - unknown
-      - readCalendar
-      - readContact
-      - readMail
-      - readAllChat
-      - readAllFile
-      - readAndWriteMail
-      - sendMail
-      - unknownFutureValue
-      type: string
-    microsoft.graph.landingPageDetailCollectionResponse:
-      title: Collection of landingPageDetail
+    microsoft.graph.userSimulationDetails:
+      title: userSimulationDetails
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        assignedTrainingsCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: Number of trainings assigned to a user in an attack simulation and training campaign.
+          format: int32
+        completedTrainingsCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: Number of trainings completed by a user in an attack simulation and training campaign.
+          format: int32
+        compromisedDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date and time of the compromising online action by a user in an attack simulation and training campaign.
+          format: date-time
+        inProgressTrainingsCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: Number of trainings in progress by a user in an attack simulation and training campaign.
+          format: int32
+        isCompromised:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether a user was compromised in an attack simulation and training campaign.
+        reportedPhishDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date and time when a user reported the delivered payload as phishing in the attack simulation and training campaign.
+          format: date-time
+        simulationEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.userSimulationEventInfo'
+          description: List of simulation events of a user in the attack simulation and training campaign.
+        simulationUser:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.attackSimulationUser'
+          - type:
+            - object
+            - 'null'
+          description: User in an attack simulation and training campaign.
+        trainingEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.userTrainingEventInfo'
+          description: List of training events of a user in the attack simulation and training campaign.
+        '@odata.type':
+          type: string
+    microsoft.graph.landingPageDetail:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: landingPageDetail
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          content:
+            type: string
+            description: Landing page detail content.
+          isDefaultLangauge:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether this language detail is default for the landing page.
+          language:
+            type: string
+            description: The content language for the landing page.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.landingPageDetail'
+    microsoft.graph.attackSimulationOperationCollectionResponse:
+      title: Collection of attackSimulationOperation
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -5528,44 +5311,267 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.landingPageDetail'
-    microsoft.graph.longRunningOperationStatus:
-      title: longRunningOperationStatus
-      enum:
-      - notStarted
-      - running
-      - succeeded
-      - failed
-      - unknownFutureValue
-      type: string
-    microsoft.graph.endUserNotificationSettingType:
-      title: endUserNotificationSettingType
+              $ref: '#/components/schemas/microsoft.graph.attackSimulationOperation'
+    microsoft.graph.assignedTrainingInfo:
+      title: assignedTrainingInfo
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        assignedUserCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: Number of users who were assigned the training in an attack simulation and training campaign.
+          format: int32
+        completedUserCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: Number of users who completed the training in an attack simulation and training campaign.
+          format: int32
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Display name of the training in an attack simulation and training campaign.
+        '@odata.type':
+          type: string
+    microsoft.graph.payloadDeliveryPlatform:
+      title: payloadDeliveryPlatform
       enum:
       - unknown
+      - sms
+      - email
+      - teams
+      - unknownFutureValue
+      type: string
+    microsoft.graph.oAuthConsentAppDetail:
+      title: oAuthConsentAppDetail
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        appScope:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.oAuthAppScope'
+          - type:
+            - object
+            - 'null'
+          description: 'App scope. The possible values are: unknown, readCalendar, readContact, readMail, readAllChat, readAllFile, readAndWriteMail, sendMail, unknownFutureValue.'
+        displayLogo:
+          type:
+          - string
+          - 'null'
+          description: App display logo.
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: App name.
+        '@odata.type':
+          type: string
+    microsoft.graph.endUserNotificationSetting:
+      title: endUserNotificationSetting
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        notificationPreference:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.endUserNotificationPreference'
+          - type:
+            - object
+            - 'null'
+          description: 'Notification preference. The possible values are: unknown, microsoft, custom, unknownFutureValue.'
+        positiveReinforcement:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.positiveReinforcementNotification'
+          - type:
+            - object
+            - 'null'
+          description: Positive reinforcement detail.
+        settingType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.endUserNotificationSettingType'
+          - type:
+            - object
+            - 'null'
+          description: 'End user notification type. The possible values are: unknown, noTraining, trainingSelected, noNotification, unknownFutureValue.'
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.noTrainingNotificationSetting': '#/components/schemas/microsoft.graph.noTrainingNotificationSetting'
+          '#microsoft.graph.trainingNotificationSetting': '#/components/schemas/microsoft.graph.trainingNotificationSetting'
+    microsoft.graph.coachmarkLocationType:
+      title: coachmarkLocationType
+      enum:
+      - unknown
+      - fromEmail
+      - subject
+      - externalTag
+      - displayName
+      - messageBody
+      - unknownFutureValue
+      type: string
+    microsoft.graph.landingPageCollectionResponse:
+      title: Collection of landingPage
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.landingPage'
+    microsoft.graph.coachmarkLocation:
+      title: coachmarkLocation
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        length:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: Length of coachmark.
+          format: int32
+        offset:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: Offset of coachmark.
+          format: int32
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.coachmarkLocationType'
+          - type:
+            - object
+            - 'null'
+          description: 'Type of coachmark location. The possible values are: unknown, fromEmail, subject, externalTag, displayName, messageBody, unknownFutureValue.'
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.endUserNotificationType:
+      title: endUserNotificationType
+      enum:
+      - unknown
+      - positiveReinforcement
       - noTraining
-      - trainingSelected
-      - noNotification
+      - trainingAssignment
+      - trainingReminder
       - unknownFutureValue
       type: string
-    microsoft.graph.simulationAttackTechnique:
-      title: simulationAttackTechnique
+    microsoft.graph.simulationContentSource:
+      title: simulationContentSource
       enum:
       - unknown
-      - credentialHarvesting
-      - attachmentMalware
-      - driveByUrl
-      - linkInAttachment
-      - linkToMalwareFile
+      - global
+      - tenant
       - unknownFutureValue
       type: string
-    microsoft.graph.simulationContentStatus:
-      title: simulationContentStatus
+    microsoft.graph.payloadIndustry:
+      title: payloadIndustry
       enum:
       - unknown
-      - draft
-      - ready
-      - archive
-      - delete
+      - other
+      - banking
+      - businessServices
+      - consumerServices
+      - education
+      - energy
+      - construction
+      - consulting
+      - financialServices
+      - government
+      - hospitality
+      - insurance
+      - legal
+      - courierServices
+      - IT
+      - healthcare
+      - manufacturing
+      - retail
+      - telecom
+      - realEstate
+      - unknownFutureValue
+      type: string
+    microsoft.graph.recommendedAction:
+      title: recommendedAction
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        actionWebUrl:
+          type:
+          - string
+          - 'null'
+          description: Web URL to the recommended action.
+        potentialScoreImpact:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Potential improvement in the tenant security score from the recommended action.
+        title:
+          type:
+          - string
+          - 'null'
+          description: Title of the recommended action.
+        '@odata.type':
+          type: string
+    microsoft.graph.payloadBrand:
+      title: payloadBrand
+      enum:
+      - unknown
+      - other
+      - americanExpress
+      - capitalOne
+      - dhl
+      - docuSign
+      - dropbox
+      - facebook
+      - firstAmerican
+      - microsoft
+      - netflix
+      - scotiabank
+      - sendGrid
+      - stewartTitle
+      - tesco
+      - wellsFargo
+      - syrinxCloud
+      - adobe
+      - teams
+      - zoom
       - unknownFutureValue
       type: string
     microsoft.graph.payloadTheme:
@@ -5604,196 +5610,401 @@ components:
       - employeeEngagement
       - unknownFutureValue
       type: string
-    microsoft.graph.payload:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: payload
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          brand:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.payloadBrand'
-            - type: object
-              nullable: true
-            description: 'The branch of a payload. The possible values are: unknown, other, americanExpress, capitalOne, dhl, docuSign, dropbox, facebook, firstAmerican, microsoft, netflix, scotiabank, sendGrid, stewartTitle, tesco, wellsFargo, syrinxCloud, adobe, teams, zoom, unknownFutureValue.'
-          complexity:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.payloadComplexity'
-            - type: object
-              nullable: true
-            description: 'The complexity of a payload. The possible values are: unknown, low, medium, high, unknownFutureValue.'
-          createdBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
-            description: Identity of the user who created the attack simulation and training campaign payload.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the attack simulation and training campaign payload. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          description:
-            type: string
-            description: Description of the attack simulation and training campaign payload.
-            nullable: true
-          detail:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.payloadDetail'
-            - type: object
-              nullable: true
-            description: Additional details about the payload.
-          displayName:
-            type: string
-            description: Display name of the attack simulation and training campaign payload. Supports $filter and $orderby.
-            nullable: true
-          industry:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.payloadIndustry'
-            - type: object
-              nullable: true
-            description: 'Industry of a payload. The possible values are: unknown, other, banking, businessServices, consumerServices, education, energy, construction, consulting, financialServices, government, hospitality, insurance, legal, courierServices, IT, healthcare, manufacturing, retail, telecom, realEstate, unknownFutureValue.'
-          isAutomated:
-            type: boolean
-            description: Indicates whether the attack simulation and training campaign payload was created from an automation flow. Supports $filter and $orderby.
-            nullable: true
-          isControversial:
-            type: boolean
-            description: Indicates whether the payload is controversial.
-            nullable: true
-          isCurrentEvent:
-            type: boolean
-            description: Indicates whether the payload is from any recent event.
-            nullable: true
-          language:
-            type: string
-            description: Payload language.
-            nullable: true
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.emailIdentity'
-            - type: object
-              nullable: true
-            description: Identity of the user who most recently modified the attack simulation and training campaign payload.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time when the attack simulation and training campaign payload was last modified. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-            nullable: true
-          payloadTags:
-            type: array
-            items:
-              type: string
-              nullable: true
-            description: Free text tags for a payload.
-          platform:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.payloadDeliveryPlatform'
-            - type: object
-              nullable: true
-            description: 'The payload delivery platform for a simulation. The possible values are: unknown, sms, email, teams, unknownFutureValue.'
-          predictedCompromiseRate:
-            oneOf:
-            - type: number
-              format: double
-              nullable: true
-            - type: string
-              nullable: true
-            - $ref: '#/components/schemas/ReferenceNumeric'
-            description: Predicted probability for a payload to phish a targeted user.
-          simulationAttackType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.simulationAttackType'
-            - type: object
-              nullable: true
-            description: 'Attack type of the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, social, cloud, endpoint, unknownFutureValue.'
-          source:
-            $ref: '#/components/schemas/microsoft.graph.simulationContentSource'
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.simulationContentStatus'
-            - type: object
-              nullable: true
-            description: 'Simulation content status. Supports $filter and $orderby. The possible values are: unknown, draft, ready, archive, delete, unknownFutureValue.'
-          technique:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.simulationAttackTechnique'
-            - type: object
-              nullable: true
-            description: 'The social engineering technique used in the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, credentialHarvesting, attachmentMalware, driveByUrl, linkInAttachment, linkToMalwareFile, unknownFutureValue, oAuthConsentGrant. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: oAuthConsentGrant. For more information on the types of social engineering attack techniques, see simulations.'
-          theme:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.payloadTheme'
-            - type: object
-              nullable: true
-            description: 'The theme of a payload. The possible values are: unknown, other, accountActivation, accountVerification, billing, cleanUpMail, controversial, documentReceived, expense, fax, financeReport, incomingMessages, invoice, itemReceived, loginAlert, mailReceived, password, payment, payroll, personalizedOffer, quarantine, remoteWork, reviewMessage, securityUpdate, serviceSuspended, signatureRequired, upgradeMailboxStorage, verifyMailbox, voicemail, advertisement, employeeEngagement, unknownFutureValue.'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.payload'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
       type: object
       properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.clickSource:
-      title: clickSource
-      enum:
-      - unknown
-      - qrCode
-      - phishingUrl
-      - unknownFutureValue
-      type: string
-    microsoft.graph.coachmarkLocation:
-      title: coachmarkLocation
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.simulationReportOverview:
+      title: simulationReportOverview
       required:
       - '@odata.type'
       type: object
       properties:
-        length:
+        recommendedActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.recommendedAction'
+          description: List of recommended actions for a tenant to improve its security posture based on the attack simulation and training campaign attack type.
+        resolvedTargetsCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
-          description: Length of coachmark.
+          type:
+          - number
+          - 'null'
+          description: Number of valid users in the attack simulation and training campaign.
           format: int32
-          nullable: true
-        offset:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Offset of coachmark.
-          format: int32
-          nullable: true
+        simulationEventsContent:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.simulationEventsContent'
+          - type:
+            - object
+            - 'null'
+          description: Summary of simulation events in the attack simulation and training campaign.
+        trainingEventsContent:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.trainingEventsContent'
+          - type:
+            - object
+            - 'null'
+          description: Summary of assigned trainings in the attack simulation and training campaign.
+        '@odata.type':
+          type: string
+    microsoft.graph.payloadDetail:
+      title: payloadDetail
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        coachmarks:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.payloadCoachmark'
+        content:
+          type:
+          - string
+          - 'null'
+          description: Payload content details.
+        phishingUrl:
+          type:
+          - string
+          - 'null'
+          description: The phishing URL used to target a user.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.emailPayloadDetail': '#/components/schemas/microsoft.graph.emailPayloadDetail'
+    microsoft.graph.baseEndUserNotification:
+      title: baseEndUserNotification
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        defaultLanguage:
+          type:
+          - string
+          - 'null'
+          description: The default language for the end user notification.
+        endUserNotification:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.endUserNotification'
+          - type:
+            - object
+            - 'null'
+          x-ms-navigationProperty: true
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.positiveReinforcementNotification': '#/components/schemas/microsoft.graph.positiveReinforcementNotification'
+          '#microsoft.graph.simulationNotification': '#/components/schemas/microsoft.graph.simulationNotification'
+          '#microsoft.graph.trainingReminderNotification': '#/components/schemas/microsoft.graph.trainingReminderNotification'
+    microsoft.graph.userTrainingEventInfo:
+      title: userTrainingEventInfo
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Display name of the training.
+        latestTrainingStatus:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.trainingStatus'
+          - type:
+            - object
+            - 'null'
+          description: 'Latest status of the training assigned to the user. The possible values are: unknown, assigned, inProgress, completed, overdue, unknownFutureValue.'
+        trainingAssignedProperties:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.userTrainingContentEventInfo'
+          - type:
+            - object
+            - 'null'
+          description: Event details of the training when it was assigned to the user.
+        trainingCompletedProperties:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.userTrainingContentEventInfo'
+          - type:
+            - object
+            - 'null'
+          description: Event details of the training when it was completed by the user.
+        trainingUpdatedProperties:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.userTrainingContentEventInfo'
+          - type:
+            - object
+            - 'null'
+          description: Event details of the training when it was updated/in-progress by the user.
+        '@odata.type':
+          type: string
+    microsoft.graph.trainingType:
+      title: trainingType
+      enum:
+      - unknown
+      - phishing
+      - unknownFutureValue
+      type: string
+    microsoft.graph.accountTargetContent:
+      title: accountTargetContent
+      required:
+      - '@odata.type'
+      type: object
+      properties:
         type:
           anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.coachmarkLocationType'
-          - type: object
-            nullable: true
-          description: 'Type of coachmark location. The possible values are: unknown, fromEmail, subject, externalTag, displayName, messageBody, unknownFutureValue.'
+          - $ref: '#/components/schemas/microsoft.graph.accountTargetContentType'
+          - type:
+            - object
+            - 'null'
+          description: 'The type of account target content. The possible values are: unknown, includeAll, addressBook, unknownFutureValue.'
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.addressBookAccountTargetContent': '#/components/schemas/microsoft.graph.addressBookAccountTargetContent'
+          '#microsoft.graph.includeAllAccountTargetContent': '#/components/schemas/microsoft.graph.includeAllAccountTargetContent'
+    microsoft.graph.endUserNotificationSettingType:
+      title: endUserNotificationSettingType
+      enum:
+      - unknown
+      - noTraining
+      - trainingSelected
+      - noNotification
+      - unknownFutureValue
+      type: string
+    microsoft.graph.trainingStatus:
+      title: trainingStatus
+      enum:
+      - unknown
+      - assigned
+      - inProgress
+      - completed
+      - overdue
+      - unknownFutureValue
+      type: string
+    microsoft.graph.longRunningOperation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: longRunningOperation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The start time of the operation. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          lastActionDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The time of the last action in the operation. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          resourceLocation:
+            type:
+            - string
+            - 'null'
+            description: URI of the resource that the operation is performed on.
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.longRunningOperationStatus'
+            - type:
+              - object
+              - 'null'
+            description: 'The status of the operation. The possible values are: notStarted, running, succeeded, failed, unknownFutureValue.'
+          statusDetail:
+            type:
+            - string
+            - 'null'
+            description: Details about the status of the operation.
+          '@odata.type':
+            type: string
+        description: The status of a long-running operation.
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.attackSimulationOperation': '#/components/schemas/microsoft.graph.attackSimulationOperation'
+            '#microsoft.graph.engagementAsyncOperation': '#/components/schemas/microsoft.graph.engagementAsyncOperation'
+            '#microsoft.graph.richLongRunningOperation': '#/components/schemas/microsoft.graph.richLongRunningOperation'
+    microsoft.graph.trainingAvailabilityStatus:
+      title: trainingAvailabilityStatus
+      enum:
+      - unknown
+      - notAvailable
+      - available
+      - archive
+      - delete
+      - unknownFutureValue
+      type: string
+    microsoft.graph.longRunningOperationStatus:
+      title: longRunningOperationStatus
+      enum:
+      - notStarted
+      - running
+      - succeeded
+      - failed
+      - unknownFutureValue
+      type: string
+    microsoft.graph.simulationReport:
+      title: simulationReport
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        overview:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.simulationReportOverview'
+          - type:
+            - object
+            - 'null'
+          description: Overview of an attack simulation and training campaign.
+        simulationUsers:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.userSimulationDetails'
+          description: The tenant users and their online actions in an attack simulation and training campaign.
+        '@odata.type':
+          type: string
+    microsoft.graph.accountTargetContentType:
+      title: accountTargetContentType
+      enum:
+      - unknown
+      - includeAll
+      - addressBook
+      - unknownFutureValue
+      type: string
+    microsoft.graph.simulationAttackType:
+      title: simulationAttackType
+      enum:
+      - unknown
+      - social
+      - cloud
+      - endpoint
+      - unknownFutureValue
+      type: string
+    microsoft.graph.payloadCollectionResponse:
+      title: Collection of payload
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.payload'
+    microsoft.graph.userSimulationEventInfo:
+      title: userSimulationEventInfo
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        browser:
+          type:
+          - string
+          - 'null'
+          description: Browser information from where the simulation event was initiated by a user in an attack simulation and training campaign.
+        clickSource:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.clickSource'
+          - type:
+            - object
+            - 'null'
+        eventDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date and time of the simulation event by a user in an attack simulation and training campaign.
+          format: date-time
+        eventName:
+          type:
+          - string
+          - 'null'
+          description: Name of the simulation event by a user in an attack simulation and training campaign.
+        ipAddress:
+          type:
+          - string
+          - 'null'
+          description: IP address from where the simulation event was initiated by a user in an attack simulation and training campaign.
+        osPlatformDeviceDetails:
+          type:
+          - string
+          - 'null'
+          description: The operating system, platform, and device details from where the simulation event was initiated by a user in an attack simulation and training campaign.
+        '@odata.type':
+          type: string
+    microsoft.graph.trainingEventsContent:
+      title: trainingEventsContent
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        assignedTrainingsInfos:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.assignedTrainingInfo'
+          description: List of assigned trainings and their information in an attack simulation and training campaign.
+        trainingsAssignedUserCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: Number of users who were assigned trainings in an attack simulation and training campaign.
+          format: int32
         '@odata.type':
           type: string
   responses:
-    microsoft.graph.endUserNotificationCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.endUserNotificationCollectionResponse'
     microsoft.graph.endUserNotificationDetailCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.endUserNotificationDetailCollectionResponse'
+    microsoft.graph.trainingLanguageDetailCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.trainingLanguageDetailCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.landingPageDetailCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.landingPageDetailCollectionResponse'
+    microsoft.graph.endUserNotificationCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.endUserNotificationCollectionResponse'
+    microsoft.graph.landingPageCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.landingPageCollectionResponse'
     error:
       description: error
       content:
@@ -5806,18 +6017,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.simulationAutomationRunCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.trainingLanguageDetailCollectionResponse:
+    microsoft.graph.payloadCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.trainingLanguageDetailCollectionResponse'
+            $ref: '#/components/schemas/microsoft.graph.payloadCollectionResponse'
+    microsoft.graph.trainingCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.trainingCollectionResponse'
     microsoft.graph.simulationCollectionResponse:
       description: Retrieved collection
       content:
@@ -5836,37 +6047,31 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.simulationAutomationCollectionResponse'
-    microsoft.graph.trainingCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.trainingCollectionResponse'
     microsoft.graph.attackSimulationOperationCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.attackSimulationOperationCollectionResponse'
-    microsoft.graph.landingPageCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.landingPageCollectionResponse'
-    microsoft.graph.landingPageDetailCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.landingPageDetailCollectionResponse'
-    microsoft.graph.payloadCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.payloadCollectionResponse'
   parameters:
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
     filter:
       name: $filter
       in: query
@@ -5883,14 +6088,6 @@ components:
       explode: false
       schema:
         type: string
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
     skip:
       name: $skip
       in: query
@@ -5900,13 +6097,3 @@ components:
       schema:
         minimum: 0
         type: integer
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50

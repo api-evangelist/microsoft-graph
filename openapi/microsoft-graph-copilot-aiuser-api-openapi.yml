@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Copilot.ai User API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: copilot.aiUser
+  x-ms-docs-toc-type: page
 paths:
   /copilot/users:
     description: Provides operations to manage the users property of the microsoft.graph.copilotRoot entity.
@@ -374,22 +368,211 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.aiInteractionMention:
+      title: aiInteractionMention
       required:
-      - code
-      - message
+      - '@odata.type'
       type: object
       properties:
-        code:
+        mentioned:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.aiInteractionMentionedIdentitySet'
+          - type:
+            - object
+            - 'null'
+        mentionId:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          format: int32
+        mentionText:
+          type:
+          - string
+          - 'null'
+        '@odata.type':
           type: string
-        message:
+    microsoft.graph.teamworkConversationIdentity:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.identity'
+      - title: teamworkConversationIdentity
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          conversationIdentityType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.teamworkConversationIdentityType'
+            - type:
+              - object
+              - 'null'
+            description: 'Type of conversation. The possible values are: team, channel, chat, and unknownFutureValue.'
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.teamworkConversationIdentity'
+      x-ms-discriminator-value: '#microsoft.graph.teamworkConversationIdentity'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.aiUser:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: aiUser
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          interactionHistory:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.aiInteractionHistory'
+            - type:
+              - object
+              - 'null'
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.aiUser'
+    microsoft.graph.bodyType:
+      title: bodyType
+      enum:
+      - text
+      - html
+      type: string
+    microsoft.graph.aiInteractionAttachment:
+      title: aiInteractionAttachment
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        attachmentId:
+          type:
+          - string
+          - 'null'
+        content:
+          type:
+          - string
+          - 'null'
+        contentType:
+          type:
+          - string
+          - 'null'
+        contentUrl:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        '@odata.type':
           type: string
-        target:
+    microsoft.graph.itemBody:
+      title: itemBody
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        content:
+          type:
+          - string
+          - 'null'
+          description: The content of the item.
+        contentType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.bodyType'
+          - type:
+            - object
+            - 'null'
+          description: The type of the content. Possible values are text and html.
+        '@odata.type':
           type: string
-          nullable: true
+    microsoft.graph.aiInteractionContext:
+      title: aiInteractionContext
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        contextReference:
+          type:
+          - string
+          - 'null'
+        contextType:
+          type:
+          - string
+          - 'null'
+        displayName:
+          type:
+          - string
+          - 'null'
+        '@odata.type':
+          type: string
+    microsoft.graph.aiUserCollectionResponse:
+      title: Collection of aiUser
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.aiUser'
+    microsoft.graph.aiInteractionHistory:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: aiInteractionHistory
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.aiInteractionHistory'
+    microsoft.graph.teamworkConversationIdentityType:
+      title: teamworkConversationIdentityType
+      enum:
+      - team
+      - channel
+      - chat
+      - unknownFutureValue
+      type: string
+    microsoft.graph.aiInteractionType:
+      title: aiInteractionType
+      enum:
+      - userPrompt
+      - aiResponse
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
     microsoft.graph.aiInteractionMentionedIdentitySet:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.identitySet'
@@ -401,13 +584,15 @@ components:
           conversation:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
           tag:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.teamworkTagIdentity'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
           '@odata.type':
             type: string
             default: '#microsoft.graph.aiInteractionMentionedIdentitySet'
@@ -419,13 +604,15 @@ components:
       type: object
       properties:
         displayName:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
-          nullable: true
         id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
-          nullable: true
         '@odata.type':
           type: string
       discriminator:
@@ -451,308 +638,6 @@ components:
           '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
           '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
           '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
-    microsoft.graph.itemBody:
-      title: itemBody
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        content:
-          type: string
-          description: The content of the item.
-          nullable: true
-        contentType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.bodyType'
-          - type: object
-            nullable: true
-          description: The type of the content. Possible values are text and html.
-        '@odata.type':
-          type: string
-    microsoft.graph.teamworkConversationIdentity:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.identity'
-      - title: teamworkConversationIdentity
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          conversationIdentityType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.teamworkConversationIdentityType'
-            - type: object
-              nullable: true
-            description: 'Type of conversation. The possible values are: team, channel, chat, and unknownFutureValue.'
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.teamworkConversationIdentity'
-      x-ms-discriminator-value: '#microsoft.graph.teamworkConversationIdentity'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.aiInteractionMention:
-      title: aiInteractionMention
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        mentioned:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.aiInteractionMentionedIdentitySet'
-          - type: object
-            nullable: true
-        mentionId:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          format: int32
-          nullable: true
-        mentionText:
-          type: string
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.aiInteraction:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: aiInteraction
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          appClass:
-            type: string
-          attachments:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.aiInteractionAttachment'
-          body:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.itemBody'
-            - type: object
-              nullable: true
-          contexts:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.aiInteractionContext'
-          conversationType:
-            type: string
-            nullable: true
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            format: date-time
-            nullable: true
-          etag:
-            type: string
-            nullable: true
-          from:
-            $ref: '#/components/schemas/microsoft.graph.identitySet'
-          interactionType:
-            $ref: '#/components/schemas/microsoft.graph.aiInteractionType'
-          links:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.aiInteractionLink'
-          locale:
-            type: string
-          mentions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.aiInteractionMention'
-          requestId:
-            type: string
-          sessionId:
-            type: string
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.aiInteraction'
-    microsoft.graph.aiUser:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: aiUser
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          interactionHistory:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.aiInteractionHistory'
-            - type: object
-              nullable: true
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.aiUser'
-    microsoft.graph.bodyType:
-      title: bodyType
-      enum:
-      - text
-      - html
-      type: string
-    microsoft.graph.aiInteractionType:
-      title: aiInteractionType
-      enum:
-      - userPrompt
-      - aiResponse
-      - unknownFutureValue
-      type: string
-    microsoft.graph.aiInteractionLink:
-      title: aiInteractionLink
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayName:
-          type: string
-          nullable: true
-        linkType:
-          type: string
-          nullable: true
-        linkUrl:
-          type: string
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.teamworkConversationIdentityType:
-      title: teamworkConversationIdentityType
-      enum:
-      - team
-      - channel
-      - chat
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.teamworkTagIdentity:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.identity'
-      - title: teamworkTagIdentity
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.teamworkTagIdentity'
-      x-ms-discriminator-value: '#microsoft.graph.teamworkTagIdentity'
-    microsoft.graph.aiInteractionAttachment:
-      title: aiInteractionAttachment
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        attachmentId:
-          type: string
-          nullable: true
-        content:
-          type: string
-          nullable: true
-        contentType:
-          type: string
-          nullable: true
-        contentUrl:
-          type: string
-          nullable: true
-        name:
-          type: string
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.aiInteractionHistory:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: aiInteractionHistory
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.aiInteractionHistory'
-    microsoft.graph.aiUserCollectionResponse:
-      title: Collection of aiUser
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.aiUser'
-    microsoft.graph.aiInteractionContext:
-      title: aiInteractionContext
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        contextReference:
-          type: string
-          nullable: true
-        contextType:
-          type: string
-          nullable: true
-        displayName:
-          type: string
-          nullable: true
-        '@odata.type':
-          type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.identitySet:
       title: identitySet
       required:
@@ -762,20 +647,23 @@ components:
         application:
           anyOf:
           - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
+          - type:
+            - object
+            - 'null'
           description: Optional. The application associated with this action.
         device:
           anyOf:
           - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
+          - type:
+            - object
+            - 'null'
           description: Optional. The device associated with this action.
         user:
           anyOf:
           - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
+          - type:
+            - object
+            - 'null'
           description: Optional. The user associated with this action.
         '@odata.type':
           type: string
@@ -789,6 +677,27 @@ components:
           '#microsoft.graph.communicationsIdentitySet': '#/components/schemas/microsoft.graph.communicationsIdentitySet'
           '#microsoft.graph.engagementIdentitySet': '#/components/schemas/microsoft.graph.engagementIdentitySet'
           '#microsoft.graph.sharePointIdentitySet': '#/components/schemas/microsoft.graph.sharePointIdentitySet'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1858,25 +1767,127 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-  responses:
-    microsoft.graph.aiUserCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.aiUserCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
     ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
+      type: integer
+      format: int32
+    microsoft.graph.aiInteractionLink:
+      title: aiInteractionLink
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type:
+          - string
+          - 'null'
+        linkType:
+          type:
+          - string
+          - 'null'
+        linkUrl:
+          type:
+          - string
+          - 'null'
+        '@odata.type':
+          type: string
+    microsoft.graph.aiInteraction:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: aiInteraction
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          appClass:
+            type: string
+          attachments:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.aiInteractionAttachment'
+          body:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.itemBody'
+            - type:
+              - object
+              - 'null'
+          contexts:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.aiInteractionContext'
+          conversationType:
+            type:
+            - string
+            - 'null'
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            format: date-time
+          etag:
+            type:
+            - string
+            - 'null'
+          from:
+            $ref: '#/components/schemas/microsoft.graph.identitySet'
+          interactionType:
+            $ref: '#/components/schemas/microsoft.graph.aiInteractionType'
+          links:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.aiInteractionLink'
+          locale:
+            type: string
+          mentions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.aiInteractionMention'
+          requestId:
+            type: string
+          sessionId:
+            type: string
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.aiInteraction'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.teamworkTagIdentity:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.identity'
+      - title: teamworkTagIdentity
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.teamworkTagIdentity'
+      x-ms-discriminator-value: '#microsoft.graph.teamworkTagIdentity'
   parameters:
     filter:
       name: $filter
@@ -1886,6 +1897,31 @@ components:
       explode: false
       schema:
         type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     top:
       name: $top
       in: query
@@ -1896,28 +1932,22 @@ components:
         minimum: 0
         type: integer
       example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+  responses:
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.aiUserCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.aiUserCollectionResponse'

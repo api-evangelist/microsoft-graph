@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Device Management.ios Update Device Status API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: deviceManagement.iosUpdateDeviceStatus
+  x-ms-docs-toc-type: page
 paths:
   /deviceManagement/iosUpdateStatuses:
     description: Provides operations to manage the iosUpdateStatuses property of the microsoft.graph.deviceManagement entity.
@@ -76,7 +70,7 @@ paths:
     post:
       tags:
       - deviceManagement.iosUpdateDeviceStatus
-      summary: Microsoft Graph Create new navigation property to iosUpdateStatuses for deviceManagement
+      summary: Microsoft Graph Create new navigation property to iosUpdateStatuses for…
       operationId: deviceManagement.CreateIosUpdateStatuses
       requestBody:
         description: New navigation property
@@ -149,7 +143,7 @@ paths:
     patch:
       tags:
       - deviceManagement.iosUpdateDeviceStatus
-      summary: Microsoft Graph Update the navigation property iosUpdateStatuses in deviceManagement
+      summary: Microsoft Graph Update the navigation property iosUpdateStatuses in…
       operationId: deviceManagement.UpdateIosUpdateStatuses
       requestBody:
         description: New navigation property values
@@ -173,7 +167,7 @@ paths:
     delete:
       tags:
       - deviceManagement.iosUpdateDeviceStatus
-      summary: Microsoft Graph Delete navigation property iosUpdateStatuses for deviceManagement
+      summary: Microsoft Graph Delete navigation property iosUpdateStatuses for…
       operationId: deviceManagement.DeleteIosUpdateStatuses
       parameters:
       - name: If-Match
@@ -208,22 +202,24 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.iosUpdateDeviceStatusCollectionResponse:
+      title: Collection of iosUpdateDeviceStatus
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.iosUpdateDeviceStatus'
     microsoft.graph.iosUpdateDeviceStatus:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -238,17 +234,20 @@ components:
             description: The DateTime when device compliance grace period expires
             format: date-time
           deviceDisplayName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Device name of the DevicePolicyStatus.
-            nullable: true
           deviceId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The device id that is being reported.
-            nullable: true
           deviceModel:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The device model that is being reported
-            nullable: true
           installStatus:
             $ref: '#/components/schemas/microsoft.graph.iosUpdatesInstallStatus'
           lastReportedDateTime:
@@ -257,23 +256,27 @@ components:
             description: Last modified date time of the policy report.
             format: date-time
           osVersion:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The device version that is being reported.
-            nullable: true
           status:
             $ref: '#/components/schemas/microsoft.graph.complianceStatus'
           userId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The User id that is being reported.
-            nullable: true
           userName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The User Name that is being reported
-            nullable: true
           userPrincipalName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: UserPrincipalName.
-            nullable: true
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.iosUpdateDeviceStatus'
@@ -284,42 +287,35 @@ components:
       type: object
       properties:
         request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Request Id as tracked internally by the service
-          nullable: true
         client-request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Client request Id as sent by the client application.
-          nullable: true
         date:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
+          type:
+          - string
+          - 'null'
           description: Date when the error occured.
           format: date-time
-          nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.iosUpdatesInstallStatus:
-      title: iosUpdatesInstallStatus
+    microsoft.graph.complianceStatus:
+      title: complianceStatus
       enum:
-      - deviceOsHigherThanDesiredOsVersion
-      - sharedDeviceUserLoggedInError
-      - notSupportedOperation
-      - installFailed
-      - installPhoneCallInProgress
-      - installInsufficientPower
-      - installInsufficientSpace
-      - installing
-      - downloadInsufficientNetwork
-      - downloadInsufficientPower
-      - downloadInsufficientSpace
-      - downloadRequiresComputer
-      - downloadFailed
-      - downloading
-      - success
-      - available
-      - idle
       - unknown
+      - notApplicable
+      - compliant
+      - remediated
+      - nonCompliant
+      - error
+      - conflict
+      - notAssigned
       type: string
     microsoft.graph.ODataErrors.MainError:
       required:
@@ -333,55 +329,15 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.complianceStatus:
-      title: complianceStatus
-      enum:
-      - unknown
-      - notApplicable
-      - compliant
-      - remediated
-      - nonCompliant
-      - error
-      - conflict
-      - notAssigned
-      type: string
-    microsoft.graph.iosUpdateDeviceStatusCollectionResponse:
-      title: Collection of iosUpdateDeviceStatus
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.iosUpdateDeviceStatus'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1451,25 +1407,58 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.iosUpdatesInstallStatus:
+      title: iosUpdatesInstallStatus
+      enum:
+      - deviceOsHigherThanDesiredOsVersion
+      - sharedDeviceUserLoggedInError
+      - notSupportedOperation
+      - installFailed
+      - installPhoneCallInProgress
+      - installInsufficientPower
+      - installInsufficientSpace
+      - installing
+      - downloadInsufficientNetwork
+      - downloadInsufficientPower
+      - downloadInsufficientSpace
+      - downloadRequiresComputer
+      - downloadFailed
+      - downloading
+      - success
+      - available
+      - idle
+      - unknown
+      type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
     ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.iosUpdateDeviceStatusCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.iosUpdateDeviceStatusCollectionResponse'
+      type: integer
+      format: int32
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
   parameters:
     filter:
       name: $filter
@@ -1479,16 +1468,14 @@ components:
       explode: false
       schema:
         type: string
-    top:
-      name: $top
+    search:
+      name: $search
       in: query
-      description: Show only the first n items
+      description: Search items by search phrases
       style: form
       explode: false
       schema:
-        minimum: 0
-        type: integer
-      example: 50
+        type: string
     skip:
       name: $skip
       in: query
@@ -1506,11 +1493,32 @@ components:
       explode: false
       schema:
         type: boolean
-    search:
-      name: $search
+    top:
+      name: $top
       in: query
-      description: Search items by search phrases
+      description: Show only the first n items
       style: form
       explode: false
       schema:
-        type: string
+        minimum: 0
+        type: integer
+      example: 50
+  responses:
+    microsoft.graph.iosUpdateDeviceStatusCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.iosUpdateDeviceStatusCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

@@ -1,13 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Current User Acceptances API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
+  title: Microsoft Graph Agreement Acceptances Current User…
+  description: 'Microsoft Graph API for managing agreement acceptances in Microsoft Entra ID.
 
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
+    This API enables organizations to track and manage user acceptances of terms of use agreements,
 
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
+    including viewing acceptance status, managing acceptance records, and querying acceptance history.'
   version: 1.0.0
   contact:
     name: Microsoft Graph API Support
@@ -153,39 +151,6 @@ paths:
         dispatcherRules: default
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    AgreementAcceptanceCollectionResponse:
-      title: AgreementAcceptanceCollectionResponse
-      type: object
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementAcceptance'
-        '@odata.nextLink':
-          type: string
-          nullable: true
-        '@odata.count':
-          type: integer
-          format: int32
-    AgreementAcceptanceState:
-      title: AgreementAcceptanceState
-      type: string
-      enum:
-      - accepted
-      - declined
-      description: The state of the agreement acceptance.
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for an entity. Read-only.
-        '@odata.type':
-          type: string
     ErrorDetail:
       title: ErrorDetail
       required:
@@ -200,14 +165,17 @@ components:
         target:
           type: string
           nullable: true
-    ODataError:
-      title: ODataError
-      required:
-      - error
+    InnerError:
+      title: InnerError
       type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
+      description: The structure of this object is service-specific
+    AgreementAcceptanceState:
+      title: AgreementAcceptanceState
+      type: string
+      enum:
+      - accepted
+      - declined
+      description: The state of the agreement acceptance.
     AgreementAcceptance:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -277,10 +245,40 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementAcceptance'
-    InnerError:
-      title: InnerError
+    Entity:
+      title: Entity
       type: object
-      description: The structure of this object is service-specific
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity. Read-only.
+        '@odata.type':
+          type: string
+    ODataCountResponse:
+      type: integer
+      format: int32
+    ODataError:
+      title: ODataError
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    AgreementAcceptanceCollectionResponse:
+      title: AgreementAcceptanceCollectionResponse
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementAcceptance'
+        '@odata.nextLink':
+          type: string
+          nullable: true
+        '@odata.count':
+          type: integer
+          format: int32
     MainError:
       title: MainError
       required:
@@ -302,29 +300,15 @@ components:
             $ref: '#/components/schemas/ErrorDetail'
         innerError:
           $ref: '#/components/schemas/InnerError'
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    AgreementAcceptanceCollectionResponse:
-      description: Retrieved collection of agreement acceptances
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AgreementAcceptanceCollectionResponse'
-          examples:
-            AgreementAcceptanceCollectionExample:
-              $ref: '#/components/examples/AgreementAcceptanceCollectionExample'
   parameters:
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
     AgreementAcceptanceId:
       name: agreementAcceptance-id
       in: path
@@ -333,10 +317,10 @@ components:
       schema:
         type: string
       x-ms-docs-key-type: agreementAcceptance
-    Search:
-      name: $search
+    Filter:
+      name: $filter
       in: query
-      description: Search items by search phrases
+      description: Filter items by property values
       style: form
       explode: false
       schema:
@@ -350,14 +334,14 @@ components:
       schema:
         minimum: 0
         type: integer
-    Filter:
-      name: $filter
+    Count:
+      name: $count
       in: query
-      description: Filter items by property values
+      description: Include count of items
       style: form
       explode: false
       schema:
-        type: string
+        type: boolean
     Top:
       name: $top
       in: query
@@ -368,14 +352,28 @@ components:
         minimum: 0
         type: integer
       example: 50
-    Count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+    AgreementAcceptanceCollectionResponse:
+      description: Retrieved collection of agreement acceptances
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgreementAcceptanceCollectionResponse'
+          examples:
+            AgreementAcceptanceCollectionExample:
+              $ref: '#/components/examples/AgreementAcceptanceCollectionExample'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
   examples:
     GetCurrentUserAcceptanceResponse:
       summary: Example response for getting current user's agreement acceptance

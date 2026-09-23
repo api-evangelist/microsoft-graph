@@ -1,20 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Tenant Relationships.delegated Admin Relationship API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: tenantRelationships.delegatedAdminRelationship
   x-ms-docs-toc-type: page
@@ -161,7 +154,7 @@ paths:
       tags:
       - tenantRelationships.delegatedAdminRelationship
       summary: Microsoft Graph Update delegatedAdminRelationship
-      description: 'Update the properties of a delegatedAdminRelationship object.  The following restrictions apply:
+      description: 'Update the properties of a delegatedAdminRelationship object. The following restrictions apply:
 
         - You can update this relationship when its status property is created.
 
@@ -195,7 +188,7 @@ paths:
       tags:
       - tenantRelationships.delegatedAdminRelationship
       summary: Microsoft Graph Delete delegatedAdminRelationship
-      description: 'Delete a delegatedAdminRelationship object. A relationship can only be deleted if it''s in the ''created'' status. '
+      description: Delete a delegatedAdminRelationship object. A relationship can only be deleted if it's in the 'created' status.
       externalDocs:
         description: Find more info here
         url: https://learn.microsoft.com/graph/api/delegatedadminrelationship-delete?view=graph-rest-1.0
@@ -512,7 +505,7 @@ paths:
     post:
       tags:
       - tenantRelationships.delegatedAdminRelationship
-      summary: Microsoft Graph Create new navigation property to operations for tenantRelationships
+      summary: Microsoft Graph Create new navigation property to operations for…
       operationId: tenantRelationships.delegatedAdminRelationships.CreateOperations
       requestBody:
         description: New navigation property
@@ -899,61 +892,178 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
+  responses:
+    microsoft.graph.delegatedAdminRelationshipRequestCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipRequestCollectionResponse'
+    microsoft.graph.delegatedAdminRelationshipOperationCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipOperationCollectionResponse'
+    microsoft.graph.delegatedAdminAccessAssignmentCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.delegatedAdminAccessAssignmentCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.delegatedAdminRelationshipCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipCollectionResponse'
   schemas:
-    microsoft.graph.delegatedAdminAccessAssignmentStatus:
-      title: delegatedAdminAccessAssignmentStatus
-      enum:
-      - pending
-      - active
-      - deleting
-      - deleted
-      - error
-      - unknownFutureValue
-      type: string
-    microsoft.graph.delegatedAdminAccessDetails:
-      title: delegatedAdminAccessDetails
+    microsoft.graph.unifiedRole:
+      title: unifiedRole
       required:
       - '@odata.type'
       type: object
       properties:
-        unifiedRoles:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.unifiedRole'
-          description: The directory roles that the Microsoft partner is assigned in the customer tenant.
+        roleDefinitionId:
+          type: string
+          description: The unified role definition ID of the directory role. Refer to unifiedRoleDefinition resource.
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.delegatedAdminAccessAssignment:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: delegatedAdminAccessAssignment
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          accessContainer:
+            $ref: '#/components/schemas/microsoft.graph.delegatedAdminAccessContainer'
+          accessDetails:
+            $ref: '#/components/schemas/microsoft.graph.delegatedAdminAccessDetails'
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date and time in ISO 8601 format and in UTC time when the access assignment was created. Read-only.
+            format: date-time
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date and time in ISO 8601 and in UTC time when this access assignment was last modified. Read-only.
+            format: date-time
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.delegatedAdminAccessAssignmentStatus'
+            - type:
+              - object
+              - 'null'
+            description: 'The status of the access assignment. Read-only. The possible values are: pending, active, deleting, deleted, error, unknownFutureValue.'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.delegatedAdminAccessAssignment'
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    microsoft.graph.delegatedAdminRelationshipStatus:
-      title: delegatedAdminRelationshipStatus
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.delegatedAdminRelationshipCollectionResponse:
+      title: Collection of delegatedAdminRelationship
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationship'
+    microsoft.graph.delegatedAdminRelationshipRequest:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: delegatedAdminRelationshipRequest
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          action:
+            $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipRequestAction'
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date and time in ISO 8601 format and in UTC time when the relationship request was created. Read-only.
+            format: date-time
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date and time in ISO 8601 format and UTC time when this relationship request was last modified. Read-only.
+            format: date-time
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipRequestStatus'
+            - type:
+              - object
+              - 'null'
+            description: 'The status of the request. Read-only. The possible values are: created, pending, succeeded, failed, unknownFutureValue.'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.delegatedAdminRelationshipRequest'
+    microsoft.graph.longRunningOperationStatus:
+      title: longRunningOperationStatus
       enum:
-      - activating
-      - active
-      - approvalPending
-      - approved
-      - created
-      - expired
-      - expiring
-      - terminated
-      - terminating
-      - terminationRequested
+      - notStarted
+      - running
+      - succeeded
+      - failed
       - unknownFutureValue
       type: string
-    ODataCountResponse:
-      type: integer
-      format: int32
+    microsoft.graph.delegatedAdminRelationshipRequestCollectionResponse:
+      title: Collection of delegatedAdminRelationshipRequest
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipRequest'
+    microsoft.graph.delegatedAdminRelationshipRequestAction:
+      title: delegatedAdminRelationshipRequestAction
+      enum:
+      - lockForApproval
+      - approve
+      - terminate
+      - unknownFutureValue
+      - reject
+      type: string
+    microsoft.graph.delegatedAdminAccessContainerType:
+      title: delegatedAdminAccessContainerType
+      enum:
+      - securityGroup
+      - unknownFutureValue
+      type: string
     microsoft.graph.delegatedAdminRelationship:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -966,27 +1076,31 @@ components:
             $ref: '#/components/schemas/microsoft.graph.delegatedAdminAccessDetails'
           activatedDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: The date and time in ISO 8601 format and in UTC time when the relationship became active. Read-only.
             format: date-time
-            nullable: true
           autoExtendDuration:
             pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-            type: string
+            type:
+            - string
+            - 'null'
             description: 'The duration by which the validity of the relationship is automatically extended, denoted in ISO 8601 format. Supported values are: P0D, PT0S, P180D. The default value is PT0S. PT0S indicates that the relationship expires when the endDateTime is reached and it isn''t automatically extended.'
             format: duration
-            nullable: true
           createdDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: The date and time in ISO 8601 format and in UTC time when the relationship was created. Read-only.
             format: date-time
-            nullable: true
           customer:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipCustomerParticipant'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: The display name and unique identifier of the customer of the relationship. This is configured either by the partner at the time the relationship is created or by the system after the customer approves the relationship. Can't be changed by the customer.
           displayName:
             type: string
@@ -998,21 +1112,24 @@ components:
             format: duration
           endDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: The date and time in ISO 8601 format and in UTC time when the status of relationship changes to either terminated or expired. Calculated as endDateTime = activatedDateTime + duration. Read-only.
             format: date-time
-            nullable: true
           lastModifiedDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: The date and time in ISO 8601 format and in UTC time when the relationship was last modified. Read-only.
             format: date-time
-            nullable: true
           status:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipStatus'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: 'The status of the relationship. Read Only. The possible values are: activating, active, approvalPending, approved, created, expired, expiring, terminated, terminating, terminationRequested, unknownFutureValue. Supports $orderby.'
           accessAssignments:
             type: array
@@ -1038,51 +1155,6 @@ components:
           propertyName: '@odata.type'
           mapping:
             '#microsoft.graph.resellerDelegatedAdminRelationship': '#/components/schemas/microsoft.graph.resellerDelegatedAdminRelationship'
-    microsoft.graph.delegatedAdminRelationshipCollectionResponse:
-      title: Collection of delegatedAdminRelationship
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationship'
-    microsoft.graph.delegatedAdminRelationshipOperation:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: delegatedAdminRelationshipOperation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The time in ISO 8601 format and in UTC time when the long-running operation was created. Read-only.
-            format: date-time
-          data:
-            type: string
-            description: The data (payload) for the operation. Read-only.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The time in ISO 8601 format and in UTC time when the long-running operation was last modified. Read-only.
-            format: date-time
-          operationType:
-            $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipOperationType'
-          status:
-            $ref: '#/components/schemas/microsoft.graph.longRunningOperationStatus'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.delegatedAdminRelationshipOperation'
-    microsoft.graph.delegatedAdminAccessContainerType:
-      title: delegatedAdminAccessContainerType
-      enum:
-      - securityGroup
-      - unknownFutureValue
-      type: string
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -1090,100 +1162,39 @@ components:
       type: object
       properties:
         request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Request Id as tracked internally by the service
-          nullable: true
         client-request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Client request Id as sent by the client application.
-          nullable: true
         date:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
+          type:
+          - string
+          - 'null'
           description: Date when the error occured.
           format: date-time
-          nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.delegatedAdminRelationshipRequest:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: delegatedAdminRelationshipRequest
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          action:
-            $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipRequestAction'
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time in ISO 8601 format and in UTC time when the relationship request was created. Read-only.
-            format: date-time
-            nullable: true
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time in ISO 8601 format and UTC time when this relationship request was last modified. Read-only.
-            format: date-time
-            nullable: true
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipRequestStatus'
-            - type: object
-              nullable: true
-            description: 'The status of the request. Read-only. The possible values are: created, pending, succeeded, failed, unknownFutureValue.'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.delegatedAdminRelationshipRequest'
-    microsoft.graph.delegatedAdminAccessContainer:
-      title: delegatedAdminAccessContainer
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        accessContainerId:
-          type: string
-          description: The identifier of the access container (for example, a security group). For 'securityGroup' access containers, this must be a valid ID of a Microsoft Entra security group in the Microsoft partner's tenant.
-        accessContainerType:
-          $ref: '#/components/schemas/microsoft.graph.delegatedAdminAccessContainerType'
-        '@odata.type':
-          type: string
-    microsoft.graph.unifiedRole:
-      title: unifiedRole
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        roleDefinitionId:
-          type: string
-          description: The unified role definition ID of the directory role. Refer to unifiedRoleDefinition resource.
-        '@odata.type':
-          type: string
-    microsoft.graph.delegatedAdminRelationshipRequestAction:
-      title: delegatedAdminRelationshipRequestAction
+    microsoft.graph.delegatedAdminRelationshipStatus:
+      title: delegatedAdminRelationshipStatus
       enum:
-      - lockForApproval
-      - approve
-      - terminate
+      - activating
+      - active
+      - approvalPending
+      - approved
+      - created
+      - expired
+      - expiring
+      - terminated
+      - terminating
+      - terminationRequested
       - unknownFutureValue
-      - reject
       type: string
-    microsoft.graph.delegatedAdminRelationshipCustomerParticipant:
-      title: delegatedAdminRelationshipCustomerParticipant
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: The display name of the customer tenant as set by Microsoft Entra ID. Read-only
-          nullable: true
-        tenantId:
-          type: string
-          description: The Microsoft Entra ID-assigned tenant ID of the customer tenant.
-        '@odata.type':
-          type: string
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -1196,23 +1207,15 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.longRunningOperationStatus:
-      title: longRunningOperationStatus
-      enum:
-      - notStarted
-      - running
-      - succeeded
-      - failed
-      - unknownFutureValue
-      type: string
     microsoft.graph.delegatedAdminRelationshipOperationType:
       title: delegatedAdminRelationshipOperationType
       enum:
@@ -1220,88 +1223,6 @@ components:
       - unknownFutureValue
       - delegatedAdminRelationshipUpdate
       type: string
-    microsoft.graph.delegatedAdminRelationshipOperationCollectionResponse:
-      title: Collection of delegatedAdminRelationshipOperation
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipOperation'
-    microsoft.graph.delegatedAdminRelationshipRequestCollectionResponse:
-      title: Collection of delegatedAdminRelationshipRequest
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipRequest'
-    microsoft.graph.delegatedAdminAccessAssignment:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: delegatedAdminAccessAssignment
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          accessContainer:
-            $ref: '#/components/schemas/microsoft.graph.delegatedAdminAccessContainer'
-          accessDetails:
-            $ref: '#/components/schemas/microsoft.graph.delegatedAdminAccessDetails'
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time in ISO 8601 format and in UTC time when the access assignment was created. Read-only.
-            format: date-time
-            nullable: true
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time in ISO 8601 and in UTC time when this access assignment was last modified. Read-only.
-            format: date-time
-            nullable: true
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.delegatedAdminAccessAssignmentStatus'
-            - type: object
-              nullable: true
-            description: 'The status of the access assignment. Read-only. The possible values are: pending, active, deleting, deleted, error, unknownFutureValue.'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.delegatedAdminAccessAssignment'
-    microsoft.graph.delegatedAdminRelationshipRequestStatus:
-      title: delegatedAdminRelationshipRequestStatus
-      enum:
-      - created
-      - pending
-      - succeeded
-      - failed
-      - unknownFutureValue
-      type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.delegatedAdminAccessAssignmentCollectionResponse:
       title: Collection of delegatedAdminAccessAssignment
       type: object
@@ -2382,43 +2303,136 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-  responses:
-    microsoft.graph.delegatedAdminRelationshipCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.delegatedAdminAccessAssignmentCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.delegatedAdminAccessAssignmentCollectionResponse'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.delegatedAdminAccessDetails:
+      title: delegatedAdminAccessDetails
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        unifiedRoles:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.unifiedRole'
+          description: The directory roles that the Microsoft partner is assigned in the customer tenant.
+        '@odata.type':
+          type: string
+    microsoft.graph.delegatedAdminAccessAssignmentStatus:
+      title: delegatedAdminAccessAssignmentStatus
+      enum:
+      - pending
+      - active
+      - deleting
+      - deleted
+      - error
+      - unknownFutureValue
+      type: string
+    microsoft.graph.delegatedAdminRelationshipRequestStatus:
+      title: delegatedAdminRelationshipRequestStatus
+      enum:
+      - created
+      - pending
+      - succeeded
+      - failed
+      - unknownFutureValue
+      type: string
+    microsoft.graph.delegatedAdminRelationshipOperation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: delegatedAdminRelationshipOperation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The time in ISO 8601 format and in UTC time when the long-running operation was created. Read-only.
+            format: date-time
+          data:
+            type: string
+            description: The data (payload) for the operation. Read-only.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The time in ISO 8601 format and in UTC time when the long-running operation was last modified. Read-only.
+            format: date-time
+          operationType:
+            $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipOperationType'
+          status:
+            $ref: '#/components/schemas/microsoft.graph.longRunningOperationStatus'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.delegatedAdminRelationshipOperation'
     microsoft.graph.delegatedAdminRelationshipOperationCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipOperationCollectionResponse'
-    microsoft.graph.delegatedAdminRelationshipRequestCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipRequestCollectionResponse'
+      title: Collection of delegatedAdminRelationshipOperation
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.delegatedAdminRelationshipOperation'
     ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
+      type: integer
+      format: int32
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.delegatedAdminRelationshipCustomerParticipant:
+      title: delegatedAdminRelationshipCustomerParticipant
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: The display name of the customer tenant as set by Microsoft Entra ID. Read-only
+        tenantId:
+          type: string
+          description: The Microsoft Entra ID-assigned tenant ID of the customer tenant.
+        '@odata.type':
+          type: string
+    microsoft.graph.delegatedAdminAccessContainer:
+      title: delegatedAdminAccessContainer
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        accessContainerId:
+          type: string
+          description: The identifier of the access container (for example, a security group). For 'securityGroup' access containers, this must be a valid ID of a Microsoft Entra security group in the Microsoft partner's tenant.
+        accessContainerType:
+          $ref: '#/components/schemas/microsoft.graph.delegatedAdminAccessContainerType'
+        '@odata.type':
+          type: string
   parameters:
     filter:
       name: $filter
@@ -2428,6 +2442,31 @@ components:
       explode: false
       schema:
         type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     top:
       name: $top
       in: query
@@ -2438,28 +2477,3 @@ components:
         minimum: 0
         type: integer
       example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string

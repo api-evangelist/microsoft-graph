@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Device Management.resource Operation API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: deviceManagement.resourceOperation
+  x-ms-docs-toc-type: page
 paths:
   /deviceManagement/resourceOperations:
     description: Provides operations to manage the resourceOperations property of the microsoft.graph.deviceManagement entity.
@@ -76,7 +70,7 @@ paths:
     post:
       tags:
       - deviceManagement.resourceOperation
-      summary: Microsoft Graph Create new navigation property to resourceOperations for deviceManagement
+      summary: Microsoft Graph Create new navigation property to resourceOperations for…
       operationId: deviceManagement.CreateResourceOperations
       requestBody:
         description: New navigation property
@@ -149,7 +143,7 @@ paths:
     patch:
       tags:
       - deviceManagement.resourceOperation
-      summary: Microsoft Graph Update the navigation property resourceOperations in deviceManagement
+      summary: Microsoft Graph Update the navigation property resourceOperations in…
       operationId: deviceManagement.UpdateResourceOperations
       requestBody:
         description: New navigation property values
@@ -173,7 +167,7 @@ paths:
     delete:
       tags:
       - deviceManagement.resourceOperation
-      summary: Microsoft Graph Delete navigation property resourceOperations for deviceManagement
+      summary: Microsoft Graph Delete navigation property resourceOperations for…
       operationId: deviceManagement.DeleteResourceOperations
       parameters:
       - name: If-Match
@@ -208,57 +202,31 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    microsoft.graph.resourceOperation:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: resourceOperation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          actionName:
-            type: string
-            description: Type of action this operation is going to perform. The actionName should be concise and limited to as few words as possible.
-            nullable: true
-          description:
-            type: string
-            description: Description of the resource operation. The description is used in mouse-over text for the operation when shown in the Azure Portal.
-            nullable: true
-          resourceName:
-            type: string
-            description: Name of the Resource this operation is performed on.
-            nullable: true
-          '@odata.type':
-            type: string
-        description: Describes the resourceOperation resource (entity) of the Microsoft Graph API (REST), which supports Intune workflows related to role-based access control (RBAC).
-      x-ms-discriminator-value: '#microsoft.graph.resourceOperation'
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
       required:
-      - code
-      - message
+      - '@odata.type'
       type: object
       properties:
-        code:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
           type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    ODataCountResponse:
-      type: integer
-      format: int32
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
     microsoft.graph.resourceOperationCollectionResponse:
       title: Collection of resourceOperation
       type: object
@@ -270,28 +238,56 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.resourceOperation'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.resourceOperation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: resourceOperation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          actionName:
+            type:
+            - string
+            - 'null'
+            description: Type of action this operation is going to perform. The actionName should be concise and limited to as few words as possible.
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description of the resource operation. The description is used in mouse-over text for the operation when shown in the Azure Portal.
+          resourceName:
+            type:
+            - string
+            - 'null'
+            description: Name of the Resource this operation is performed on.
+          '@odata.type':
+            type: string
+        description: Describes the resourceOperation resource (entity) of the Microsoft Graph API (REST), which supports Intune workflows related to role-based access control (RBAC).
+      x-ms-discriminator-value: '#microsoft.graph.resourceOperation'
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - '@odata.type'
+      - error
       type: object
       properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -304,21 +300,15 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1388,19 +1378,33 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
   responses:
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
     microsoft.graph.resourceOperationCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.resourceOperationCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
     error:
       description: error
       content:
@@ -1408,6 +1412,15 @@ components:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
     filter:
       name: $filter
       in: query
@@ -1442,12 +1455,3 @@ components:
       explode: false
       schema:
         type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer

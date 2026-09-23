@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Me.license Details API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: me.licenseDetails
+  x-ms-docs-toc-type: page
 paths:
   /me/licenseDetails:
     description: Provides operations to manage the licenseDetails property of the microsoft.graph.user entity.
@@ -228,8 +222,9 @@ paths:
               schema:
                 anyOf:
                 - $ref: '#/components/schemas/microsoft.graph.teamsLicensingDetails'
-                - type: object
-                  nullable: true
+                - type:
+                  - object
+                  - 'null'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
@@ -237,81 +232,29 @@ paths:
       x-ms-docs-operation-type: function
 components:
   schemas:
-    microsoft.graph.licenseDetailsCollectionResponse:
-      title: Collection of licenseDetails
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.licenseDetails'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.licenseDetails:
+    microsoft.graph.teamsLicensingDetails:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: licenseDetails
+      - title: teamsLicensingDetails
         required:
         - '@odata.type'
         type: object
         properties:
-          servicePlans:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.servicePlanInfo'
-            description: Information about the service plans assigned with the license. Read-only. Not nullable.
-          skuId:
-            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-            type: string
-            description: Unique identifier (GUID) for the service SKU. Equal to the skuId property on the related subscribedSku object. Read-only.
-            format: uuid
-            nullable: true
-          skuPartNumber:
-            type: string
-            description: Unique SKU display name. Equal to the skuPartNumber on the related subscribedSku object; for example, AAD_Premium. Read-only.
-            nullable: true
+          hasTeamsLicense:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the user has a valid license to use Microsoft Teams.
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.licenseDetails'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
+      x-ms-discriminator-value: '#microsoft.graph.teamsLicensingDetails'
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - '@odata.type'
+      - error
       type: object
       properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.servicePlanInfo:
       title: servicePlanInfo
       required:
@@ -319,23 +262,52 @@ components:
       type: object
       properties:
         appliesTo:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The object the service plan can be assigned to. The possible values are:User - service plan can be assigned to individual users.Company - service plan can be assigned to the entire tenant.
-          nullable: true
         provisioningStatus:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The provisioning status of the service plan. The possible values are:Success - Service is fully provisioned.Disabled - Service is disabled.Error - The service plan isn't provisioned and is in an error state.PendingInput - The service isn't provisioned and is awaiting service confirmation.PendingActivation - The service is provisioned but requires explicit activation by an administrator (for example, Intune_O365 service plan)PendingProvisioning - Microsoft has added a new service to the product SKU and it isn't activated in the tenant.
-          nullable: true
         servicePlanId:
           pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-          type: string
+          type:
+          - string
+          - 'null'
           description: The unique identifier of the service plan.
           format: uuid
-          nullable: true
         servicePlanName:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The name of the service plan.
-          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
         '@odata.type':
           type: string
     microsoft.graph.ODataErrors.MainError:
@@ -350,47 +322,15 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.teamsLicensingDetails:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: teamsLicensingDetails
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          hasTeamsLicense:
-            type: boolean
-            description: Indicates whether the user has a valid license to use Microsoft Teams.
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.teamsLicensingDetails'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1460,13 +1400,120 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.licenseDetails:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: licenseDetails
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          servicePlans:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.servicePlanInfo'
+            description: Information about the service plans assigned with the license. Read-only. Not nullable.
+          skuId:
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+            type:
+            - string
+            - 'null'
+            description: Unique identifier (GUID) for the service SKU. Equal to the skuId property on the related subscribedSku object. Read-only.
+            format: uuid
+          skuPartNumber:
+            type:
+            - string
+            - 'null'
+            description: Unique SKU display name. Equal to the skuPartNumber on the related subscribedSku object; for example, AAD_Premium. Read-only.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.licenseDetails'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.licenseDetailsCollectionResponse:
+      title: Collection of licenseDetails
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.licenseDetails'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+  parameters:
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
     microsoft.graph.licenseDetailsCollectionResponse:
       description: Retrieved collection
       content:
@@ -1479,47 +1526,9 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/ODataCountResponse'
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

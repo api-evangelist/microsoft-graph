@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Identity Protection.service Principal Risk Detection API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: identityProtection.servicePrincipalRiskDetection
+  x-ms-docs-toc-type: page
 paths:
   /identityProtection/servicePrincipalRiskDetections:
     description: Provides operations to manage the servicePrincipalRiskDetections property of the microsoft.graph.identityProtectionRoot entity.
@@ -79,7 +73,7 @@ paths:
     post:
       tags:
       - identityProtection.servicePrincipalRiskDetection
-      summary: Microsoft Graph Create new navigation property to servicePrincipalRiskDetections for identityProtection
+      summary: Microsoft Graph Create new navigation property to…
       operationId: identityProtection.CreateServicePrincipalRiskDetections
       requestBody:
         description: New navigation property
@@ -155,7 +149,7 @@ paths:
     patch:
       tags:
       - identityProtection.servicePrincipalRiskDetection
-      summary: Microsoft Graph Update the navigation property servicePrincipalRiskDetections in identityProtection
+      summary: Microsoft Graph Update the navigation property servicePrincipalRiskDetections…
       operationId: identityProtection.UpdateServicePrincipalRiskDetections
       requestBody:
         description: New navigation property values
@@ -179,7 +173,7 @@ paths:
     delete:
       tags:
       - identityProtection.servicePrincipalRiskDetection
-      summary: Microsoft Graph Delete navigation property servicePrincipalRiskDetections for identityProtection
+      summary: Microsoft Graph Delete navigation property servicePrincipalRiskDetections for…
       operationId: identityProtection.DeleteServicePrincipalRiskDetections
       parameters:
       - name: If-Match
@@ -213,148 +207,26 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
-  schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
+  responses:
     microsoft.graph.servicePrincipalRiskDetectionCollectionResponse:
-      title: Collection of servicePrincipalRiskDetection
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.servicePrincipalRiskDetection'
-    microsoft.graph.riskState:
-      title: riskState
-      enum:
-      - none
-      - confirmedSafe
-      - remediated
-      - dismissed
-      - atRisk
-      - confirmedCompromised
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.geoCoordinates:
-      title: geoCoordinates
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        altitude:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Optional. The altitude (height), in feet,  above sea level for the item. Read-only.
-        latitude:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Optional. The latitude, in decimal, for the item. Read-only.
-        longitude:
-          oneOf:
-          - type: number
-            format: double
-            nullable: true
-          - type: string
-            nullable: true
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: Optional. The longitude, in decimal, for the item. Read-only.
-        '@odata.type':
-          type: string
-    ReferenceNumeric:
-      enum:
-      - -INF
-      - INF
-      - NaN
-      type: string
-      nullable: true
-    microsoft.graph.tokenIssuerType:
-      title: tokenIssuerType
-      enum:
-      - AzureAD
-      - ADFederationServices
-      - UnknownFutureValue
-      - AzureADBackupAuth
-      - ADFederationServicesMFAAdapter
-      - NPSExtension
-      type: string
-    microsoft.graph.riskDetectionTimingType:
-      title: riskDetectionTimingType
-      enum:
-      - notDefined
-      - realtime
-      - nearRealtime
-      - offline
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.servicePrincipalRiskDetectionCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+  schemas:
     microsoft.graph.riskDetail:
       title: riskDetail
       enum:
@@ -377,13 +249,32 @@ components:
       - adminDismissedRiskForSignIn
       - adminConfirmedAccountSafe
       type: string
-    microsoft.graph.activityType:
-      title: activityType
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.tokenIssuerType:
+      title: tokenIssuerType
       enum:
-      - signin
-      - user
+      - AzureAD
+      - ADFederationServices
+      - UnknownFutureValue
+      - AzureADBackupAuth
+      - ADFederationServicesMFAAdapter
+      - NPSExtension
+      type: string
+    microsoft.graph.riskLevel:
+      title: riskLevel
+      enum:
+      - low
+      - medium
+      - high
+      - hidden
+      - none
       - unknownFutureValue
-      - servicePrincipal
       type: string
     microsoft.graph.servicePrincipalRiskDetection:
       allOf:
@@ -396,162 +287,223 @@ components:
           activity:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.activityType'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Indicates the activity type the detected risk is linked to.
           activityDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date and time when the risky activity occurred. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
             format: date-time
-            nullable: true
           additionalInfo:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Additional information associated with the risk detection. This string value is represented as a JSON object with the quotations escaped.
-            nullable: true
           appId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The unique identifier for the associated application.
-            nullable: true
           correlationId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Correlation ID of the sign-in activity associated with the risk detection. This property is null if the risk detection is not associated with a sign-in activity.
-            nullable: true
           detectedDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date and time when the risk was detected. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
             format: date-time
-            nullable: true
           detectionTimingType:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.riskDetectionTimingType'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: 'Timing of the detected risk , whether real-time or offline. The possible values are: notDefined, realtime, nearRealtime, offline, unknownFutureValue.'
           ipAddress:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Provides the IP address of the client from where the risk occurred.
-            nullable: true
           keyIds:
             type: array
             items:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             description: The unique identifier for the key credential associated with the risk detection.
           lastUpdatedDateTime:
             pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
+            type:
+            - string
+            - 'null'
             description: Date and time when the risk detection was last updated.
             format: date-time
-            nullable: true
           location:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.signInLocation'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Location from where the sign-in was initiated.
           requestId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Request identifier of the sign-in activity associated with the risk detection. This property is null if the risk detection is not associated with a sign-in activity. Supports $filter (eq).
-            nullable: true
           riskDetail:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.riskDetail'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: 'Details of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden.'
           riskEventType:
-            type: string
+            type:
+            - string
+            - 'null'
             description: 'The type of risk event detected. The possible values are: investigationsThreatIntelligence, generic, adminConfirmedServicePrincipalCompromised, suspiciousSignins, leakedCredentials, anomalousServicePrincipalActivity, maliciousApplication, suspiciousApplication.'
-            nullable: true
           riskLevel:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.riskLevel'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: 'Level of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden. The possible values are: low, medium, high, hidden, none.'
           riskState:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.riskState'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: 'The state of a detected risky service principal or sign-in activity. The possible values are: none, dismissed, atRisk, confirmedCompromised.'
           servicePrincipalDisplayName:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The display name for the service principal.
-            nullable: true
           servicePrincipalId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: The unique identifier for the service principal. Supports $filter (eq).
-            nullable: true
           source:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Source of the risk detection. For example, identityProtection.
-            nullable: true
           tokenIssuerType:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.tokenIssuerType'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: 'Indicates the type of token issuer for the detected sign-in risk. The possible values are: AzureAD.'
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.servicePrincipalRiskDetection'
-    microsoft.graph.riskLevel:
-      title: riskLevel
-      enum:
-      - low
-      - medium
-      - high
-      - hidden
-      - none
-      - unknownFutureValue
-      type: string
-    microsoft.graph.signInLocation:
-      title: signInLocation
+    microsoft.graph.geoCoordinates:
+      title: geoCoordinates
       required:
       - '@odata.type'
       type: object
       properties:
-        city:
-          type: string
-          description: Provides the city where the sign-in originated and is determined using latitude/longitude information from the sign-in activity.
-          nullable: true
-        countryOrRegion:
-          type: string
-          description: Provides the country code info (two letter code) where the sign-in originated.  This is calculated using latitude/longitude information from the sign-in activity.
-          nullable: true
-        geoCoordinates:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.geoCoordinates'
-          - type: object
-            nullable: true
-          description: Provides the latitude, longitude and altitude where the sign-in originated.
-        state:
-          type: string
-          description: Provides the State where the sign-in originated. This is calculated using latitude/longitude information from the sign-in activity.
-          nullable: true
+        altitude:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Optional. The altitude (height), in feet,  above sea level for the item. Read-only.
+        latitude:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Optional. The latitude, in decimal, for the item. Read-only.
+        longitude:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: Optional. The longitude, in decimal, for the item. Read-only.
         '@odata.type':
           type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.ODataError:
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
       required:
-      - error
+      - '@odata.type'
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    ReferenceNumeric:
+      enum:
+      - -INF
+      - INF
+      - NaN
+      type:
+      - string
+      - 'null'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1621,25 +1573,105 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.signInLocation:
+      title: signInLocation
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        city:
+          type:
+          - string
+          - 'null'
+          description: Provides the city where the sign-in originated and is determined using latitude/longitude information from the sign-in activity.
+        countryOrRegion:
+          type:
+          - string
+          - 'null'
+          description: Provides the country code info (two letter code) where the sign-in originated.  This is calculated using latitude/longitude information from the sign-in activity.
+        geoCoordinates:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.geoCoordinates'
+          - type:
+            - object
+            - 'null'
+          description: Provides the latitude, longitude and altitude where the sign-in originated.
+        state:
+          type:
+          - string
+          - 'null'
+          description: Provides the State where the sign-in originated. This is calculated using latitude/longitude information from the sign-in activity.
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
     ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
+      type: integer
+      format: int32
     microsoft.graph.servicePrincipalRiskDetectionCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.servicePrincipalRiskDetectionCollectionResponse'
+      title: Collection of servicePrincipalRiskDetection
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.servicePrincipalRiskDetection'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.riskState:
+      title: riskState
+      enum:
+      - none
+      - confirmedSafe
+      - remediated
+      - dismissed
+      - atRisk
+      - confirmedCompromised
+      - unknownFutureValue
+      type: string
+    microsoft.graph.riskDetectionTimingType:
+      title: riskDetectionTimingType
+      enum:
+      - notDefined
+      - realtime
+      - nearRealtime
+      - offline
+      - unknownFutureValue
+      type: string
+    microsoft.graph.activityType:
+      title: activityType
+      enum:
+      - signin
+      - user
+      - unknownFutureValue
+      - servicePrincipal
+      type: string
   parameters:
     filter:
       name: $filter
@@ -1649,6 +1681,31 @@ components:
       explode: false
       schema:
         type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     top:
       name: $top
       in: query
@@ -1659,28 +1716,3 @@ components:
         minimum: 0
         type: integer
       example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string

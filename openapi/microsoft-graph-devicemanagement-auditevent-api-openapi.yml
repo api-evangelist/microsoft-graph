@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Device Management.audit Event API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: deviceManagement.auditEvent
+  x-ms-docs-toc-type: page
 paths:
   /deviceManagement/auditEvents:
     description: Provides operations to manage the auditEvents property of the microsoft.graph.deviceManagement entity.
@@ -76,7 +70,7 @@ paths:
     post:
       tags:
       - deviceManagement.auditEvent
-      summary: Microsoft Graph Create new navigation property to auditEvents for deviceManagement
+      summary: Microsoft Graph Create new navigation property to auditEvents for…
       operationId: deviceManagement.CreateAuditEvents
       requestBody:
         description: New navigation property
@@ -214,8 +208,9 @@ paths:
       description: 'Usage: category=''{category}'''
       required: true
       schema:
-        type: string
-        nullable: true
+        type:
+        - string
+        - 'null'
     x-ms-docs-grouped-path:
     - /deviceManagement/virtualEndpoint/auditEvents/getAuditActivityTypes()
     get:
@@ -243,8 +238,9 @@ paths:
                     value:
                       type: array
                       items:
-                        type: string
-                        nullable: true
+                        type:
+                        - string
+                        - 'null'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
@@ -280,8 +276,9 @@ paths:
                     value:
                       type: array
                       items:
-                        type: string
-                        nullable: true
+                        type:
+                        - string
+                        - 'null'
         4XX:
           $ref: '#/components/responses/error'
         5XX:
@@ -292,22 +289,6 @@ paths:
         operationName: listMore
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
     microsoft.graph.auditActor:
       title: auditActor
       required:
@@ -315,42 +296,86 @@ components:
       type: object
       properties:
         applicationDisplayName:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Name of the Application.
-          nullable: true
         applicationId:
-          type: string
+          type:
+          - string
+          - 'null'
           description: AAD Application Id.
-          nullable: true
         auditActorType:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Actor Type.
-          nullable: true
         ipAddress:
-          type: string
+          type:
+          - string
+          - 'null'
           description: IPAddress.
-          nullable: true
         servicePrincipalName:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Service Principal Name (SPN).
-          nullable: true
         userId:
-          type: string
+          type:
+          - string
+          - 'null'
           description: User Id.
-          nullable: true
         userPermissions:
           type: array
           items:
-            type: string
-            nullable: true
+            type:
+            - string
+            - 'null'
           description: List of user permissions when the audit was performed.
         userPrincipalName:
-          type: string
+          type:
+          - string
+          - 'null'
           description: User Principal Name (UPN).
-          nullable: true
         '@odata.type':
           type: string
       description: A class containing the properties for Audit Actor.
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.auditResource:
+      title: auditResource
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        auditResourceType:
+          type:
+          - string
+          - 'null'
+          description: Audit resource's type.
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Display name.
+        modifiedProperties:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.auditProperty'
+          description: List of modified properties.
+        resourceId:
+          type:
+          - string
+          - 'null'
+          description: Audit resource's Id.
+        '@odata.type':
+          type: string
+      description: A class containing the properties for Audit Resource.
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -358,82 +383,24 @@ components:
       type: object
       properties:
         request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Request Id as tracked internally by the service
-          nullable: true
         client-request-id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Client request Id as sent by the client application.
-          nullable: true
         date:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
+          type:
+          - string
+          - 'null'
           description: Date when the error occured.
           format: date-time
-          nullable: true
         '@odata.type':
           type: string
-    microsoft.graph.auditEvent:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: auditEvent
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          activity:
-            type: string
-            description: Friendly name of the activity.
-            nullable: true
-          activityDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date time in UTC when the activity was performed.
-            format: date-time
-          activityOperationType:
-            type: string
-            description: The HTTP operation type of the activity.
-            nullable: true
-          activityResult:
-            type: string
-            description: The result of the activity.
-            nullable: true
-          activityType:
-            type: string
-            description: The type of activity that was being performed.
-            nullable: true
-          actor:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.auditActor'
-            - type: object
-              nullable: true
-            description: AAD user and application that are associated with the audit event.
-          category:
-            type: string
-            description: Audit category.
-            nullable: true
-          componentName:
-            type: string
-            description: Component name.
-            nullable: true
-          correlationId:
-            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-            type: string
-            description: The client request Id that is used to correlate activity within the system.
-            format: uuid
-          displayName:
-            type: string
-            description: Event display name.
-            nullable: true
-          resources:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.auditResource'
-            description: Resources being modified.
-          '@odata.type':
-            type: string
-        description: A class containing the properties for Audit Event.
-      x-ms-discriminator-value: '#microsoft.graph.auditEvent'
     microsoft.graph.auditEventCollectionResponse:
       title: Collection of auditEvent
       type: object
@@ -445,32 +412,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.auditEvent'
-    microsoft.graph.auditResource:
-      title: auditResource
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        auditResourceType:
-          type: string
-          description: Audit resource's type.
-          nullable: true
-        displayName:
-          type: string
-          description: Display name.
-          nullable: true
-        modifiedProperties:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.auditProperty'
-          description: List of modified properties.
-        resourceId:
-          type: string
-          description: Audit resource's Id.
-          nullable: true
-        '@odata.type':
-          type: string
-      description: A class containing the properties for Audit Resource.
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -483,53 +424,84 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.auditProperty:
-      title: auditProperty
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: Display name.
-          nullable: true
-        newValue:
-          type: string
-          description: New value.
-          nullable: true
-        oldValue:
-          type: string
-          description: Old value.
-          nullable: true
-        '@odata.type':
-          type: string
-      description: A class containing the properties for Audit Property.
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.auditEvent:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: auditEvent
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          activity:
+            type:
+            - string
+            - 'null'
+            description: Friendly name of the activity.
+          activityDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date time in UTC when the activity was performed.
+            format: date-time
+          activityOperationType:
+            type:
+            - string
+            - 'null'
+            description: The HTTP operation type of the activity.
+          activityResult:
+            type:
+            - string
+            - 'null'
+            description: The result of the activity.
+          activityType:
+            type:
+            - string
+            - 'null'
+            description: The type of activity that was being performed.
+          actor:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.auditActor'
+            - type:
+              - object
+              - 'null'
+            description: AAD user and application that are associated with the audit event.
+          category:
+            type:
+            - string
+            - 'null'
+            description: Audit category.
+          componentName:
+            type:
+            - string
+            - 'null'
+            description: Component name.
+          correlationId:
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+            type: string
+            description: The client request Id that is used to correlate activity within the system.
+            format: uuid
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Event display name.
+          resources:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.auditResource'
+            description: Resources being modified.
+          '@odata.type':
+            type: string
+        description: A class containing the properties for Audit Event.
+      x-ms-discriminator-value: '#microsoft.graph.auditEvent'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1599,7 +1571,111 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.auditProperty:
+      title: auditProperty
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Display name.
+        newValue:
+          type:
+          - string
+          - 'null'
+          description: New value.
+        oldValue:
+          type:
+          - string
+          - 'null'
+          description: Old value.
+        '@odata.type':
+          type: string
+      description: A class containing the properties for Audit Property.
+    ODataCountResponse:
+      type: integer
+      format: int32
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+  parameters:
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   responses:
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
     error:
       description: error
       content:
@@ -1612,53 +1688,3 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.auditEventCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string

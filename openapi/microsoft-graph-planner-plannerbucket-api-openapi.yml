@@ -1,20 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Planner.planner Bucket API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: planner.plannerBucket
   x-ms-docs-toc-type: page
@@ -471,7 +464,7 @@ paths:
     patch:
       tags:
       - planner.plannerBucket
-      summary: Microsoft Graph Update the navigation property assignedToTaskBoardFormat in planner
+      summary: Microsoft Graph Update the navigation property assignedToTaskBoardFormat in…
       operationId: planner.buckets.tasks.UpdateAssignedToTaskBoardFormat
       parameters:
       - name: If-Match
@@ -801,7 +794,7 @@ paths:
     patch:
       tags:
       - planner.plannerBucket
-      summary: Microsoft Graph Update the navigation property progressTaskBoardFormat in planner
+      summary: Microsoft Graph Update the navigation property progressTaskBoardFormat in…
       operationId: planner.buckets.tasks.UpdateProgressTaskBoardFormat
       parameters:
       - name: If-Match
@@ -892,28 +885,246 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    microsoft.graph.plannerPreviewType:
-      title: plannerPreviewType
-      enum:
-      - automatic
-      - noPreview
-      - checklist
-      - description
-      - reference
-      type: string
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.plannerTask:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: plannerTask
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          activeChecklistItemCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Number of checklist items with value set to false, representing incomplete items.
+            format: int32
+          appliedCategories:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.plannerAppliedCategories'
+            - type:
+              - object
+              - 'null'
+            description: The categories to which the task has been applied. See applied Categories for possible values.
+          assigneePriority:
+            type:
+            - string
+            - 'null'
+            description: Hint used to order items of this type in a list view. The format is defined as outlined here.
+          assignments:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.plannerAssignments'
+            - type:
+              - object
+              - 'null'
+            description: The set of assignees the task is assigned to.
+          bucketId:
+            type:
+            - string
+            - 'null'
+            description: Bucket ID to which the task belongs. The bucket needs to be in the plan that the task is in. It's 28 characters long and case-sensitive. Format validation is done on the service.
+          checklistItemCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Number of checklist items that are present on the task.
+            format: int32
+          completedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the user that completed the task.
+          completedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Read-only. Date and time at which the 'percentComplete' of the task is set to '100'. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+            format: date-time
+          conversationThreadId:
+            type:
+            - string
+            - 'null'
+            description: Thread ID of the conversation on the task. This is the ID of the conversation thread object created in the group.
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type:
+              - object
+              - 'null'
+            description: Identity of the user that created the task.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Read-only. Date and time at which the task is created. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+            format: date-time
+          dueDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time at which the task is due. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+            format: date-time
+          hasDescription:
+            type:
+            - boolean
+            - 'null'
+            description: Read-only. Value is true if the details object of the task has a nonempty description and false otherwise.
+          orderHint:
+            type:
+            - string
+            - 'null'
+            description: Hint used to order items of this type in a list view. The format is defined as outlined here.
+          percentComplete:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Percentage of task completion. When set to 100, the task is considered completed.
+            format: int32
+          planId:
+            type:
+            - string
+            - 'null'
+            description: Plan ID to which the task belongs.
+          previewType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.plannerPreviewType'
+            - type:
+              - object
+              - 'null'
+            description: 'This sets the type of preview that shows up on the task. The possible values are: automatic, noPreview, checklist, description, reference.'
+          priority:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Priority of the task. The valid range of values is between 0 and 10, with the increasing value being lower priority (0 has the highest priority and 10 has the lowest priority).  Currently, Planner interprets values 0 and 1 as 'urgent', 2, 3 and 4 as 'important', 5, 6, and 7 as 'medium', and 8, 9, and 10 as 'low'.  Additionally, Planner sets the value 1 for 'urgent', 3 for 'important', 5 for 'medium', and 9 for 'low'.
+            format: int32
+          referenceCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Number of external references that exist on the task.
+            format: int32
+          startDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time at which the task starts. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+            format: date-time
+          title:
+            type: string
+            description: Title of the task.
+          assignedToTaskBoardFormat:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.plannerAssignedToTaskBoardTaskFormat'
+            - type:
+              - object
+              - 'null'
+            description: Read-only. Nullable. Used to render the task correctly in the task board view when grouped by assignedTo.
+            x-ms-navigationProperty: true
+          bucketTaskBoardFormat:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.plannerBucketTaskBoardTaskFormat'
+            - type:
+              - object
+              - 'null'
+            description: Read-only. Nullable. Used to render the task correctly in the task board view when grouped by bucket.
+            x-ms-navigationProperty: true
+          details:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.plannerTaskDetails'
+            - type:
+              - object
+              - 'null'
+            description: Read-only. Nullable. More details about the task.
+            x-ms-navigationProperty: true
+          progressTaskBoardFormat:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.plannerProgressTaskBoardTaskFormat'
+            - type:
+              - object
+              - 'null'
+            description: Read-only. Nullable. Used to render the task correctly in the task board view when grouped by progress.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.plannerTask'
+    microsoft.graph.plannerProgressTaskBoardTaskFormat:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: plannerProgressTaskBoardTaskFormat
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          orderHint:
+            type:
+            - string
+            - 'null'
+            description: Hint value used to order the task on the progress view of the task board. For details about the supported format, see Using order hints in Planner.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.plannerProgressTaskBoardTaskFormat'
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.plannerTaskCollectionResponse:
+      title: Collection of plannerTask
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.plannerTask'
+    microsoft.graph.plannerBucketCollectionResponse:
+      title: Collection of plannerBucket
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.plannerBucket'
+    microsoft.graph.plannerAppliedCategories:
+      title: plannerAppliedCategories
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
           type: string
-        message:
+    microsoft.graph.plannerChecklistItems:
+      title: plannerChecklistItems
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
           type: string
-        target:
-          type: string
-          nullable: true
     microsoft.graph.plannerBucket:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -926,13 +1137,15 @@ components:
             type: string
             description: Name of the bucket.
           orderHint:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Hint used to order items of this type in a list view. For details about the supported format, see Using order hints in Planner.
-            nullable: true
           planId:
-            type: string
+            type:
+            - string
+            - 'null'
             description: Plan ID to which the bucket belongs.
-            nullable: true
           tasks:
             type: array
             items:
@@ -942,38 +1155,85 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.plannerBucket'
-    microsoft.graph.plannerAssignedToTaskBoardTaskFormat:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: plannerAssignedToTaskBoardTaskFormat
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          orderHintsByAssignee:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.plannerOrderHintsByAssignee'
-            - type: object
-              nullable: true
-            description: Dictionary of hints used to order tasks on the AssignedTo view of the Task Board. The key of each entry is one of the users the task is assigned to and the value is the order hint. The format of each value is defined as outlined here.
-          unassignedOrderHint:
-            type: string
-            description: Hint value used to order the task on the AssignedTo view of the Task Board when the task isn't assigned to anyone, or if the orderHintsByAssignee dictionary doesn't provide an order hint for the user the task is assigned to. The format is defined as outlined here.
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.plannerAssignedToTaskBoardTaskFormat'
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.plannerChecklistItems:
-      title: plannerChecklistItems
+    microsoft.graph.plannerAssignments:
+      title: plannerAssignments
       required:
       - '@odata.type'
       type: object
       properties:
         '@odata.type':
           type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.plannerTaskDetails:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: plannerTaskDetails
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          checklist:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.plannerChecklistItems'
+            - type:
+              - object
+              - 'null'
+            description: The collection of checklist items on the task.
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description of the task.
+          previewType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.plannerPreviewType'
+            - type:
+              - object
+              - 'null'
+            description: 'This sets the type of preview that shows up on the task. The possible values are: automatic, noPreview, checklist, description, reference. When set to automatic the displayed preview is chosen by the app viewing the task.'
+          references:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.plannerExternalReferences'
+            - type:
+              - object
+              - 'null'
+            description: The collection of references on the task.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.plannerTaskDetails'
+    microsoft.graph.plannerPreviewType:
+      title: plannerPreviewType
+      enum:
+      - automatic
+      - noPreview
+      - checklist
+      - description
+      - reference
+      type: string
     microsoft.graph.identity:
       title: identity
       required:
@@ -981,13 +1241,15 @@ components:
       type: object
       properties:
         displayName:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
-          nullable: true
         id:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
-          nullable: true
         '@odata.type':
           type: string
       discriminator:
@@ -1013,338 +1275,6 @@ components:
           '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
           '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
           '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
-    microsoft.graph.plannerProgressTaskBoardTaskFormat:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: plannerProgressTaskBoardTaskFormat
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          orderHint:
-            type: string
-            description: Hint value used to order the task on the progress view of the task board. For details about the supported format, see Using order hints in Planner.
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.plannerProgressTaskBoardTaskFormat'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.plannerBucketCollectionResponse:
-      title: Collection of plannerBucket
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.plannerBucket'
-    microsoft.graph.plannerTask:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: plannerTask
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          activeChecklistItemCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Number of checklist items with value set to false, representing incomplete items.
-            format: int32
-            nullable: true
-          appliedCategories:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.plannerAppliedCategories'
-            - type: object
-              nullable: true
-            description: The categories to which the task has been applied. See applied Categories for possible values.
-          assigneePriority:
-            type: string
-            description: Hint used to order items of this type in a list view. The format is defined as outlined here.
-            nullable: true
-          assignments:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.plannerAssignments'
-            - type: object
-              nullable: true
-            description: The set of assignees the task is assigned to.
-          bucketId:
-            type: string
-            description: Bucket ID to which the task belongs. The bucket needs to be in the plan that the task is in. It's 28 characters long and case-sensitive. Format validation is done on the service.
-            nullable: true
-          checklistItemCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Number of checklist items that are present on the task.
-            format: int32
-            nullable: true
-          completedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
-            description: Identity of the user that completed the task.
-          completedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Read-only. Date and time at which the 'percentComplete' of the task is set to '100'. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-            format: date-time
-            nullable: true
-          conversationThreadId:
-            type: string
-            description: Thread ID of the conversation on the task. This is the ID of the conversation thread object created in the group.
-            nullable: true
-          createdBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type: object
-              nullable: true
-            description: Identity of the user that created the task.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Read-only. Date and time at which the task is created. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-            format: date-time
-            nullable: true
-          dueDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time at which the task is due. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-            format: date-time
-            nullable: true
-          hasDescription:
-            type: boolean
-            description: Read-only. Value is true if the details object of the task has a nonempty description and false otherwise.
-            nullable: true
-          orderHint:
-            type: string
-            description: Hint used to order items of this type in a list view. The format is defined as outlined here.
-            nullable: true
-          percentComplete:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Percentage of task completion. When set to 100, the task is considered completed.
-            format: int32
-            nullable: true
-          planId:
-            type: string
-            description: Plan ID to which the task belongs.
-            nullable: true
-          previewType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.plannerPreviewType'
-            - type: object
-              nullable: true
-            description: 'This sets the type of preview that shows up on the task. The possible values are: automatic, noPreview, checklist, description, reference.'
-          priority:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Priority of the task. The valid range of values is between 0 and 10, with the increasing value being lower priority (0 has the highest priority and 10 has the lowest priority).  Currently, Planner interprets values 0 and 1 as 'urgent', 2, 3 and 4 as 'important', 5, 6, and 7 as 'medium', and 8, 9, and 10 as 'low'.  Additionally, Planner sets the value 1 for 'urgent', 3 for 'important', 5 for 'medium', and 9 for 'low'.
-            format: int32
-            nullable: true
-          referenceCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Number of external references that exist on the task.
-            format: int32
-            nullable: true
-          startDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Date and time at which the task starts. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-            format: date-time
-            nullable: true
-          title:
-            type: string
-            description: Title of the task.
-          assignedToTaskBoardFormat:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.plannerAssignedToTaskBoardTaskFormat'
-            - type: object
-              nullable: true
-            description: Read-only. Nullable. Used to render the task correctly in the task board view when grouped by assignedTo.
-            x-ms-navigationProperty: true
-          bucketTaskBoardFormat:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.plannerBucketTaskBoardTaskFormat'
-            - type: object
-              nullable: true
-            description: Read-only. Nullable. Used to render the task correctly in the task board view when grouped by bucket.
-            x-ms-navigationProperty: true
-          details:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.plannerTaskDetails'
-            - type: object
-              nullable: true
-            description: Read-only. Nullable. More details about the task.
-            x-ms-navigationProperty: true
-          progressTaskBoardFormat:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.plannerProgressTaskBoardTaskFormat'
-            - type: object
-              nullable: true
-            description: Read-only. Nullable. Used to render the task correctly in the task board view when grouped by progress.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.plannerTask'
-    microsoft.graph.plannerTaskCollectionResponse:
-      title: Collection of plannerTask
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.plannerTask'
-    microsoft.graph.plannerTaskDetails:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: plannerTaskDetails
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          checklist:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.plannerChecklistItems'
-            - type: object
-              nullable: true
-            description: The collection of checklist items on the task.
-          description:
-            type: string
-            description: Description of the task.
-            nullable: true
-          previewType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.plannerPreviewType'
-            - type: object
-              nullable: true
-            description: 'This sets the type of preview that shows up on the task. The possible values are: automatic, noPreview, checklist, description, reference. When set to automatic the displayed preview is chosen by the app viewing the task.'
-          references:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.plannerExternalReferences'
-            - type: object
-              nullable: true
-            description: The collection of references on the task.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.plannerTaskDetails'
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.plannerAppliedCategories:
-      title: plannerAppliedCategories
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-    microsoft.graph.plannerBucketTaskBoardTaskFormat:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: plannerBucketTaskBoardTaskFormat
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          orderHint:
-            type: string
-            description: Hint used to order tasks in the bucket view of the task board. For details about the supported format, see Using order hints in Planner.
-            nullable: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.plannerBucketTaskBoardTaskFormat'
-    microsoft.graph.plannerAssignments:
-      title: plannerAssignments
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-    microsoft.graph.plannerOrderHintsByAssignee:
-      title: plannerOrderHintsByAssignee
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-    microsoft.graph.plannerExternalReferences:
-      title: plannerExternalReferences
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.identitySet:
       title: identitySet
       required:
@@ -1354,20 +1284,23 @@ components:
         application:
           anyOf:
           - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
+          - type:
+            - object
+            - 'null'
           description: Optional. The application associated with this action.
         device:
           anyOf:
           - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
+          - type:
+            - object
+            - 'null'
           description: Optional. The device associated with this action.
         user:
           anyOf:
           - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type: object
-            nullable: true
+          - type:
+            - object
+            - 'null'
           description: Optional. The user associated with this action.
         '@odata.type':
           type: string
@@ -1381,6 +1314,50 @@ components:
           '#microsoft.graph.communicationsIdentitySet': '#/components/schemas/microsoft.graph.communicationsIdentitySet'
           '#microsoft.graph.engagementIdentitySet': '#/components/schemas/microsoft.graph.engagementIdentitySet'
           '#microsoft.graph.sharePointIdentitySet': '#/components/schemas/microsoft.graph.sharePointIdentitySet'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.plannerAssignedToTaskBoardTaskFormat:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: plannerAssignedToTaskBoardTaskFormat
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          orderHintsByAssignee:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.plannerOrderHintsByAssignee'
+            - type:
+              - object
+              - 'null'
+            description: Dictionary of hints used to order tasks on the AssignedTo view of the Task Board. The key of each entry is one of the users the task is assigned to and the value is the order hint. The format of each value is defined as outlined here.
+          unassignedOrderHint:
+            type:
+            - string
+            - 'null'
+            description: Hint value used to order the task on the AssignedTo view of the Task Board when the task isn't assigned to anyone, or if the orderHintsByAssignee dictionary doesn't provide an order hint for the user the task is assigned to. The format is defined as outlined here.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.plannerAssignedToTaskBoardTaskFormat'
     microsoft.graph.entity:
       title: entity
       required:
@@ -2450,31 +2427,68 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.plannerBucketTaskBoardTaskFormat:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: plannerBucketTaskBoardTaskFormat
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          orderHint:
+            type:
+            - string
+            - 'null'
+            description: Hint used to order tasks in the bucket view of the task board. For details about the supported format, see Using order hints in Planner.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.plannerBucketTaskBoardTaskFormat'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
     ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.plannerTaskCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.plannerTaskCollectionResponse'
-    microsoft.graph.plannerBucketCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.plannerBucketCollectionResponse'
+      type: integer
+      format: int32
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.plannerOrderHintsByAssignee:
+      title: plannerOrderHintsByAssignee
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+    microsoft.graph.plannerExternalReferences:
+      title: plannerExternalReferences
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
   parameters:
     filter:
       name: $filter
@@ -2484,6 +2498,31 @@ components:
       explode: false
       schema:
         type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     top:
       name: $top
       in: query
@@ -2494,28 +2533,28 @@ components:
         minimum: 0
         type: integer
       example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+  responses:
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.plannerBucketCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.plannerBucketCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.plannerTaskCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.plannerTaskCollectionResponse'

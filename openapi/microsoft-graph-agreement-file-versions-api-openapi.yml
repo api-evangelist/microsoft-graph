@@ -1,13 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Agreement File Versions API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
+  title: Microsoft Graph Agreements Agreement File Versions API
+  description: 'Microsoft Graph API for managing agreements in Microsoft Entra ID.
 
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
+    This API enables organizations to create, manage, and track terms of use agreements,
 
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
+    including agreement files, localizations, and user acceptances.'
   version: 1.0.0
   contact:
     name: Microsoft Graph API Support
@@ -228,87 +226,7 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: default
 components:
-  examples:
-    CreateAgreementFileVersionResponse:
-      summary: Example response for created agreement file version
-      value:
-        id: 00000000-0000-0000-0000-000000000007
-        displayName: Terms of Use - Spanish v2
-        fileName: terms-of-use-es-v2.pdf
-        language: es-ES
-        isMajorVersion: true
-        createdDateTime: '2024-02-01T10:30:00Z'
-        '@odata.type': '#microsoft.graph.agreementFileVersion'
-    UpdateAgreementFileVersionRequest:
-      summary: Example request to update an agreement file version
-      value:
-        displayName: Updated Terms of Use - Spanish v2
-        '@odata.type': '#microsoft.graph.agreementFileVersion'
-    GetAgreementFileVersionResponse:
-      summary: Example response for getting an agreement file version
-      value:
-        id: 00000000-0000-0000-0000-000000000007
-        displayName: Terms of Use - Spanish v2
-        fileName: terms-of-use-es-v2.pdf
-        language: es-ES
-        isMajorVersion: true
-        createdDateTime: '2024-02-01T10:30:00Z'
-        '@odata.type': '#microsoft.graph.agreementFileVersion'
-    UpdateAgreementFileVersionResponse:
-      summary: Example response for updated agreement file version
-      value:
-        id: 00000000-0000-0000-0000-000000000007
-        displayName: Updated Terms of Use - Spanish v2
-        fileName: terms-of-use-es-v2.pdf
-        language: es-ES
-        isMajorVersion: true
-        createdDateTime: '2024-02-01T10:30:00Z'
-        '@odata.type': '#microsoft.graph.agreementFileVersion'
-    CreateAgreementFileVersionRequest:
-      summary: Example request to create an agreement file version
-      value:
-        displayName: Terms of Use - Spanish v2
-        fileName: terms-of-use-es-v2.pdf
-        language: es-ES
-        isMajorVersion: true
-        '@odata.type': '#microsoft.graph.agreementFileVersion'
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
-    AgreementFileVersionCollectionResponse:
-      description: Retrieved collection of agreement file versions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AgreementFileVersionCollectionResponse'
   schemas:
-    AgreementFileVersionCollectionResponse:
-      title: AgreementFileVersionCollectionResponse
-      type: object
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementFileVersion'
-        '@odata.nextLink':
-          type: string
-          nullable: true
-        '@odata.count':
-          type: integer
-          format: int32
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for an entity. Read-only.
-        '@odata.type':
-          type: string
     ErrorDetail:
       title: ErrorDetail
       required:
@@ -323,14 +241,6 @@ components:
         target:
           type: string
           nullable: true
-    ODataError:
-      title: ODataError
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
     AgreementFileData:
       title: AgreementFileData
       type: object
@@ -346,6 +256,20 @@ components:
       title: InnerError
       type: object
       description: The structure of this object is service-specific
+    AgreementFileVersionCollectionResponse:
+      title: AgreementFileVersionCollectionResponse
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementFileVersion'
+        '@odata.nextLink':
+          type: string
+          nullable: true
+        '@odata.count':
+          type: integer
+          format: int32
     AgreementFileProperties:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -386,6 +310,23 @@ components:
             nullable: true
           '@odata.type':
             type: string
+    Entity:
+      title: Entity
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity. Read-only.
+        '@odata.type':
+          type: string
+    ODataError:
+      title: ODataError
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
     MainError:
       title: MainError
       required:
@@ -418,11 +359,63 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
+  examples:
+    CreateAgreementFileVersionRequest:
+      summary: Example request to create an agreement file version
+      value:
+        displayName: Terms of Use - Spanish v2
+        fileName: terms-of-use-es-v2.pdf
+        language: es-ES
+        isMajorVersion: true
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
+    UpdateAgreementFileVersionResponse:
+      summary: Example response for updated agreement file version
+      value:
+        id: 00000000-0000-0000-0000-000000000007
+        displayName: Updated Terms of Use - Spanish v2
+        fileName: terms-of-use-es-v2.pdf
+        language: es-ES
+        isMajorVersion: true
+        createdDateTime: '2024-02-01T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
+    UpdateAgreementFileVersionRequest:
+      summary: Example request to update an agreement file version
+      value:
+        displayName: Updated Terms of Use - Spanish v2
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
+    CreateAgreementFileVersionResponse:
+      summary: Example response for created agreement file version
+      value:
+        id: 00000000-0000-0000-0000-000000000007
+        displayName: Terms of Use - Spanish v2
+        fileName: terms-of-use-es-v2.pdf
+        language: es-ES
+        isMajorVersion: true
+        createdDateTime: '2024-02-01T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
+    GetAgreementFileVersionResponse:
+      summary: Example response for getting an agreement file version
+      value:
+        id: 00000000-0000-0000-0000-000000000007
+        displayName: Terms of Use - Spanish v2
+        fileName: terms-of-use-es-v2.pdf
+        language: es-ES
+        isMajorVersion: true
+        createdDateTime: '2024-02-01T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
   parameters:
     Search:
       name: $search
       in: query
       description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    Filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
       style: form
       explode: false
       schema:
@@ -444,14 +437,14 @@ components:
       schema:
         type: string
       x-ms-docs-key-type: agreementFileLocalization
-    Filter:
-      name: $filter
+    Count:
+      name: $count
       in: query
-      description: Filter items by property values
+      description: Include count of items
       style: form
       explode: false
       schema:
-        type: string
+        type: boolean
     AgreementId:
       name: agreement-id
       in: path
@@ -460,6 +453,14 @@ components:
       schema:
         type: string
       x-ms-docs-key-type: agreement
+    AgreementFileVersionId:
+      name: agreementFileVersion-id
+      in: path
+      description: The unique identifier of the agreement file version
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreementFileVersion
     Top:
       name: $top
       in: query
@@ -470,19 +471,16 @@ components:
         minimum: 0
         type: integer
       example: 50
-    Count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    AgreementFileVersionId:
-      name: agreementFileVersion-id
-      in: path
-      description: The unique identifier of the agreement file version
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreementFileVersion
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+    AgreementFileVersionCollectionResponse:
+      description: Retrieved collection of agreement file versions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgreementFileVersionCollectionResponse'

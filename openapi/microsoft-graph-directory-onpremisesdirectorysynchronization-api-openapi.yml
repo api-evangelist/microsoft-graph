@@ -1,22 +1,16 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Graph Admin Admin.admin Directory.on Premises Directory Synchronization API
-  description: 'Microsoft Graph API for managing administrative resources in Microsoft Entra ID.
-
-    This API enables administrators to manage Microsoft Edge browser settings, Internet Explorer mode configurations,
-
-    site lists, shared browser sites, Microsoft 365 Apps installation options, people insights, service announcements,
-
-    SharePoint settings, Copilot administration, directory administrative units, and admin consent policies.'
-  version: 1.0.0
-  contact:
-    name: Microsoft Graph API Support
-    url: https://developer.microsoft.com/graph
+  title: Microsoft Graph OData Service for namespace microsoft.graph…
+  description: This OData service is located at https://graph.microsoft.com/v1.0
+  version: v1.0
+  x-ms-generated-by:
+    toolName: Microsoft.OpenApi.OData
+    toolVersion: 1.0.9.0
 servers:
 - url: https://graph.microsoft.com/v1.0
-  description: Microsoft Graph API v1.0 endpoint
 tags:
 - name: directory.onPremisesDirectorySynchronization
+  x-ms-docs-toc-type: page
 paths:
   /directory/onPremisesSynchronization:
     description: Provides operations to manage the onPremisesSynchronization property of the microsoft.graph.directory entity.
@@ -76,7 +70,7 @@ paths:
     post:
       tags:
       - directory.onPremisesDirectorySynchronization
-      summary: Microsoft Graph Create new navigation property to onPremisesSynchronization for directory
+      summary: Microsoft Graph Create new navigation property to onPremisesSynchronization for…
       operationId: directory.CreateOnPremisesSynchronization
       requestBody:
         description: New navigation property
@@ -180,7 +174,7 @@ paths:
     delete:
       tags:
       - directory.onPremisesDirectorySynchronization
-      summary: Microsoft Graph Delete navigation property onPremisesSynchronization for directory
+      summary: Microsoft Graph Delete navigation property onPremisesSynchronization for…
       operationId: directory.DeleteOnPremisesSynchronization
       parameters:
       - name: If-Match
@@ -215,22 +209,13 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.onPremisesDirectorySynchronizationDeletionPreventionType:
       title: onPremisesDirectorySynchronizationDeletionPreventionType
       enum:
@@ -239,28 +224,6 @@ components:
       - enabledForPercentage
       - unknownFutureValue
       type: string
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type: string
-          description: Request Id as tracked internally by the service
-          nullable: true
-        client-request-id:
-          type: string
-          description: Client request Id as sent by the client application.
-          nullable: true
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date when the error occured.
-          format: date-time
-          nullable: true
-        '@odata.type':
-          type: string
     microsoft.graph.onPremisesDirectorySynchronization:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -272,26 +235,141 @@ components:
           configuration:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronizationConfiguration'
-            - type: object
-              nullable: true
+            - type:
+              - object
+              - 'null'
             description: Consists of configurations that can be fine-tuned and impact the on-premises directory synchronization process for a tenant. Nullable.
           features:
             $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronizationFeature'
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.onPremisesDirectorySynchronization'
-    microsoft.graph.onPremisesDirectorySynchronizationConfiguration:
-      title: onPremisesDirectorySynchronizationConfiguration
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
       required:
       - '@odata.type'
       type: object
       properties:
-        accidentalDeletionPrevention:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.onPremisesAccidentalDeletionPrevention'
-          - type: object
-            nullable: true
-          description: Contains the accidental deletion prevention configuration for a tenant.
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.onPremisesDirectorySynchronizationFeature:
+      title: onPremisesDirectorySynchronizationFeature
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        blockCloudObjectTakeoverThroughHardMatchEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to block cloud object takeover via source anchor hard match if enabled.
+        blockSoftMatchEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Use to block soft match for all objects if enabled for the  tenant. Customers are encouraged to enable this feature and keep it enabled until soft matching is required again for their tenancy. This flag should be enabled again after any soft matching has been completed and is no longer needed.
+        bypassDirSyncOverridesEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: When true, persists the values of Mobile and OtherMobile in on-premises AD during sync cycles instead of values of MobilePhone or AlternateMobilePhones in Microsoft Entra ID.
+        cloudPasswordPolicyForPasswordSyncedUsersEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that cloud password policy applies to users whose passwords are synchronized from on-premises.
+        concurrentCredentialUpdateEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to enable concurrent user credentials update in OrgId.
+        concurrentOrgIdProvisioningEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to enable concurrent user creation in OrgId.
+        deviceWritebackEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that device write-back is enabled.
+        directoryExtensionsEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that directory extensions are being synced from on-premises AD to Microsoft Entra ID.
+        fopeConflictResolutionEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that for a Microsoft Forefront Online Protection for Exchange (FOPE) migrated tenant, the conflicting proxy address should be migrated over.
+        groupWriteBackEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to enable object-level group writeback feature for additional group types.
+        passwordSyncEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate on-premise password synchronization is enabled.
+        passwordWritebackEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that writeback of password resets from Microsoft Entra ID to on-premises AD is enabled. This property isn't in use and updating it isn't supported.
+        quarantineUponProxyAddressesConflictEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that we should quarantine objects with conflicting proxy address.
+        quarantineUponUpnConflictEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that we should quarantine objects conflicting with duplicate userPrincipalName.
+        softMatchOnUpnEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that we should soft match objects based on userPrincipalName.
+        synchronizeUpnForManagedUsersEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that we should synchronize userPrincipalName objects for managed users with licenses.
+        unifiedGroupWritebackEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that Microsoft 365 Group write-back is enabled.
+        userForcePasswordChangeOnLogonEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that feature to force password change for a user on logon is enabled while synchronizing on-premise credentials.
+        userWritebackEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Used to indicate that user writeback is enabled.
         '@odata.type':
           type: string
     microsoft.graph.ODataErrors.MainError:
@@ -306,146 +384,28 @@ components:
           type: string
           x-ms-primary-error-message: true
         target:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
           type: array
           items:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.onPremisesDirectorySynchronizationFeature:
-      title: onPremisesDirectorySynchronizationFeature
+    microsoft.graph.onPremisesDirectorySynchronizationConfiguration:
+      title: onPremisesDirectorySynchronizationConfiguration
       required:
       - '@odata.type'
       type: object
       properties:
-        blockCloudObjectTakeoverThroughHardMatchEnabled:
-          type: boolean
-          description: Used to block cloud object takeover via source anchor hard match if enabled.
-          nullable: true
-        blockSoftMatchEnabled:
-          type: boolean
-          description: Use to block soft match for all objects if enabled for the  tenant. Customers are encouraged to enable this feature and keep it enabled until soft matching is required again for their tenancy. This flag should be enabled again after any soft matching has been completed and is no longer needed.
-          nullable: true
-        bypassDirSyncOverridesEnabled:
-          type: boolean
-          description: When true, persists the values of Mobile and OtherMobile in on-premises AD during sync cycles instead of values of MobilePhone or AlternateMobilePhones in Microsoft Entra ID.
-          nullable: true
-        cloudPasswordPolicyForPasswordSyncedUsersEnabled:
-          type: boolean
-          description: Used to indicate that cloud password policy applies to users whose passwords are synchronized from on-premises.
-          nullable: true
-        concurrentCredentialUpdateEnabled:
-          type: boolean
-          description: Used to enable concurrent user credentials update in OrgId.
-          nullable: true
-        concurrentOrgIdProvisioningEnabled:
-          type: boolean
-          description: Used to enable concurrent user creation in OrgId.
-          nullable: true
-        deviceWritebackEnabled:
-          type: boolean
-          description: Used to indicate that device write-back is enabled.
-          nullable: true
-        directoryExtensionsEnabled:
-          type: boolean
-          description: Used to indicate that directory extensions are being synced from on-premises AD to Microsoft Entra ID.
-          nullable: true
-        fopeConflictResolutionEnabled:
-          type: boolean
-          description: Used to indicate that for a Microsoft Forefront Online Protection for Exchange (FOPE) migrated tenant, the conflicting proxy address should be migrated over.
-          nullable: true
-        groupWriteBackEnabled:
-          type: boolean
-          description: Used to enable object-level group writeback feature for additional group types.
-          nullable: true
-        passwordSyncEnabled:
-          type: boolean
-          description: Used to indicate on-premise password synchronization is enabled.
-          nullable: true
-        passwordWritebackEnabled:
-          type: boolean
-          description: Used to indicate that writeback of password resets from Microsoft Entra ID to on-premises AD is enabled. This property isn't in use and updating it isn't supported.
-          nullable: true
-        quarantineUponProxyAddressesConflictEnabled:
-          type: boolean
-          description: Used to indicate that we should quarantine objects with conflicting proxy address.
-          nullable: true
-        quarantineUponUpnConflictEnabled:
-          type: boolean
-          description: Used to indicate that we should quarantine objects conflicting with duplicate userPrincipalName.
-          nullable: true
-        softMatchOnUpnEnabled:
-          type: boolean
-          description: Used to indicate that we should soft match objects based on userPrincipalName.
-          nullable: true
-        synchronizeUpnForManagedUsersEnabled:
-          type: boolean
-          description: Used to indicate that we should synchronize userPrincipalName objects for managed users with licenses.
-          nullable: true
-        unifiedGroupWritebackEnabled:
-          type: boolean
-          description: Used to indicate that Microsoft 365 Group write-back is enabled.
-          nullable: true
-        userForcePasswordChangeOnLogonEnabled:
-          type: boolean
-          description: Used to indicate that feature to force password change for a user on logon is enabled while synchronizing on-premise credentials.
-          nullable: true
-        userWritebackEnabled:
-          type: boolean
-          description: Used to indicate that user writeback is enabled.
-          nullable: true
-        '@odata.type':
-          type: string
-    microsoft.graph.onPremisesDirectorySynchronizationCollectionResponse:
-      title: Collection of onPremisesDirectorySynchronization
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronization'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type: integer
-          format: int64
-          nullable: true
-        '@odata.nextLink':
-          type: string
-          nullable: true
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.onPremisesAccidentalDeletionPrevention:
-      title: onPremisesAccidentalDeletionPrevention
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        alertThreshold:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Threshold value which triggers accidental deletion prevention. The threshold is either an absolute number of objects or a percentage number of objects.
-          format: int32
-          nullable: true
-        synchronizationPreventionType:
+        accidentalDeletionPrevention:
           anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronizationDeletionPreventionType'
-          - type: object
-            nullable: true
-          description: 'The status of the accidental deletion prevention feature. The possible values are: disabled, enabledForCount, enabledForPercentage, unknownFutureValue.'
+          - $ref: '#/components/schemas/microsoft.graph.onPremisesAccidentalDeletionPrevention'
+          - type:
+            - object
+            - 'null'
+          description: Contains the accidental deletion prevention configuration for a tenant.
         '@odata.type':
           type: string
     microsoft.graph.entity:
@@ -1517,25 +1477,70 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.onPremisesAccidentalDeletionPrevention:
+      title: onPremisesAccidentalDeletionPrevention
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        alertThreshold:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: Threshold value which triggers accidental deletion prevention. The threshold is either an absolute number of objects or a percentage number of objects.
+          format: int32
+        synchronizationPreventionType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronizationDeletionPreventionType'
+          - type:
+            - object
+            - 'null'
+          description: 'The status of the accidental deletion prevention feature. The possible values are: disabled, enabledForCount, enabledForPercentage, unknownFutureValue.'
+        '@odata.type':
+          type: string
     ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
+      type: integer
+      format: int32
     microsoft.graph.onPremisesDirectorySynchronizationCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronizationCollectionResponse'
+      title: Collection of onPremisesDirectorySynchronization
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronization'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
   parameters:
     filter:
       name: $filter
@@ -1545,6 +1550,31 @@ components:
       explode: false
       schema:
         type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
     top:
       name: $top
       in: query
@@ -1555,28 +1585,22 @@ components:
         minimum: 0
         type: integer
       example: 50
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
+  responses:
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.onPremisesDirectorySynchronizationCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.onPremisesDirectorySynchronizationCollectionResponse'
