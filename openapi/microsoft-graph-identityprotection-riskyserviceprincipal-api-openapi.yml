@@ -492,58 +492,6 @@ paths:
       x-ms-docs-operation-type: action
 components:
   schemas:
-    microsoft.graph.riskyServicePrincipalHistoryItem:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipal'
-      - title: riskyServicePrincipalHistoryItem
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          activity:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskServicePrincipalActivity'
-            - type:
-              - object
-              - 'null'
-            description: The activity related to service principal risk level change.
-          initiatedBy:
-            type:
-            - string
-            - 'null'
-            description: The identifier of the actor of the operation.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.riskyServicePrincipalHistoryItem'
-    microsoft.graph.riskDetail:
-      title: riskDetail
-      enum:
-      - none
-      - adminGeneratedTemporaryPassword
-      - userPerformedSecuredPasswordChange
-      - userPerformedSecuredPasswordReset
-      - adminConfirmedSigninSafe
-      - aiConfirmedSigninSafe
-      - userPassedMFADrivenByRiskBasedPolicy
-      - adminDismissedAllRiskForUser
-      - adminConfirmedSigninCompromised
-      - hidden
-      - adminConfirmedUserCompromised
-      - unknownFutureValue
-      - m365DAdminDismissedDetection
-      - adminConfirmedServicePrincipalCompromised
-      - adminDismissedAllRiskForServicePrincipal
-      - userChangedPasswordOnPremises
-      - adminDismissedRiskForSignIn
-      - adminConfirmedAccountSafe
-      type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.riskyServicePrincipal:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -617,27 +565,6 @@ components:
           propertyName: '@odata.type'
           mapping:
             '#microsoft.graph.riskyServicePrincipalHistoryItem': '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItem'
-    microsoft.graph.riskLevel:
-      title: riskLevel
-      enum:
-      - low
-      - medium
-      - high
-      - hidden
-      - none
-      - unknownFutureValue
-      type: string
-    microsoft.graph.riskyServicePrincipalCollectionResponse:
-      title: Collection of riskyServicePrincipal
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipal'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -663,6 +590,90 @@ components:
           format: date-time
         '@odata.type':
           type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.riskState:
+      title: riskState
+      enum:
+      - none
+      - confirmedSafe
+      - remediated
+      - dismissed
+      - atRisk
+      - confirmedCompromised
+      - unknownFutureValue
+      type: string
+    microsoft.graph.riskyServicePrincipalHistoryItem:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipal'
+      - title: riskyServicePrincipalHistoryItem
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          activity:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskServicePrincipalActivity'
+            - type:
+              - object
+              - 'null'
+            description: The activity related to service principal risk level change.
+          initiatedBy:
+            type:
+            - string
+            - 'null'
+            description: The identifier of the actor of the operation.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.riskyServicePrincipalHistoryItem'
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.riskyServicePrincipalCollectionResponse:
+      title: Collection of riskyServicePrincipal
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipal'
+    microsoft.graph.riskDetail:
+      title: riskDetail
+      enum:
+      - none
+      - adminGeneratedTemporaryPassword
+      - userPerformedSecuredPasswordChange
+      - userPerformedSecuredPasswordReset
+      - adminConfirmedSigninSafe
+      - aiConfirmedSigninSafe
+      - userPassedMFADrivenByRiskBasedPolicy
+      - adminDismissedAllRiskForUser
+      - adminConfirmedSigninCompromised
+      - hidden
+      - adminConfirmedUserCompromised
+      - unknownFutureValue
+      - m365DAdminDismissedDetection
+      - adminConfirmedServicePrincipalCompromised
+      - adminDismissedAllRiskForServicePrincipal
+      - userChangedPasswordOnPremises
+      - adminDismissedRiskForSignIn
+      - adminConfirmedAccountSafe
+      type: string
     microsoft.graph.riskServicePrincipalActivity:
       title: riskServicePrincipalActivity
       required:
@@ -685,6 +696,16 @@ components:
           description: 'The type of risk event detected. The possible values are: investigationsThreatIntelligence, generic, adminConfirmedServicePrincipalCompromised, suspiciousSignins, leakedCredentials, anomalousServicePrincipalActivity, maliciousApplication, suspiciousApplication.'
         '@odata.type':
           type: string
+    microsoft.graph.riskLevel:
+      title: riskLevel
+      enum:
+      - low
+      - medium
+      - high
+      - hidden
+      - none
+      - unknownFutureValue
+      type: string
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -1775,23 +1796,24 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    ODataCountResponse:
-      type: integer
-      format: int32
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.riskyServicePrincipalHistoryItemCollectionResponse:
+      title: Collection of riskyServicePrincipalHistoryItem
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItem'
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -1805,45 +1827,7 @@ components:
           type:
           - string
           - 'null'
-    microsoft.graph.riskState:
-      title: riskState
-      enum:
-      - none
-      - confirmedSafe
-      - remediated
-      - dismissed
-      - atRisk
-      - confirmedCompromised
-      - unknownFutureValue
-      type: string
-    microsoft.graph.riskyServicePrincipalHistoryItemCollectionResponse:
-      title: Collection of riskyServicePrincipalHistoryItem
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItem'
   parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
     skip:
       name: $skip
       in: query
@@ -1853,6 +1837,22 @@ components:
       schema:
         minimum: 0
         type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
     count:
       name: $count
       in: query
@@ -1872,27 +1872,27 @@ components:
         type: integer
       example: 50
   responses:
-    microsoft.graph.riskyServicePrincipalCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
     microsoft.graph.riskyServicePrincipalHistoryItemCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalHistoryItemCollectionResponse'
+    microsoft.graph.riskyServicePrincipalCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.riskyServicePrincipalCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'

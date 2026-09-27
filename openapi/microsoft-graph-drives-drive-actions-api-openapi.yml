@@ -10925,6 +10925,33 @@ paths:
       x-ms-docs-operation-type: action
 components:
   schemas:
+    microsoft.graph.workbookChartAreaFormat:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookChartAreaFormat
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          fill:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartFill'
+            - type:
+              - object
+              - 'null'
+            description: Represents the fill format of an object, which includes background formatting information. Read-only.
+            x-ms-navigationProperty: true
+          font:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartFont'
+            - type:
+              - object
+              - 'null'
+            description: Represents the font attributes (font name, font size, color, etc.) for the current object. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartAreaFormat'
     microsoft.graph.workbookRange:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -11029,6 +11056,387 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.workbookRange'
+    microsoft.graph.workbookChartTitle:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookChartTitle
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          overlay:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the chart title will overlay the chart or not.
+          text:
+            type:
+            - string
+            - 'null'
+            description: The title text of the chart.
+          visible:
+            type: boolean
+            description: Indicates whether the chart title is visible.
+          format:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartTitleFormat'
+            - type:
+              - object
+              - 'null'
+            description: The formatting of a chart title, which includes fill and font formatting. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartTitle'
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.workbookChartDataLabelFormat:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookChartDataLabelFormat
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          fill:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartFill'
+            - type:
+              - object
+              - 'null'
+            description: Represents the fill format of the current chart data label. Read-only.
+            x-ms-navigationProperty: true
+          font:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartFont'
+            - type:
+              - object
+              - 'null'
+            description: Represents the font attributes (font name, font size, color, etc.) for a chart data label. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartDataLabelFormat'
+    microsoft.graph.workbookNamedItem:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookNamedItem
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          comment:
+            type:
+            - string
+            - 'null'
+            description: The comment associated with this name.
+          name:
+            type:
+            - string
+            - 'null'
+            description: The name of the object. Read-only.
+          scope:
+            type: string
+            description: Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
+          type:
+            type:
+            - string
+            - 'null'
+            description: 'The type of reference is associated with the name. The possible values are: String, Integer, Double, Boolean, Range. Read-only.'
+          value:
+            description: The formula that the name is defined to refer to. For example, =Sheet14!$B$2:$H$12 and =4.75. Read-only.
+          visible:
+            type: boolean
+            description: Indicates whether the object is visible.
+          worksheet:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookWorksheet'
+            - type:
+              - object
+              - 'null'
+            description: Returns the worksheet to which the named item is scoped. Available only if the item is scoped to the worksheet. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookNamedItem'
+    microsoft.graph.workbookChartSeriesFormat:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookChartSeriesFormat
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          fill:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartFill'
+            - type:
+              - object
+              - 'null'
+            description: Represents the fill format of a chart series, which includes background formatting information. Read-only.
+            x-ms-navigationProperty: true
+          line:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartLineFormat'
+            - type:
+              - object
+              - 'null'
+            description: Represents line formatting. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartSeriesFormat'
+    microsoft.graph.workbookChartTitleFormat:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookChartTitleFormat
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          fill:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartFill'
+            - type:
+              - object
+              - 'null'
+            description: Represents the fill format of an object, which includes background formatting information. Read-only.
+            x-ms-navigationProperty: true
+          font:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartFont'
+            - type:
+              - object
+              - 'null'
+            description: Represents the font attributes (font name, font size, color, etc.) for the current object. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartTitleFormat'
+    microsoft.graph.workbookChartSeries:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookChartSeries
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          name:
+            type:
+            - string
+            - 'null'
+            description: The name of a series in a chart.
+          format:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartSeriesFormat'
+            - type:
+              - object
+              - 'null'
+            description: The formatting of a chart series, which includes fill and line formatting. Read-only.
+            x-ms-navigationProperty: true
+          points:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.workbookChartPoint'
+            description: A collection of all points in the series. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartSeries'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.workbookTable:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookTable
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          highlightFirstColumn:
+            type: boolean
+            description: Indicates whether the first column contains special formatting.
+          highlightLastColumn:
+            type: boolean
+            description: Indicates whether the last column contains special formatting.
+          legacyId:
+            type:
+            - string
+            - 'null'
+            description: A legacy identifier used in older Excel clients. The value of the identifier remains the same even when the table is renamed. This property should be interpreted as an opaque string value and shouldn't be parsed to any other type. Read-only.
+          name:
+            type:
+            - string
+            - 'null'
+            description: The name of the table.
+          showBandedColumns:
+            type: boolean
+            description: Indicates whether the columns show banded formatting in which odd columns are highlighted differently from even ones to make reading the table easier.
+          showBandedRows:
+            type: boolean
+            description: Indicates whether the rows show banded formatting in which odd rows are highlighted differently from even ones to make reading the table easier.
+          showFilterButton:
+            type: boolean
+            description: Indicates whether the filter buttons are visible at the top of each column header. Setting this is only allowed if the table contains a header row.
+          showHeaders:
+            type: boolean
+            description: Indicates whether the header row is visible or not. This value can be set to show or remove the header row.
+          showTotals:
+            type: boolean
+            description: Indicates whether the total row is visible or not. This value can be set to show or remove the total row.
+          style:
+            type:
+            - string
+            - 'null'
+            description: 'A constant value that represents the Table style. The possible values are: TableStyleLight1 through TableStyleLight21, TableStyleMedium1 through TableStyleMedium28, TableStyleStyleDark1 through TableStyleStyleDark11. A custom user-defined style present in the workbook can also be specified.'
+          columns:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.workbookTableColumn'
+            description: The list of all the columns in the table. Read-only.
+            x-ms-navigationProperty: true
+          rows:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.workbookTableRow'
+            description: The list of all the rows in the table. Read-only.
+            x-ms-navigationProperty: true
+          sort:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookTableSort'
+            - type:
+              - object
+              - 'null'
+            description: The sorting for the table. Read-only.
+            x-ms-navigationProperty: true
+          worksheet:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookWorksheet'
+            - type:
+              - object
+              - 'null'
+            description: The worksheet containing the current table. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookTable'
+    microsoft.graph.workbookChartGridlinesFormat:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookChartGridlinesFormat
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          line:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartLineFormat'
+            - type:
+              - object
+              - 'null'
+            description: Represents chart line formatting. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartGridlinesFormat'
+    microsoft.graph.workbookFilter:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookFilter
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          criteria:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookFilterCriteria'
+            - type:
+              - object
+              - 'null'
+            description: The currently applied filter on the given column. Read-only.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookFilter'
+    microsoft.graph.workbookPivotTable:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookPivotTable
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          name:
+            type:
+            - string
+            - 'null'
+            description: The name of the pivot table.
+          worksheet:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookWorksheet'
+            - type:
+              - object
+              - 'null'
+            description: The worksheet that contains the current pivot table. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookPivotTable'
+    microsoft.graph.workbookWorksheetProtection:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookWorksheetProtection
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          options:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookWorksheetProtectionOptions'
+            - type:
+              - object
+              - 'null'
+            description: Worksheet protection options. Read-only.
+          protected:
+            type: boolean
+            description: Indicates whether the worksheet is protected.  Read-only.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookWorksheetProtection'
     microsoft.graph.workbookChartFont:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -11076,40 +11484,198 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.workbookChartFont'
-    microsoft.graph.workbookChartLegendFormat:
+    microsoft.graph.workbookFilterCriteria:
+      title: workbookFilterCriteria
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        color:
+          type:
+          - string
+          - 'null'
+          description: The color applied to the cell.
+        criterion1:
+          type:
+          - string
+          - 'null'
+          description: A custom criterion.
+        criterion2:
+          type:
+          - string
+          - 'null'
+          description: A custom criterion.
+        dynamicCriteria:
+          type: string
+          description: A dynamic formula specified in a custom filter.
+        filterOn:
+          type: string
+          description: Indicates whether a filter is applied to a column.
+        icon:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.workbookIcon'
+          - type:
+            - object
+            - 'null'
+          description: An icon applied to a cell via conditional formatting.
+        operator:
+          type: string
+          description: An operator in a cell; for example, =, >, <, <=, or <>.
+        values:
+          description: The values that appear in the cell.
+        '@odata.type':
+          type: string
+    microsoft.graph.workbookRangeFill:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartLegendFormat
+      - title: workbookRangeFill
         required:
         - '@odata.type'
         type: object
         properties:
-          fill:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartFill'
-            - type:
-              - object
-              - 'null'
-            description: Represents the fill format of an object, which includes background formating information. Read-only.
-            x-ms-navigationProperty: true
+          color:
+            type:
+            - string
+            - 'null'
+            description: 'HTML color code representing the color of the border line. Can either be of the form #RRGGBB, for example ''FFA500'', or be a named HTML color, for example ''orange''.'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookRangeFill'
+    microsoft.graph.workbookWorksheetProtectionOptions:
+      title: workbookWorksheetProtectionOptions
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        allowAutoFilter:
+          type: boolean
+          description: Indicates whether the worksheet protection option to allow the use of the autofilter feature is enabled.
+        allowDeleteColumns:
+          type: boolean
+          description: Indicates whether the worksheet protection option to allow deleting columns is enabled.
+        allowDeleteRows:
+          type: boolean
+          description: Indicates whether the worksheet protection option to allow deleting rows is enabled.
+        allowFormatCells:
+          type: boolean
+          description: Indicates whether the worksheet protection option to allow formatting cells is enabled.
+        allowFormatColumns:
+          type: boolean
+          description: Indicates whether the worksheet protection option to allow formatting columns is enabled.
+        allowFormatRows:
+          type: boolean
+          description: Indicates whether the worksheet protection option to allow formatting rows is enabled.
+        allowInsertColumns:
+          type: boolean
+          description: Indicates whether the worksheet protection option to allow inserting columns is enabled.
+        allowInsertHyperlinks:
+          type: boolean
+          description: Indicates whether the worksheet protection option to allow inserting hyperlinks is enabled.
+        allowInsertRows:
+          type: boolean
+          description: Indicates whether the worksheet protection option to allow inserting rows is enabled.
+        allowPivotTables:
+          type: boolean
+          description: Indicates whether the worksheet protection option to allow the use of the pivot table feature is enabled.
+        allowSort:
+          type: boolean
+          description: Indicates whether the worksheet protection option to allow the use of the sort feature is enabled.
+        '@odata.type':
+          type: string
+    microsoft.graph.workbookChartAxisFormat:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookChartAxisFormat
+        required:
+        - '@odata.type'
+        type: object
+        properties:
           font:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.workbookChartFont'
             - type:
               - object
               - 'null'
-            description: Represents the font attributes such as font name, font size, color, etc. of a chart legend. Read-only.
+            description: Represents the font attributes (font name, font size, color, etc.) for a chart axis element. Read-only.
+            x-ms-navigationProperty: true
+          line:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartLineFormat'
+            - type:
+              - object
+              - 'null'
+            description: Represents chart line formatting. Read-only.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartLegendFormat'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartAxisFormat'
+    microsoft.graph.workbookChartLegend:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookChartLegend
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          overlay:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the chart legend should overlap with the main body of the chart.
+          position:
+            type:
+            - string
+            - 'null'
+            description: 'Represents the position of the legend on the chart. The possible values are: Top, Bottom, Left, Right, Corner, Custom.'
+          visible:
+            type: boolean
+            description: Indicates whether the chart legend is visible.
+          format:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartLegendFormat'
+            - type:
+              - object
+              - 'null'
+            description: Represents the formatting of a chart legend, which includes fill and font formatting. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartLegend'
+    microsoft.graph.workbookChartAxes:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookChartAxes
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          categoryAxis:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartAxis'
+            - type:
+              - object
+              - 'null'
+            description: Represents the category axis in a chart. Read-only.
+            x-ms-navigationProperty: true
+          seriesAxis:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartAxis'
+            - type:
+              - object
+              - 'null'
+            description: Represents the series axis of a 3-dimensional chart. Read-only.
+            x-ms-navigationProperty: true
+          valueAxis:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartAxis'
+            - type:
+              - object
+              - 'null'
+            description: Represents the value axis in an axis. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartAxes'
     microsoft.graph.workbookRangeFormat:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -11188,92 +11754,176 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.workbookRangeFormat'
-    microsoft.graph.workbookChartDataLabelFormat:
+    microsoft.graph.workbookChartDataLabels:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartDataLabelFormat
+      - title: workbookChartDataLabels
         required:
         - '@odata.type'
         type: object
         properties:
-          fill:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartFill'
-            - type:
-              - object
-              - 'null'
-            description: Represents the fill format of the current chart data label. Read-only.
-            x-ms-navigationProperty: true
-          font:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartFont'
-            - type:
-              - object
-              - 'null'
-            description: Represents the font attributes (font name, font size, color, etc.) for a chart data label. Read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartDataLabelFormat'
-    microsoft.graph.workbookChartLegend:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartLegend
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          overlay:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates whether the chart legend should overlap with the main body of the chart.
           position:
             type:
             - string
             - 'null'
-            description: 'Represents the position of the legend on the chart. The possible values are: Top, Bottom, Left, Right, Corner, Custom.'
-          visible:
-            type: boolean
-            description: Indicates whether the chart legend is visible.
+            description: 'DataLabelPosition value that represents the position of the data label. The possible values are: None, Center, InsideEnd, InsideBase, OutsideEnd, Left, Right, Top, Bottom, BestFit, Callout.'
+          separator:
+            type:
+            - string
+            - 'null'
+            description: String that represents the separator used for the data labels on a chart.
+          showBubbleSize:
+            type:
+            - boolean
+            - 'null'
+            description: Boolean value that represents whether the data label bubble size is visible.
+          showCategoryName:
+            type:
+            - boolean
+            - 'null'
+            description: Boolean value that represents whether the data label category name is visible.
+          showLegendKey:
+            type:
+            - boolean
+            - 'null'
+            description: Boolean value that represents whether the data label legend key is visible.
+          showPercentage:
+            type:
+            - boolean
+            - 'null'
+            description: Boolean value that represents whether the data label percentage is visible.
+          showSeriesName:
+            type:
+            - boolean
+            - 'null'
+            description: Boolean value that represents whether the data label series name is visible.
+          showValue:
+            type:
+            - boolean
+            - 'null'
+            description: Boolean value that represents whether the data label value is visible.
           format:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartLegendFormat'
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartDataLabelFormat'
             - type:
               - object
               - 'null'
-            description: Represents the formatting of a chart legend, which includes fill and font formatting. Read-only.
+            description: Represents the format of chart data labels, which includes fill and font formatting. Read-only.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartLegend'
-    microsoft.graph.workbookChartTitleFormat:
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartDataLabels'
+    ReferenceNumeric:
+      enum:
+      - -INF
+      - INF
+      - NaN
+      type:
+      - string
+      - 'null'
+    microsoft.graph.workbookChartLineFormat:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartTitleFormat
+      - title: workbookChartLineFormat
         required:
         - '@odata.type'
         type: object
         properties:
-          fill:
+          color:
+            type:
+            - string
+            - 'null'
+            description: The HTML color code that represents the color of lines in the chart.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartLineFormat'
+    microsoft.graph.workbookChartAxisTitle:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookChartAxisTitle
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          text:
+            type:
+            - string
+            - 'null'
+            description: Represents the axis title.
+          visible:
+            type: boolean
+            description: A Boolean that specifies the visibility of an axis title.
+          format:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartFill'
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartAxisTitleFormat'
             - type:
               - object
               - 'null'
-            description: Represents the fill format of an object, which includes background formatting information. Read-only.
-            x-ms-navigationProperty: true
-          font:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartFont'
-            - type:
-              - object
-              - 'null'
-            description: Represents the font attributes (font name, font size, color, etc.) for the current object. Read-only.
+            description: Represents the formatting of chart axis title. Read-only.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartTitleFormat'
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartAxisTitle'
+    microsoft.graph.workbookChartFill:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookChartFill
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartFill'
+    microsoft.graph.workbookIcon:
+      title: workbookIcon
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        index:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: The index of the icon in the given set.
+          format: int32
+        set:
+          type: string
+          description: 'The set that the icon is part of. The possible values are: Invalid, ThreeArrows, ThreeArrowsGray, ThreeFlags, ThreeTrafficLights1, ThreeTrafficLights2, ThreeSigns, ThreeSymbols, ThreeSymbols2, FourArrows, FourArrowsGray, FourRedToBlack, FourRating, FourTrafficLights, FiveArrows, FiveArrowsGray, FiveRating, FiveQuarters, ThreeStars, ThreeTriangles, FiveBoxes.'
+        '@odata.type':
+          type: string
+    microsoft.graph.workbookRangeSort:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookRangeSort
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookRangeSort'
+    microsoft.graph.workbookFormatProtection:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookFormatProtection
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          formulaHidden:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether Excel hides the formula for the cells in the range. A null value indicates that the entire range doesn't have uniform formula hidden setting.
+          locked:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether Excel locks the cells in the object. A null value indicates that the entire range doesn't have uniform lock setting.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookFormatProtection'
     microsoft.graph.workbookTableColumn:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -11306,144 +11956,25 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.workbookTableColumn'
-    microsoft.graph.workbookPivotTable:
+    microsoft.graph.workbookTableRow:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookPivotTable
+      - title: workbookTableRow
         required:
         - '@odata.type'
         type: object
         properties:
-          name:
-            type:
-            - string
-            - 'null'
-            description: The name of the pivot table.
-          worksheet:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookWorksheet'
-            - type:
-              - object
-              - 'null'
-            description: The worksheet that contains the current pivot table. Read-only.
-            x-ms-navigationProperty: true
+          index:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The index of the row within the rows collection of the table. Zero-based. Read-only.
+            format: int32
+          values:
+            description: The raw values of the specified range. The data returned could be of type string, number, or a Boolean. Any cell that contain an error will return the error string.
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookPivotTable'
-    microsoft.graph.workbookChartGridlines:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartGridlines
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          visible:
-            type: boolean
-            description: Indicates whether the axis gridlines are visible.
-          format:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartGridlinesFormat'
-            - type:
-              - object
-              - 'null'
-            description: Represents the formatting of chart gridlines. Read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartGridlines'
-    microsoft.graph.workbookFilterCriteria:
-      title: workbookFilterCriteria
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        color:
-          type:
-          - string
-          - 'null'
-          description: The color applied to the cell.
-        criterion1:
-          type:
-          - string
-          - 'null'
-          description: A custom criterion.
-        criterion2:
-          type:
-          - string
-          - 'null'
-          description: A custom criterion.
-        dynamicCriteria:
-          type: string
-          description: A dynamic formula specified in a custom filter.
-        filterOn:
-          type: string
-          description: Indicates whether a filter is applied to a column.
-        icon:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.workbookIcon'
-          - type:
-            - object
-            - 'null'
-          description: An icon applied to a cell via conditional formatting.
-        operator:
-          type: string
-          description: An operator in a cell; for example, =, >, <, <=, or <>.
-        values:
-          description: The values that appear in the cell.
-        '@odata.type':
-          type: string
-    microsoft.graph.workbookChartAxis:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartAxis
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          majorUnit:
-            description: Represents the interval between two major tick marks. Can be set to a numeric value or an empty string.  The returned value is always a number.
-          maximum:
-            description: Represents the maximum value on the value axis.  Can be set to a numeric value or an empty string (for automatic axis values).  The returned value is always a number.
-          minimum:
-            description: Represents the minimum value on the value axis. Can be set to a numeric value or an empty string (for automatic axis values).  The returned value is always a number.
-          minorUnit:
-            description: Represents the interval between two minor tick marks. 'Can be set to a numeric value or an empty string (for automatic axis values). The returned value is always a number.
-          format:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartAxisFormat'
-            - type:
-              - object
-              - 'null'
-            description: Represents the formatting of a chart object, which includes line and font formatting. Read-only.
-            x-ms-navigationProperty: true
-          majorGridlines:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartGridlines'
-            - type:
-              - object
-              - 'null'
-            description: Returns a gridlines object that represents the major gridlines for the specified axis. Read-only.
-            x-ms-navigationProperty: true
-          minorGridlines:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartGridlines'
-            - type:
-              - object
-              - 'null'
-            description: Returns a Gridlines object that represents the minor gridlines for the specified axis. Read-only.
-            x-ms-navigationProperty: true
-          title:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartAxisTitle'
-            - type:
-              - object
-              - 'null'
-            description: Represents the axis title. Read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartAxis'
+      x-ms-discriminator-value: '#microsoft.graph.workbookTableRow'
     microsoft.graph.workbookChart:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -11558,247 +12089,6 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.workbookChart'
-    microsoft.graph.workbookChartPoint:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartPoint
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          value:
-            description: The value of a chart point. Read-only.
-          format:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartPointFormat'
-            - type:
-              - object
-              - 'null'
-            description: The format properties of the chart point. Read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartPoint'
-    microsoft.graph.workbookChartAxisTitle:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartAxisTitle
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          text:
-            type:
-            - string
-            - 'null'
-            description: Represents the axis title.
-          visible:
-            type: boolean
-            description: A Boolean that specifies the visibility of an axis title.
-          format:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartAxisTitleFormat'
-            - type:
-              - object
-              - 'null'
-            description: Represents the formatting of chart axis title. Read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartAxisTitle'
-    microsoft.graph.workbookChartDataLabels:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartDataLabels
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          position:
-            type:
-            - string
-            - 'null'
-            description: 'DataLabelPosition value that represents the position of the data label. The possible values are: None, Center, InsideEnd, InsideBase, OutsideEnd, Left, Right, Top, Bottom, BestFit, Callout.'
-          separator:
-            type:
-            - string
-            - 'null'
-            description: String that represents the separator used for the data labels on a chart.
-          showBubbleSize:
-            type:
-            - boolean
-            - 'null'
-            description: Boolean value that represents whether the data label bubble size is visible.
-          showCategoryName:
-            type:
-            - boolean
-            - 'null'
-            description: Boolean value that represents whether the data label category name is visible.
-          showLegendKey:
-            type:
-            - boolean
-            - 'null'
-            description: Boolean value that represents whether the data label legend key is visible.
-          showPercentage:
-            type:
-            - boolean
-            - 'null'
-            description: Boolean value that represents whether the data label percentage is visible.
-          showSeriesName:
-            type:
-            - boolean
-            - 'null'
-            description: Boolean value that represents whether the data label series name is visible.
-          showValue:
-            type:
-            - boolean
-            - 'null'
-            description: Boolean value that represents whether the data label value is visible.
-          format:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartDataLabelFormat'
-            - type:
-              - object
-              - 'null'
-            description: Represents the format of chart data labels, which includes fill and font formatting. Read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartDataLabels'
-    microsoft.graph.workbookWorksheetProtectionOptions:
-      title: workbookWorksheetProtectionOptions
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        allowAutoFilter:
-          type: boolean
-          description: Indicates whether the worksheet protection option to allow the use of the autofilter feature is enabled.
-        allowDeleteColumns:
-          type: boolean
-          description: Indicates whether the worksheet protection option to allow deleting columns is enabled.
-        allowDeleteRows:
-          type: boolean
-          description: Indicates whether the worksheet protection option to allow deleting rows is enabled.
-        allowFormatCells:
-          type: boolean
-          description: Indicates whether the worksheet protection option to allow formatting cells is enabled.
-        allowFormatColumns:
-          type: boolean
-          description: Indicates whether the worksheet protection option to allow formatting columns is enabled.
-        allowFormatRows:
-          type: boolean
-          description: Indicates whether the worksheet protection option to allow formatting rows is enabled.
-        allowInsertColumns:
-          type: boolean
-          description: Indicates whether the worksheet protection option to allow inserting columns is enabled.
-        allowInsertHyperlinks:
-          type: boolean
-          description: Indicates whether the worksheet protection option to allow inserting hyperlinks is enabled.
-        allowInsertRows:
-          type: boolean
-          description: Indicates whether the worksheet protection option to allow inserting rows is enabled.
-        allowPivotTables:
-          type: boolean
-          description: Indicates whether the worksheet protection option to allow the use of the pivot table feature is enabled.
-        allowSort:
-          type: boolean
-          description: Indicates whether the worksheet protection option to allow the use of the sort feature is enabled.
-        '@odata.type':
-          type: string
-    microsoft.graph.workbookChartFill:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartFill
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartFill'
-    microsoft.graph.workbookTableSort:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookTableSort
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          fields:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.workbookSortField'
-            description: The list of the current conditions last used to sort the table. Read-only.
-          matchCase:
-            type: boolean
-            description: Indicates whether the casing impacted the last sort of the table. Read-only.
-          method:
-            type: string
-            description: 'The Chinese character ordering method last used to sort the table. The possible values are: PinYin, StrokeCount. Read-only.'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookTableSort'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type:
-          - string
-          - 'null'
-          description: Request Id as tracked internally by the service
-        client-request-id:
-          type:
-          - string
-          - 'null'
-          description: Client request Id as sent by the client application.
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the error occured.
-          format: date-time
-        '@odata.type':
-          type: string
-    microsoft.graph.workbookSortField:
-      title: workbookSortField
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        ascending:
-          type: boolean
-          description: Represents whether the sorting is done in an ascending fashion.
-        color:
-          type:
-          - string
-          - 'null'
-          description: Represents the color that is the target of the condition if the sorting is on font or cell color.
-        dataOption:
-          type: string
-          description: 'Represents additional sorting options for this field. The possible values are: Normal, TextAsNumber.'
-        icon:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.workbookIcon'
-          - type:
-            - object
-            - 'null'
-          description: Represents the icon that is the target of the condition if the sorting is on the cell's icon.
-        key:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Represents the column (or row, depending on the sort orientation) that the condition is on. Represented as an offset from the first column (or row).
-          format: int32
-        sortOn:
-          type: string
-          description: 'Represents the type of sorting of this condition. The possible values are: Value, CellColor, FontColor, Icon.'
-        '@odata.type':
-          type: string
     microsoft.graph.workbookRangeBorder:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -11830,89 +12120,28 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.workbookRangeBorder'
-    ReferenceNumeric:
-      enum:
-      - -INF
-      - INF
-      - NaN
-      type:
-      - string
-      - 'null'
-    microsoft.graph.workbookTable:
+    microsoft.graph.workbookTableSort:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookTable
+      - title: workbookTableSort
         required:
         - '@odata.type'
         type: object
         properties:
-          highlightFirstColumn:
-            type: boolean
-            description: Indicates whether the first column contains special formatting.
-          highlightLastColumn:
-            type: boolean
-            description: Indicates whether the last column contains special formatting.
-          legacyId:
-            type:
-            - string
-            - 'null'
-            description: A legacy identifier used in older Excel clients. The value of the identifier remains the same even when the table is renamed. This property should be interpreted as an opaque string value and shouldn't be parsed to any other type. Read-only.
-          name:
-            type:
-            - string
-            - 'null'
-            description: The name of the table.
-          showBandedColumns:
-            type: boolean
-            description: Indicates whether the columns show banded formatting in which odd columns are highlighted differently from even ones to make reading the table easier.
-          showBandedRows:
-            type: boolean
-            description: Indicates whether the rows show banded formatting in which odd rows are highlighted differently from even ones to make reading the table easier.
-          showFilterButton:
-            type: boolean
-            description: Indicates whether the filter buttons are visible at the top of each column header. Setting this is only allowed if the table contains a header row.
-          showHeaders:
-            type: boolean
-            description: Indicates whether the header row is visible or not. This value can be set to show or remove the header row.
-          showTotals:
-            type: boolean
-            description: Indicates whether the total row is visible or not. This value can be set to show or remove the total row.
-          style:
-            type:
-            - string
-            - 'null'
-            description: 'A constant value that represents the Table style. The possible values are: TableStyleLight1 through TableStyleLight21, TableStyleMedium1 through TableStyleMedium28, TableStyleStyleDark1 through TableStyleStyleDark11. A custom user-defined style present in the workbook can also be specified.'
-          columns:
+          fields:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.workbookTableColumn'
-            description: The list of all the columns in the table. Read-only.
-            x-ms-navigationProperty: true
-          rows:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.workbookTableRow'
-            description: The list of all the rows in the table. Read-only.
-            x-ms-navigationProperty: true
-          sort:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookTableSort'
-            - type:
-              - object
-              - 'null'
-            description: The sorting for the table. Read-only.
-            x-ms-navigationProperty: true
-          worksheet:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookWorksheet'
-            - type:
-              - object
-              - 'null'
-            description: The worksheet containing the current table. Read-only.
-            x-ms-navigationProperty: true
+              $ref: '#/components/schemas/microsoft.graph.workbookSortField'
+            description: The list of the current conditions last used to sort the table. Read-only.
+          matchCase:
+            type: boolean
+            description: Indicates whether the casing impacted the last sort of the table. Read-only.
+          method:
+            type: string
+            description: 'The Chinese character ordering method last used to sort the table. The possible values are: PinYin, StrokeCount. Read-only.'
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookTable'
+      x-ms-discriminator-value: '#microsoft.graph.workbookTableSort'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -11934,52 +12163,125 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.workbookChartGridlinesFormat:
+    microsoft.graph.workbookChartPoint:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartGridlinesFormat
+      - title: workbookChartPoint
         required:
         - '@odata.type'
         type: object
         properties:
-          line:
+          value:
+            description: The value of a chart point. Read-only.
+          format:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartLineFormat'
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartPointFormat'
             - type:
               - object
               - 'null'
-            description: Represents chart line formatting. Read-only.
+            description: The format properties of the chart point. Read-only.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartGridlinesFormat'
-    microsoft.graph.workbookChartAxisFormat:
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartPoint'
+    microsoft.graph.workbookChartGridlines:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartAxisFormat
+      - title: workbookChartGridlines
         required:
         - '@odata.type'
         type: object
         properties:
-          font:
+          visible:
+            type: boolean
+            description: Indicates whether the axis gridlines are visible.
+          format:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartFont'
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartGridlinesFormat'
             - type:
               - object
               - 'null'
-            description: Represents the font attributes (font name, font size, color, etc.) for a chart axis element. Read-only.
-            x-ms-navigationProperty: true
-          line:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartLineFormat'
-            - type:
-              - object
-              - 'null'
-            description: Represents chart line formatting. Read-only.
+            description: Represents the formatting of chart gridlines. Read-only.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartAxisFormat'
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartGridlines'
+    microsoft.graph.workbookChartPointFormat:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookChartPointFormat
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          fill:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartFill'
+            - type:
+              - object
+              - 'null'
+            description: Represents the fill format of a chart, which includes background formatting information. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartPointFormat'
+    microsoft.graph.workbookWorksheet:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: workbookWorksheet
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          name:
+            type:
+            - string
+            - 'null'
+            description: The display name of the worksheet.
+          position:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The zero-based position of the worksheet within the workbook.
+            format: int32
+          visibility:
+            type: string
+            description: 'The visibility of the worksheet. The possible values are: Visible, Hidden, VeryHidden.'
+          charts:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.workbookChart'
+            description: The list of charts that are part of the worksheet. Read-only.
+            x-ms-navigationProperty: true
+          names:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.workbookNamedItem'
+            description: The list of names that are associated with the worksheet. Read-only.
+            x-ms-navigationProperty: true
+          pivotTables:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.workbookPivotTable'
+            description: The list of piot tables that are part of the worksheet.
+            x-ms-navigationProperty: true
+          protection:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookWorksheetProtection'
+            - type:
+              - object
+              - 'null'
+            description: The sheet protection object for a worksheet. Read-only.
+            x-ms-navigationProperty: true
+          tables:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.workbookTable'
+            description: The list of tables that are part of the worksheet. Read-only.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.workbookWorksheet'
     microsoft.graph.entity:
       title: entity
       required:
@@ -13049,119 +13351,83 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.workbookChartTitle:
+    microsoft.graph.workbookChartAxis:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartTitle
+      - title: workbookChartAxis
         required:
         - '@odata.type'
         type: object
         properties:
-          overlay:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates whether the chart title will overlay the chart or not.
-          text:
-            type:
-            - string
-            - 'null'
-            description: The title text of the chart.
-          visible:
-            type: boolean
-            description: Indicates whether the chart title is visible.
+          majorUnit:
+            description: Represents the interval between two major tick marks. Can be set to a numeric value or an empty string.  The returned value is always a number.
+          maximum:
+            description: Represents the maximum value on the value axis.  Can be set to a numeric value or an empty string (for automatic axis values).  The returned value is always a number.
+          minimum:
+            description: Represents the minimum value on the value axis. Can be set to a numeric value or an empty string (for automatic axis values).  The returned value is always a number.
+          minorUnit:
+            description: Represents the interval between two minor tick marks. 'Can be set to a numeric value or an empty string (for automatic axis values). The returned value is always a number.
           format:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartTitleFormat'
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartAxisFormat'
             - type:
               - object
               - 'null'
-            description: The formatting of a chart title, which includes fill and font formatting. Read-only.
+            description: Represents the formatting of a chart object, which includes line and font formatting. Read-only.
             x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartTitle'
-    microsoft.graph.workbookTableRow:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookTableRow
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          index:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The index of the row within the rows collection of the table. Zero-based. Read-only.
-            format: int32
-          values:
-            description: The raw values of the specified range. The data returned could be of type string, number, or a Boolean. Any cell that contain an error will return the error string.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookTableRow'
-    microsoft.graph.workbookChartAxes:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartAxes
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          categoryAxis:
+          majorGridlines:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartAxis'
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartGridlines'
             - type:
               - object
               - 'null'
-            description: Represents the category axis in a chart. Read-only.
+            description: Returns a gridlines object that represents the major gridlines for the specified axis. Read-only.
             x-ms-navigationProperty: true
-          seriesAxis:
+          minorGridlines:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartAxis'
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartGridlines'
             - type:
               - object
               - 'null'
-            description: Represents the series axis of a 3-dimensional chart. Read-only.
+            description: Returns a Gridlines object that represents the minor gridlines for the specified axis. Read-only.
             x-ms-navigationProperty: true
-          valueAxis:
+          title:
             anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartAxis'
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartAxisTitle'
             - type:
               - object
               - 'null'
-            description: Represents the value axis in an axis. Read-only.
+            description: Represents the axis title. Read-only.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartAxes'
-    microsoft.graph.workbookRangeFill:
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartAxis'
+    microsoft.graph.workbookChartAxisTitleFormat:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookRangeFill
+      - title: workbookChartAxisTitleFormat
         required:
         - '@odata.type'
         type: object
         properties:
-          color:
-            type:
-            - string
-            - 'null'
-            description: 'HTML color code representing the color of the border line. Can either be of the form #RRGGBB, for example ''FFA500'', or be a named HTML color, for example ''orange''.'
+          font:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workbookChartFont'
+            - type:
+              - object
+              - 'null'
+            description: Represents the font attributes, such as font name, font size, color, etc. of chart axis title object. Read-only.
+            x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookRangeFill'
-    microsoft.graph.workbookRangeSort:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookRangeSort
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookRangeSort'
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartAxisTitleFormat'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.workbookRangeFont:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -13209,42 +13475,10 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.workbookRangeFont'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.workbookFilter:
+    microsoft.graph.workbookChartLegendFormat:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookFilter
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          criteria:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookFilterCriteria'
-            - type:
-              - object
-              - 'null'
-            description: The currently applied filter on the given column. Read-only.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookFilter'
-    microsoft.graph.workbookChartPointFormat:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartPointFormat
+      - title: workbookChartLegendFormat
         required:
         - '@odata.type'
         type: object
@@ -13255,288 +13489,54 @@ components:
             - type:
               - object
               - 'null'
-            description: Represents the fill format of a chart, which includes background formatting information. Read-only.
+            description: Represents the fill format of an object, which includes background formating information. Read-only.
             x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartPointFormat'
-    microsoft.graph.workbookChartLineFormat:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartLineFormat
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          color:
-            type:
-            - string
-            - 'null'
-            description: The HTML color code that represents the color of lines in the chart.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartLineFormat'
-    microsoft.graph.workbookFormatProtection:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookFormatProtection
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          formulaHidden:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates whether Excel hides the formula for the cells in the range. A null value indicates that the entire range doesn't have uniform formula hidden setting.
-          locked:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates whether Excel locks the cells in the object. A null value indicates that the entire range doesn't have uniform lock setting.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookFormatProtection'
-    microsoft.graph.workbookChartSeries:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartSeries
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          name:
-            type:
-            - string
-            - 'null'
-            description: The name of a series in a chart.
-          format:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartSeriesFormat'
-            - type:
-              - object
-              - 'null'
-            description: The formatting of a chart series, which includes fill and line formatting. Read-only.
-            x-ms-navigationProperty: true
-          points:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.workbookChartPoint'
-            description: A collection of all points in the series. Read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartSeries'
-    microsoft.graph.workbookChartSeriesFormat:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartSeriesFormat
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          fill:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartFill'
-            - type:
-              - object
-              - 'null'
-            description: Represents the fill format of a chart series, which includes background formatting information. Read-only.
-            x-ms-navigationProperty: true
-          line:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartLineFormat'
-            - type:
-              - object
-              - 'null'
-            description: Represents line formatting. Read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartSeriesFormat'
-    microsoft.graph.workbookWorksheet:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookWorksheet
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          name:
-            type:
-            - string
-            - 'null'
-            description: The display name of the worksheet.
-          position:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The zero-based position of the worksheet within the workbook.
-            format: int32
-          visibility:
-            type: string
-            description: 'The visibility of the worksheet. The possible values are: Visible, Hidden, VeryHidden.'
-          charts:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.workbookChart'
-            description: The list of charts that are part of the worksheet. Read-only.
-            x-ms-navigationProperty: true
-          names:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.workbookNamedItem'
-            description: The list of names that are associated with the worksheet. Read-only.
-            x-ms-navigationProperty: true
-          pivotTables:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.workbookPivotTable'
-            description: The list of piot tables that are part of the worksheet.
-            x-ms-navigationProperty: true
-          protection:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookWorksheetProtection'
-            - type:
-              - object
-              - 'null'
-            description: The sheet protection object for a worksheet. Read-only.
-            x-ms-navigationProperty: true
-          tables:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.workbookTable'
-            description: The list of tables that are part of the worksheet. Read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookWorksheet'
-    microsoft.graph.workbookChartAxisTitleFormat:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartAxisTitleFormat
-        required:
-        - '@odata.type'
-        type: object
-        properties:
           font:
             anyOf:
             - $ref: '#/components/schemas/microsoft.graph.workbookChartFont'
             - type:
               - object
               - 'null'
-            description: Represents the font attributes, such as font name, font size, color, etc. of chart axis title object. Read-only.
+            description: Represents the font attributes such as font name, font size, color, etc. of a chart legend. Read-only.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartAxisTitleFormat'
-    microsoft.graph.workbookIcon:
-      title: workbookIcon
+      x-ms-discriminator-value: '#microsoft.graph.workbookChartLegendFormat'
+    microsoft.graph.workbookSortField:
+      title: workbookSortField
       required:
       - '@odata.type'
       type: object
       properties:
-        index:
+        ascending:
+          type: boolean
+          description: Represents whether the sorting is done in an ascending fashion.
+        color:
+          type:
+          - string
+          - 'null'
+          description: Represents the color that is the target of the condition if the sorting is on font or cell color.
+        dataOption:
+          type: string
+          description: 'Represents additional sorting options for this field. The possible values are: Normal, TextAsNumber.'
+        icon:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.workbookIcon'
+          - type:
+            - object
+            - 'null'
+          description: Represents the icon that is the target of the condition if the sorting is on the cell's icon.
+        key:
           maximum: 2147483647
           minimum: -2147483648
           type: number
-          description: The index of the icon in the given set.
+          description: Represents the column (or row, depending on the sort orientation) that the condition is on. Represented as an offset from the first column (or row).
           format: int32
-        set:
+        sortOn:
           type: string
-          description: 'The set that the icon is part of. The possible values are: Invalid, ThreeArrows, ThreeArrowsGray, ThreeFlags, ThreeTrafficLights1, ThreeTrafficLights2, ThreeSigns, ThreeSymbols, ThreeSymbols2, FourArrows, FourArrowsGray, FourRedToBlack, FourRating, FourTrafficLights, FiveArrows, FiveArrowsGray, FiveRating, FiveQuarters, ThreeStars, ThreeTriangles, FiveBoxes.'
+          description: 'Represents the type of sorting of this condition. The possible values are: Value, CellColor, FontColor, Icon.'
         '@odata.type':
           type: string
-    microsoft.graph.workbookChartAreaFormat:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookChartAreaFormat
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          fill:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartFill'
-            - type:
-              - object
-              - 'null'
-            description: Represents the fill format of an object, which includes background formatting information. Read-only.
-            x-ms-navigationProperty: true
-          font:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookChartFont'
-            - type:
-              - object
-              - 'null'
-            description: Represents the font attributes (font name, font size, color, etc.) for the current object. Read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookChartAreaFormat'
-    microsoft.graph.workbookNamedItem:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookNamedItem
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          comment:
-            type:
-            - string
-            - 'null'
-            description: The comment associated with this name.
-          name:
-            type:
-            - string
-            - 'null'
-            description: The name of the object. Read-only.
-          scope:
-            type: string
-            description: Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
-          type:
-            type:
-            - string
-            - 'null'
-            description: 'The type of reference is associated with the name. The possible values are: String, Integer, Double, Boolean, Range. Read-only.'
-          value:
-            description: The formula that the name is defined to refer to. For example, =Sheet14!$B$2:$H$12 and =4.75. Read-only.
-          visible:
-            type: boolean
-            description: Indicates whether the object is visible.
-          worksheet:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookWorksheet'
-            - type:
-              - object
-              - 'null'
-            description: Returns the worksheet to which the named item is scoped. Available only if the item is scoped to the worksheet. Read-only.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookNamedItem'
-    microsoft.graph.workbookWorksheetProtection:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workbookWorksheetProtection
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          options:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workbookWorksheetProtectionOptions'
-            - type:
-              - object
-              - 'null'
-            description: Worksheet protection options. Read-only.
-          protected:
-            type: boolean
-            description: Indicates whether the worksheet is protected.  Read-only.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workbookWorksheetProtection'
   responses:
     error:
       description: error

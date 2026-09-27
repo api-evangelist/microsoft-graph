@@ -105,6 +105,27 @@ paths:
       x-ms-docs-operation-type: operation
 components:
   schemas:
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -130,6 +151,27 @@ components:
           format: date-time
         '@odata.type':
           type: string
+    microsoft.graph.teamsAppSettings:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: teamsAppSettings
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          allowUserRequestsForAppAccess:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether users are allowed to request access to the unavailable Teams apps.
+          isUserPersonalScopeResourceSpecificConsentEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether resource-specific consent for personal scope in Teams apps is enabled for the tenant. True indicates that Teams apps that are allowed in the tenant and require resource-specific permissions can be installed in the personal scope. False blocks the installation of any Teams app that requires resource-specific permissions in the personal scope.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.teamsAppSettings'
     microsoft.graph.ODataErrors.ODataError:
       required:
       - error
@@ -137,27 +179,6 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type:
-          - string
-          - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1227,27 +1248,6 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.teamsAppSettings:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: teamsAppSettings
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          allowUserRequestsForAppAccess:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates whether users are allowed to request access to the unavailable Teams apps.
-          isUserPersonalScopeResourceSpecificConsentEnabled:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates whether resource-specific consent for personal scope in Teams apps is enabled for the tenant. True indicates that Teams apps that are allowed in the tenant and require resource-specific permissions can be installed in the personal scope. False blocks the installation of any Teams app that requires resource-specific permissions in the personal scope.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.teamsAppSettings'
     microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code

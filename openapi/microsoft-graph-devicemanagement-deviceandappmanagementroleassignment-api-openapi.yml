@@ -252,25 +252,51 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   schemas:
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.deviceAndAppManagementRoleAssignmentCollectionResponse:
-      title: Collection of deviceAndAppManagementRoleAssignment
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.deviceAndAppManagementRoleAssignment'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -296,6 +322,107 @@ components:
           format: date-time
         '@odata.type':
           type: string
+    microsoft.graph.deviceAndAppManagementRoleAssignment:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.roleAssignment'
+      - title: deviceAndAppManagementRoleAssignment
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          members:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: 'Indicates the list of role member security group Entra IDs. For example: {dec942f4-6777-4998-96b4-522e383b08e2}.'
+          '@odata.type':
+            type: string
+        description: The Role Assignment resource. Role assignments tie together a role definition with members and scopes. There can be one or more role assignments per role. This applies to custom and built-in roles.
+      x-ms-discriminator-value: '#microsoft.graph.deviceAndAppManagementRoleAssignment'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.deviceAndAppManagementRoleAssignmentCollectionResponse:
+      title: Collection of deviceAndAppManagementRoleAssignment
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.deviceAndAppManagementRoleAssignment'
+    microsoft.graph.rolePermission:
+      title: rolePermission
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        resourceActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.resourceAction'
+          description: Resource Actions each containing a set of allowed and not allowed permissions.
+        '@odata.type':
+          type: string
+      description: Contains the set of ResourceActions determining the allowed and not allowed permissions for each role.
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.roleAssignment:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: roleAssignment
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          description:
+            type:
+            - string
+            - 'null'
+            description: 'Indicates the description of the role assignment. For example: ''All administrators, employees and scope tags associated with the Houston office.'' Max length is 1024 characters.'
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: 'Indicates the display name of the role assignment. For example: ''Houston administrators and users''. Max length is 128 characters.'
+          resourceScopes:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: 'Indicates the list of resource scope security group Entra IDs. For example: {dec942f4-6777-4998-96b4-522e383b08e2}.'
+          roleDefinition:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.roleDefinition'
+            - type:
+              - object
+              - 'null'
+            description: Indicates the role definition for this role assignment.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+        description: The Role Assignment resource. Role assignments tie together a role definition with members and scopes. There can be one or more role assignments per role. This applies to custom and built-in roles.
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.deviceAndAppManagementRoleAssignment': '#/components/schemas/microsoft.graph.deviceAndAppManagementRoleAssignment'
     microsoft.graph.roleDefinition:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -335,48 +462,6 @@ components:
           propertyName: '@odata.type'
           mapping:
             '#microsoft.graph.deviceAndAppManagementRoleDefinition': '#/components/schemas/microsoft.graph.deviceAndAppManagementRoleDefinition'
-    microsoft.graph.deviceAndAppManagementRoleAssignment:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.roleAssignment'
-      - title: deviceAndAppManagementRoleAssignment
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          members:
-            type: array
-            items:
-              type:
-              - string
-              - 'null'
-            description: 'Indicates the list of role member security group Entra IDs. For example: {dec942f4-6777-4998-96b4-522e383b08e2}.'
-          '@odata.type':
-            type: string
-        description: The Role Assignment resource. Role assignments tie together a role definition with members and scopes. There can be one or more role assignments per role. This applies to custom and built-in roles.
-      x-ms-discriminator-value: '#microsoft.graph.deviceAndAppManagementRoleAssignment'
-    microsoft.graph.resourceAction:
-      title: resourceAction
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        allowedResourceActions:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-          description: Allowed Actions
-        notAllowedResourceActions:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-          description: Not Allowed Actions.
-        '@odata.type':
-          type: string
-      description: Set of allowed and not allowed actions for a resource.
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -398,6 +483,13 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1467,77 +1559,29 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.rolePermission:
-      title: rolePermission
+    microsoft.graph.resourceAction:
+      title: resourceAction
       required:
       - '@odata.type'
       type: object
       properties:
-        resourceActions:
+        allowedResourceActions:
           type: array
           items:
-            $ref: '#/components/schemas/microsoft.graph.resourceAction'
-          description: Resource Actions each containing a set of allowed and not allowed permissions.
+            type:
+            - string
+            - 'null'
+          description: Allowed Actions
+        notAllowedResourceActions:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+          description: Not Allowed Actions.
         '@odata.type':
           type: string
-      description: Contains the set of ResourceActions determining the allowed and not allowed permissions for each role.
-    microsoft.graph.roleAssignment:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: roleAssignment
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          description:
-            type:
-            - string
-            - 'null'
-            description: 'Indicates the description of the role assignment. For example: ''All administrators, employees and scope tags associated with the Houston office.'' Max length is 1024 characters.'
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: 'Indicates the display name of the role assignment. For example: ''Houston administrators and users''. Max length is 128 characters.'
-          resourceScopes:
-            type: array
-            items:
-              type:
-              - string
-              - 'null'
-            description: 'Indicates the list of resource scope security group Entra IDs. For example: {dec942f4-6777-4998-96b4-522e383b08e2}.'
-          roleDefinition:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.roleDefinition'
-            - type:
-              - object
-              - 'null'
-            description: Indicates the role definition for this role assignment.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-        description: The Role Assignment resource. Role assignments tie together a role definition with members and scopes. There can be one or more role assignments per role. This applies to custom and built-in roles.
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.deviceAndAppManagementRoleAssignment': '#/components/schemas/microsoft.graph.deviceAndAppManagementRoleAssignment'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    ODataCountResponse:
-      type: integer
-      format: int32
+      description: Set of allowed and not allowed actions for a resource.
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -1551,66 +1595,22 @@ components:
           type:
           - string
           - 'null'
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
   responses:
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
     microsoft.graph.deviceAndAppManagementRoleAssignmentCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.deviceAndAppManagementRoleAssignmentCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'

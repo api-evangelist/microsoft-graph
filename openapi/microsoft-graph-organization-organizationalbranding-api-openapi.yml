@@ -2024,171 +2024,51 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   schemas:
-    microsoft.graph.loginPageLayoutConfiguration:
-      title: loginPageLayoutConfiguration
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        isFooterShown:
-          type:
-          - boolean
-          - 'null'
-          description: Option to show the footer on the sign-in page.
-        isHeaderShown:
-          type:
-          - boolean
-          - 'null'
-          description: Option to show the header on the sign-in page.
-        layoutTemplateType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.layoutTemplateType'
-          - type:
-            - object
-            - 'null'
-          description: Represents the layout template to be displayed on the login page for a tenant. The possible values are  default - Represents the default Microsoft layout with a centered lightbox.  verticalSplit - Represents a layout with a background on the left side and a full-height lightbox to the right.  unknownFutureValue - Evolvable enumeration sentinel value. Don't use.
-        '@odata.type':
-          type: string
-    microsoft.graph.layoutTemplateType:
-      title: layoutTemplateType
-      enum:
-      - default
-      - verticalSplit
-      - unknownFutureValue
-      type: string
-    microsoft.graph.contentCustomization:
-      title: contentCustomization
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        attributeCollection:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.keyValue'
-          description: Represents the content options of External Identities to be customized throughout the authentication flow for a tenant.
-        attributeCollectionRelativeUrl:
-          type:
-          - string
-          - 'null'
-          description: A relative URL for the content options of External Identities to be customized throughout the authentication flow for a tenant.
-        registrationCampaign:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.keyValue'
-          description: Represents content options to customize during MFA proofup interruptions.
-        registrationCampaignRelativeUrl:
-          type:
-          - string
-          - 'null'
-          description: The relative URL of the content options to customize during MFA proofup interruptions.
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.organizationalBranding:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.organizationalBrandingProperties'
-      - title: organizationalBranding
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          localizations:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.organizationalBrandingLocalization'
-            description: Add different branding based on a locale.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.organizationalBranding'
-      x-ms-discriminator-value: '#microsoft.graph.organizationalBranding'
-    microsoft.graph.loginPageTextVisibilitySettings:
-      title: loginPageTextVisibilitySettings
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        hideAccountResetCredentials:
-          type:
-          - boolean
-          - 'null'
-          description: Option to hide the self-service password reset (SSPR) hyperlinks such as 'Can't access your account?', 'Forgot my password' and 'Reset it now' on the sign-in form.
-        hideCannotAccessYourAccount:
-          type:
-          - boolean
-          - 'null'
-          description: Option to hide the self-service password reset (SSPR) 'Can't access your account?' hyperlink on the sign-in form.
-        hideForgotMyPassword:
-          type:
-          - boolean
-          - 'null'
-          description: Option to hide the self-service password reset (SSPR) 'Forgot my password' hyperlink on the sign-in form.
-        hidePrivacyAndCookies:
-          type:
-          - boolean
-          - 'null'
-          description: Option to hide the 'Privacy & Cookies' hyperlink in the footer.
-        hideResetItNow:
-          type:
-          - boolean
-          - 'null'
-          description: Option to hide the self-service password reset (SSPR) 'reset it now' hyperlink on the sign-in form.
-        hideTermsOfUse:
-          type:
-          - boolean
-          - 'null'
-          description: Option to hide the 'Terms of Use' hyperlink in the footer.
-        '@odata.type':
-          type: string
-    microsoft.graph.keyValue:
-      title: keyValue
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        key:
-          type:
-          - string
-          - 'null'
-          description: Key for the key-value pair.
-        value:
-          type:
-          - string
-          - 'null'
-          description: Value for the key-value pair.
-        '@odata.type':
-          type: string
-    microsoft.graph.organizationalBrandingLocalizationCollectionResponse:
-      title: Collection of organizationalBrandingLocalization
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.organizationalBrandingLocalization'
-    microsoft.graph.organizationalBrandingLocalization:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.organizationalBrandingProperties'
-      - title: organizationalBrandingLocalization
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.organizationalBrandingLocalization'
-      x-ms-discriminator-value: '#microsoft.graph.organizationalBrandingLocalization'
     microsoft.graph.organizationalBrandingProperties:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -2399,6 +2279,168 @@ components:
           format: date-time
         '@odata.type':
           type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.organizationalBrandingLocalizationCollectionResponse:
+      title: Collection of organizationalBrandingLocalization
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.organizationalBrandingLocalization'
+    microsoft.graph.loginPageTextVisibilitySettings:
+      title: loginPageTextVisibilitySettings
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        hideAccountResetCredentials:
+          type:
+          - boolean
+          - 'null'
+          description: Option to hide the self-service password reset (SSPR) hyperlinks such as 'Can't access your account?', 'Forgot my password' and 'Reset it now' on the sign-in form.
+        hideCannotAccessYourAccount:
+          type:
+          - boolean
+          - 'null'
+          description: Option to hide the self-service password reset (SSPR) 'Can't access your account?' hyperlink on the sign-in form.
+        hideForgotMyPassword:
+          type:
+          - boolean
+          - 'null'
+          description: Option to hide the self-service password reset (SSPR) 'Forgot my password' hyperlink on the sign-in form.
+        hidePrivacyAndCookies:
+          type:
+          - boolean
+          - 'null'
+          description: Option to hide the 'Privacy & Cookies' hyperlink in the footer.
+        hideResetItNow:
+          type:
+          - boolean
+          - 'null'
+          description: Option to hide the self-service password reset (SSPR) 'reset it now' hyperlink on the sign-in form.
+        hideTermsOfUse:
+          type:
+          - boolean
+          - 'null'
+          description: Option to hide the 'Terms of Use' hyperlink in the footer.
+        '@odata.type':
+          type: string
+    microsoft.graph.layoutTemplateType:
+      title: layoutTemplateType
+      enum:
+      - default
+      - verticalSplit
+      - unknownFutureValue
+      type: string
+    microsoft.graph.loginPageLayoutConfiguration:
+      title: loginPageLayoutConfiguration
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        isFooterShown:
+          type:
+          - boolean
+          - 'null'
+          description: Option to show the footer on the sign-in page.
+        isHeaderShown:
+          type:
+          - boolean
+          - 'null'
+          description: Option to show the header on the sign-in page.
+        layoutTemplateType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.layoutTemplateType'
+          - type:
+            - object
+            - 'null'
+          description: Represents the layout template to be displayed on the login page for a tenant. The possible values are  default - Represents the default Microsoft layout with a centered lightbox.  verticalSplit - Represents a layout with a background on the left side and a full-height lightbox to the right.  unknownFutureValue - Evolvable enumeration sentinel value. Don't use.
+        '@odata.type':
+          type: string
+    microsoft.graph.organizationalBranding:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.organizationalBrandingProperties'
+      - title: organizationalBranding
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          localizations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.organizationalBrandingLocalization'
+            description: Add different branding based on a locale.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.organizationalBranding'
+      x-ms-discriminator-value: '#microsoft.graph.organizationalBranding'
+    microsoft.graph.contentCustomization:
+      title: contentCustomization
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        attributeCollection:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.keyValue'
+          description: Represents the content options of External Identities to be customized throughout the authentication flow for a tenant.
+        attributeCollectionRelativeUrl:
+          type:
+          - string
+          - 'null'
+          description: A relative URL for the content options of External Identities to be customized throughout the authentication flow for a tenant.
+        registrationCampaign:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.keyValue'
+          description: Represents content options to customize during MFA proofup interruptions.
+        registrationCampaignRelativeUrl:
+          type:
+          - string
+          - 'null'
+          description: The relative URL of the content options to customize during MFA proofup interruptions.
+        '@odata.type':
+          type: string
+    microsoft.graph.keyValue:
+      title: keyValue
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        key:
+          type:
+          - string
+          - 'null'
+          description: Key for the key-value pair.
+        value:
+          type:
+          - string
+          - 'null'
+          description: Value for the key-value pair.
+        '@odata.type':
+          type: string
+    ODataCountResponse:
+      type: integer
+      format: int32
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -2420,6 +2462,25 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.organizationalBrandingLocalization:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.organizationalBrandingProperties'
+      - title: organizationalBrandingLocalization
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.organizationalBrandingLocalization'
+      x-ms-discriminator-value: '#microsoft.graph.organizationalBrandingLocalization'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -3489,23 +3550,6 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    ODataCountResponse:
-      type: integer
-      format: int32
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -3519,50 +3563,6 @@ components:
           type:
           - string
           - 'null'
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
   responses:
     microsoft.graph.organizationalBrandingLocalizationCollectionResponse:
       description: Retrieved collection
@@ -3570,15 +3570,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.organizationalBrandingLocalizationCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
     error:
       description: error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'

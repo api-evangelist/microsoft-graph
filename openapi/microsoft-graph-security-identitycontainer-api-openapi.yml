@@ -1266,82 +1266,76 @@ paths:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
 components:
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   schemas:
-    microsoft.graph.security.sensorCandidate:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: sensorCandidate
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          computerDnsName:
-            type: string
-            description: The DNS name of the computer associated with the sensor.
-          lastSeenDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when the sensor was last seen.
-            format: date-time
-          senseClientVersion:
-            type: string
-            description: The version of the Defender for Identity sensor client. Supports $filter (eq).
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.sensorCandidate'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.security.sensorSettings:
-      title: sensorSettings
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
       required:
       - '@odata.type'
       type: object
       properties:
-        description:
-          type: string
-          description: Description of the sensor.
-        domainControllerDnsNames:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-          description: DNS names for the domain controller
-        isDelayedDeploymentEnabled:
+        request-id:
           type:
-          - boolean
+          - string
           - 'null'
-          description: Indicates whether to delay updates for the sensor.
-        networkAdapters:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.security.networkAdapter'
-          x-ms-navigationProperty: true
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.security.identityProvider:
-      title: identityProvider
-      enum:
-      - entraID
-      - activeDirectory
-      - okta
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.sensorType:
-      title: sensorType
-      enum:
-      - adConnectIntegrated
-      - adcsIntegrated
-      - adfsIntegrated
-      - domainControllerIntegrated
-      - domainControllerStandalone
-      - unknownFutureValue
-      type: string
     microsoft.graph.security.identityContainer:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -1379,33 +1373,41 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.security.identityContainer'
-    microsoft.graph.security.deploymentStatus:
-      title: deploymentStatus
-      enum:
-      - upToDate
-      - outdated
-      - updating
-      - updateFailed
-      - notConfigured
-      - unreachable
-      - disconnected
-      - startFailure
-      - syncing
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.sensorCandidateActivationConfiguration:
+    microsoft.graph.security.networkAdapter:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: sensorCandidateActivationConfiguration
+      - title: networkAdapter
         required:
         - '@odata.type'
         type: object
         properties:
-          activationMode:
-            $ref: '#/components/schemas/microsoft.graph.security.sensorCandidateActivationMode'
+          isEnabled:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the network adapter is selected for capturing and analyzing network traffic.
+          name:
+            type:
+            - string
+            - 'null'
+            description: The name of the network adapter.
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.sensorCandidateActivationConfiguration'
+      x-ms-discriminator-value: '#microsoft.graph.security.networkAdapter'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
     microsoft.graph.security.identityAccounts:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -1448,6 +1450,47 @@ components:
           propertyName: '@odata.type'
           mapping:
             '#microsoft.graph.security.user': '#/components/schemas/microsoft.graph.security.user'
+    microsoft.graph.security.sensorCandidateCollectionResponse:
+      title: Collection of sensorCandidate
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.sensorCandidate'
+    microsoft.graph.security.healthIssueSeverity:
+      title: healthIssueSeverity
+      enum:
+      - low
+      - medium
+      - high
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.identityAccountsCollectionResponse:
+      title: Collection of identityAccounts
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.identityAccounts'
+    microsoft.graph.security.action:
+      title: action
+      enum:
+      - disable
+      - enable
+      - forcePasswordReset
+      - revokeAllSessions
+      - requireUserToSignInAgain
+      - markUserAsCompromised
+      - unknownFutureValue
+      type: string
     microsoft.graph.security.healthIssueStatus:
       title: healthIssueStatus
       enum:
@@ -1456,11 +1499,12 @@ components:
       - suppressed
       - unknownFutureValue
       type: string
-    microsoft.graph.security.healthIssueType:
-      title: healthIssueType
+    microsoft.graph.security.identityProvider:
+      title: identityProvider
       enum:
-      - sensor
-      - global
+      - entraID
+      - activeDirectory
+      - okta
       - unknownFutureValue
       type: string
     microsoft.graph.security.deploymentAccessKeyType:
@@ -1474,80 +1518,228 @@ components:
           description: The deployment access key.
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type:
-          - string
-          - 'null'
-          description: Request Id as tracked internally by the service
-        client-request-id:
-          type:
-          - string
-          - 'null'
-          description: Client request Id as sent by the client application.
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the error occured.
-          format: date-time
-        '@odata.type':
-          type: string
-    microsoft.graph.security.sensorHealthStatus:
-      title: sensorHealthStatus
-      enum:
-      - healthy
-      - notHealthyLow
-      - notHealthyMedium
-      - notHealthyHigh
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.action:
-      title: action
-      enum:
-      - disable
-      - enable
-      - forcePasswordReset
-      - revokeAllSessions
-      - requireUserToSignInAgain
-      - markUserAsCompromised
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.healthIssueSeverity:
-      title: healthIssueSeverity
-      enum:
-      - low
-      - medium
-      - high
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.networkAdapter:
+    microsoft.graph.security.healthIssue:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: networkAdapter
+      - title: healthIssue
         required:
         - '@odata.type'
         type: object
         properties:
-          isEnabled:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates whether the network adapter is selected for capturing and analyzing network traffic.
-          name:
+          additionalInformation:
+            type: array
+            items:
+              type: string
+            description: Contains additional information about the issue, such as a list of items to fix.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when the health issue was generated. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          description:
+            type: string
+            description: Contains more detailed information about the health issue.
+          displayName:
             type:
             - string
             - 'null'
-            description: The name of the network adapter.
+            description: The display name of the health issue.
+          domainNames:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: A list of the fully qualified domain names of the domains or the sensors the health issue is related to.
+          healthIssueType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.healthIssueType'
+            - type:
+              - object
+              - 'null'
+            description: 'The type of the health issue. The possible values are: sensor, global, unknownFutureValue. For a list of all health issues and their identifiers, see Microsoft Defender for Identity health issues.'
+          issueTypeId:
+            type:
+            - string
+            - 'null'
+            description: The type identifier of the health issue. For a list of all health issues and their identifiers, see Microsoft Defender for Identity health issues.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when the health issue was last updated. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          recommendations:
+            type: array
+            items:
+              type: string
+            description: A list of recommended actions that can be taken to resolve the issue effectively and efficiently. These actions might include instructions for further investigation and aren't limited to prewritten responses.
+          recommendedActionCommands:
+            type: array
+            items:
+              type: string
+            description: A list of commands from the PowerShell module for the product that can be used to resolve the issue, if available. If no commands can be used to solve the issue, this property is empty. The commands, if present, provide a quick and efficient way to address the issue. These commands run in sequence for the single recommended fix.
+          sensorDNSNames:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: A list of the DNS names of the sensors the health issue is related to.
+          severity:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.healthIssueSeverity'
+            - type:
+              - object
+              - 'null'
+            description: 'The severity of the health issue. The possible values are: low, medium, high, unknownFutureValue.'
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.healthIssueStatus'
+            - type:
+              - object
+              - 'null'
+            description: 'The status of the health issue. The possible values are: open, closed, suppressed, unknownFutureValue.'
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.networkAdapter'
+      x-ms-discriminator-value: '#microsoft.graph.security.healthIssue'
+    microsoft.graph.security.account:
+      title: account
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.security.action'
+          description: 'List of the type of action. The possible values are: disable, enable, forcePasswordReset, revokeAllSessions, requireUserToSignInAgain, markUserAsCompromised, unknownFutureValue.'
+        identifier:
+          type: string
+          description: The account ID.
+        identityProvider:
+          $ref: '#/components/schemas/microsoft.graph.security.identityProvider'
+        '@odata.type':
+          type: string
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.security.sensor:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: sensor
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when the sensor was generated. The Timestamp represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          deploymentStatus:
+            $ref: '#/components/schemas/microsoft.graph.security.deploymentStatus'
+          displayName:
+            type: string
+            description: The display name of the sensor.
+          domainName:
+            type: string
+            description: The fully qualified domain name of the sensor.
+          healthStatus:
+            $ref: '#/components/schemas/microsoft.graph.security.sensorHealthStatus'
+          openHealthIssuesCount:
+            type: number
+            description: This field displays the count of health issues related to this sensor.
+            format: int64
+          sensorType:
+            $ref: '#/components/schemas/microsoft.graph.security.sensorType'
+          settings:
+            $ref: '#/components/schemas/microsoft.graph.security.sensorSettings'
+          version:
+            type: string
+            description: The version of the sensor.
+          healthIssues:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.healthIssue'
+            description: Represents potential issues within a customer's Microsoft Defender for Identity configuration that Microsoft Defender for Identity identified related to the sensor.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.security.sensor'
+    microsoft.graph.security.sensorDeploymentPackage:
+      title: sensorDeploymentPackage
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        downloadUrl:
+          type: string
+          description: URL to download the sensor deployment package.
+        version:
+          type: string
+          description: Version of the sensor.
+        '@odata.type':
+          type: string
+    microsoft.graph.security.healthIssueType:
+      title: healthIssueType
+      enum:
+      - sensor
+      - global
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.sensorCandidate:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: sensorCandidate
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          computerDnsName:
+            type: string
+            description: The DNS name of the computer associated with the sensor.
+          lastSeenDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The date and time when the sensor was last seen.
+            format: date-time
+          senseClientVersion:
+            type: string
+            description: The version of the Defender for Identity sensor client. Supports $filter (eq).
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.security.sensorCandidate'
+    microsoft.graph.security.invokeActionResult:
+      title: invokeActionResult
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: The account ID.
+        action:
+          $ref: '#/components/schemas/microsoft.graph.security.action'
+        correlationId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier for tracking the request.
+        identityProvider:
+          $ref: '#/components/schemas/microsoft.graph.security.identityProvider'
+        '@odata.type':
+          type: string
+    microsoft.graph.security.healthIssueCollectionResponse:
+      title: Collection of healthIssue
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.healthIssue'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -1569,17 +1761,66 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.security.sensorCandidateCollectionResponse:
-      title: Collection of sensorCandidate
-      type: object
+    microsoft.graph.security.sensorCandidateActivationConfiguration:
       allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: sensorCandidateActivationConfiguration
+        required:
+        - '@odata.type'
+        type: object
         properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.sensorCandidate'
+          activationMode:
+            $ref: '#/components/schemas/microsoft.graph.security.sensorCandidateActivationMode'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.security.sensorCandidateActivationConfiguration'
+    microsoft.graph.security.sensorSettings:
+      title: sensorSettings
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the sensor.
+        domainControllerDnsNames:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+          description: DNS names for the domain controller
+        isDelayedDeploymentEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether to delay updates for the sensor.
+        networkAdapters:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.security.networkAdapter'
+          x-ms-navigationProperty: true
+        '@odata.type':
+          type: string
+    microsoft.graph.security.sensorHealthStatus:
+      title: sensorHealthStatus
+      enum:
+      - healthy
+      - notHealthyLow
+      - notHealthyMedium
+      - notHealthyHigh
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.sensorType:
+      title: sensorType
+      enum:
+      - adConnectIntegrated
+      - adcsIntegrated
+      - adfsIntegrated
+      - domainControllerIntegrated
+      - domainControllerStandalone
+      - unknownFutureValue
+      type: string
     microsoft.graph.entity:
       title: entity
       required:
@@ -2649,17 +2890,44 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.security.deploymentStatus:
+      title: deploymentStatus
+      enum:
+      - upToDate
+      - outdated
+      - updating
+      - updateFailed
+      - notConfigured
+      - unreachable
+      - disconnected
+      - startFailure
+      - syncing
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.sensorCandidateActivationMode:
+      title: sensorCandidateActivationMode
+      enum:
+      - manual
+      - automated
+      - unknownFutureValue
+      type: string
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
           type:
           - string
           - 'null'
@@ -2674,308 +2942,40 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.security.sensor'
-    microsoft.graph.security.identityAccountsCollectionResponse:
-      title: Collection of identityAccounts
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.identityAccounts'
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.security.invokeActionResult:
-      title: invokeActionResult
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        accountId:
-          type: string
-          description: The account ID.
-        action:
-          $ref: '#/components/schemas/microsoft.graph.security.action'
-        correlationId:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier for tracking the request.
-        identityProvider:
-          $ref: '#/components/schemas/microsoft.graph.security.identityProvider'
-        '@odata.type':
-          type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type:
-          - integer
-          - 'null'
-          format: int64
-        '@odata.nextLink':
-          type:
-          - string
-          - 'null'
-    microsoft.graph.security.sensorCandidateActivationMode:
-      title: sensorCandidateActivationMode
-      enum:
-      - manual
-      - automated
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.healthIssue:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: healthIssue
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          additionalInformation:
-            type: array
-            items:
-              type: string
-            description: Contains additional information about the issue, such as a list of items to fix.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when the health issue was generated. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          description:
-            type: string
-            description: Contains more detailed information about the health issue.
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: The display name of the health issue.
-          domainNames:
-            type: array
-            items:
-              type:
-              - string
-              - 'null'
-            description: A list of the fully qualified domain names of the domains or the sensors the health issue is related to.
-          healthIssueType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.healthIssueType'
-            - type:
-              - object
-              - 'null'
-            description: 'The type of the health issue. The possible values are: sensor, global, unknownFutureValue. For a list of all health issues and their identifiers, see Microsoft Defender for Identity health issues.'
-          issueTypeId:
-            type:
-            - string
-            - 'null'
-            description: The type identifier of the health issue. For a list of all health issues and their identifiers, see Microsoft Defender for Identity health issues.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when the health issue was last updated. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          recommendations:
-            type: array
-            items:
-              type: string
-            description: A list of recommended actions that can be taken to resolve the issue effectively and efficiently. These actions might include instructions for further investigation and aren't limited to prewritten responses.
-          recommendedActionCommands:
-            type: array
-            items:
-              type: string
-            description: A list of commands from the PowerShell module for the product that can be used to resolve the issue, if available. If no commands can be used to solve the issue, this property is empty. The commands, if present, provide a quick and efficient way to address the issue. These commands run in sequence for the single recommended fix.
-          sensorDNSNames:
-            type: array
-            items:
-              type:
-              - string
-              - 'null'
-            description: A list of the DNS names of the sensors the health issue is related to.
-          severity:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.healthIssueSeverity'
-            - type:
-              - object
-              - 'null'
-            description: 'The severity of the health issue. The possible values are: low, medium, high, unknownFutureValue.'
-          status:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.healthIssueStatus'
-            - type:
-              - object
-              - 'null'
-            description: 'The status of the health issue. The possible values are: open, closed, suppressed, unknownFutureValue.'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.healthIssue'
-    microsoft.graph.security.sensor:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: sensor
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The date and time when the sensor was generated. The Timestamp represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          deploymentStatus:
-            $ref: '#/components/schemas/microsoft.graph.security.deploymentStatus'
-          displayName:
-            type: string
-            description: The display name of the sensor.
-          domainName:
-            type: string
-            description: The fully qualified domain name of the sensor.
-          healthStatus:
-            $ref: '#/components/schemas/microsoft.graph.security.sensorHealthStatus'
-          openHealthIssuesCount:
-            type: number
-            description: This field displays the count of health issues related to this sensor.
-            format: int64
-          sensorType:
-            $ref: '#/components/schemas/microsoft.graph.security.sensorType'
-          settings:
-            $ref: '#/components/schemas/microsoft.graph.security.sensorSettings'
-          version:
-            type: string
-            description: The version of the sensor.
-          healthIssues:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.healthIssue'
-            description: Represents potential issues within a customer's Microsoft Defender for Identity configuration that Microsoft Defender for Identity identified related to the sensor.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.sensor'
-    microsoft.graph.security.account:
-      title: account
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        actions:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.security.action'
-          description: 'List of the type of action. The possible values are: disable, enable, forcePasswordReset, revokeAllSessions, requireUserToSignInAgain, markUserAsCompromised, unknownFutureValue.'
-        identifier:
-          type: string
-          description: The account ID.
-        identityProvider:
-          $ref: '#/components/schemas/microsoft.graph.security.identityProvider'
-        '@odata.type':
-          type: string
-    microsoft.graph.security.healthIssueCollectionResponse:
-      title: Collection of healthIssue
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.healthIssue'
-    microsoft.graph.security.sensorDeploymentPackage:
-      title: sensorDeploymentPackage
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        downloadUrl:
-          type: string
-          description: URL to download the sensor deployment package.
-        version:
-          type: string
-          description: Version of the sensor.
-        '@odata.type':
-          type: string
   responses:
-    microsoft.graph.security.sensorCandidateCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.security.sensorCandidateCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.security.identityAccountsCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.security.identityAccountsCollectionResponse'
     microsoft.graph.security.healthIssueCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.security.healthIssueCollectionResponse'
+    microsoft.graph.security.identityAccountsCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.security.identityAccountsCollectionResponse'
+    microsoft.graph.security.sensorCandidateCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.security.sensorCandidateCollectionResponse'
     error:
       description: error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
     microsoft.graph.security.sensorCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.security.sensorCollectionResponse'
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50

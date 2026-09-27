@@ -199,35 +199,51 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   schemas:
-    microsoft.graph.attributeType:
-      title: attributeType
-      enum:
-      - String
-      - Integer
-      - Reference
-      - Binary
-      - Boolean
-      - DateTime
-      type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.attributeMappingFunctionSchemaCollectionResponse:
-      title: Collection of attributeMappingFunctionSchema
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.attributeMappingFunctionSchema'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -253,22 +269,44 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.attributeMappingFunctionSchema:
+    microsoft.graph.attributeMappingFunctionSchemaCollectionResponse:
+      title: Collection of attributeMappingFunctionSchema
+      type: object
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: attributeMappingFunctionSchema
-        required:
-        - '@odata.type'
-        type: object
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
         properties:
-          parameters:
+          value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.attributeMappingParameterSchema'
-            description: Collection of function parameters.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.attributeMappingFunctionSchema'
+              $ref: '#/components/schemas/microsoft.graph.attributeMappingFunctionSchema'
+    microsoft.graph.attributeType:
+      title: attributeType
+      enum:
+      - String
+      - Integer
+      - Reference
+      - Binary
+      - Boolean
+      - DateTime
+      type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    ODataCountResponse:
+      type: integer
+      format: int32
     microsoft.graph.attributeMappingParameterSchema:
       title: attributeMappingParameterSchema
       required:
@@ -1380,23 +1418,13 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    ODataCountResponse:
-      type: integer
-      format: int32
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -1410,57 +1438,23 @@ components:
           type:
           - string
           - 'null'
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
+    microsoft.graph.attributeMappingFunctionSchema:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: attributeMappingFunctionSchema
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          parameters:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.attributeMappingParameterSchema'
+            description: Collection of function parameters.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.attributeMappingFunctionSchema'
   responses:
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
     microsoft.graph.attributeMappingFunctionSchemaCollectionResponse:
       description: Retrieved collection
       content:
@@ -1473,3 +1467,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'

@@ -514,32 +514,34 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    microsoft.graph.appKeyCredentialRestrictionType:
-      title: appKeyCredentialRestrictionType
-      enum:
-      - asymmetricKeyLifetime
-      - unknownFutureValue
-      type: string
-    microsoft.graph.objectDefinitionMetadataEntry:
-      title: objectDefinitionMetadataEntry
+    microsoft.graph.stringKeyLongValuePair:
+      title: stringKeyLongValuePair
       required:
       - '@odata.type'
       type: object
       properties:
         key:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.objectDefinitionMetadata'
-          - type:
-            - object
-            - 'null'
-          description: 'The possible values are: PropertyNameAccountEnabled, PropertyNameSoftDeleted, IsSoftDeletionSupported, IsSynchronizeAllSupported, ConnectorDataStorageRequired, Extensions, LinkTypeName.'
-        value:
           type:
           - string
           - 'null'
-          description: Value of the metadata property.
+          description: The mapping of the user type from the source system to the target system. For example:User to User - For Microsoft Entra ID to Microsoft Entra ID synchronization worker to user - For Workday to Microsoft Entra synchronization.
+        value:
+          type: number
+          description: Total number of synchronized objects.
+          format: int64
         '@odata.type':
           type: string
+    microsoft.graph.applicationCollectionResponse:
+      title: Collection of application
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.application'
     microsoft.graph.directoryObject:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -593,183 +595,182 @@ components:
             '#microsoft.graph.resourceSpecificPermissionGrant': '#/components/schemas/microsoft.graph.resourceSpecificPermissionGrant'
             '#microsoft.graph.servicePrincipal': '#/components/schemas/microsoft.graph.servicePrincipal'
             '#microsoft.graph.user': '#/components/schemas/microsoft.graph.user'
-    microsoft.graph.weakAlgorithms:
-      title: weakAlgorithms
-      enum:
-      - rsaSha1
-      - unknownFutureValue
-      type: string
-      x-ms-enum-flags:
-        isFlags: true
-    microsoft.graph.synchronizationScheduleState:
-      title: synchronizationScheduleState
-      enum:
-      - Active
-      - Disabled
-      - Paused
-      type: string
-    microsoft.graph.passwordCredentialConfiguration:
-      title: passwordCredentialConfiguration
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        maxLifetime:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type:
-          - string
-          - 'null'
-          description: String value that indicates the maximum lifetime for password expiration, defined as an ISO 8601 duration. For example, P4DT12H30M5S represents four days, 12 hours, 30 minutes, and five seconds. This property is required when restrictionType is set to passwordLifetime.
-          format: duration
-        restrictForAppsCreatedAfterDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Specifies the date from which the policy restriction applies to newly created applications. For existing applications, the enforcement date can be retroactively applied.
-          format: date-time
-        restrictionType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.appCredentialRestrictionType'
-          - type:
-            - object
-            - 'null'
-          description: 'The type of restriction being applied. The possible values are: passwordAddition, passwordLifetime, symmetricKeyAddition, symmetricKeyLifetime, customPasswordAddition, and unknownFutureValue. Each value of restrictionType can be used only once per policy.'
-        state:
-          $ref: '#/components/schemas/microsoft.graph.appManagementRestrictionState'
-        '@odata.type':
-          type: string
-    microsoft.graph.homeRealmDiscoveryPolicy:
+    microsoft.graph.appManagementPolicy:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.stsPolicy'
-      - title: homeRealmDiscoveryPolicy
+      - $ref: '#/components/schemas/microsoft.graph.policyBase'
+      - title: appManagementPolicy
         required:
         - '@odata.type'
         type: object
         properties:
+          isEnabled:
+            type: boolean
+            description: Denotes whether the policy is enabled.
+          restrictions:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.customAppManagementConfiguration'
+            - type:
+              - object
+              - 'null'
+            description: Restrictions that apply to an application or service principal object.
+          appliesTo:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.directoryObject'
+            description: Collection of applications and service principals to which the policy is applied.
+            x-ms-navigationProperty: true
           '@odata.type':
             type: string
-            default: '#microsoft.graph.homeRealmDiscoveryPolicy'
-      x-ms-discriminator-value: '#microsoft.graph.homeRealmDiscoveryPolicy'
-    microsoft.graph.publicClientApplication:
-      title: publicClientApplication
+            default: '#microsoft.graph.appManagementPolicy'
+      x-ms-discriminator-value: '#microsoft.graph.appManagementPolicy'
+    microsoft.graph.optionalClaims:
+      title: optionalClaims
       required:
       - '@odata.type'
       type: object
       properties:
+        accessToken:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.optionalClaim'
+          description: The optional claims returned in the JWT access token.
+        idToken:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.optionalClaim'
+          description: The optional claims returned in the JWT ID token.
+        saml2Token:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.optionalClaim'
+          description: The optional claims returned in the SAML token.
+        '@odata.type':
+          type: string
+    microsoft.graph.informationalUrl:
+      title: informationalUrl
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        logoUrl:
+          type:
+          - string
+          - 'null'
+          description: CDN URL to the application's logo, Read-only.
+        marketingUrl:
+          type:
+          - string
+          - 'null'
+          description: Link to the application's marketing page. For example, https://www.contoso.com/app/marketing
+        privacyStatementUrl:
+          type:
+          - string
+          - 'null'
+          description: Link to the application's privacy statement. For example, https://www.contoso.com/app/privacy
+        supportUrl:
+          type:
+          - string
+          - 'null'
+          description: Link to the application's support page. For example, https://www.contoso.com/app/support
+        termsOfServiceUrl:
+          type:
+          - string
+          - 'null'
+          description: Link to the application's terms of service statement. For example, https://www.contoso.com/app/termsofservice
+        '@odata.type':
+          type: string
+    microsoft.graph.implicitGrantSettings:
+      title: implicitGrantSettings
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        enableAccessTokenIssuance:
+          type:
+          - boolean
+          - 'null'
+          description: Specifies whether this web application can request an access token using the OAuth 2.0 implicit flow.
+        enableIdTokenIssuance:
+          type:
+          - boolean
+          - 'null'
+          description: Specifies whether this web application can request an ID token using the OAuth 2.0 implicit flow.
+        '@odata.type':
+          type: string
+    microsoft.graph.preAuthorizedApplication:
+      title: preAuthorizedApplication
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        appId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier for the application.
+        delegatedPermissionIds:
+          type: array
+          items:
+            type: string
+          description: The unique identifier for the oauth2PermissionScopes the application requires.
+        '@odata.type':
+          type: string
+    microsoft.graph.webApplication:
+      title: webApplication
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        homePageUrl:
+          type:
+          - string
+          - 'null'
+          description: Home page or landing page of the application.
+        implicitGrantSettings:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.implicitGrantSettings'
+          - type:
+            - object
+            - 'null'
+          description: Specifies whether this web application can request tokens using the OAuth 2.0 implicit flow.
+        logoutUrl:
+          type:
+          - string
+          - 'null'
+          description: Specifies the URL that is used by Microsoft's authorization service to log out a user using front-channel, back-channel or SAML logout protocols.
         redirectUris:
           type: array
           items:
             type: string
-          description: Specifies the URLs where user tokens are sent for sign-in, or the redirect URIs where OAuth 2.0 authorization codes and access tokens are sent. For iOS and macOS apps, specify the value following the syntax msauth.{BUNDLEID}://auth, replacing '{BUNDLEID}'. For example, if the bundle ID is com.microsoft.identitysample.MSALiOS, the URI is msauth.com.microsoft.identitysample.MSALiOS://auth.
+          description: Specifies the URLs where user tokens are sent for sign-in, or the redirect URIs where OAuth 2.0 authorization codes and access tokens are sent.
+        redirectUriSettings:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.redirectUriSettings'
         '@odata.type':
           type: string
-    microsoft.graph.keyValuePair:
-      title: keyValuePair
+    microsoft.graph.synchronizationSchedule:
+      title: synchronizationSchedule
       required:
       - '@odata.type'
       type: object
       properties:
-        name:
-          type: string
-          description: Name for this key-value pair
-        value:
+        expiration:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
           type:
           - string
           - 'null'
-          description: Value for this key-value pair
+          description: Date and time when this job expires. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
+        interval:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type: string
+          description: The interval between synchronization iterations. The value is represented in ISO 8601  format for durations. For example, P1M represents a period of one month and PT1M represents a period of one minute.
+          format: duration
+        state:
+          $ref: '#/components/schemas/microsoft.graph.synchronizationScheduleState'
         '@odata.type':
           type: string
-    microsoft.graph.appCredentialRestrictionType:
-      title: appCredentialRestrictionType
-      enum:
-      - passwordAddition
-      - passwordLifetime
-      - symmetricKeyAddition
-      - symmetricKeyLifetime
-      - customPasswordAddition
-      - unknownFutureValue
-      type: string
-    microsoft.graph.attributeFlowBehavior:
-      title: attributeFlowBehavior
-      enum:
-      - FlowWhenChanged
-      - FlowAlways
-      type: string
-    microsoft.graph.extensionProperty:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
-      - title: extensionProperty
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          appDisplayName:
-            type:
-            - string
-            - 'null'
-            description: Display name of the application object on which this extension property is defined. Read-only.
-          dataType:
-            type: string
-            description: Specifies the data type of the value the extension property can hold. Following values are supported. Binary - 256 bytes maximumBooleanDateTime - Must be specified in ISO 8601 format. Will be stored in UTC.Integer - 32-bit value.LargeInteger - 64-bit value.String - 256 characters maximumNot nullable. For multivalued directory extensions, these limits apply per value in the collection.
-          isMultiValued:
-            type: boolean
-            description: 'Defines the directory extension as a multi-valued property. When true, the directory extension property can store a collection of objects of the dataType; for example, a collection of string types such as ''extensionb7b1c57b532f40b8b5ed4b7a7ba67401jobGroupTracker'': [''String 1'', ''String 2'']. The default value is false. Supports $filter (eq).'
-          isSyncedFromOnPremises:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates if this extension property was synced from on-premises active directory using Microsoft Entra Connect. Read-only.
-          name:
-            type: string
-            description: Name of the extension property. Not nullable. Supports $filter (eq).
-          targetObjects:
-            type: array
-            items:
-              type: string
-            description: Following values are supported. Not nullable. UserGroupAdministrativeUnitApplicationDeviceOrganization
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.extensionProperty'
-      x-ms-discriminator-value: '#microsoft.graph.extensionProperty'
-    microsoft.graph.customAppManagementConfiguration:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.appManagementConfiguration'
-      - title: customAppManagementConfiguration
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.customAppManagementConfiguration'
-      x-ms-discriminator-value: '#microsoft.graph.customAppManagementConfiguration'
-    microsoft.graph.groupFilter:
-      title: groupFilter
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        includedGroups:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-        '@odata.type':
-          type: string
-    microsoft.graph.tokenIssuancePolicy:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.stsPolicy'
-      - title: tokenIssuancePolicy
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.tokenIssuancePolicy'
-      x-ms-discriminator-value: '#microsoft.graph.tokenIssuancePolicy'
     microsoft.graph.permissionScope:
       title: permissionScope
       required:
@@ -820,160 +821,64 @@ components:
           description: 'Specifies the value to include in the scp (scope) claim in access tokens. Must not exceed 120 characters in length. Allowed characters are : ! # $ % & '' ( ) * + , - . / : ;  =  ? @ [ ] ^ + _  {  } ~, and characters in the ranges 0-9, A-Z and a-z. Any other character, including the space character, aren''t allowed. May not begin with ..'
         '@odata.type':
           type: string
-    microsoft.graph.synchronizationSecretKeyStringValuePair:
-      title: synchronizationSecretKeyStringValuePair
+    microsoft.graph.synchronizationProgress:
+      title: synchronizationProgress
       required:
       - '@odata.type'
       type: object
       properties:
-        key:
-          $ref: '#/components/schemas/microsoft.graph.synchronizationSecret'
-        value:
-          type:
-          - string
-          - 'null'
-          description: The value of the secret.
-        '@odata.type':
-          type: string
-    microsoft.graph.filterOperand:
-      title: filterOperand
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        values:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-          description: Collection of values.
-        '@odata.type':
-          type: string
-    microsoft.graph.quarantineReason:
-      title: quarantineReason
-      enum:
-      - EncounteredBaseEscrowThreshold
-      - EncounteredTotalEscrowThreshold
-      - EncounteredEscrowProportionThreshold
-      - EncounteredQuarantineException
-      - Unknown
-      - QuarantinedOnDemand
-      - TooManyDeletes
-      - IngestionInterrupted
-      type: string
-    microsoft.graph.addIn:
-      title: addIn
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        id:
-          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-          type:
-          - string
-          - 'null'
-          description: The unique identifier for the addIn object.
-          format: uuid
-        properties:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.keyValue'
-          description: The collection of key-value pairs that define parameters that the consuming service can use or call. You must specify this property when performing a POST or a PATCH operation on the addIns collection. Required.
-        type:
-          type: string
-          description: The unique name for the functionality exposed by the app.
-        '@odata.type':
-          type: string
-    microsoft.graph.apiApplication:
-      title: apiApplication
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        acceptMappedClaims:
-          type:
-          - boolean
-          - 'null'
-          description: When true, allows an application to use claims mapping without specifying a custom signing key.
-        knownClientApplications:
-          type: array
-          items:
-            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-            type:
-            - string
-            - 'null'
-            format: uuid
-          description: 'Used for bundling consent if you have a solution that contains two parts: a client app and a custom web API app. If you set the appID of the client app to this value, the user only consents once to the client app. Microsoft Entra ID knows that consenting to the client means implicitly consenting to the web API and automatically provisions service principals for both APIs at the same time. Both the client and the web API app must be registered in the same tenant.'
-        oauth2PermissionScopes:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.permissionScope'
-          description: The definition of the delegated permissions exposed by the web API represented by this application registration. These delegated permissions may be requested by a client application, and may be granted by users or administrators during consent. Delegated permissions are sometimes referred to as OAuth 2.0 scopes.
-        preAuthorizedApplications:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.preAuthorizedApplication'
-          description: Lists the client applications that are preauthorized with the specified delegated permissions to access this application's APIs. Users aren't required to consent to any preauthorized application (for the permissions specified). However, any other permissions not listed in preAuthorizedApplications (requested through incremental consent for example) will require user consent.
-        requestedAccessTokenVersion:
-          maximum: 2147483647
-          minimum: -2147483648
-          type:
-          - number
-          - 'null'
-          description: Specifies the access token version expected by this resource. This changes the version and format of the JWT produced independent of the endpoint or client used to request the access token.  The endpoint used, v1.0 or v2.0, is chosen by the client and only impacts the version of id_tokens. Resources need to explicitly configure requestedAccessTokenVersion to indicate the supported access token format.  Possible values for requestedAccessTokenVersion are 1, 2, or null. If the value is null, this defaults to 1, which corresponds to the v1.0 endpoint.  If signInAudience on the application is configured as AzureADandPersonalMicrosoftAccount or PersonalMicrosoftAccount, the value for this property must be 2.
-          format: int32
-        '@odata.type':
-          type: string
-    microsoft.graph.attributeMapping:
-      title: attributeMapping
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        defaultValue:
-          type:
-          - string
-          - 'null'
-          description: Default value to be used in case the source property was evaluated to null. Optional.
-        exportMissingReferences:
-          type: boolean
-          description: For internal use only.
-        flowBehavior:
-          $ref: '#/components/schemas/microsoft.graph.attributeFlowBehavior'
-        flowType:
-          $ref: '#/components/schemas/microsoft.graph.attributeFlowType'
-        matchingPriority:
-          maximum: 2147483647
-          minimum: -2147483648
+        completedUnits:
           type: number
-          description: If higher than 0, this attribute will be used to perform an initial match of the objects between source and target directories. The synchronization engine will try to find the matching object using attribute with lowest value of matching priority first. If not found, the attribute with the next matching priority will be used, and so on a until match is found or no more matching attributes are left. Only attributes that are expected to have unique values, such as email, should be used as matching attributes.
-          format: int32
-        source:
+          description: The numerator of a progress ratio; the number of units of changes already processed.
+          format: int64
+        progressObservationDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The time of a progress observation as an offset in minutes from UTC.
+          format: date-time
+        totalUnits:
+          type: number
+          description: The denominator of a progress ratio; a number of units of changes to be processed to accomplish synchronization.
+          format: int64
+        units:
+          type:
+          - string
+          - 'null'
+          description: An optional description of the units.
+        '@odata.type':
+          type: string
+    microsoft.graph.synchronizationScheduleState:
+      title: synchronizationScheduleState
+      enum:
+      - Active
+      - Disabled
+      - Paused
+      type: string
+    microsoft.graph.filterClause:
+      title: filterClause
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        operatorName:
+          type:
+          - string
+          - 'null'
+          description: Name of the operator to be applied to the source and target operands. Must be one of the supported operators. Supported operators can be discovered.
+        sourceOperandName:
+          type:
+          - string
+          - 'null'
+          description: Name of source operand (the operand being tested). The source operand name must match one of the attribute names on the source object.
+        targetOperand:
           anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.attributeMappingSource'
+          - $ref: '#/components/schemas/microsoft.graph.filterOperand'
           - type:
             - object
             - 'null'
-          description: Defines how a value should be extracted (or transformed) from the source object.
-        targetAttributeName:
-          type:
-          - string
-          - 'null'
-          description: Name of the attribute on the target object.
+          description: Values that the source operand will be tested against.
         '@odata.type':
           type: string
-    microsoft.graph.objectMappingMetadata:
-      title: objectMappingMetadata
-      enum:
-      - EscrowBehavior
-      - DisableMonitoringForChanges
-      - OriginalJoiningProperty
-      - Disposition
-      - IsCustomerDefined
-      - ExcludeFromReporting
-      - Unsynchronized
-      type: string
     microsoft.graph.federatedIdentityCredential:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -1004,201 +909,514 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.federatedIdentityCredential'
-    microsoft.graph.informationalUrl:
-      title: informationalUrl
+    microsoft.graph.redirectUriSettings:
+      title: redirectUriSettings
       required:
       - '@odata.type'
       type: object
       properties:
-        logoUrl:
+        index:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          format: int32
+        uri:
           type:
           - string
           - 'null'
-          description: CDN URL to the application's logo, Read-only.
-        marketingUrl:
-          type:
-          - string
-          - 'null'
-          description: Link to the application's marketing page. For example, https://www.contoso.com/app/marketing
-        privacyStatementUrl:
-          type:
-          - string
-          - 'null'
-          description: Link to the application's privacy statement. For example, https://www.contoso.com/app/privacy
-        supportUrl:
-          type:
-          - string
-          - 'null'
-          description: Link to the application's support page. For example, https://www.contoso.com/app/support
-        termsOfServiceUrl:
-          type:
-          - string
-          - 'null'
-          description: Link to the application's terms of service statement. For example, https://www.contoso.com/app/termsofservice
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
+    microsoft.graph.filterGroup:
+      title: filterGroup
       required:
       - '@odata.type'
       type: object
       properties:
-        request-id:
+        clauses:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.filterClause'
+          description: Filter clauses (conditions) of this group. All clauses in a group must be satisfied in order for the filter group to evaluate to true.
+        name:
           type:
           - string
           - 'null'
-          description: Request Id as tracked internally by the service
-        client-request-id:
-          type:
-          - string
-          - 'null'
-          description: Client request Id as sent by the client application.
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the error occured.
-          format: date-time
+          description: Human-readable name of the filter group.
         '@odata.type':
           type: string
-    microsoft.graph.attributeDefinitionMetadataEntry:
-      title: attributeDefinitionMetadataEntry
-      required:
-      - '@odata.type'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
       type: object
       properties:
-        key:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.attributeDefinitionMetadata'
-          - type:
-            - object
-            - 'null'
-          description: 'The possible values are: BaseAttributeName, ComplexObjectDefinition, IsContainer, IsCustomerDefined, IsDomainQualified, LinkPropertyNames, LinkTypeName, MaximumLength, ReferencedProperty.'
-        value:
+        '@odata.count':
           type:
-          - string
+          - integer
           - 'null'
-          description: Value of the metadata property.
-        '@odata.type':
-          type: string
-    microsoft.graph.stringKeyLongValuePair:
-      title: stringKeyLongValuePair
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        key:
-          type:
-          - string
-          - 'null'
-          description: The mapping of the user type from the source system to the target system. For example:User to User - For Microsoft Entra ID to Microsoft Entra ID synchronization worker to user - For Workday to Microsoft Entra synchronization.
-        value:
-          type: number
-          description: Total number of synchronized objects.
           format: int64
-        '@odata.type':
-          type: string
-    microsoft.graph.containerFilter:
-      title: containerFilter
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        includedContainers:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-        '@odata.type':
-          type: string
-    microsoft.graph.preAuthorizedApplication:
-      title: preAuthorizedApplication
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        appId:
+        '@odata.nextLink':
           type:
           - string
           - 'null'
-          description: The unique identifier for the application.
-        delegatedPermissionIds:
-          type: array
-          items:
-            type: string
-          description: The unique identifier for the oauth2PermissionScopes the application requires.
-        '@odata.type':
-          type: string
-    microsoft.graph.authenticationBehaviors:
-      title: authenticationBehaviors
+    microsoft.graph.filter:
+      title: filter
       required:
       - '@odata.type'
       type: object
       properties:
-        blockAzureADGraphAccess:
-          type:
-          - boolean
-          - 'null'
-        removeUnverifiedEmailClaim:
-          type:
-          - boolean
-          - 'null'
-        requireClientServicePrincipal:
-          type:
-          - boolean
-          - 'null'
+        categoryFilterGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.filterGroup'
+          description: '*Experimental* Filter group set used to decide whether given object belongs and should be processed as part of this object mapping. An object is considered in scope if ANY of the groups in the collection is evaluated to true.'
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.filterGroup'
+          description: Filter group set used to decide whether given object is in scope for provisioning. This is the filter which should be used in most cases. If an object used to satisfy this filter at a given moment, and then the object or the filter was changed so that filter isn't satisfied any longer, such object will get deprovisioned'. An object is considered in scope if ANY of the groups in the collection is evaluated to true.
+        inputFilterGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.filterGroup'
+          description: '*Experimental* Filter group set used to filter out objects at the early stage of reading them from the directory. If an object doesn''t satisfy this filter, then it will not be processed further. Important to understand is that if an object used to satisfy this filter at a given moment, and then the object or the filter was changed so that filter is no longer satisfied, such object will NOT get deprovisioned. An object is considered in scope if ANY of the groups in the collection is evaluated to true.'
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.MainError:
+    microsoft.graph.synchronizationStatus:
+      title: synchronizationStatus
       required:
-      - code
-      - message
+      - '@odata.type'
       type: object
       properties:
         code:
+          $ref: '#/components/schemas/microsoft.graph.synchronizationStatusCode'
+        countSuccessiveCompleteFailures:
+          type: number
+          description: Number of consecutive times this job failed.
+          format: int64
+        escrowsPruned:
+          type: boolean
+          description: true if the job's escrows (object-level errors) were pruned during initial synchronization. Escrows can be pruned if during the initial synchronization, you reach the threshold of errors that would normally put the job in quarantine. Instead of going into quarantine, the synchronization process clears the job's errors and continues until the initial synchronization is completed. When the initial synchronization is completed, the job will pause and wait for the customer to clean up the errors.
+        lastExecution:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.synchronizationTaskExecution'
+          - type:
+            - object
+            - 'null'
+          description: Details of the last execution of the job.
+        lastSuccessfulExecution:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.synchronizationTaskExecution'
+          - type:
+            - object
+            - 'null'
+          description: Details of the last execution of this job, which didn't have any errors.
+        lastSuccessfulExecutionWithExports:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.synchronizationTaskExecution'
+          - type:
+            - object
+            - 'null'
+          description: Details of the last execution of the job, which exported objects into the target directory.
+        progress:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.synchronizationProgress'
+          description: Details of the progress of a job toward completion.
+        quarantine:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.synchronizationQuarantine'
+          - type:
+            - object
+            - 'null'
+          description: If job is in quarantine, quarantine details.
+        steadyStateFirstAchievedTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
           type: string
-        message:
+          description: The time when steady state (no more changes to the process) was first achieved. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
+        steadyStateLastAchievedTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
           type: string
-          x-ms-primary-error-message: true
-        target:
+          description: The time when steady state (no more changes to the process) was last achieved. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
+        synchronizedEntryCountByType:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.stringKeyLongValuePair'
+          description: Count of synchronized objects, listed by object type.
+        troubleshootingUrl:
           type:
           - string
           - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.synchronizationSchema:
+          description: In the event of an error, the URL with the troubleshooting steps for the issue.
+        '@odata.type':
+          type: string
+    microsoft.graph.synchronization:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: synchronizationSchema
+      - title: synchronization
         required:
         - '@odata.type'
         type: object
         properties:
-          synchronizationRules:
+          secrets:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.synchronizationRule'
-            description: A collection of synchronization rules configured for the synchronizationJob or synchronizationTemplate.
+              $ref: '#/components/schemas/microsoft.graph.synchronizationSecretKeyStringValuePair'
+            description: Represents a collection of credentials to access provisioned cloud applications.
+          jobs:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.synchronizationJob'
+            description: Performs synchronization by periodically running in the background, polling for changes in one directory, and pushing them to another directory.
+            x-ms-navigationProperty: true
+          templates:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.synchronizationTemplate'
+            description: Preconfigured synchronization settings for a particular application.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.synchronization'
+    microsoft.graph.directoryDefinition:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: directoryDefinition
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          discoverabilities:
+            $ref: '#/components/schemas/microsoft.graph.directoryDefinitionDiscoverabilities'
+          discoveryDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Represents the discovery date and time using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          name:
+            type:
+            - string
+            - 'null'
+            description: Name of the directory. Must be unique within the synchronization schema. Not nullable.
+          objects:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.objectDefinition'
+            description: Collection of objects supported by the directory.
+          readOnly:
+            type: boolean
+            description: Whether this object is read-only.
           version:
             type:
             - string
             - 'null'
-            description: The version of the schema, updated automatically with every schema change.
-          directories:
+            description: Read only value that indicates version discovered. null if discovery hasn't yet occurred.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.directoryDefinition'
+    microsoft.graph.attributeFlowType:
+      title: attributeFlowType
+      enum:
+      - Always
+      - ObjectAddOnly
+      - MultiValueAddOnly
+      - ValueAddOnly
+      - AttributeAddOnly
+      type: string
+    microsoft.graph.mutability:
+      title: mutability
+      enum:
+      - ReadWrite
+      - ReadOnly
+      - Immutable
+      - WriteOnly
+      type: string
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.synchronizationSecretKeyStringValuePair:
+      title: synchronizationSecretKeyStringValuePair
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/microsoft.graph.synchronizationSecret'
+        value:
+          type:
+          - string
+          - 'null'
+          description: The value of the secret.
+        '@odata.type':
+          type: string
+    microsoft.graph.extensionProperty:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
+      - title: extensionProperty
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          appDisplayName:
+            type:
+            - string
+            - 'null'
+            description: Display name of the application object on which this extension property is defined. Read-only.
+          dataType:
+            type: string
+            description: Specifies the data type of the value the extension property can hold. Following values are supported. Binary - 256 bytes maximumBooleanDateTime - Must be specified in ISO 8601 format. Will be stored in UTC.Integer - 32-bit value.LargeInteger - 64-bit value.String - 256 characters maximumNot nullable. For multivalued directory extensions, these limits apply per value in the collection.
+          isMultiValued:
+            type: boolean
+            description: 'Defines the directory extension as a multi-valued property. When true, the directory extension property can store a collection of objects of the dataType; for example, a collection of string types such as ''extensionb7b1c57b532f40b8b5ed4b7a7ba67401jobGroupTracker'': [''String 1'', ''String 2'']. The default value is false. Supports $filter (eq).'
+          isSyncedFromOnPremises:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates if this extension property was synced from on-premises active directory using Microsoft Entra Connect. Read-only.
+          name:
+            type: string
+            description: Name of the extension property. Not nullable. Supports $filter (eq).
+          targetObjects:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.directoryDefinition'
-            description: Contains the collection of directories and all of their objects.
+              type: string
+            description: Following values are supported. Not nullable. UserGroupAdministrativeUnitApplicationDeviceOrganization
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.extensionProperty'
+      x-ms-discriminator-value: '#microsoft.graph.extensionProperty'
+    microsoft.graph.keyCredential:
+      title: keyCredential
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        customKeyIdentifier:
+          type:
+          - string
+          - 'null'
+          description: A 40-character binary type that can be used to identify the credential. Optional. When not provided in the payload, defaults to the thumbprint of the certificate.
+          format: base64url
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: The friendly name for the key, with a maximum length of 90 characters. Longer values are accepted but shortened. Optional.
+        endDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: The date and time at which the credential expires. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
+        key:
+          type:
+          - string
+          - 'null'
+          description: The certificate's raw data in byte array converted to Base64 string. Returned only on $select for a single object, that is, GET applications/{applicationId}?$select=keyCredentials or GET servicePrincipals/{servicePrincipalId}?$select=keyCredentials; otherwise, it's always null.  From a .cer certificate, you can read the key using the Convert.ToBase64String() method. For more information, see Get the certificate key.
+          format: base64url
+        keyId:
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          description: The unique identifier (GUID) for the key.
+          format: uuid
+        startDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: The date and time at which the credential becomes valid.The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
+        type:
+          type:
+          - string
+          - 'null'
+          description: The type of key credential; for example, Symmetric, AsymmetricX509Cert.
+        usage:
+          type:
+          - string
+          - 'null'
+          description: A string that describes the purpose for which the key can be used; for example, Verify.
+        '@odata.type':
+          type: string
+    microsoft.graph.synchronizationQuarantine:
+      title: synchronizationQuarantine
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        currentBegan:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date and time when the quarantine was last evaluated and imposed. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
+        error:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.synchronizationError'
+          - type:
+            - object
+            - 'null'
+          description: Describes the error(s) that occurred when putting the synchronization job into quarantine.
+        nextAttempt:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date and time when the next attempt to re-evaluate the quarantine will be made. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
+        reason:
+          $ref: '#/components/schemas/microsoft.graph.quarantineReason'
+        seriesBegan:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: Date and time when the quarantine was first imposed in this series (a series starts when a quarantine is first imposed, and is reset as soon as the quarantine is lifted). The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
+        seriesCount:
+          type: number
+          description: Number of times in this series the quarantine was re-evaluated and left in effect (a series starts when quarantine is first imposed, and is reset as soon as quarantine is lifted).
+          format: int64
+        '@odata.type':
+          type: string
+    microsoft.graph.groupFilter:
+      title: groupFilter
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        includedGroups:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+        '@odata.type':
+          type: string
+    microsoft.graph.synchronizationError:
+      title: synchronizationError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+          description: The error code. For example, AzureDirectoryB2BManagementPolicyCheckFailure.
+        message:
+          type:
+          - string
+          - 'null'
+          description: The error message. For example, Policy permitting auto-redemption of invitations not configured.
+        tenantActionable:
+          type: boolean
+          description: The action to take to resolve the error. For example, false.
+        '@odata.type':
+          type: string
+    microsoft.graph.synchronizationTemplate:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: synchronizationTemplate
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          applicationId:
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+            type: string
+            description: Identifier of the application this template belongs to.
+            format: uuid
+          default:
+            type: boolean
+            description: true if this template is recommended to be the default for the application.
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description of the template.
+          discoverable:
+            type: boolean
+            description: true if this template should appear in the collection of templates available for the application instance (service principal).
+          factoryTag:
+            type:
+            - string
+            - 'null'
+            description: One of the well-known factory tags supported by the synchronization engine. The factoryTag tells the synchronization engine which implementation to use when processing jobs based on this template.
+          metadata:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.synchronizationMetadataEntry'
+            description: Additional extension properties. Unless mentioned explicitly, metadata values should not be changed.
+          schema:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.synchronizationSchema'
+            - type:
+              - object
+              - 'null'
+            description: Default synchronization schema for the jobs based on this template.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.synchronizationSchema'
+      x-ms-discriminator-value: '#microsoft.graph.synchronizationTemplate'
+    microsoft.graph.certification:
+      title: certification
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        certificationDetailsUrl:
+          type:
+          - string
+          - 'null'
+          description: URL that shows certification details for the application.
+          readOnly: true
+        certificationExpirationDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: The timestamp when the current certification for the application expires.
+          format: date-time
+        isCertifiedByMicrosoft:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the application is certified by Microsoft.
+          readOnly: true
+        isPublisherAttested:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the application developer or publisher completed Publisher Attestation.
+        lastCertificationDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: The timestamp when the certification for the application was most recently added or updated.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.objectFlowTypes:
+      title: objectFlowTypes
+      enum:
+      - None
+      - Add
+      - Update
+      - Delete
+      type: string
+      x-ms-enum-flags:
+        isFlags: true
+    microsoft.graph.synchronizationTaskExecutionResult:
+      title: synchronizationTaskExecutionResult
+      enum:
+      - Succeeded
+      - Failed
+      - EntryLevelErrors
+      type: string
     microsoft.graph.entity:
       title: entity
       required:
@@ -2268,6 +2486,136 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.servicePrincipalLockConfiguration:
+      title: servicePrincipalLockConfiguration
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        allProperties:
+          type:
+          - boolean
+          - 'null'
+          description: Enables locking all sensitive properties. The sensitive properties are keyCredentials, passwordCredentials, and tokenEncryptionKeyId.
+        credentialsWithUsageSign:
+          type:
+          - boolean
+          - 'null'
+          description: Locks the keyCredentials and passwordCredentials properties for modification where credential usage type is Sign.
+        credentialsWithUsageVerify:
+          type:
+          - boolean
+          - 'null'
+          description: Locks the keyCredentials and passwordCredentials properties for modification where credential usage type is Verify. This locks OAuth service principals.
+        isEnabled:
+          type: boolean
+          description: Enables or disables service principal lock configuration. To allow the sensitive properties to be updated, update this property to false to disable the lock on the service principal.
+        tokenEncryptionKeyId:
+          type:
+          - boolean
+          - 'null'
+          description: Locks the tokenEncryptionKeyId property for modification on the service principal.
+        '@odata.type':
+          type: string
+    microsoft.graph.attributeMappingSource:
+      title: attributeMappingSource
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        expression:
+          type:
+          - string
+          - 'null'
+          description: Equivalent expression representation of this attributeMappingSource object.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name parameter of the mapping source. Depending on the type property value, this can be the name of the function, the name of the source attribute, or a constant value to be used.
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.stringKeyAttributeMappingSourceValuePair'
+          description: If this object represents a function, lists function parameters. Parameters consist of attributeMappingSource objects themselves, allowing for complex expressions. If type isn't Function, this property is null/empty array.
+        type:
+          $ref: '#/components/schemas/microsoft.graph.attributeMappingSourceType'
+        '@odata.type':
+          type: string
+    microsoft.graph.requiredResourceAccess:
+      title: requiredResourceAccess
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        resourceAccess:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.resourceAccess'
+          description: The list of OAuth2.0 permission scopes and app roles that the application requires from the specified resource.
+        resourceAppId:
+          type: string
+          description: The unique identifier for the resource that the application requires access to. This should be equal to the appId declared on the target resource application.
+        '@odata.type':
+          type: string
+    microsoft.graph.referencedObject:
+      title: referencedObject
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        referencedObjectName:
+          type:
+          - string
+          - 'null'
+          description: Name of the referenced object. Must match one of the objects in the directory definition.
+        referencedProperty:
+          type:
+          - string
+          - 'null'
+          description: Currently not supported. Name of the property in the referenced object, the value for which is used as the reference.
+        '@odata.type':
+          type: string
+    microsoft.graph.apiApplication:
+      title: apiApplication
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        acceptMappedClaims:
+          type:
+          - boolean
+          - 'null'
+          description: When true, allows an application to use claims mapping without specifying a custom signing key.
+        knownClientApplications:
+          type: array
+          items:
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+            type:
+            - string
+            - 'null'
+            format: uuid
+          description: 'Used for bundling consent if you have a solution that contains two parts: a client app and a custom web API app. If you set the appID of the client app to this value, the user only consents once to the client app. Microsoft Entra ID knows that consenting to the client means implicitly consenting to the web API and automatically provisions service principals for both APIs at the same time. Both the client and the web API app must be registered in the same tenant.'
+        oauth2PermissionScopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.permissionScope'
+          description: The definition of the delegated permissions exposed by the web API represented by this application registration. These delegated permissions may be requested by a client application, and may be granted by users or administrators during consent. Delegated permissions are sometimes referred to as OAuth 2.0 scopes.
+        preAuthorizedApplications:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.preAuthorizedApplication'
+          description: Lists the client applications that are preauthorized with the specified delegated permissions to access this application's APIs. Users aren't required to consent to any preauthorized application (for the permissions specified). However, any other permissions not listed in preAuthorizedApplications (requested through incremental consent for example) will require user consent.
+        requestedAccessTokenVersion:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: Specifies the access token version expected by this resource. This changes the version and format of the JWT produced independent of the endpoint or client used to request the access token.  The endpoint used, v1.0 or v2.0, is chosen by the client and only impacts the version of id_tokens. Resources need to explicitly configure requestedAccessTokenVersion to indicate the supported access token format.  Possible values for requestedAccessTokenVersion are 1, 2, or null. If the value is null, this defaults to 1, which corresponds to the v1.0 endpoint.  If signInAudience on the application is configured as AzureADandPersonalMicrosoftAccount or PersonalMicrosoftAccount, the value for this property must be 2.
+          format: int32
+        '@odata.type':
+          type: string
     microsoft.graph.objectDefinitionMetadata:
       title: objectDefinitionMetadata
       enum:
@@ -2278,6 +2626,119 @@ components:
       - ConnectorDataStorageRequired
       - Extensions
       - BaseObjectName
+      type: string
+    microsoft.graph.parentalControlSettings:
+      title: parentalControlSettings
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        countriesBlockedForMinors:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+          description: Specifies the two-letter ISO country codes. Access to the application will be blocked for minors from the countries specified in this list.
+        legalAgeGroupRule:
+          type:
+          - string
+          - 'null'
+          description: 'Specifies the legal age group rule that applies to users of the app. Can be set to one of the following values: ValueDescriptionAllowDefault. Enforces the legal minimum. This means parental consent is required for minors in the European Union and Korea.RequireConsentForPrivacyServicesEnforces the user to specify date of birth to comply with COPPA rules. RequireConsentForMinorsRequires parental consent for ages below 18, regardless of country/region minor rules.RequireConsentForKidsRequires parental consent for ages below 14, regardless of country/region minor rules.BlockMinorsBlocks minors from using the app.'
+        '@odata.type':
+          type: string
+    microsoft.graph.passwordCredential:
+      title: passwordCredential
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        customKeyIdentifier:
+          type:
+          - string
+          - 'null'
+          description: Do not use.
+          format: base64url
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Friendly name for the password. Optional.
+        endDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: The date and time at which the password expires represented using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Optional.
+          format: date-time
+        hint:
+          type:
+          - string
+          - 'null'
+          description: Contains the first three characters of the password. Read-only.
+        keyId:
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          description: The unique identifier for the password.
+          format: uuid
+        secretText:
+          type:
+          - string
+          - 'null'
+          description: Read-only; Contains the strong passwords generated by Microsoft Entra ID that are 16-64 characters in length. The generated password value is only returned during the initial POST request to addPassword. There is no way to retrieve this password in the future.
+        startDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: The date and time at which the password becomes valid. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Optional.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.objectDefinition:
+      title: objectDefinition
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.attributeDefinition'
+          description: Defines attributes of the object.
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.objectDefinitionMetadataEntry'
+          description: Metadata for the given object.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name of the object. Must be unique within a directory definition. Not nullable.
+        supportedApis:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+          description: The API that the provisioning service queries to retrieve data for synchronization.
+        '@odata.type':
+          type: string
+    microsoft.graph.synchronizationMetadata:
+      title: synchronizationMetadata
+      enum:
+      - GalleryApplicationIdentifier
+      - GalleryApplicationKey
+      - IsOAuthEnabled
+      - IsSynchronizationAgentAssignmentRequired
+      - IsSynchronizationAgentRequired
+      - IsSynchronizationInPreview
+      - OAuthSettings
+      - SynchronizationLearnMoreIbizaFwLink
+      - ConfigurationFields
       type: string
     microsoft.graph.synchronizationJob:
       allOf:
@@ -2330,509 +2791,51 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.synchronizationJob'
-    microsoft.graph.synchronizationError:
-      title: synchronizationError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        code:
-          type:
-          - string
-          - 'null'
-          description: The error code. For example, AzureDirectoryB2BManagementPolicyCheckFailure.
-        message:
-          type:
-          - string
-          - 'null'
-          description: The error message. For example, Policy permitting auto-redemption of invitations not configured.
-        tenantActionable:
-          type: boolean
-          description: The action to take to resolve the error. For example, false.
-        '@odata.type':
-          type: string
-    microsoft.graph.stsPolicy:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.policyBase'
-      - title: stsPolicy
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          definition:
-            type: array
-            items:
-              type: string
-            description: A string collection containing a JSON string that defines the rules and settings for a policy. The syntax for the definition differs for each derived policy type. Required.
-          isOrganizationDefault:
-            type:
-            - boolean
-            - 'null'
-            description: If set to true, activates this policy. There can be many policies for the same policy type, but only one can be activated as the organization default. Optional, default value is false.
-          appliesTo:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.directoryObject'
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.stsPolicy'
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
-            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
-            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
-            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
-            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
-    microsoft.graph.synchronization:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: synchronization
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          secrets:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.synchronizationSecretKeyStringValuePair'
-            description: Represents a collection of credentials to access provisioned cloud applications.
-          jobs:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.synchronizationJob'
-            description: Performs synchronization by periodically running in the background, polling for changes in one directory, and pushing them to another directory.
-            x-ms-navigationProperty: true
-          templates:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.synchronizationTemplate'
-            description: Preconfigured synchronization settings for a particular application.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.synchronization'
-    microsoft.graph.attributeMappingSource:
-      title: attributeMappingSource
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        expression:
-          type:
-          - string
-          - 'null'
-          description: Equivalent expression representation of this attributeMappingSource object.
-        name:
-          type:
-          - string
-          - 'null'
-          description: Name parameter of the mapping source. Depending on the type property value, this can be the name of the function, the name of the source attribute, or a constant value to be used.
-        parameters:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.stringKeyAttributeMappingSourceValuePair'
-          description: If this object represents a function, lists function parameters. Parameters consist of attributeMappingSource objects themselves, allowing for complex expressions. If type isn't Function, this property is null/empty array.
-        type:
-          $ref: '#/components/schemas/microsoft.graph.attributeMappingSourceType'
-        '@odata.type':
-          type: string
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.directoryDefinition:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: directoryDefinition
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          discoverabilities:
-            $ref: '#/components/schemas/microsoft.graph.directoryDefinitionDiscoverabilities'
-          discoveryDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: Represents the discovery date and time using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          name:
-            type:
-            - string
-            - 'null'
-            description: Name of the directory. Must be unique within the synchronization schema. Not nullable.
-          objects:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.objectDefinition'
-            description: Collection of objects supported by the directory.
-          readOnly:
-            type: boolean
-            description: Whether this object is read-only.
-          version:
-            type:
-            - string
-            - 'null'
-            description: Read only value that indicates version discovered. null if discovery hasn't yet occurred.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.directoryDefinition'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type:
-          - integer
-          - 'null'
-          format: int64
-        '@odata.nextLink':
-          type:
-          - string
-          - 'null'
-    microsoft.graph.certification:
-      title: certification
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        certificationDetailsUrl:
-          type:
-          - string
-          - 'null'
-          description: URL that shows certification details for the application.
-          readOnly: true
-        certificationExpirationDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: The timestamp when the current certification for the application expires.
-          format: date-time
-        isCertifiedByMicrosoft:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates whether the application is certified by Microsoft.
-          readOnly: true
-        isPublisherAttested:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates whether the application developer or publisher completed Publisher Attestation.
-        lastCertificationDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: The timestamp when the certification for the application was most recently added or updated.
-          format: date-time
-        '@odata.type':
-          type: string
-    microsoft.graph.verifiedPublisher:
-      title: verifiedPublisher
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        addedDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: The timestamp when the verified publisher was first added or most recently updated.
-          format: date-time
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: The verified publisher name from the app publisher's Partner Center account.
-        verifiedPublisherId:
-          type:
-          - string
-          - 'null'
-          description: The ID of the verified publisher from the app publisher's Partner Center account.
-        '@odata.type':
-          type: string
-    microsoft.graph.appManagementRestrictionState:
-      title: appManagementRestrictionState
+    microsoft.graph.directoryDefinitionDiscoverabilities:
+      title: directoryDefinitionDiscoverabilities
       enum:
-      - enabled
-      - disabled
-      - unknownFutureValue
+      - None
+      - AttributeNames
+      - AttributeDataTypes
+      - AttributeReadOnly
+      - ReferenceAttributes
+      - UnknownFutureValue
       type: string
-    microsoft.graph.objectDefinition:
-      title: objectDefinition
+      x-ms-enum-flags:
+        isFlags: true
+    microsoft.graph.keyCredentialConfiguration:
+      title: keyCredentialConfiguration
       required:
       - '@odata.type'
       type: object
       properties:
-        attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.attributeDefinition'
-          description: Defines attributes of the object.
-        metadata:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.objectDefinitionMetadataEntry'
-          description: Metadata for the given object.
-        name:
+        maxLifetime:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
           type:
           - string
           - 'null'
-          description: Name of the object. Must be unique within a directory definition. Not nullable.
-        supportedApis:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-          description: The API that the provisioning service queries to retrieve data for synchronization.
-        '@odata.type':
-          type: string
-    microsoft.graph.keyCredential:
-      title: keyCredential
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        customKeyIdentifier:
-          type:
-          - string
-          - 'null'
-          description: A 40-character binary type that can be used to identify the credential. Optional. When not provided in the payload, defaults to the thumbprint of the certificate.
-          format: base64url
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: The friendly name for the key, with a maximum length of 90 characters. Longer values are accepted but shortened. Optional.
-        endDateTime:
+          description: String value that indicates the maximum lifetime for key expiration, defined as an ISO 8601 duration. For example, P4DT12H30M5S represents four days, 12 hours, 30 minutes, and five seconds. This property is required when restrictionType is set to keyLifetime.
+          format: duration
+        restrictForAppsCreatedAfterDateTime:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
           type:
           - string
           - 'null'
-          description: The date and time at which the credential expires. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          description: Specifies the date from which the policy restriction applies to newly created applications. For existing applications, the enforcement date can be retroactively applied.
           format: date-time
-        key:
-          type:
-          - string
-          - 'null'
-          description: The certificate's raw data in byte array converted to Base64 string. Returned only on $select for a single object, that is, GET applications/{applicationId}?$select=keyCredentials or GET servicePrincipals/{servicePrincipalId}?$select=keyCredentials; otherwise, it's always null.  From a .cer certificate, you can read the key using the Convert.ToBase64String() method. For more information, see Get the certificate key.
-          format: base64url
-        keyId:
-          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-          type:
-          - string
-          - 'null'
-          description: The unique identifier (GUID) for the key.
-          format: uuid
-        startDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: The date and time at which the credential becomes valid.The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-          format: date-time
-        type:
-          type:
-          - string
-          - 'null'
-          description: The type of key credential; for example, Symmetric, AsymmetricX509Cert.
-        usage:
-          type:
-          - string
-          - 'null'
-          description: A string that describes the purpose for which the key can be used; for example, Verify.
-        '@odata.type':
-          type: string
-    microsoft.graph.requiredResourceAccess:
-      title: requiredResourceAccess
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        resourceAccess:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.resourceAccess'
-          description: The list of OAuth2.0 permission scopes and app roles that the application requires from the specified resource.
-        resourceAppId:
-          type: string
-          description: The unique identifier for the resource that the application requires access to. This should be equal to the appId declared on the target resource application.
-        '@odata.type':
-          type: string
-    microsoft.graph.optionalClaim:
-      title: optionalClaim
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        additionalProperties:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-          description: Additional properties of the claim. If a property exists in this collection, it modifies the behavior of the optional claim specified in the name property.
-        essential:
-          type: boolean
-          description: If the value is true, the claim specified by the client is necessary to ensure a smooth authorization experience for the specific task requested by the end user. The default value is false.
-        name:
-          type: string
-          description: The name of the optional claim.
-        source:
-          type:
-          - string
-          - 'null'
-          description: The source (directory object) of the claim. There are predefined claims and user-defined claims from extension properties. If the source value is null, the claim is a predefined optional claim. If the source value is user, the value in the name property is the extension property from the user object.
-        '@odata.type':
-          type: string
-    microsoft.graph.synchronizationMetadata:
-      title: synchronizationMetadata
-      enum:
-      - GalleryApplicationIdentifier
-      - GalleryApplicationKey
-      - IsOAuthEnabled
-      - IsSynchronizationAgentAssignmentRequired
-      - IsSynchronizationAgentRequired
-      - IsSynchronizationInPreview
-      - OAuthSettings
-      - SynchronizationLearnMoreIbizaFwLink
-      - ConfigurationFields
-      type: string
-    microsoft.graph.webApplication:
-      title: webApplication
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        homePageUrl:
-          type:
-          - string
-          - 'null'
-          description: Home page or landing page of the application.
-        implicitGrantSettings:
+        restrictionType:
           anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.implicitGrantSettings'
+          - $ref: '#/components/schemas/microsoft.graph.appKeyCredentialRestrictionType'
           - type:
             - object
             - 'null'
-          description: Specifies whether this web application can request tokens using the OAuth 2.0 implicit flow.
-        logoutUrl:
-          type:
-          - string
-          - 'null'
-          description: Specifies the URL that is used by Microsoft's authorization service to log out a user using front-channel, back-channel or SAML logout protocols.
-        redirectUris:
-          type: array
-          items:
-            type: string
-          description: Specifies the URLs where user tokens are sent for sign-in, or the redirect URIs where OAuth 2.0 authorization codes and access tokens are sent.
-        redirectUriSettings:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.redirectUriSettings'
+          description: The type of restriction being applied. Possible values are asymmetricKeyLifetime, and unknownFutureValue. Each value of restrictionType can be used only once per policy.
+        state:
+          $ref: '#/components/schemas/microsoft.graph.appManagementRestrictionState'
         '@odata.type':
           type: string
-    microsoft.graph.appManagementConfiguration:
-      title: appManagementConfiguration
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        keyCredentials:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.keyCredentialConfiguration'
-          description: Collection of keyCredential restrictions settings to be applied to an application or service principal.
-        passwordCredentials:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.passwordCredentialConfiguration'
-          description: Collection of password restrictions settings to be applied to an application or service principal.
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.appManagementApplicationConfiguration': '#/components/schemas/microsoft.graph.appManagementApplicationConfiguration'
-          '#microsoft.graph.appManagementServicePrincipalConfiguration': '#/components/schemas/microsoft.graph.appManagementServicePrincipalConfiguration'
-          '#microsoft.graph.customAppManagementConfiguration': '#/components/schemas/microsoft.graph.customAppManagementConfiguration'
-    microsoft.graph.implicitGrantSettings:
-      title: implicitGrantSettings
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        enableAccessTokenIssuance:
-          type:
-          - boolean
-          - 'null'
-          description: Specifies whether this web application can request an access token using the OAuth 2.0 implicit flow.
-        enableIdTokenIssuance:
-          type:
-          - boolean
-          - 'null'
-          description: Specifies whether this web application can request an ID token using the OAuth 2.0 implicit flow.
-        '@odata.type':
-          type: string
-    microsoft.graph.attributeDefinition:
-      title: attributeDefinition
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        anchor:
-          type: boolean
-          description: true if the attribute should be used as the anchor for the object. Anchor attributes must have a unique value identifying an object, and must be immutable. Default is false. One, and only one, of the object's attributes must be designated as the anchor to support synchronization.
-        apiExpressions:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.stringKeyStringValuePair'
-        caseExact:
-          type: boolean
-          description: true if value of this attribute should be treated as case-sensitive. This setting affects how the synchronization engine detects changes for the attribute.
-        defaultValue:
-          type:
-          - string
-          - 'null'
-          description: The default value of the attribute.
-        flowNullValues:
-          type: boolean
-          description: '''true'' to allow null values for attributes.'
-        metadata:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.attributeDefinitionMetadataEntry'
-          description: Metadata for the given object.
-        multivalued:
-          type: boolean
-          description: true if an attribute can have multiple values. Default is false.
-        mutability:
-          $ref: '#/components/schemas/microsoft.graph.mutability'
-        name:
-          type:
-          - string
-          - 'null'
-          description: Name of the attribute. Must be unique within the object definition. Not nullable.
-        referencedObjects:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.referencedObject'
-          description: For attributes with reference type, lists referenced objects (for example, the manager attribute would list User as the referenced object).
-        required:
-          type: boolean
-          description: true if attribute is required. Object can not be created if any of the required attributes are missing. If during synchronization, the required attribute has no value, the default value will be used. If default the value was not set, synchronization will record an error.
-        type:
-          $ref: '#/components/schemas/microsoft.graph.attributeType'
-        '@odata.type':
-          type: string
-    microsoft.graph.keyValue:
-      title: keyValue
+    microsoft.graph.stringKeyStringValuePair:
+      title: stringKeyStringValuePair
       required:
       - '@odata.type'
       type: object
@@ -2841,70 +2844,14 @@ components:
           type:
           - string
           - 'null'
-          description: Key for the key-value pair.
+          description: Key.
         value:
           type:
           - string
           - 'null'
-          description: Value for the key-value pair.
+          description: Value.
         '@odata.type':
           type: string
-    microsoft.graph.synchronizationSecret:
-      title: synchronizationSecret
-      enum:
-      - None
-      - UserName
-      - Password
-      - SecretToken
-      - AppKey
-      - BaseAddress
-      - ClientIdentifier
-      - ClientSecret
-      - SingleSignOnType
-      - Sandbox
-      - Url
-      - Domain
-      - ConsumerKey
-      - ConsumerSecret
-      - TokenKey
-      - TokenExpiration
-      - Oauth2AccessToken
-      - Oauth2AccessTokenCreationTime
-      - Oauth2RefreshToken
-      - SyncAll
-      - InstanceName
-      - Oauth2ClientId
-      - Oauth2ClientSecret
-      - CompanyId
-      - UpdateKeyOnSoftDelete
-      - SynchronizationSchedule
-      - SystemOfRecord
-      - SandboxName
-      - EnforceDomain
-      - SyncNotificationSettings
-      - SkipOutOfScopeDeletions
-      - Oauth2AuthorizationCode
-      - Oauth2RedirectUri
-      - ApplicationTemplateIdentifier
-      - Oauth2TokenExchangeUri
-      - Oauth2AuthorizationUri
-      - AuthenticationType
-      - Server
-      - PerformInboundEntitlementGrants
-      - HardDeletesEnabled
-      - SyncAgentCompatibilityKey
-      - SyncAgentADContainer
-      - ValidateDomain
-      - TestReferences
-      - ConnectionString
-      type: string
-    microsoft.graph.synchronizationTaskExecutionResult:
-      title: synchronizationTaskExecutionResult
-      enum:
-      - Succeeded
-      - Failed
-      - EntryLevelErrors
-      type: string
     microsoft.graph.appRole:
       title: appRole
       required:
@@ -2946,146 +2893,79 @@ components:
           description: 'Specifies the value to include in the roles claim in ID tokens and access tokens authenticating an assigned user or service principal. Must not exceed 120 characters in length. Allowed characters are : ! # $ % & '' ( ) * + , - . / : ;  =  ? @ [ ] ^ + _  {  } ~, and characters in the ranges 0-9, A-Z and a-z. Any other character, including the space character, aren''t allowed. May not begin with ..'
         '@odata.type':
           type: string
-    microsoft.graph.policyBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
-      - title: policyBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          description:
-            type:
-            - string
-            - 'null'
-            description: Description for this policy. Required.
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: Display name for this policy. Required.
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.policyBase'
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
-            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
-            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
-            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
-            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
-            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
-            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
-            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
-            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
-            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
-            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
-            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
-    microsoft.graph.servicePrincipalLockConfiguration:
-      title: servicePrincipalLockConfiguration
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.verifiedPublisher:
+      title: verifiedPublisher
       required:
       - '@odata.type'
       type: object
       properties:
-        allProperties:
+        addedDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
           type:
-          - boolean
+          - string
           - 'null'
-          description: Enables locking all sensitive properties. The sensitive properties are keyCredentials, passwordCredentials, and tokenEncryptionKeyId.
-        credentialsWithUsageSign:
+          description: The timestamp when the verified publisher was first added or most recently updated.
+          format: date-time
+        displayName:
           type:
-          - boolean
+          - string
           - 'null'
-          description: Locks the keyCredentials and passwordCredentials properties for modification where credential usage type is Sign.
-        credentialsWithUsageVerify:
+          description: The verified publisher name from the app publisher's Partner Center account.
+        verifiedPublisherId:
           type:
-          - boolean
+          - string
           - 'null'
-          description: Locks the keyCredentials and passwordCredentials properties for modification where credential usage type is Verify. This locks OAuth service principals.
-        isEnabled:
-          type: boolean
-          description: Enables or disables service principal lock configuration. To allow the sensitive properties to be updated, update this property to false to disable the lock on the service principal.
-        tokenEncryptionKeyId:
-          type:
-          - boolean
-          - 'null'
-          description: Locks the tokenEncryptionKeyId property for modification on the service principal.
+          description: The ID of the verified publisher from the app publisher's Partner Center account.
         '@odata.type':
           type: string
-    microsoft.graph.synchronizationTemplate:
+    microsoft.graph.customAppManagementConfiguration:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: synchronizationTemplate
+      - $ref: '#/components/schemas/microsoft.graph.appManagementConfiguration'
+      - title: customAppManagementConfiguration
         required:
         - '@odata.type'
         type: object
         properties:
-          applicationId:
-            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-            type: string
-            description: Identifier of the application this template belongs to.
-            format: uuid
-          default:
-            type: boolean
-            description: true if this template is recommended to be the default for the application.
-          description:
-            type:
-            - string
-            - 'null'
-            description: Description of the template.
-          discoverable:
-            type: boolean
-            description: true if this template should appear in the collection of templates available for the application instance (service principal).
-          factoryTag:
-            type:
-            - string
-            - 'null'
-            description: One of the well-known factory tags supported by the synchronization engine. The factoryTag tells the synchronization engine which implementation to use when processing jobs based on this template.
-          metadata:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.synchronizationMetadataEntry'
-            description: Additional extension properties. Unless mentioned explicitly, metadata values should not be changed.
-          schema:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.synchronizationSchema'
-            - type:
-              - object
-              - 'null'
-            description: Default synchronization schema for the jobs based on this template.
-            x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.synchronizationTemplate'
-    microsoft.graph.appManagementPolicy:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.policyBase'
-      - title: appManagementPolicy
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          isEnabled:
-            type: boolean
-            description: Denotes whether the policy is enabled.
-          restrictions:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.customAppManagementConfiguration'
-            - type:
-              - object
-              - 'null'
-            description: Restrictions that apply to an application or service principal object.
-          appliesTo:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.directoryObject'
-            description: Collection of applications and service principals to which the policy is applied.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.appManagementPolicy'
-      x-ms-discriminator-value: '#microsoft.graph.appManagementPolicy'
+            default: '#microsoft.graph.customAppManagementConfiguration'
+      x-ms-discriminator-value: '#microsoft.graph.customAppManagementConfiguration'
+    microsoft.graph.attributeDefinitionMetadata:
+      title: attributeDefinitionMetadata
+      enum:
+      - BaseAttributeName
+      - ComplexObjectDefinition
+      - IsContainer
+      - IsCustomerDefined
+      - IsDomainQualified
+      - LinkPropertyNames
+      - LinkTypeName
+      - MaximumLength
+      - ReferencedProperty
+      type: string
+    microsoft.graph.nativeAuthenticationApisEnabled:
+      title: nativeAuthenticationApisEnabled
+      enum:
+      - none
+      - all
+      - unknownFutureValue
+      type: string
+      x-ms-enum-flags:
+        isFlags: true
     microsoft.graph.application:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.directoryObject'
@@ -3372,6 +3252,43 @@ components:
             type: string
             default: '#microsoft.graph.application'
       x-ms-discriminator-value: '#microsoft.graph.application'
+    microsoft.graph.passwordCredentialConfiguration:
+      title: passwordCredentialConfiguration
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        maxLifetime:
+          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+          type:
+          - string
+          - 'null'
+          description: String value that indicates the maximum lifetime for password expiration, defined as an ISO 8601 duration. For example, P4DT12H30M5S represents four days, 12 hours, 30 minutes, and five seconds. This property is required when restrictionType is set to passwordLifetime.
+          format: duration
+        restrictForAppsCreatedAfterDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Specifies the date from which the policy restriction applies to newly created applications. For existing applications, the enforcement date can be retroactively applied.
+          format: date-time
+        restrictionType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.appCredentialRestrictionType'
+          - type:
+            - object
+            - 'null'
+          description: 'The type of restriction being applied. The possible values are: passwordAddition, passwordLifetime, symmetricKeyAddition, symmetricKeyLifetime, customPasswordAddition, and unknownFutureValue. Each value of restrictionType can be used only once per policy.'
+        state:
+          $ref: '#/components/schemas/microsoft.graph.appManagementRestrictionState'
+        '@odata.type':
+          type: string
+    microsoft.graph.appKeyCredentialRestrictionType:
+      title: appKeyCredentialRestrictionType
+      enum:
+      - asymmetricKeyLifetime
+      - unknownFutureValue
+      type: string
     microsoft.graph.synchronizationMetadataEntry:
       title: synchronizationMetadataEntry
       required:
@@ -3392,62 +3309,289 @@ components:
           description: Value of the metadata property.
         '@odata.type':
           type: string
-    microsoft.graph.nativeAuthenticationApisEnabled:
-      title: nativeAuthenticationApisEnabled
+    microsoft.graph.quarantineReason:
+      title: quarantineReason
       enum:
-      - none
-      - all
-      - unknownFutureValue
+      - EncounteredBaseEscrowThreshold
+      - EncounteredTotalEscrowThreshold
+      - EncounteredEscrowProportionThreshold
+      - EncounteredQuarantineException
+      - Unknown
+      - QuarantinedOnDemand
+      - TooManyDeletes
+      - IngestionInterrupted
       type: string
-      x-ms-enum-flags:
-        isFlags: true
-    microsoft.graph.filterGroup:
-      title: filterGroup
+    microsoft.graph.synchronizationSchema:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: synchronizationSchema
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          synchronizationRules:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.synchronizationRule'
+            description: A collection of synchronization rules configured for the synchronizationJob or synchronizationTemplate.
+          version:
+            type:
+            - string
+            - 'null'
+            description: The version of the schema, updated automatically with every schema change.
+          directories:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.directoryDefinition'
+            description: Contains the collection of directories and all of their objects.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.synchronizationSchema'
+    microsoft.graph.attributeDefinitionMetadataEntry:
+      title: attributeDefinitionMetadataEntry
       required:
       - '@odata.type'
       type: object
       properties:
-        clauses:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.filterClause'
-          description: Filter clauses (conditions) of this group. All clauses in a group must be satisfied in order for the filter group to evaluate to true.
-        name:
+        key:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.attributeDefinitionMetadata'
+          - type:
+            - object
+            - 'null'
+          description: 'The possible values are: BaseAttributeName, ComplexObjectDefinition, IsContainer, IsCustomerDefined, IsDomainQualified, LinkPropertyNames, LinkTypeName, MaximumLength, ReferencedProperty.'
+        value:
           type:
           - string
           - 'null'
-          description: Human-readable name of the filter group.
+          description: Value of the metadata property.
         '@odata.type':
           type: string
-    microsoft.graph.keyCredentialConfiguration:
-      title: keyCredentialConfiguration
+    microsoft.graph.authenticationBehaviors:
+      title: authenticationBehaviors
       required:
       - '@odata.type'
       type: object
       properties:
-        maxLifetime:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
+        blockAzureADGraphAccess:
+          type:
+          - boolean
+          - 'null'
+        removeUnverifiedEmailClaim:
+          type:
+          - boolean
+          - 'null'
+        requireClientServicePrincipal:
+          type:
+          - boolean
+          - 'null'
+        '@odata.type':
+          type: string
+    microsoft.graph.addIn:
+      title: addIn
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        id:
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
           type:
           - string
           - 'null'
-          description: String value that indicates the maximum lifetime for key expiration, defined as an ISO 8601 duration. For example, P4DT12H30M5S represents four days, 12 hours, 30 minutes, and five seconds. This property is required when restrictionType is set to keyLifetime.
-          format: duration
-        restrictForAppsCreatedAfterDateTime:
+          description: The unique identifier for the addIn object.
+          format: uuid
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.keyValue'
+          description: The collection of key-value pairs that define parameters that the consuming service can use or call. You must specify this property when performing a POST or a PATCH operation on the addIns collection. Required.
+        type:
+          type: string
+          description: The unique name for the functionality exposed by the app.
+        '@odata.type':
+          type: string
+    microsoft.graph.appManagementConfiguration:
+      title: appManagementConfiguration
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        keyCredentials:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.keyCredentialConfiguration'
+          description: Collection of keyCredential restrictions settings to be applied to an application or service principal.
+        passwordCredentials:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.passwordCredentialConfiguration'
+          description: Collection of password restrictions settings to be applied to an application or service principal.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.appManagementApplicationConfiguration': '#/components/schemas/microsoft.graph.appManagementApplicationConfiguration'
+          '#microsoft.graph.appManagementServicePrincipalConfiguration': '#/components/schemas/microsoft.graph.appManagementServicePrincipalConfiguration'
+          '#microsoft.graph.customAppManagementConfiguration': '#/components/schemas/microsoft.graph.customAppManagementConfiguration'
+    microsoft.graph.appCredentialRestrictionType:
+      title: appCredentialRestrictionType
+      enum:
+      - passwordAddition
+      - passwordLifetime
+      - symmetricKeyAddition
+      - symmetricKeyLifetime
+      - customPasswordAddition
+      - unknownFutureValue
+      type: string
+    microsoft.graph.keyValuePair:
+      title: keyValuePair
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name for this key-value pair
+        value:
+          type:
+          - string
+          - 'null'
+          description: Value for this key-value pair
+        '@odata.type':
+          type: string
+    microsoft.graph.attributeMappingSourceType:
+      title: attributeMappingSourceType
+      enum:
+      - Attribute
+      - Constant
+      - Function
+      type: string
+    microsoft.graph.policyBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
+      - title: policyBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description for this policy. Required.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Display name for this policy. Required.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.policyBase'
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
+            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
+            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
+            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
+            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
+            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
+            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
+            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
+            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
+            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
+            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
+            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
+    microsoft.graph.attributeMapping:
+      title: attributeMapping
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        defaultValue:
+          type:
+          - string
+          - 'null'
+          description: Default value to be used in case the source property was evaluated to null. Optional.
+        exportMissingReferences:
+          type: boolean
+          description: For internal use only.
+        flowBehavior:
+          $ref: '#/components/schemas/microsoft.graph.attributeFlowBehavior'
+        flowType:
+          $ref: '#/components/schemas/microsoft.graph.attributeFlowType'
+        matchingPriority:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: If higher than 0, this attribute will be used to perform an initial match of the objects between source and target directories. The synchronization engine will try to find the matching object using attribute with lowest value of matching priority first. If not found, the attribute with the next matching priority will be used, and so on a until match is found or no more matching attributes are left. Only attributes that are expected to have unique values, such as email, should be used as matching attributes.
+          format: int32
+        source:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.attributeMappingSource'
+          - type:
+            - object
+            - 'null'
+          description: Defines how a value should be extracted (or transformed) from the source object.
+        targetAttributeName:
+          type:
+          - string
+          - 'null'
+          description: Name of the attribute on the target object.
+        '@odata.type':
+          type: string
+    microsoft.graph.synchronizationStatusCode:
+      title: synchronizationStatusCode
+      enum:
+      - NotConfigured
+      - NotRun
+      - Active
+      - Paused
+      - Quarantine
+      type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
           type:
           - string
           - 'null'
-          description: Specifies the date from which the policy restriction applies to newly created applications. For existing applications, the enforcement date can be retroactively applied.
+          description: Date when the error occured.
           format: date-time
-        restrictionType:
+        '@odata.type':
+          type: string
+    microsoft.graph.requestSignatureVerification:
+      title: requestSignatureVerification
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        allowedWeakAlgorithms:
           anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.appKeyCredentialRestrictionType'
+          - $ref: '#/components/schemas/microsoft.graph.weakAlgorithms'
           - type:
             - object
             - 'null'
-          description: The type of restriction being applied. Possible values are asymmetricKeyLifetime, and unknownFutureValue. Each value of restrictionType can be used only once per policy.
-        state:
-          $ref: '#/components/schemas/microsoft.graph.appManagementRestrictionState'
+          description: 'Specifies which weak algorithms are allowed.  The possible values are: rsaSha1, unknownFutureValue.'
+        isSignedRequestRequired:
+          type: boolean
+          description: Specifies whether signed authentication requests for this application should be required.
         '@odata.type':
           type: string
     microsoft.graph.synchronizationRule:
@@ -3509,64 +3653,29 @@ components:
           description: Name of the target directory. Must match one of the directory definitions in synchronizationSchema.
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.applicationCollectionResponse:
-      title: Collection of application
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.application'
-    microsoft.graph.parentalControlSettings:
-      title: parentalControlSettings
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        countriesBlockedForMinors:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-          description: Specifies the two-letter ISO country codes. Access to the application will be blocked for minors from the countries specified in this list.
-        legalAgeGroupRule:
-          type:
-          - string
-          - 'null'
-          description: 'Specifies the legal age group rule that applies to users of the app. Can be set to one of the following values: ValueDescriptionAllowDefault. Enforces the legal minimum. This means parental consent is required for minors in the European Union and Korea.RequireConsentForPrivacyServicesEnforces the user to specify date of birth to comply with COPPA rules. RequireConsentForMinorsRequires parental consent for ages below 18, regardless of country/region minor rules.RequireConsentForKidsRequires parental consent for ages below 14, regardless of country/region minor rules.BlockMinorsBlocks minors from using the app.'
-        '@odata.type':
-          type: string
-    microsoft.graph.objectMappingMetadataEntry:
-      title: objectMappingMetadataEntry
+    microsoft.graph.attributeType:
+      title: attributeType
+      enum:
+      - String
+      - Integer
+      - Reference
+      - Binary
+      - Boolean
+      - DateTime
+      type: string
+    microsoft.graph.objectDefinitionMetadataEntry:
+      title: objectDefinitionMetadataEntry
       required:
       - '@odata.type'
       type: object
       properties:
         key:
           anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.objectMappingMetadata'
+          - $ref: '#/components/schemas/microsoft.graph.objectDefinitionMetadata'
           - type:
             - object
             - 'null'
-          description: 'The possible values are: EscrowBehavior, DisableMonitoringForChanges, OriginalJoiningProperty, Disposition, IsCustomerDefined, ExcludeFromReporting, Unsynchronized.'
+          description: 'The possible values are: PropertyNameAccountEnabled, PropertyNameSoftDeleted, IsSoftDeletionSupported, IsSynchronizeAllSupported, ConnectorDataStorageRequired, Extensions, LinkTypeName.'
         value:
           type:
           - string
@@ -3574,25 +3683,14 @@ components:
           description: Value of the metadata property.
         '@odata.type':
           type: string
-    microsoft.graph.redirectUriSettings:
-      title: redirectUriSettings
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        index:
-          maximum: 2147483647
-          minimum: -2147483648
-          type:
-          - number
-          - 'null'
-          format: int32
-        uri:
-          type:
-          - string
-          - 'null'
-        '@odata.type':
-          type: string
+    microsoft.graph.weakAlgorithms:
+      title: weakAlgorithms
+      enum:
+      - rsaSha1
+      - unknownFutureValue
+      type: string
+      x-ms-enum-flags:
+        isFlags: true
     microsoft.graph.stringKeyAttributeMappingSourceValuePair:
       title: stringKeyAttributeMappingSourceValuePair
       required:
@@ -3611,218 +3709,6 @@ components:
             - object
             - 'null'
           description: The value of the parameter.
-        '@odata.type':
-          type: string
-    microsoft.graph.attributeFlowType:
-      title: attributeFlowType
-      enum:
-      - Always
-      - ObjectAddOnly
-      - MultiValueAddOnly
-      - ValueAddOnly
-      - AttributeAddOnly
-      type: string
-    microsoft.graph.attributeType:
-      title: attributeType
-      enum:
-      - String
-      - Integer
-      - Reference
-      - Binary
-      - Boolean
-      - DateTime
-      type: string
-    microsoft.graph.resourceAccess:
-      title: resourceAccess
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        id:
-          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-          type: string
-          description: The unique identifier of an app role or delegated permission exposed by the resource application. For delegated permissions, this should match the id property of one of the delegated permissions in the oauth2PermissionScopes collection of the resource application's service principal. For app roles (application permissions), this should match the id property of an app role in the appRoles collection of the resource application's service principal.
-          format: uuid
-        type:
-          type:
-          - string
-          - 'null'
-          description: 'Specifies whether the id property references a delegated permission or an app role (application permission). The possible values are: Scope (for delegated permissions) or Role (for app roles).'
-        '@odata.type':
-          type: string
-    microsoft.graph.synchronizationSchedule:
-      title: synchronizationSchedule
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        expiration:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date and time when this job expires. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-          format: date-time
-        interval:
-          pattern: ^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$
-          type: string
-          description: The interval between synchronization iterations. The value is represented in ISO 8601  format for durations. For example, P1M represents a period of one month and PT1M represents a period of one minute.
-          format: duration
-        state:
-          $ref: '#/components/schemas/microsoft.graph.synchronizationScheduleState'
-        '@odata.type':
-          type: string
-    microsoft.graph.passwordCredential:
-      title: passwordCredential
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        customKeyIdentifier:
-          type:
-          - string
-          - 'null'
-          description: Do not use.
-          format: base64url
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: Friendly name for the password. Optional.
-        endDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: The date and time at which the password expires represented using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Optional.
-          format: date-time
-        hint:
-          type:
-          - string
-          - 'null'
-          description: Contains the first three characters of the password. Read-only.
-        keyId:
-          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-          type:
-          - string
-          - 'null'
-          description: The unique identifier for the password.
-          format: uuid
-        secretText:
-          type:
-          - string
-          - 'null'
-          description: Read-only; Contains the strong passwords generated by Microsoft Entra ID that are 16-64 characters in length. The generated password value is only returned during the initial POST request to addPassword. There is no way to retrieve this password in the future.
-        startDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: The date and time at which the password becomes valid. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Optional.
-          format: date-time
-        '@odata.type':
-          type: string
-    microsoft.graph.tokenLifetimePolicy:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.stsPolicy'
-      - title: tokenLifetimePolicy
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.tokenLifetimePolicy'
-      x-ms-discriminator-value: '#microsoft.graph.tokenLifetimePolicy'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.filterClause:
-      title: filterClause
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        operatorName:
-          type:
-          - string
-          - 'null'
-          description: Name of the operator to be applied to the source and target operands. Must be one of the supported operators. Supported operators can be discovered.
-        sourceOperandName:
-          type:
-          - string
-          - 'null'
-          description: Name of source operand (the operand being tested). The source operand name must match one of the attribute names on the source object.
-        targetOperand:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.filterOperand'
-          - type:
-            - object
-            - 'null'
-          description: Values that the source operand will be tested against.
-        '@odata.type':
-          type: string
-    microsoft.graph.synchronizationQuarantine:
-      title: synchronizationQuarantine
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        currentBegan:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date and time when the quarantine was last evaluated and imposed. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-          format: date-time
-        error:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.synchronizationError'
-          - type:
-            - object
-            - 'null'
-          description: Describes the error(s) that occurred when putting the synchronization job into quarantine.
-        nextAttempt:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date and time when the next attempt to re-evaluate the quarantine will be made. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-          format: date-time
-        reason:
-          $ref: '#/components/schemas/microsoft.graph.quarantineReason'
-        seriesBegan:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: Date and time when the quarantine was first imposed in this series (a series starts when a quarantine is first imposed, and is reset as soon as the quarantine is lifted). The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-          format: date-time
-        seriesCount:
-          type: number
-          description: Number of times in this series the quarantine was re-evaluated and left in effect (a series starts when quarantine is first imposed, and is reset as soon as quarantine is lifted).
-          format: int64
-        '@odata.type':
-          type: string
-    microsoft.graph.optionalClaims:
-      title: optionalClaims
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        accessToken:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.optionalClaim'
-          description: The optional claims returned in the JWT access token.
-        idToken:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.optionalClaim'
-          description: The optional claims returned in the JWT ID token.
-        saml2Token:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.optionalClaim'
-          description: The optional claims returned in the SAML token.
         '@odata.type':
           type: string
     microsoft.graph.objectMapping:
@@ -3870,45 +3756,92 @@ components:
           description: Name of the object in target directory. Must match the object name from the target directory definition.
         '@odata.type':
           type: string
-    microsoft.graph.synchronizationProgress:
-      title: synchronizationProgress
+    microsoft.graph.filterOperand:
+      title: filterOperand
       required:
       - '@odata.type'
       type: object
       properties:
-        completedUnits:
-          type: number
-          description: The numerator of a progress ratio; the number of units of changes already processed.
-          format: int64
-        progressObservationDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+        values:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+          description: Collection of values.
+        '@odata.type':
           type: string
-          description: The time of a progress observation as an offset in minutes from UTC.
-          format: date-time
-        totalUnits:
-          type: number
-          description: The denominator of a progress ratio; a number of units of changes to be processed to accomplish synchronization.
-          format: int64
-        units:
+    microsoft.graph.attributeDefinition:
+      title: attributeDefinition
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        anchor:
+          type: boolean
+          description: true if the attribute should be used as the anchor for the object. Anchor attributes must have a unique value identifying an object, and must be immutable. Default is false. One, and only one, of the object's attributes must be designated as the anchor to support synchronization.
+        apiExpressions:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.stringKeyStringValuePair'
+        caseExact:
+          type: boolean
+          description: true if value of this attribute should be treated as case-sensitive. This setting affects how the synchronization engine detects changes for the attribute.
+        defaultValue:
           type:
           - string
           - 'null'
-          description: An optional description of the units.
+          description: The default value of the attribute.
+        flowNullValues:
+          type: boolean
+          description: '''true'' to allow null values for attributes.'
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.attributeDefinitionMetadataEntry'
+          description: Metadata for the given object.
+        multivalued:
+          type: boolean
+          description: true if an attribute can have multiple values. Default is false.
+        mutability:
+          $ref: '#/components/schemas/microsoft.graph.mutability'
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name of the attribute. Must be unique within the object definition. Not nullable.
+        referencedObjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.referencedObject'
+          description: For attributes with reference type, lists referenced objects (for example, the manager attribute would list User as the referenced object).
+        required:
+          type: boolean
+          description: true if attribute is required. Object can not be created if any of the required attributes are missing. If during synchronization, the required attribute has no value, the default value will be used. If default the value was not set, synchronization will record an error.
+        type:
+          $ref: '#/components/schemas/microsoft.graph.attributeType'
         '@odata.type':
           type: string
-    microsoft.graph.bulkUpload:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: bulkUpload
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.bulkUpload'
-    microsoft.graph.spaApplication:
-      title: spaApplication
+    microsoft.graph.keyValue:
+      title: keyValue
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        key:
+          type:
+          - string
+          - 'null'
+          description: Key for the key-value pair.
+        value:
+          type:
+          - string
+          - 'null'
+          description: Value for the key-value pair.
+        '@odata.type':
+          type: string
+    microsoft.graph.publicClientApplication:
+      title: publicClientApplication
       required:
       - '@odata.type'
       type: object
@@ -3917,92 +3850,134 @@ components:
           type: array
           items:
             type: string
-          description: Specifies the URLs where user tokens are sent for sign-in, or the redirect URIs where OAuth 2.0 authorization codes and access tokens are sent.
+          description: Specifies the URLs where user tokens are sent for sign-in, or the redirect URIs where OAuth 2.0 authorization codes and access tokens are sent. For iOS and macOS apps, specify the value following the syntax msauth.{BUNDLEID}://auth, replacing '{BUNDLEID}'. For example, if the bundle ID is com.microsoft.identitysample.MSALiOS, the URI is msauth.com.microsoft.identitysample.MSALiOS://auth.
         '@odata.type':
           type: string
-    microsoft.graph.mutability:
-      title: mutability
-      enum:
-      - ReadWrite
-      - ReadOnly
-      - Immutable
-      - WriteOnly
-      type: string
-    microsoft.graph.directoryDefinitionDiscoverabilities:
-      title: directoryDefinitionDiscoverabilities
+    microsoft.graph.tokenIssuancePolicy:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.stsPolicy'
+      - title: tokenIssuancePolicy
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.tokenIssuancePolicy'
+      x-ms-discriminator-value: '#microsoft.graph.tokenIssuancePolicy'
+    microsoft.graph.resourceAccess:
+      title: resourceAccess
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        id:
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          description: The unique identifier of an app role or delegated permission exposed by the resource application. For delegated permissions, this should match the id property of one of the delegated permissions in the oauth2PermissionScopes collection of the resource application's service principal. For app roles (application permissions), this should match the id property of an app role in the appRoles collection of the resource application's service principal.
+          format: uuid
+        type:
+          type:
+          - string
+          - 'null'
+          description: 'Specifies whether the id property references a delegated permission or an app role (application permission). The possible values are: Scope (for delegated permissions) or Role (for app roles).'
+        '@odata.type':
+          type: string
+    microsoft.graph.objectMappingMetadataEntry:
+      title: objectMappingMetadataEntry
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        key:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.objectMappingMetadata'
+          - type:
+            - object
+            - 'null'
+          description: 'The possible values are: EscrowBehavior, DisableMonitoringForChanges, OriginalJoiningProperty, Disposition, IsCustomerDefined, ExcludeFromReporting, Unsynchronized.'
+        value:
+          type:
+          - string
+          - 'null'
+          description: Value of the metadata property.
+        '@odata.type':
+          type: string
+    microsoft.graph.containerFilter:
+      title: containerFilter
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        includedContainers:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+        '@odata.type':
+          type: string
+    microsoft.graph.synchronizationSecret:
+      title: synchronizationSecret
       enum:
       - None
-      - AttributeNames
-      - AttributeDataTypes
-      - AttributeReadOnly
-      - ReferenceAttributes
-      - UnknownFutureValue
+      - UserName
+      - Password
+      - SecretToken
+      - AppKey
+      - BaseAddress
+      - ClientIdentifier
+      - ClientSecret
+      - SingleSignOnType
+      - Sandbox
+      - Url
+      - Domain
+      - ConsumerKey
+      - ConsumerSecret
+      - TokenKey
+      - TokenExpiration
+      - Oauth2AccessToken
+      - Oauth2AccessTokenCreationTime
+      - Oauth2RefreshToken
+      - SyncAll
+      - InstanceName
+      - Oauth2ClientId
+      - Oauth2ClientSecret
+      - CompanyId
+      - UpdateKeyOnSoftDelete
+      - SynchronizationSchedule
+      - SystemOfRecord
+      - SandboxName
+      - EnforceDomain
+      - SyncNotificationSettings
+      - SkipOutOfScopeDeletions
+      - Oauth2AuthorizationCode
+      - Oauth2RedirectUri
+      - ApplicationTemplateIdentifier
+      - Oauth2TokenExchangeUri
+      - Oauth2AuthorizationUri
+      - AuthenticationType
+      - Server
+      - PerformInboundEntitlementGrants
+      - HardDeletesEnabled
+      - SyncAgentCompatibilityKey
+      - SyncAgentADContainer
+      - ValidateDomain
+      - TestReferences
+      - ConnectionString
       type: string
-      x-ms-enum-flags:
-        isFlags: true
-    microsoft.graph.synchronizationStatusCode:
-      title: synchronizationStatusCode
-      enum:
-      - NotConfigured
-      - NotRun
-      - Active
-      - Paused
-      - Quarantine
-      type: string
-    microsoft.graph.filter:
-      title: filter
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        categoryFilterGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.filterGroup'
-          description: '*Experimental* Filter group set used to decide whether given object belongs and should be processed as part of this object mapping. An object is considered in scope if ANY of the groups in the collection is evaluated to true.'
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.filterGroup'
-          description: Filter group set used to decide whether given object is in scope for provisioning. This is the filter which should be used in most cases. If an object used to satisfy this filter at a given moment, and then the object or the filter was changed so that filter isn't satisfied any longer, such object will get deprovisioned'. An object is considered in scope if ANY of the groups in the collection is evaluated to true.
-        inputFilterGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.filterGroup'
-          description: '*Experimental* Filter group set used to filter out objects at the early stage of reading them from the directory. If an object doesn''t satisfy this filter, then it will not be processed further. Important to understand is that if an object used to satisfy this filter at a given moment, and then the object or the filter was changed so that filter is no longer satisfied, such object will NOT get deprovisioned. An object is considered in scope if ANY of the groups in the collection is evaluated to true.'
-        '@odata.type':
-          type: string
-    microsoft.graph.referencedObject:
-      title: referencedObject
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        referencedObjectName:
-          type:
-          - string
-          - 'null'
-          description: Name of the referenced object. Must match one of the objects in the directory definition.
-        referencedProperty:
-          type:
-          - string
-          - 'null'
-          description: Currently not supported. Name of the property in the referenced object, the value for which is used as the reference.
-        '@odata.type':
-          type: string
-    microsoft.graph.attributeDefinitionMetadata:
-      title: attributeDefinitionMetadata
-      enum:
-      - BaseAttributeName
-      - ComplexObjectDefinition
-      - IsContainer
-      - IsCustomerDefined
-      - IsDomainQualified
-      - LinkPropertyNames
-      - LinkTypeName
-      - MaximumLength
-      - ReferencedProperty
-      type: string
+    microsoft.graph.homeRealmDiscoveryPolicy:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.stsPolicy'
+      - title: homeRealmDiscoveryPolicy
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.homeRealmDiscoveryPolicy'
+      x-ms-discriminator-value: '#microsoft.graph.homeRealmDiscoveryPolicy'
     microsoft.graph.synchronizationTaskExecution:
       title: synchronizationTaskExecution
       required:
@@ -4071,128 +4046,153 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.objectFlowTypes:
-      title: objectFlowTypes
-      enum:
-      - None
-      - Add
-      - Update
-      - Delete
-      type: string
-      x-ms-enum-flags:
-        isFlags: true
-    microsoft.graph.requestSignatureVerification:
-      title: requestSignatureVerification
+    microsoft.graph.bulkUpload:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: bulkUpload
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.bulkUpload'
+    microsoft.graph.optionalClaim:
+      title: optionalClaim
       required:
       - '@odata.type'
       type: object
       properties:
-        allowedWeakAlgorithms:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.weakAlgorithms'
-          - type:
-            - object
+        additionalProperties:
+          type: array
+          items:
+            type:
+            - string
             - 'null'
-          description: 'Specifies which weak algorithms are allowed.  The possible values are: rsaSha1, unknownFutureValue.'
-        isSignedRequestRequired:
+          description: Additional properties of the claim. If a property exists in this collection, it modifies the behavior of the optional claim specified in the name property.
+        essential:
           type: boolean
-          description: Specifies whether signed authentication requests for this application should be required.
-        '@odata.type':
+          description: If the value is true, the claim specified by the client is necessary to ensure a smooth authorization experience for the specific task requested by the end user. The default value is false.
+        name:
           type: string
-    microsoft.graph.stringKeyStringValuePair:
-      title: stringKeyStringValuePair
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        key:
+          description: The name of the optional claim.
+        source:
           type:
           - string
           - 'null'
-          description: Key.
-        value:
-          type:
-          - string
-          - 'null'
-          description: Value.
+          description: The source (directory object) of the claim. There are predefined claims and user-defined claims from extension properties. If the source value is null, the claim is a predefined optional claim. If the source value is user, the value in the name property is the extension property from the user object.
         '@odata.type':
           type: string
-    microsoft.graph.synchronizationStatus:
-      title: synchronizationStatus
+    microsoft.graph.ODataErrors.MainError:
       required:
-      - '@odata.type'
+      - code
+      - message
       type: object
       properties:
         code:
-          $ref: '#/components/schemas/microsoft.graph.synchronizationStatusCode'
-        countSuccessiveCompleteFailures:
-          type: number
-          description: Number of consecutive times this job failed.
-          format: int64
-        escrowsPruned:
-          type: boolean
-          description: true if the job's escrows (object-level errors) were pruned during initial synchronization. Escrows can be pruned if during the initial synchronization, you reach the threshold of errors that would normally put the job in quarantine. Instead of going into quarantine, the synchronization process clears the job's errors and continues until the initial synchronization is completed. When the initial synchronization is completed, the job will pause and wait for the customer to clean up the errors.
-        lastExecution:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.synchronizationTaskExecution'
-          - type:
-            - object
-            - 'null'
-          description: Details of the last execution of the job.
-        lastSuccessfulExecution:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.synchronizationTaskExecution'
-          - type:
-            - object
-            - 'null'
-          description: Details of the last execution of this job, which didn't have any errors.
-        lastSuccessfulExecutionWithExports:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.synchronizationTaskExecution'
-          - type:
-            - object
-            - 'null'
-          description: Details of the last execution of the job, which exported objects into the target directory.
-        progress:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.synchronizationProgress'
-          description: Details of the progress of a job toward completion.
-        quarantine:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.synchronizationQuarantine'
-          - type:
-            - object
-            - 'null'
-          description: If job is in quarantine, quarantine details.
-        steadyStateFirstAchievedTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
           type: string
-          description: The time when steady state (no more changes to the process) was first achieved. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-          format: date-time
-        steadyStateLastAchievedTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+        message:
           type: string
-          description: The time when steady state (no more changes to the process) was last achieved. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-          format: date-time
-        synchronizedEntryCountByType:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.stringKeyLongValuePair'
-          description: Count of synchronized objects, listed by object type.
-        troubleshootingUrl:
+          x-ms-primary-error-message: true
+        target:
           type:
           - string
           - 'null'
-          description: In the event of an error, the URL with the troubleshooting steps for the issue.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.objectMappingMetadata:
+      title: objectMappingMetadata
+      enum:
+      - EscrowBehavior
+      - DisableMonitoringForChanges
+      - OriginalJoiningProperty
+      - Disposition
+      - IsCustomerDefined
+      - ExcludeFromReporting
+      - Unsynchronized
+      type: string
+    microsoft.graph.attributeFlowBehavior:
+      title: attributeFlowBehavior
+      enum:
+      - FlowWhenChanged
+      - FlowAlways
+      type: string
+    microsoft.graph.stsPolicy:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.policyBase'
+      - title: stsPolicy
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          definition:
+            type: array
+            items:
+              type: string
+            description: A string collection containing a JSON string that defines the rules and settings for a policy. The syntax for the definition differs for each derived policy type. Required.
+          isOrganizationDefault:
+            type:
+            - boolean
+            - 'null'
+            description: If set to true, activates this policy. There can be many policies for the same policy type, but only one can be activated as the organization default. Optional, default value is false.
+          appliesTo:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.directoryObject'
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.stsPolicy'
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
+            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
+            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
+            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
+            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.spaApplication:
+      title: spaApplication
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        redirectUris:
+          type: array
+          items:
+            type: string
+          description: Specifies the URLs where user tokens are sent for sign-in, or the redirect URIs where OAuth 2.0 authorization codes and access tokens are sent.
         '@odata.type':
           type: string
-    microsoft.graph.attributeMappingSourceType:
-      title: attributeMappingSourceType
+    microsoft.graph.tokenLifetimePolicy:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.stsPolicy'
+      - title: tokenLifetimePolicy
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.tokenLifetimePolicy'
+      x-ms-discriminator-value: '#microsoft.graph.tokenLifetimePolicy'
+    microsoft.graph.appManagementRestrictionState:
+      title: appManagementRestrictionState
       enum:
-      - Attribute
-      - Constant
-      - Function
+      - enabled
+      - disabled
+      - unknownFutureValue
       type: string
   responses:
     ODataCountResponse:
@@ -4201,27 +4201,28 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/ODataCountResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
     microsoft.graph.applicationCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.applicationCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   parameters:
-    count:
-      name: $count
+    skip:
+      name: $skip
       in: query
-      description: Include count of items
+      description: Skip the first n items
       style: form
       explode: false
       schema:
-        type: boolean
+        minimum: 0
+        type: integer
     top:
       name: $top
       in: query
@@ -4232,14 +4233,6 @@ components:
         minimum: 0
         type: integer
       example: 50
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
     search:
       name: $search
       in: query
@@ -4248,12 +4241,19 @@ components:
       explode: false
       schema:
         type: string
-    skip:
-      name: $skip
+    count:
+      name: $count
       in: query
-      description: Skip the first n items
+      description: Include count of items
       style: form
       explode: false
       schema:
-        minimum: 0
-        type: integer
+        type: boolean
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string

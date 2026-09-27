@@ -189,6 +189,41 @@ paths:
       x-ms-docs-operation-type: operation
 components:
   schemas:
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.appsInstallationOptionsForMac:
+      title: appsInstallationOptionsForMac
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        isMicrosoft365AppsEnabled:
+          type: boolean
+          description: Specifies whether users can install Microsoft 365 apps on their MAC devices. The default value is true.
+        isSkypeForBusinessEnabled:
+          type: boolean
+          description: Specifies whether users can install Skype for Business on their MAC devices running OS X El Capitan 10.11 or later. The default value is true.
+        '@odata.type':
+          type: string
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -214,54 +249,42 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.appsInstallationOptionsForWindows:
-      title: appsInstallationOptionsForWindows
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        isMicrosoft365AppsEnabled:
-          type: boolean
-          description: Specifies whether users can install Microsoft 365 apps, including Skype for Business, on their Windows devices. The default value is true.
-        isProjectEnabled:
-          type: boolean
-          description: Specifies whether users can install Microsoft Project on their Windows devices. The default value is true.
-        isSkypeForBusinessEnabled:
-          type: boolean
-          description: Specifies whether users can install Skype for Business (standalone) on their Windows devices. The default value is true.
-        isVisioEnabled:
-          type: boolean
-          description: Specifies whether users can install Visio on their Windows devices. The default value is true.
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type:
-          - string
-          - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.m365AppsInstallationOptions:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: m365AppsInstallationOptions
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          appsForMac:
+            $ref: '#/components/schemas/microsoft.graph.appsInstallationOptionsForMac'
+          appsForWindows:
+            $ref: '#/components/schemas/microsoft.graph.appsInstallationOptionsForWindows'
+          updateChannel:
+            $ref: '#/components/schemas/microsoft.graph.appsUpdateChannelType'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.m365AppsInstallationOptions'
+    microsoft.graph.adminMicrosoft365Apps:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: adminMicrosoft365Apps
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          installationOptions:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.m365AppsInstallationOptions'
+            - type:
+              - object
+              - 'null'
+            description: A container for tenant-level settings for Microsoft 365 applications.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.adminMicrosoft365Apps'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1331,64 +1354,13 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.adminMicrosoft365Apps:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: adminMicrosoft365Apps
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          installationOptions:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.m365AppsInstallationOptions'
-            - type:
-              - object
-              - 'null'
-            description: A container for tenant-level settings for Microsoft 365 applications.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.adminMicrosoft365Apps'
-    microsoft.graph.appsUpdateChannelType:
-      title: appsUpdateChannelType
-      enum:
-      - current
-      - monthlyEnterprise
-      - semiAnnual
-      - unknownFutureValue
-      type: string
-    microsoft.graph.m365AppsInstallationOptions:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: m365AppsInstallationOptions
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          appsForMac:
-            $ref: '#/components/schemas/microsoft.graph.appsInstallationOptionsForMac'
-          appsForWindows:
-            $ref: '#/components/schemas/microsoft.graph.appsInstallationOptionsForWindows'
-          updateChannel:
-            $ref: '#/components/schemas/microsoft.graph.appsUpdateChannelType'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.m365AppsInstallationOptions'
-    microsoft.graph.appsInstallationOptionsForMac:
-      title: appsInstallationOptionsForMac
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - '@odata.type'
+      - error
       type: object
       properties:
-        isMicrosoft365AppsEnabled:
-          type: boolean
-          description: Specifies whether users can install Microsoft 365 apps on their MAC devices. The default value is true.
-        isSkypeForBusinessEnabled:
-          type: boolean
-          description: Specifies whether users can install Skype for Business on their MAC devices running OS X El Capitan 10.11 or later. The default value is true.
-        '@odata.type':
-          type: string
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
@@ -1403,6 +1375,34 @@ components:
           type:
           - string
           - 'null'
+    microsoft.graph.appsInstallationOptionsForWindows:
+      title: appsInstallationOptionsForWindows
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        isMicrosoft365AppsEnabled:
+          type: boolean
+          description: Specifies whether users can install Microsoft 365 apps, including Skype for Business, on their Windows devices. The default value is true.
+        isProjectEnabled:
+          type: boolean
+          description: Specifies whether users can install Microsoft Project on their Windows devices. The default value is true.
+        isSkypeForBusinessEnabled:
+          type: boolean
+          description: Specifies whether users can install Skype for Business (standalone) on their Windows devices. The default value is true.
+        isVisioEnabled:
+          type: boolean
+          description: Specifies whether users can install Visio on their Windows devices. The default value is true.
+        '@odata.type':
+          type: string
+    microsoft.graph.appsUpdateChannelType:
+      title: appsUpdateChannelType
+      enum:
+      - current
+      - monthlyEnterprise
+      - semiAnnual
+      - unknownFutureValue
+      type: string
   responses:
     error:
       description: error

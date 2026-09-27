@@ -436,54 +436,51 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   schemas:
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.localizedNotificationMessage:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: localizedNotificationMessage
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          isDefault:
-            type: boolean
-            description: Flag to indicate whether or not this is the default locale for language fallback. This flag can only be set. To unset, set this property to true on another Localized Notification Message.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: DateTime the object was last modified.
-            format: date-time
-          locale:
-            type: string
-            description: The Locale for which this message is destined.
-          messageTemplate:
-            type: string
-            description: The Message Template content.
-          subject:
-            type: string
-            description: The Message Template Subject.
-          '@odata.type':
-            type: string
-        description: The text content of a Notification Message Template for the specified locale.
-      x-ms-discriminator-value: '#microsoft.graph.localizedNotificationMessage'
-    microsoft.graph.notificationMessageTemplateCollectionResponse:
-      title: Collection of notificationMessageTemplate
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.notificationMessageTemplate'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -509,6 +506,42 @@ components:
           format: date-time
         '@odata.type':
           type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.localizedNotificationMessageCollectionResponse:
+      title: Collection of localizedNotificationMessage
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.localizedNotificationMessage'
+    microsoft.graph.notificationMessageTemplateCollectionResponse:
+      title: Collection of notificationMessageTemplate
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.notificationMessageTemplate'
     microsoft.graph.notificationTemplateBrandingOptions:
       title: notificationTemplateBrandingOptions
       enum:
@@ -548,17 +581,9 @@ components:
         - value: unknownFutureValue
           description: Evolvable enumeration sentinel value. Do not use.
           name: unknownFutureValue
-    microsoft.graph.localizedNotificationMessageCollectionResponse:
-      title: Collection of localizedNotificationMessage
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.localizedNotificationMessage'
+    ODataCountResponse:
+      type: integer
+      format: int32
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -1649,23 +1674,13 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    ODataCountResponse:
-      type: integer
-      format: int32
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -1719,72 +1734,57 @@ components:
             type: string
         description: Notification messages are messages that are sent to end users who are determined to be not-compliant with the compliance policies defined by the administrator. Administrators choose notifications and configure them in the Intune Admin Console using the compliance policy creation page under the “Actions for non-compliance” section. Use the notificationMessageTemplate object to create your own custom notifications for administrators to choose while configuring actions for non-compliance.
       x-ms-discriminator-value: '#microsoft.graph.notificationMessageTemplate'
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
+    microsoft.graph.localizedNotificationMessage:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: localizedNotificationMessage
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          isDefault:
+            type: boolean
+            description: Flag to indicate whether or not this is the default locale for language fallback. This flag can only be set. To unset, set this property to true on another Localized Notification Message.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: DateTime the object was last modified.
+            format: date-time
+          locale:
+            type: string
+            description: The Locale for which this message is destined.
+          messageTemplate:
+            type: string
+            description: The Message Template content.
+          subject:
+            type: string
+            description: The Message Template Subject.
+          '@odata.type':
+            type: string
+        description: The text content of a Notification Message Template for the specified locale.
+      x-ms-discriminator-value: '#microsoft.graph.localizedNotificationMessage'
   responses:
-    microsoft.graph.notificationMessageTemplateCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.notificationMessageTemplateCollectionResponse'
     microsoft.graph.localizedNotificationMessageCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.localizedNotificationMessageCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
     error:
       description: error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.notificationMessageTemplateCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.notificationMessageTemplateCollectionResponse'

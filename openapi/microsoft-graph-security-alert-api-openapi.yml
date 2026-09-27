@@ -491,169 +491,51 @@ paths:
         version: 2024-01/Deprecation
         description: The legacy Graph Security API is deprecated and will stop returning data on January 31, 2025. Please use the new Graph Security API.
 components:
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   schemas:
-    microsoft.graph.messageSecurityState:
-      title: messageSecurityState
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        connectingIP:
-          type:
-          - string
-          - 'null'
-        deliveryAction:
-          type:
-          - string
-          - 'null'
-        deliveryLocation:
-          type:
-          - string
-          - 'null'
-        directionality:
-          type:
-          - string
-          - 'null'
-        internetMessageId:
-          type:
-          - string
-          - 'null'
-        messageFingerprint:
-          type:
-          - string
-          - 'null'
-        messageReceivedDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          format: date-time
-        messageSubject:
-          type:
-          - string
-          - 'null'
-        networkMessageId:
-          type:
-          - string
-          - 'null'
-        '@odata.type':
-          type: string
-    microsoft.graph.security.alertDetermination:
-      title: alertDetermination
-      enum:
-      - unknown
-      - apt
-      - malware
-      - securityPersonnel
-      - securityTesting
-      - unwantedSoftware
-      - other
-      - multiStagedAttack
-      - compromisedAccount
-      - phishing
-      - maliciousUserActivity
-      - notMalicious
-      - notEnoughDataToValidate
-      - confirmedActivity
-      - lineOfBusinessApplication
-      - unknownFutureValue
-      type: string
-    microsoft.graph.alertFeedback:
-      title: alertFeedback
-      enum:
-      - unknown
-      - truePositive
-      - falsePositive
-      - benignPositive
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.dictionary:
-      title: dictionary
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-    microsoft.graph.security.evidenceVerdict:
-      title: evidenceVerdict
-      enum:
-      - unknown
-      - suspicious
-      - malicious
-      - noThreatsFound
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.security.alertCollectionResponse:
-      title: Collection of alert
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.alert'
-    microsoft.graph.security.detectionSource:
-      title: detectionSource
-      enum:
-      - unknown
-      - microsoftDefenderForEndpoint
-      - antivirus
-      - smartScreen
-      - customTi
-      - microsoftDefenderForOffice365
-      - automatedInvestigation
-      - microsoftThreatExperts
-      - customDetection
-      - microsoftDefenderForIdentity
-      - cloudAppSecurity
-      - microsoft365Defender
-      - azureAdIdentityProtection
-      - manual
-      - microsoftDataLossPrevention
-      - appGovernancePolicy
-      - appGovernanceDetection
-      - unknownFutureValue
-      - microsoftDefenderForCloud
-      - microsoftDefenderForIoT
-      - microsoftDefenderForServers
-      - microsoftDefenderForStorage
-      - microsoftDefenderForDNS
-      - microsoftDefenderForDatabases
-      - microsoftDefenderForContainers
-      - microsoftDefenderForNetwork
-      - microsoftDefenderForAppService
-      - microsoftDefenderForKeyVault
-      - microsoftDefenderForResourceManager
-      - microsoftDefenderForApiManagement
-      - nrtAlerts
-      - scheduledAlerts
-      - microsoftDefenderThreatIntelligenceAnalytics
-      - builtInMl
-      - microsoftInsiderRiskManagement
-      - microsoftThreatIntelligence
-      - microsoftDefenderForAIServices
-      - securityCopilot
-      - microsoftSentinel
-      type: string
-    microsoft.graph.userAccountSecurityType:
-      title: userAccountSecurityType
-      enum:
-      - unknown
-      - standard
-      - power
-      - administrator
-      - unknownFutureValue
-      type: string
     microsoft.graph.alertTrigger:
       title: alertTrigger
       required:
@@ -677,177 +559,304 @@ components:
           description: Value of the property serving as a detection trigger.
         '@odata.type':
           type: string
-    microsoft.graph.security.alertStatus:
-      title: alertStatus
+    microsoft.graph.alertFeedback:
+      title: alertFeedback
       enum:
       - unknown
-      - new
-      - inProgress
-      - resolved
+      - truePositive
+      - falsePositive
+      - benignPositive
       - unknownFutureValue
       type: string
-    microsoft.graph.uriClickSecurityState:
-      title: uriClickSecurityState
+    microsoft.graph.security.serviceSource:
+      title: serviceSource
+      enum:
+      - unknown
+      - microsoftDefenderForEndpoint
+      - microsoftDefenderForIdentity
+      - microsoftDefenderForCloudApps
+      - microsoftDefenderForOffice365
+      - microsoft365Defender
+      - azureAdIdentityProtection
+      - microsoftAppGovernance
+      - dataLossPrevention
+      - unknownFutureValue
+      - microsoftDefenderForCloud
+      - microsoftSentinel
+      - microsoftInsiderRiskManagement
+      - microsoftThreatIntelligence
+      type: string
+    microsoft.graph.security.alertCollectionResponse:
+      title: Collection of alert
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.alert'
+    microsoft.graph.security.alertComment:
+      title: alertComment
       required:
       - '@odata.type'
       type: object
       properties:
-        clickAction:
+        comment:
           type:
           - string
           - 'null'
-        clickDateTime:
+          description: The comment text.
+        createdByDisplayName:
+          type:
+          - string
+          - 'null'
+          description: The person or app name that submitted the comment.
+        createdDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The time when the comment was submitted.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.fileHash:
+      title: fileHash
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        hashType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.fileHashType'
+          - type:
+            - object
+            - 'null'
+          description: 'File hash type. The possible values are: unknown, sha1, sha256, md5, authenticodeHash256, lsHash, ctph, peSha1, peSha256.'
+        hashValue:
+          type:
+          - string
+          - 'null'
+          description: Value of the file hash.
+        '@odata.type':
+          type: string
+    microsoft.graph.security.evidenceRole:
+      title: evidenceRole
+      enum:
+      - unknown
+      - contextual
+      - scanned
+      - source
+      - destination
+      - created
+      - added
+      - compromised
+      - edited
+      - attacked
+      - attacker
+      - commandAndControl
+      - loaded
+      - suspicious
+      - policyViolator
+      - unknownFutureValue
+      type: string
+    microsoft.graph.userSecurityState:
+      title: userSecurityState
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        aadUserId:
+          type:
+          - string
+          - 'null'
+          description: AAD User object identifier (GUID) - represents the physical/multi-account user entity.
+        accountName:
+          type:
+          - string
+          - 'null'
+          description: Account name of user account (without Active Directory domain or DNS domain) - (also called mailNickName).
+        domainName:
+          type:
+          - string
+          - 'null'
+          description: NetBIOS/Active Directory domain of user account (that is, domain/account format).
+        emailRole:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.emailRole'
+          - type:
+            - object
+            - 'null'
+          description: 'For email-related alerts - user account''s email ''role''. The possible values are: unknown, sender, recipient.'
+        isVpn:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the user logged on through a VPN.
+        logonDateTime:
           pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
           type:
           - string
           - 'null'
+          description: Time at which the sign-in occurred. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
           format: date-time
-        id:
+        logonId:
           type:
           - string
           - 'null'
-        sourceId:
+          description: User sign-in ID.
+        logonIp:
           type:
           - string
           - 'null'
-        uriDomain:
+          description: IP Address the sign-in request originated from.
+        logonLocation:
           type:
           - string
           - 'null'
-        verdict:
+          description: Location (by IP address mapping) associated with a user sign-in event by this user.
+        logonType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.logonType'
+          - type:
+            - object
+            - 'null'
+          description: 'Method of user sign in. The possible values are: unknown, interactive, remoteInteractive, network, batch, service.'
+        onPremisesSecurityIdentifier:
           type:
           - string
           - 'null'
+          description: Active Directory (on-premises) Security Identifier (SID) of the user.
+        riskScore:
+          type:
+          - string
+          - 'null'
+          description: Provider-generated/calculated risk score of the user account. Recommended value range of 0-1, which equates to a percentage.
+        userAccountType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.userAccountSecurityType'
+          - type:
+            - object
+            - 'null'
+          description: 'User account type (group membership), per Windows definition. The possible values are: unknown, standard, power, administrator.'
+        userPrincipalName:
+          type:
+          - string
+          - 'null'
+          description: 'User sign-in name - internet format: (user account name)@(user account DNS domain name).'
         '@odata.type':
           type: string
-    microsoft.graph.registryKeyState:
-      title: registryKeyState
+    microsoft.graph.securityVendorInformation:
+      title: securityVendorInformation
       required:
       - '@odata.type'
       type: object
       properties:
-        hive:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.registryHive'
-          - type:
-            - object
-            - 'null'
-          description: 'A Windows registry hive : HKEYCURRENTCONFIG HKEYCURRENTUSER HKEYLOCALMACHINE/SAM HKEYLOCALMACHINE/Security HKEYLOCALMACHINE/Software HKEYLOCALMACHINE/System HKEY_USERS/.Default. The possible values are: unknown, currentConfig, currentUser, localMachineSam, localMachineSecurity, localMachineSoftware, localMachineSystem, usersDefault.'
-        key:
+        provider:
           type:
           - string
           - 'null'
-          description: Current (i.e. changed) registry key (excludes HIVE).
-        oldKey:
+          description: Specific provider (product/service - not vendor company); for example, WindowsDefenderATP.
+        providerVersion:
           type:
           - string
           - 'null'
-          description: Previous (i.e. before changed) registry key (excludes HIVE).
-        oldValueData:
+          description: Version of the provider or subprovider, if it exists, that generated the alert. Required
+        subProvider:
           type:
           - string
           - 'null'
-          description: Previous (i.e. before changed) registry key value data (contents).
-        oldValueName:
+          description: Specific subprovider (under aggregating provider); for example, WindowsDefenderATP.SmartScreen.
+        vendor:
           type:
           - string
           - 'null'
-          description: Previous (i.e. before changed) registry key value name.
-        operation:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.registryOperation'
-          - type:
-            - object
-            - 'null'
-          description: 'Operation that changed the registry key name and/or value. The possible values are: unknown, create, modify, delete.'
-        processId:
-          maximum: 2147483647
-          minimum: -2147483648
-          type:
-          - number
-          - 'null'
-          description: Process ID (PID) of the process that modified the registry key (process details will appear in the alert 'processes' collection).
-          format: int32
-        valueData:
-          type:
-          - string
-          - 'null'
-          description: Current (i.e. changed) registry key value data (contents).
-        valueName:
-          type:
-          - string
-          - 'null'
-          description: Current (i.e. changed) registry key value name
-        valueType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.registryValueType'
-          - type:
-            - object
-            - 'null'
-          description: 'Registry key value type REGBINARY REGDWORD REGDWORDLITTLEENDIAN REGDWORDBIGENDIANREGEXPANDSZ REGLINK REGMULTISZ REGNONE REGQWORD REGQWORDLITTLEENDIAN REG_SZ The possible values are: unknown, binary, dword, dwordLittleEndian, dwordBigEndian, expandSz, link, multiSz, none, qword, qwordlittleEndian, sz.'
+          description: Name of the alert vendor (for example, Microsoft, Dell, FireEye). Required
         '@odata.type':
           type: string
-    microsoft.graph.processIntegrityLevel:
-      title: processIntegrityLevel
+    microsoft.graph.security.evidenceVerdict:
+      title: evidenceVerdict
       enum:
       - unknown
-      - untrusted
-      - low
-      - medium
-      - high
-      - system
+      - suspicious
+      - malicious
+      - noThreatsFound
       - unknownFutureValue
       type: string
-    microsoft.graph.alertStatus:
-      title: alertStatus
-      enum:
-      - unknown
-      - newAlert
-      - inProgress
-      - resolved
-      - dismissed
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.alertClassification:
-      title: alertClassification
-      enum:
-      - unknown
-      - falsePositive
-      - truePositive
-      - informationalExpectedActivity
-      - unknownFutureValue
-      type: string
-    microsoft.graph.vulnerabilityState:
-      title: vulnerabilityState
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
       required:
       - '@odata.type'
       type: object
       properties:
-        cve:
+        request-id:
           type:
           - string
           - 'null'
-          description: Common Vulnerabilities and Exposures (CVE) for the vulnerability.
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.security.evidenceRemediationStatus:
+      title: evidenceRemediationStatus
+      enum:
+      - none
+      - remediated
+      - prevented
+      - blocked
+      - notFound
+      - unknownFutureValue
+      - active
+      - pendingApproval
+      - declined
+      - unremediated
+      - running
+      - partiallyRemediated
+      type: string
+    microsoft.graph.malwareState:
+      title: malwareState
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        category:
+          type:
+          - string
+          - 'null'
+          description: Provider-generated malware category (for example, trojan, ransomware, etc.).
+        family:
+          type:
+          - string
+          - 'null'
+          description: Provider-generated malware family (for example, 'wannacry,' 'notpetya,' etc.).
+        name:
+          type:
+          - string
+          - 'null'
+          description: Provider-generated malware variant name (for example, Trojan:Win32/Powessere.H).
         severity:
           type:
           - string
           - 'null'
-          description: Base Common Vulnerability Scoring System (CVSS) severity score for this vulnerability.
+          description: Provider-determined severity of this malware.
         wasRunning:
           type:
           - boolean
           - 'null'
-          description: Indicates whether the detected vulnerability (file) was running at the time of detection or was the file detected at rest on the disk.
+          description: Indicates whether the detected file (malware/vulnerability) was running at the time of detection or was detected at rest on the disk.
         '@odata.type':
           type: string
-    microsoft.graph.connectionDirection:
-      title: connectionDirection
-      enum:
-      - unknown
-      - inbound
-      - outbound
-      - unknownFutureValue
-      type: string
     microsoft.graph.alertHistoryState:
       title: alertHistoryState
       required:
@@ -892,22 +901,81 @@ components:
           - 'null'
         '@odata.type':
           type: string
-    microsoft.graph.investigationSecurityState:
-      title: investigationSecurityState
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.hostSecurityState:
+      title: hostSecurityState
       required:
       - '@odata.type'
       type: object
       properties:
-        name:
+        fqdn:
           type:
           - string
           - 'null'
-        status:
+          description: Host FQDN (Fully Qualified Domain Name) (for example, machine.company.com).
+        isAzureAdJoined:
+          type:
+          - boolean
+          - 'null'
+        isAzureAdRegistered:
+          type:
+          - boolean
+          - 'null'
+        isHybridAzureDomainJoined:
+          type:
+          - boolean
+          - 'null'
+          description: True if the host is domain joined to an on-premises Active Directory domain.
+        netBiosName:
           type:
           - string
           - 'null'
+          description: The local host name, without the DNS domain name.
+        os:
+          type:
+          - string
+          - 'null'
+          description: Host Operating System. (For example, Windows 10, macOS, RHEL, etc.).
+        privateIpAddress:
+          type:
+          - string
+          - 'null'
+          description: Private (not routable) IPv4 or IPv6 address (see RFC 1918) at the time of the alert.
+        publicIpAddress:
+          type:
+          - string
+          - 'null'
+          description: Publicly routable IPv4 or IPv6 address (see RFC 1918) at time of the alert.
+        riskScore:
+          type:
+          - string
+          - 'null'
+          description: Provider-generated/calculated risk score of the host.  Recommended value range of 0-1, which equates to a percentage.
         '@odata.type':
           type: string
+    microsoft.graph.alertStatus:
+      title: alertStatus
+      enum:
+      - unknown
+      - newAlert
+      - inProgress
+      - resolved
+      - dismissed
+      - unknownFutureValue
+      type: string
     microsoft.graph.process:
       title: process
       required:
@@ -990,125 +1058,6 @@ components:
           format: int32
         '@odata.type':
           type: string
-    microsoft.graph.hostSecurityState:
-      title: hostSecurityState
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        fqdn:
-          type:
-          - string
-          - 'null'
-          description: Host FQDN (Fully Qualified Domain Name) (for example, machine.company.com).
-        isAzureAdJoined:
-          type:
-          - boolean
-          - 'null'
-        isAzureAdRegistered:
-          type:
-          - boolean
-          - 'null'
-        isHybridAzureDomainJoined:
-          type:
-          - boolean
-          - 'null'
-          description: True if the host is domain joined to an on-premises Active Directory domain.
-        netBiosName:
-          type:
-          - string
-          - 'null'
-          description: The local host name, without the DNS domain name.
-        os:
-          type:
-          - string
-          - 'null'
-          description: Host Operating System. (For example, Windows 10, macOS, RHEL, etc.).
-        privateIpAddress:
-          type:
-          - string
-          - 'null'
-          description: Private (not routable) IPv4 or IPv6 address (see RFC 1918) at the time of the alert.
-        publicIpAddress:
-          type:
-          - string
-          - 'null'
-          description: Publicly routable IPv4 or IPv6 address (see RFC 1918) at time of the alert.
-        riskScore:
-          type:
-          - string
-          - 'null'
-          description: Provider-generated/calculated risk score of the host.  Recommended value range of 0-1, which equates to a percentage.
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type:
-          - string
-          - 'null'
-          description: Request Id as tracked internally by the service
-        client-request-id:
-          type:
-          - string
-          - 'null'
-          description: Client request Id as sent by the client application.
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the error occured.
-          format: date-time
-        '@odata.type':
-          type: string
-    microsoft.graph.security.investigationState:
-      title: investigationState
-      enum:
-      - unknown
-      - terminated
-      - successfullyRemediated
-      - benign
-      - failed
-      - partiallyRemediated
-      - running
-      - pendingApproval
-      - pendingResource
-      - queued
-      - innerFailure
-      - preexistingAlert
-      - unsupportedOs
-      - unsupportedAlertType
-      - suppressedAlert
-      - partiallyInvestigated
-      - terminatedByUser
-      - terminatedBySystem
-      - unknownFutureValue
-      type: string
-    microsoft.graph.securityResource:
-      title: securityResource
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        resource:
-          type:
-          - string
-          - 'null'
-          description: Name of the resource that is related to current alert. Required.
-        resourceType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.securityResourceType'
-          - type:
-            - object
-            - 'null'
-          description: 'Represents type of security resources related to an alert. The possible values are: attacked, related.'
-        '@odata.type':
-          type: string
     microsoft.graph.security.alertSeverity:
       title: alertSeverity
       enum:
@@ -1119,6 +1068,98 @@ components:
       - high
       - unknownFutureValue
       type: string
+    microsoft.graph.registryValueType:
+      title: registryValueType
+      enum:
+      - unknown
+      - binary
+      - dword
+      - dwordLittleEndian
+      - dwordBigEndian
+      - expandSz
+      - link
+      - multiSz
+      - none
+      - qword
+      - qwordlittleEndian
+      - sz
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.dictionary:
+      title: dictionary
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+    microsoft.graph.registryKeyState:
+      title: registryKeyState
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        hive:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.registryHive'
+          - type:
+            - object
+            - 'null'
+          description: 'A Windows registry hive : HKEYCURRENTCONFIG HKEYCURRENTUSER HKEYLOCALMACHINE/SAM HKEYLOCALMACHINE/Security HKEYLOCALMACHINE/Software HKEYLOCALMACHINE/System HKEY_USERS/.Default. The possible values are: unknown, currentConfig, currentUser, localMachineSam, localMachineSecurity, localMachineSoftware, localMachineSystem, usersDefault.'
+        key:
+          type:
+          - string
+          - 'null'
+          description: Current (i.e. changed) registry key (excludes HIVE).
+        oldKey:
+          type:
+          - string
+          - 'null'
+          description: Previous (i.e. before changed) registry key (excludes HIVE).
+        oldValueData:
+          type:
+          - string
+          - 'null'
+          description: Previous (i.e. before changed) registry key value data (contents).
+        oldValueName:
+          type:
+          - string
+          - 'null'
+          description: Previous (i.e. before changed) registry key value name.
+        operation:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.registryOperation'
+          - type:
+            - object
+            - 'null'
+          description: 'Operation that changed the registry key name and/or value. The possible values are: unknown, create, modify, delete.'
+        processId:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: Process ID (PID) of the process that modified the registry key (process details will appear in the alert 'processes' collection).
+          format: int32
+        valueData:
+          type:
+          - string
+          - 'null'
+          description: Current (i.e. changed) registry key value data (contents).
+        valueName:
+          type:
+          - string
+          - 'null'
+          description: Current (i.e. changed) registry key value name
+        valueType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.registryValueType'
+          - type:
+            - object
+            - 'null'
+          description: 'Registry key value type REGBINARY REGDWORD REGDWORDLITTLEENDIAN REGDWORDBIGENDIANREGEXPANDSZ REGLINK REGMULTISZ REGNONE REGQWORD REGQWORDLITTLEENDIAN REG_SZ The possible values are: unknown, binary, dword, dwordLittleEndian, dwordBigEndian, expandSz, link, multiSz, none, qword, qwordlittleEndian, sz.'
+        '@odata.type':
+          type: string
     microsoft.graph.cloudAppSecurityState:
       title: cloudAppSecurityState
       required:
@@ -1142,6 +1183,450 @@ components:
           description: Provider-generated/calculated risk score of the Cloud Application/Service. Recommended value range of 0-1, which equates to a percentage.
         '@odata.type':
           type: string
+    microsoft.graph.messageSecurityState:
+      title: messageSecurityState
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        connectingIP:
+          type:
+          - string
+          - 'null'
+        deliveryAction:
+          type:
+          - string
+          - 'null'
+        deliveryLocation:
+          type:
+          - string
+          - 'null'
+        directionality:
+          type:
+          - string
+          - 'null'
+        internetMessageId:
+          type:
+          - string
+          - 'null'
+        messageFingerprint:
+          type:
+          - string
+          - 'null'
+        messageReceivedDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          format: date-time
+        messageSubject:
+          type:
+          - string
+          - 'null'
+        networkMessageId:
+          type:
+          - string
+          - 'null'
+        '@odata.type':
+          type: string
+    microsoft.graph.networkConnection:
+      title: networkConnection
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        applicationName:
+          type:
+          - string
+          - 'null'
+          description: Name of the application managing the network connection (for example, Facebook or SMTP).
+        destinationAddress:
+          type:
+          - string
+          - 'null'
+          description: Destination IP address (of the network connection).
+        destinationDomain:
+          type:
+          - string
+          - 'null'
+          description: Destination domain portion of the destination URL. (for example 'www.contoso.com').
+        destinationLocation:
+          type:
+          - string
+          - 'null'
+          description: Location (by IP address mapping) associated with the destination of a network connection.
+        destinationPort:
+          type:
+          - string
+          - 'null'
+          description: Destination port (of the network connection).
+        destinationUrl:
+          type:
+          - string
+          - 'null'
+          description: Network connection URL/URI string - excluding parameters. (for example 'www.contoso.com/products/default.html')
+        direction:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.connectionDirection'
+          - type:
+            - object
+            - 'null'
+          description: 'Network connection direction. The possible values are: unknown, inbound, outbound.'
+        domainRegisteredDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the destination domain was registered. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+          format: date-time
+        localDnsName:
+          type:
+          - string
+          - 'null'
+          description: The local DNS name resolution as it appears in the host's local DNS cache (for example, in case the 'hosts' file was tampered with).
+        natDestinationAddress:
+          type:
+          - string
+          - 'null'
+          description: Network Address Translation destination IP address.
+        natDestinationPort:
+          type:
+          - string
+          - 'null'
+          description: Network Address Translation destination port.
+        natSourceAddress:
+          type:
+          - string
+          - 'null'
+          description: Network Address Translation source IP address.
+        natSourcePort:
+          type:
+          - string
+          - 'null'
+          description: Network Address Translation source port.
+        protocol:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.securityNetworkProtocol'
+          - type:
+            - object
+            - 'null'
+          description: 'Network protocol. The possible values are: unknown, ip, icmp, igmp, ggp, ipv4, tcp, pup, udp, idp, ipv6, ipv6RoutingHeader, ipv6FragmentHeader, ipSecEncapsulatingSecurityPayload, ipSecAuthenticationHeader, icmpV6, ipv6NoNextHeader, ipv6DestinationOptions, nd, raw, ipx, spx, spxII.'
+        riskScore:
+          type:
+          - string
+          - 'null'
+          description: Provider generated/calculated risk score of the network connection. Recommended value range of 0-1, which equates to a percentage.
+        sourceAddress:
+          type:
+          - string
+          - 'null'
+          description: Source (i.e. origin) IP address (of the network connection).
+        sourceLocation:
+          type:
+          - string
+          - 'null'
+          description: Location (by IP address mapping) associated with the source of a network connection.
+        sourcePort:
+          type:
+          - string
+          - 'null'
+          description: Source (i.e. origin) IP port (of the network connection).
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.connectionStatus'
+          - type:
+            - object
+            - 'null'
+          description: 'Network connection status. The possible values are: unknown, attempted, succeeded, blocked, failed.'
+        urlParameters:
+          type:
+          - string
+          - 'null'
+          description: Parameters (suffix) of the destination URL.
+        '@odata.type':
+          type: string
+    microsoft.graph.registryOperation:
+      title: registryOperation
+      enum:
+      - unknown
+      - create
+      - modify
+      - delete
+      - unknownFutureValue
+      type: string
+    microsoft.graph.alertCollectionResponse:
+      title: Collection of alert
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.alert'
+    microsoft.graph.alertSeverity:
+      title: alertSeverity
+      enum:
+      - unknown
+      - informational
+      - low
+      - medium
+      - high
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.alert:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: alert
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          actorDisplayName:
+            type:
+            - string
+            - 'null'
+            description: The adversary or activity group that is associated with this alert.
+          additionalData:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.dictionary'
+            - type:
+              - object
+              - 'null'
+            description: A collection of other alert properties, including user-defined properties. Any custom details defined in the alert, and any dynamic content in the alert details, are stored here.
+          alertPolicyId:
+            type:
+            - string
+            - 'null'
+            description: The ID of the policy that generated the alert, and populated when there is a specific policy that generated the alert, whether configured by a customer or a built-in policy.
+          alertWebUrl:
+            type:
+            - string
+            - 'null'
+            description: URL for the Microsoft 365 Defender portal alert page.
+          assignedTo:
+            type:
+            - string
+            - 'null'
+            description: Owner of the alert, or null if no owner is assigned.
+          category:
+            type:
+            - string
+            - 'null'
+            description: The attack kill-chain category that the alert belongs to. Aligned with the MITRE ATT&CK framework.
+          classification:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.alertClassification'
+            - type:
+              - object
+              - 'null'
+            description: 'Specifies whether the alert represents a true threat. The possible values are: unknown, falsePositive, truePositive, informationalExpectedActivity, unknownFutureValue.'
+          comments:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.alertComment'
+            description: Array of comments created by the Security Operations (SecOps) team during the alert management process.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Time when Microsoft 365 Defender created the alert.
+            format: date-time
+          customDetails:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.dictionary'
+            - type:
+              - object
+              - 'null'
+            description: User defined custom fields with string values.
+          description:
+            type:
+            - string
+            - 'null'
+            description: String value describing each alert.
+          detectionSource:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.detectionSource'
+            - type:
+              - object
+              - 'null'
+            description: 'Detection technology or sensor that identified the notable component or activity. The possible values are: unknown, microsoftDefenderForEndpoint, antivirus, smartScreen, customTi, microsoftDefenderForOffice365, automatedInvestigation, microsoftThreatExperts, customDetection, microsoftDefenderForIdentity, cloudAppSecurity, microsoft365Defender, azureAdIdentityProtection, manual, microsoftDataLossPrevention, appGovernancePolicy, appGovernanceDetection, unknownFutureValue, microsoftDefenderForCloud, microsoftDefenderForIoT, microsoftDefenderForServers, microsoftDefenderForStorage, microsoftDefenderForDNS, microsoftDefenderForDatabases, microsoftDefenderForContainers, microsoftDefenderForNetwork, microsoftDefenderForAppService, microsoftDefenderForKeyVault, microsoftDefenderForResourceManager, microsoftDefenderForApiManagement, microsoftSentinel, nrtAlerts, scheduledAlerts, microsoftDefenderThreatIntelligenceAnalytics, builtInMl, microsoftThreatIntelligence, microsoftDefenderForAIServices, securityCopilot. Use the Prefer: include-unknown-enum-members request header to get the following values in this evolvable enum: microsoftDefenderForCloud, microsoftDefenderForIoT, microsoftDefenderForServers, microsoftDefenderForStorage, microsoftDefenderForDNS, microsoftDefenderForDatabases, microsoftDefenderForContainers, microsoftDefenderForNetwork, microsoftDefenderForAppService, microsoftDefenderForKeyVault, microsoftDefenderForResourceManager, microsoftDefenderForApiManagement, microsoftSentinel, nrtAlerts, scheduledAlerts, microsoftDefenderThreatIntelligenceAnalytics, builtInMl, microsoftThreatIntelligence, microsoftDefenderForAIServices, securityCopilot.'
+          detectorId:
+            type:
+            - string
+            - 'null'
+            description: The ID of the detector that triggered the alert.
+          determination:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.alertDetermination'
+            - type:
+              - object
+              - 'null'
+            description: 'Specifies the result of the investigation, whether the alert represents a true attack and if so, the nature of the attack. The possible values are: unknown, apt, malware, securityPersonnel, securityTesting, unwantedSoftware, other, multiStagedAttack, compromisedAccount, phishing, maliciousUserActivity, notMalicious, notEnoughDataToValidate, confirmedUserActivity, lineOfBusinessApplication, unknownFutureValue.'
+          evidence:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.alertEvidence'
+            description: Collection of evidence related to the alert.
+          firstActivityDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The earliest activity associated with the alert.
+            format: date-time
+          incidentId:
+            type:
+            - string
+            - 'null'
+            description: Unique identifier to represent the incident this alert resource is associated with.
+          incidentWebUrl:
+            type:
+            - string
+            - 'null'
+            description: URL for the incident page in the Microsoft 365 Defender portal.
+          investigationState:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.investigationState'
+            - type:
+              - object
+              - 'null'
+            description: 'Information on the current status of the investigation. The possible values are: unknown, terminated, successfullyRemediated, benign, failed, partiallyRemediated, running, pendingApproval, pendingResource, queued, innerFailure, preexistingAlert, unsupportedOs, unsupportedAlertType, suppressedAlert, partiallyInvestigated, terminatedByUser, terminatedBySystem, unknownFutureValue.'
+          lastActivityDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The oldest activity associated with the alert.
+            format: date-time
+          lastUpdateDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Time when the alert was last updated at Microsoft 365 Defender.
+            format: date-time
+          mitreTechniques:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: The attack techniques, as aligned with the MITRE ATT&CK framework.
+          productName:
+            type:
+            - string
+            - 'null'
+            description: The name of the product which published this alert.
+          providerAlertId:
+            type:
+            - string
+            - 'null'
+            description: The ID of the alert as it appears in the security provider product that generated the alert.
+          recommendedActions:
+            type:
+            - string
+            - 'null'
+            description: Recommended response and remediation actions to take in the event this alert was generated.
+          resolvedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Time when the alert was resolved.
+            format: date-time
+          serviceSource:
+            $ref: '#/components/schemas/microsoft.graph.security.serviceSource'
+          severity:
+            $ref: '#/components/schemas/microsoft.graph.security.alertSeverity'
+          status:
+            $ref: '#/components/schemas/microsoft.graph.security.alertStatus'
+          systemTags:
+            type: array
+            items:
+              type:
+              - string
+              - 'null'
+            description: The system tags associated with the alert.
+          tenantId:
+            type:
+            - string
+            - 'null'
+            description: The Microsoft Entra tenant the alert was created in.
+          threatDisplayName:
+            type:
+            - string
+            - 'null'
+            description: The threat associated with this alert.
+          threatFamilyName:
+            type:
+            - string
+            - 'null'
+            description: Threat family associated with this alert.
+          title:
+            type:
+            - string
+            - 'null'
+            description: Brief identifying string value describing the alert.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.security.alert'
+    microsoft.graph.security.investigationState:
+      title: investigationState
+      enum:
+      - unknown
+      - terminated
+      - successfullyRemediated
+      - benign
+      - failed
+      - partiallyRemediated
+      - running
+      - pendingApproval
+      - pendingResource
+      - queued
+      - innerFailure
+      - preexistingAlert
+      - unsupportedOs
+      - unsupportedAlertType
+      - suppressedAlert
+      - partiallyInvestigated
+      - terminatedByUser
+      - terminatedBySystem
+      - unknownFutureValue
+      type: string
+    microsoft.graph.alertDetection:
+      title: alertDetection
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        detectionType:
+          type:
+          - string
+          - 'null'
+        method:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        '@odata.type':
+          type: string
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.connectionDirection:
+      title: connectionDirection
+      enum:
+      - unknown
+      - inbound
+      - outbound
+      - unknownFutureValue
+      type: string
     microsoft.graph.registryHive:
       title: registryHive
       enum:
@@ -1154,6 +1639,191 @@ components:
       - localMachineSystem
       - usersDefault
       - unknownFutureValue
+      type: string
+    microsoft.graph.uriClickSecurityState:
+      title: uriClickSecurityState
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        clickAction:
+          type:
+          - string
+          - 'null'
+        clickDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          format: date-time
+        id:
+          type:
+          - string
+          - 'null'
+        sourceId:
+          type:
+          - string
+          - 'null'
+        uriDomain:
+          type:
+          - string
+          - 'null'
+        verdict:
+          type:
+          - string
+          - 'null'
+        '@odata.type':
+          type: string
+    microsoft.graph.logonType:
+      title: logonType
+      enum:
+      - unknown
+      - interactive
+      - remoteInteractive
+      - network
+      - batch
+      - service
+      - unknownFutureValue
+      type: string
+    microsoft.graph.securityNetworkProtocol:
+      title: securityNetworkProtocol
+      enum:
+      - unknown
+      - ip
+      - icmp
+      - igmp
+      - ggp
+      - ipv4
+      - tcp
+      - pup
+      - udp
+      - idp
+      - ipv6
+      - ipv6RoutingHeader
+      - ipv6FragmentHeader
+      - ipSecEncapsulatingSecurityPayload
+      - ipSecAuthenticationHeader
+      - icmpV6
+      - ipv6NoNextHeader
+      - ipv6DestinationOptions
+      - nd
+      - raw
+      - ipx
+      - spx
+      - spxII
+      - unknownFutureValue
+      type: string
+    microsoft.graph.vulnerabilityState:
+      title: vulnerabilityState
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        cve:
+          type:
+          - string
+          - 'null'
+          description: Common Vulnerabilities and Exposures (CVE) for the vulnerability.
+        severity:
+          type:
+          - string
+          - 'null'
+          description: Base Common Vulnerability Scoring System (CVSS) severity score for this vulnerability.
+        wasRunning:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the detected vulnerability (file) was running at the time of detection or was the file detected at rest on the disk.
+        '@odata.type':
+          type: string
+    microsoft.graph.processIntegrityLevel:
+      title: processIntegrityLevel
+      enum:
+      - unknown
+      - untrusted
+      - low
+      - medium
+      - high
+      - system
+      - unknownFutureValue
+      type: string
+    microsoft.graph.userAccountSecurityType:
+      title: userAccountSecurityType
+      enum:
+      - unknown
+      - standard
+      - power
+      - administrator
+      - unknownFutureValue
+      type: string
+    microsoft.graph.securityResourceType:
+      title: securityResourceType
+      enum:
+      - unknown
+      - attacked
+      - related
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.alertStatus:
+      title: alertStatus
+      enum:
+      - unknown
+      - new
+      - inProgress
+      - resolved
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.alertClassification:
+      title: alertClassification
+      enum:
+      - unknown
+      - falsePositive
+      - truePositive
+      - informationalExpectedActivity
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.detectionSource:
+      title: detectionSource
+      enum:
+      - unknown
+      - microsoftDefenderForEndpoint
+      - antivirus
+      - smartScreen
+      - customTi
+      - microsoftDefenderForOffice365
+      - automatedInvestigation
+      - microsoftThreatExperts
+      - customDetection
+      - microsoftDefenderForIdentity
+      - cloudAppSecurity
+      - microsoft365Defender
+      - azureAdIdentityProtection
+      - manual
+      - microsoftDataLossPrevention
+      - appGovernancePolicy
+      - appGovernanceDetection
+      - unknownFutureValue
+      - microsoftDefenderForCloud
+      - microsoftDefenderForIoT
+      - microsoftDefenderForServers
+      - microsoftDefenderForStorage
+      - microsoftDefenderForDNS
+      - microsoftDefenderForDatabases
+      - microsoftDefenderForContainers
+      - microsoftDefenderForNetwork
+      - microsoftDefenderForAppService
+      - microsoftDefenderForKeyVault
+      - microsoftDefenderForResourceManager
+      - microsoftDefenderForApiManagement
+      - nrtAlerts
+      - scheduledAlerts
+      - microsoftDefenderThreatIntelligenceAnalytics
+      - builtInMl
+      - microsoftInsiderRiskManagement
+      - microsoftThreatIntelligence
+      - microsoftDefenderForAIServices
+      - securityCopilot
+      - microsoftSentinel
       type: string
     microsoft.graph.ODataErrors.MainError:
       required:
@@ -1176,6 +1846,76 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.fileSecurityState:
+      title: fileSecurityState
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        fileHash:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.fileHash'
+          - type:
+            - object
+            - 'null'
+          description: Complex type containing file hashes (cryptographic and location-sensitive).
+        name:
+          type:
+          - string
+          - 'null'
+          description: File name (without path).
+        path:
+          type:
+          - string
+          - 'null'
+          description: Full file path of the file/imageFile.
+        riskScore:
+          type:
+          - string
+          - 'null'
+          description: Provider generated/calculated risk score of the alert file. Recommended value range of 0-1, which equates to a percentage.
+        '@odata.type':
+          type: string
+    microsoft.graph.security.alertDetermination:
+      title: alertDetermination
+      enum:
+      - unknown
+      - apt
+      - malware
+      - securityPersonnel
+      - securityTesting
+      - unwantedSoftware
+      - other
+      - multiStagedAttack
+      - compromisedAccount
+      - phishing
+      - maliciousUserActivity
+      - notMalicious
+      - notEnoughDataToValidate
+      - confirmedActivity
+      - lineOfBusinessApplication
+      - unknownFutureValue
+      type: string
+    microsoft.graph.emailRole:
+      title: emailRole
+      enum:
+      - unknown
+      - sender
+      - recipient
+      - unknownFutureValue
+      type: string
+    microsoft.graph.fileHashType:
+      title: fileHashType
+      enum:
+      - unknown
+      - sha1
+      - sha256
+      - md5
+      - authenticodeHash256
+      - lsHash
+      - ctph
+      - unknownFutureValue
+      type: string
     microsoft.graph.connectionStatus:
       title: connectionStatus
       enum:
@@ -1186,6 +1926,97 @@ components:
       - failed
       - unknownFutureValue
       type: string
+    microsoft.graph.security.alertEvidence:
+      title: alertEvidence
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        createdDateTime:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type: string
+          description: The date and time when the evidence was created and added to the alert. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+          format: date-time
+        detailedRoles:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+          description: Detailed description of the entity role/s in an alert. Values are free-form.
+        remediationStatus:
+          $ref: '#/components/schemas/microsoft.graph.security.evidenceRemediationStatus'
+        remediationStatusDetails:
+          type:
+          - string
+          - 'null'
+          description: Details about the remediation status.
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.security.evidenceRole'
+          description: The role/s that an evidence entity represents in an alert, for example, an IP address that is associated with an attacker has the evidence role Attacker.
+        tags:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+          description: Array of custom tags associated with an evidence instance, for example, to denote a group of devices, high-value assets, etc.
+        verdict:
+          $ref: '#/components/schemas/microsoft.graph.security.evidenceVerdict'
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.security.aiAgentEvidence': '#/components/schemas/microsoft.graph.security.aiAgentEvidence'
+          '#microsoft.graph.security.amazonResourceEvidence': '#/components/schemas/microsoft.graph.security.amazonResourceEvidence'
+          '#microsoft.graph.security.analyzedMessageEvidence': '#/components/schemas/microsoft.graph.security.analyzedMessageEvidence'
+          '#microsoft.graph.security.azureResourceEvidence': '#/components/schemas/microsoft.graph.security.azureResourceEvidence'
+          '#microsoft.graph.security.blobContainerEvidence': '#/components/schemas/microsoft.graph.security.blobContainerEvidence'
+          '#microsoft.graph.security.blobEvidence': '#/components/schemas/microsoft.graph.security.blobEvidence'
+          '#microsoft.graph.security.cloudApplicationEvidence': '#/components/schemas/microsoft.graph.security.cloudApplicationEvidence'
+          '#microsoft.graph.security.cloudLogonRequestEvidence': '#/components/schemas/microsoft.graph.security.cloudLogonRequestEvidence'
+          '#microsoft.graph.security.cloudLogonSessionEvidence': '#/components/schemas/microsoft.graph.security.cloudLogonSessionEvidence'
+          '#microsoft.graph.security.containerEvidence': '#/components/schemas/microsoft.graph.security.containerEvidence'
+          '#microsoft.graph.security.containerImageEvidence': '#/components/schemas/microsoft.graph.security.containerImageEvidence'
+          '#microsoft.graph.security.containerRegistryEvidence': '#/components/schemas/microsoft.graph.security.containerRegistryEvidence'
+          '#microsoft.graph.security.deviceEvidence': '#/components/schemas/microsoft.graph.security.deviceEvidence'
+          '#microsoft.graph.security.dnsEvidence': '#/components/schemas/microsoft.graph.security.dnsEvidence'
+          '#microsoft.graph.security.fileEvidence': '#/components/schemas/microsoft.graph.security.fileEvidence'
+          '#microsoft.graph.security.fileHashEvidence': '#/components/schemas/microsoft.graph.security.fileHashEvidence'
+          '#microsoft.graph.security.gitHubOrganizationEvidence': '#/components/schemas/microsoft.graph.security.gitHubOrganizationEvidence'
+          '#microsoft.graph.security.gitHubRepoEvidence': '#/components/schemas/microsoft.graph.security.gitHubRepoEvidence'
+          '#microsoft.graph.security.gitHubUserEvidence': '#/components/schemas/microsoft.graph.security.gitHubUserEvidence'
+          '#microsoft.graph.security.googleCloudResourceEvidence': '#/components/schemas/microsoft.graph.security.googleCloudResourceEvidence'
+          '#microsoft.graph.security.hostLogonSessionEvidence': '#/components/schemas/microsoft.graph.security.hostLogonSessionEvidence'
+          '#microsoft.graph.security.ioTDeviceEvidence': '#/components/schemas/microsoft.graph.security.ioTDeviceEvidence'
+          '#microsoft.graph.security.ipEvidence': '#/components/schemas/microsoft.graph.security.ipEvidence'
+          '#microsoft.graph.security.kubernetesClusterEvidence': '#/components/schemas/microsoft.graph.security.kubernetesClusterEvidence'
+          '#microsoft.graph.security.kubernetesControllerEvidence': '#/components/schemas/microsoft.graph.security.kubernetesControllerEvidence'
+          '#microsoft.graph.security.kubernetesNamespaceEvidence': '#/components/schemas/microsoft.graph.security.kubernetesNamespaceEvidence'
+          '#microsoft.graph.security.kubernetesPodEvidence': '#/components/schemas/microsoft.graph.security.kubernetesPodEvidence'
+          '#microsoft.graph.security.kubernetesSecretEvidence': '#/components/schemas/microsoft.graph.security.kubernetesSecretEvidence'
+          '#microsoft.graph.security.kubernetesServiceAccountEvidence': '#/components/schemas/microsoft.graph.security.kubernetesServiceAccountEvidence'
+          '#microsoft.graph.security.kubernetesServiceEvidence': '#/components/schemas/microsoft.graph.security.kubernetesServiceEvidence'
+          '#microsoft.graph.security.mailboxConfigurationEvidence': '#/components/schemas/microsoft.graph.security.mailboxConfigurationEvidence'
+          '#microsoft.graph.security.mailboxEvidence': '#/components/schemas/microsoft.graph.security.mailboxEvidence'
+          '#microsoft.graph.security.mailClusterEvidence': '#/components/schemas/microsoft.graph.security.mailClusterEvidence'
+          '#microsoft.graph.security.malwareEvidence': '#/components/schemas/microsoft.graph.security.malwareEvidence'
+          '#microsoft.graph.security.networkConnectionEvidence': '#/components/schemas/microsoft.graph.security.networkConnectionEvidence'
+          '#microsoft.graph.security.nicEvidence': '#/components/schemas/microsoft.graph.security.nicEvidence'
+          '#microsoft.graph.security.oauthApplicationEvidence': '#/components/schemas/microsoft.graph.security.oauthApplicationEvidence'
+          '#microsoft.graph.security.processEvidence': '#/components/schemas/microsoft.graph.security.processEvidence'
+          '#microsoft.graph.security.registryKeyEvidence': '#/components/schemas/microsoft.graph.security.registryKeyEvidence'
+          '#microsoft.graph.security.registryValueEvidence': '#/components/schemas/microsoft.graph.security.registryValueEvidence'
+          '#microsoft.graph.security.sasTokenEvidence': '#/components/schemas/microsoft.graph.security.sasTokenEvidence'
+          '#microsoft.graph.security.securityGroupEvidence': '#/components/schemas/microsoft.graph.security.securityGroupEvidence'
+          '#microsoft.graph.security.servicePrincipalEvidence': '#/components/schemas/microsoft.graph.security.servicePrincipalEvidence'
+          '#microsoft.graph.security.submissionMailEvidence': '#/components/schemas/microsoft.graph.security.submissionMailEvidence'
+          '#microsoft.graph.security.teamsMessageEvidence': '#/components/schemas/microsoft.graph.security.teamsMessageEvidence'
+          '#microsoft.graph.security.urlEvidence': '#/components/schemas/microsoft.graph.security.urlEvidence'
+          '#microsoft.graph.security.userEvidence': '#/components/schemas/microsoft.graph.security.userEvidence'
     microsoft.graph.entity:
       title: entity
       required:
@@ -2255,478 +3086,13 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.security.evidenceRole:
-      title: evidenceRole
-      enum:
-      - unknown
-      - contextual
-      - scanned
-      - source
-      - destination
-      - created
-      - added
-      - compromised
-      - edited
-      - attacked
-      - attacker
-      - commandAndControl
-      - loaded
-      - suspicious
-      - policyViolator
-      - unknownFutureValue
-      type: string
-    microsoft.graph.securityNetworkProtocol:
-      title: securityNetworkProtocol
-      enum:
-      - unknown
-      - ip
-      - icmp
-      - igmp
-      - ggp
-      - ipv4
-      - tcp
-      - pup
-      - udp
-      - idp
-      - ipv6
-      - ipv6RoutingHeader
-      - ipv6FragmentHeader
-      - ipSecEncapsulatingSecurityPayload
-      - ipSecAuthenticationHeader
-      - icmpV6
-      - ipv6NoNextHeader
-      - ipv6DestinationOptions
-      - nd
-      - raw
-      - ipx
-      - spx
-      - spxII
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.serviceSource:
-      title: serviceSource
-      enum:
-      - unknown
-      - microsoftDefenderForEndpoint
-      - microsoftDefenderForIdentity
-      - microsoftDefenderForCloudApps
-      - microsoftDefenderForOffice365
-      - microsoft365Defender
-      - azureAdIdentityProtection
-      - microsoftAppGovernance
-      - dataLossPrevention
-      - unknownFutureValue
-      - microsoftDefenderForCloud
-      - microsoftSentinel
-      - microsoftInsiderRiskManagement
-      - microsoftThreatIntelligence
-      type: string
-    microsoft.graph.fileSecurityState:
-      title: fileSecurityState
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - '@odata.type'
+      - error
       type: object
       properties:
-        fileHash:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.fileHash'
-          - type:
-            - object
-            - 'null'
-          description: Complex type containing file hashes (cryptographic and location-sensitive).
-        name:
-          type:
-          - string
-          - 'null'
-          description: File name (without path).
-        path:
-          type:
-          - string
-          - 'null'
-          description: Full file path of the file/imageFile.
-        riskScore:
-          type:
-          - string
-          - 'null'
-          description: Provider generated/calculated risk score of the alert file. Recommended value range of 0-1, which equates to a percentage.
-        '@odata.type':
-          type: string
-    microsoft.graph.fileHashType:
-      title: fileHashType
-      enum:
-      - unknown
-      - sha1
-      - sha256
-      - md5
-      - authenticodeHash256
-      - lsHash
-      - ctph
-      - unknownFutureValue
-      type: string
-    microsoft.graph.alertDetection:
-      title: alertDetection
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        detectionType:
-          type:
-          - string
-          - 'null'
-        method:
-          type:
-          - string
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-        '@odata.type':
-          type: string
-    microsoft.graph.alertSeverity:
-      title: alertSeverity
-      enum:
-      - unknown
-      - informational
-      - low
-      - medium
-      - high
-      - unknownFutureValue
-      type: string
-    microsoft.graph.logonType:
-      title: logonType
-      enum:
-      - unknown
-      - interactive
-      - remoteInteractive
-      - network
-      - batch
-      - service
-      - unknownFutureValue
-      type: string
-    microsoft.graph.registryOperation:
-      title: registryOperation
-      enum:
-      - unknown
-      - create
-      - modify
-      - delete
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.alertCollectionResponse:
-      title: Collection of alert
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.alert'
-    microsoft.graph.security.alert:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: alert
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          actorDisplayName:
-            type:
-            - string
-            - 'null'
-            description: The adversary or activity group that is associated with this alert.
-          additionalData:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.dictionary'
-            - type:
-              - object
-              - 'null'
-            description: A collection of other alert properties, including user-defined properties. Any custom details defined in the alert, and any dynamic content in the alert details, are stored here.
-          alertPolicyId:
-            type:
-            - string
-            - 'null'
-            description: The ID of the policy that generated the alert, and populated when there is a specific policy that generated the alert, whether configured by a customer or a built-in policy.
-          alertWebUrl:
-            type:
-            - string
-            - 'null'
-            description: URL for the Microsoft 365 Defender portal alert page.
-          assignedTo:
-            type:
-            - string
-            - 'null'
-            description: Owner of the alert, or null if no owner is assigned.
-          category:
-            type:
-            - string
-            - 'null'
-            description: The attack kill-chain category that the alert belongs to. Aligned with the MITRE ATT&CK framework.
-          classification:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.alertClassification'
-            - type:
-              - object
-              - 'null'
-            description: 'Specifies whether the alert represents a true threat. The possible values are: unknown, falsePositive, truePositive, informationalExpectedActivity, unknownFutureValue.'
-          comments:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.alertComment'
-            description: Array of comments created by the Security Operations (SecOps) team during the alert management process.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: Time when Microsoft 365 Defender created the alert.
-            format: date-time
-          customDetails:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.dictionary'
-            - type:
-              - object
-              - 'null'
-            description: User defined custom fields with string values.
-          description:
-            type:
-            - string
-            - 'null'
-            description: String value describing each alert.
-          detectionSource:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.detectionSource'
-            - type:
-              - object
-              - 'null'
-            description: 'Detection technology or sensor that identified the notable component or activity. The possible values are: unknown, microsoftDefenderForEndpoint, antivirus, smartScreen, customTi, microsoftDefenderForOffice365, automatedInvestigation, microsoftThreatExperts, customDetection, microsoftDefenderForIdentity, cloudAppSecurity, microsoft365Defender, azureAdIdentityProtection, manual, microsoftDataLossPrevention, appGovernancePolicy, appGovernanceDetection, unknownFutureValue, microsoftDefenderForCloud, microsoftDefenderForIoT, microsoftDefenderForServers, microsoftDefenderForStorage, microsoftDefenderForDNS, microsoftDefenderForDatabases, microsoftDefenderForContainers, microsoftDefenderForNetwork, microsoftDefenderForAppService, microsoftDefenderForKeyVault, microsoftDefenderForResourceManager, microsoftDefenderForApiManagement, microsoftSentinel, nrtAlerts, scheduledAlerts, microsoftDefenderThreatIntelligenceAnalytics, builtInMl, microsoftThreatIntelligence, microsoftDefenderForAIServices, securityCopilot. Use the Prefer: include-unknown-enum-members request header to get the following values in this evolvable enum: microsoftDefenderForCloud, microsoftDefenderForIoT, microsoftDefenderForServers, microsoftDefenderForStorage, microsoftDefenderForDNS, microsoftDefenderForDatabases, microsoftDefenderForContainers, microsoftDefenderForNetwork, microsoftDefenderForAppService, microsoftDefenderForKeyVault, microsoftDefenderForResourceManager, microsoftDefenderForApiManagement, microsoftSentinel, nrtAlerts, scheduledAlerts, microsoftDefenderThreatIntelligenceAnalytics, builtInMl, microsoftThreatIntelligence, microsoftDefenderForAIServices, securityCopilot.'
-          detectorId:
-            type:
-            - string
-            - 'null'
-            description: The ID of the detector that triggered the alert.
-          determination:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.alertDetermination'
-            - type:
-              - object
-              - 'null'
-            description: 'Specifies the result of the investigation, whether the alert represents a true attack and if so, the nature of the attack. The possible values are: unknown, apt, malware, securityPersonnel, securityTesting, unwantedSoftware, other, multiStagedAttack, compromisedAccount, phishing, maliciousUserActivity, notMalicious, notEnoughDataToValidate, confirmedUserActivity, lineOfBusinessApplication, unknownFutureValue.'
-          evidence:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.alertEvidence'
-            description: Collection of evidence related to the alert.
-          firstActivityDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: The earliest activity associated with the alert.
-            format: date-time
-          incidentId:
-            type:
-            - string
-            - 'null'
-            description: Unique identifier to represent the incident this alert resource is associated with.
-          incidentWebUrl:
-            type:
-            - string
-            - 'null'
-            description: URL for the incident page in the Microsoft 365 Defender portal.
-          investigationState:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.investigationState'
-            - type:
-              - object
-              - 'null'
-            description: 'Information on the current status of the investigation. The possible values are: unknown, terminated, successfullyRemediated, benign, failed, partiallyRemediated, running, pendingApproval, pendingResource, queued, innerFailure, preexistingAlert, unsupportedOs, unsupportedAlertType, suppressedAlert, partiallyInvestigated, terminatedByUser, terminatedBySystem, unknownFutureValue.'
-          lastActivityDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: The oldest activity associated with the alert.
-            format: date-time
-          lastUpdateDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: Time when the alert was last updated at Microsoft 365 Defender.
-            format: date-time
-          mitreTechniques:
-            type: array
-            items:
-              type:
-              - string
-              - 'null'
-            description: The attack techniques, as aligned with the MITRE ATT&CK framework.
-          productName:
-            type:
-            - string
-            - 'null'
-            description: The name of the product which published this alert.
-          providerAlertId:
-            type:
-            - string
-            - 'null'
-            description: The ID of the alert as it appears in the security provider product that generated the alert.
-          recommendedActions:
-            type:
-            - string
-            - 'null'
-            description: Recommended response and remediation actions to take in the event this alert was generated.
-          resolvedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: Time when the alert was resolved.
-            format: date-time
-          serviceSource:
-            $ref: '#/components/schemas/microsoft.graph.security.serviceSource'
-          severity:
-            $ref: '#/components/schemas/microsoft.graph.security.alertSeverity'
-          status:
-            $ref: '#/components/schemas/microsoft.graph.security.alertStatus'
-          systemTags:
-            type: array
-            items:
-              type:
-              - string
-              - 'null'
-            description: The system tags associated with the alert.
-          tenantId:
-            type:
-            - string
-            - 'null'
-            description: The Microsoft Entra tenant the alert was created in.
-          threatDisplayName:
-            type:
-            - string
-            - 'null'
-            description: The threat associated with this alert.
-          threatFamilyName:
-            type:
-            - string
-            - 'null'
-            description: Threat family associated with this alert.
-          title:
-            type:
-            - string
-            - 'null'
-            description: Brief identifying string value describing the alert.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.alert'
-    microsoft.graph.security.alertEvidence:
-      title: alertEvidence
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        createdDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The date and time when the evidence was created and added to the alert. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-          format: date-time
-        detailedRoles:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-          description: Detailed description of the entity role/s in an alert. Values are free-form.
-        remediationStatus:
-          $ref: '#/components/schemas/microsoft.graph.security.evidenceRemediationStatus'
-        remediationStatusDetails:
-          type:
-          - string
-          - 'null'
-          description: Details about the remediation status.
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.security.evidenceRole'
-          description: The role/s that an evidence entity represents in an alert, for example, an IP address that is associated with an attacker has the evidence role Attacker.
-        tags:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-          description: Array of custom tags associated with an evidence instance, for example, to denote a group of devices, high-value assets, etc.
-        verdict:
-          $ref: '#/components/schemas/microsoft.graph.security.evidenceVerdict'
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.security.aiAgentEvidence': '#/components/schemas/microsoft.graph.security.aiAgentEvidence'
-          '#microsoft.graph.security.amazonResourceEvidence': '#/components/schemas/microsoft.graph.security.amazonResourceEvidence'
-          '#microsoft.graph.security.analyzedMessageEvidence': '#/components/schemas/microsoft.graph.security.analyzedMessageEvidence'
-          '#microsoft.graph.security.azureResourceEvidence': '#/components/schemas/microsoft.graph.security.azureResourceEvidence'
-          '#microsoft.graph.security.blobContainerEvidence': '#/components/schemas/microsoft.graph.security.blobContainerEvidence'
-          '#microsoft.graph.security.blobEvidence': '#/components/schemas/microsoft.graph.security.blobEvidence'
-          '#microsoft.graph.security.cloudApplicationEvidence': '#/components/schemas/microsoft.graph.security.cloudApplicationEvidence'
-          '#microsoft.graph.security.cloudLogonRequestEvidence': '#/components/schemas/microsoft.graph.security.cloudLogonRequestEvidence'
-          '#microsoft.graph.security.cloudLogonSessionEvidence': '#/components/schemas/microsoft.graph.security.cloudLogonSessionEvidence'
-          '#microsoft.graph.security.containerEvidence': '#/components/schemas/microsoft.graph.security.containerEvidence'
-          '#microsoft.graph.security.containerImageEvidence': '#/components/schemas/microsoft.graph.security.containerImageEvidence'
-          '#microsoft.graph.security.containerRegistryEvidence': '#/components/schemas/microsoft.graph.security.containerRegistryEvidence'
-          '#microsoft.graph.security.deviceEvidence': '#/components/schemas/microsoft.graph.security.deviceEvidence'
-          '#microsoft.graph.security.dnsEvidence': '#/components/schemas/microsoft.graph.security.dnsEvidence'
-          '#microsoft.graph.security.fileEvidence': '#/components/schemas/microsoft.graph.security.fileEvidence'
-          '#microsoft.graph.security.fileHashEvidence': '#/components/schemas/microsoft.graph.security.fileHashEvidence'
-          '#microsoft.graph.security.gitHubOrganizationEvidence': '#/components/schemas/microsoft.graph.security.gitHubOrganizationEvidence'
-          '#microsoft.graph.security.gitHubRepoEvidence': '#/components/schemas/microsoft.graph.security.gitHubRepoEvidence'
-          '#microsoft.graph.security.gitHubUserEvidence': '#/components/schemas/microsoft.graph.security.gitHubUserEvidence'
-          '#microsoft.graph.security.googleCloudResourceEvidence': '#/components/schemas/microsoft.graph.security.googleCloudResourceEvidence'
-          '#microsoft.graph.security.hostLogonSessionEvidence': '#/components/schemas/microsoft.graph.security.hostLogonSessionEvidence'
-          '#microsoft.graph.security.ioTDeviceEvidence': '#/components/schemas/microsoft.graph.security.ioTDeviceEvidence'
-          '#microsoft.graph.security.ipEvidence': '#/components/schemas/microsoft.graph.security.ipEvidence'
-          '#microsoft.graph.security.kubernetesClusterEvidence': '#/components/schemas/microsoft.graph.security.kubernetesClusterEvidence'
-          '#microsoft.graph.security.kubernetesControllerEvidence': '#/components/schemas/microsoft.graph.security.kubernetesControllerEvidence'
-          '#microsoft.graph.security.kubernetesNamespaceEvidence': '#/components/schemas/microsoft.graph.security.kubernetesNamespaceEvidence'
-          '#microsoft.graph.security.kubernetesPodEvidence': '#/components/schemas/microsoft.graph.security.kubernetesPodEvidence'
-          '#microsoft.graph.security.kubernetesSecretEvidence': '#/components/schemas/microsoft.graph.security.kubernetesSecretEvidence'
-          '#microsoft.graph.security.kubernetesServiceAccountEvidence': '#/components/schemas/microsoft.graph.security.kubernetesServiceAccountEvidence'
-          '#microsoft.graph.security.kubernetesServiceEvidence': '#/components/schemas/microsoft.graph.security.kubernetesServiceEvidence'
-          '#microsoft.graph.security.mailboxConfigurationEvidence': '#/components/schemas/microsoft.graph.security.mailboxConfigurationEvidence'
-          '#microsoft.graph.security.mailboxEvidence': '#/components/schemas/microsoft.graph.security.mailboxEvidence'
-          '#microsoft.graph.security.mailClusterEvidence': '#/components/schemas/microsoft.graph.security.mailClusterEvidence'
-          '#microsoft.graph.security.malwareEvidence': '#/components/schemas/microsoft.graph.security.malwareEvidence'
-          '#microsoft.graph.security.networkConnectionEvidence': '#/components/schemas/microsoft.graph.security.networkConnectionEvidence'
-          '#microsoft.graph.security.nicEvidence': '#/components/schemas/microsoft.graph.security.nicEvidence'
-          '#microsoft.graph.security.oauthApplicationEvidence': '#/components/schemas/microsoft.graph.security.oauthApplicationEvidence'
-          '#microsoft.graph.security.processEvidence': '#/components/schemas/microsoft.graph.security.processEvidence'
-          '#microsoft.graph.security.registryKeyEvidence': '#/components/schemas/microsoft.graph.security.registryKeyEvidence'
-          '#microsoft.graph.security.registryValueEvidence': '#/components/schemas/microsoft.graph.security.registryValueEvidence'
-          '#microsoft.graph.security.sasTokenEvidence': '#/components/schemas/microsoft.graph.security.sasTokenEvidence'
-          '#microsoft.graph.security.securityGroupEvidence': '#/components/schemas/microsoft.graph.security.securityGroupEvidence'
-          '#microsoft.graph.security.servicePrincipalEvidence': '#/components/schemas/microsoft.graph.security.servicePrincipalEvidence'
-          '#microsoft.graph.security.submissionMailEvidence': '#/components/schemas/microsoft.graph.security.submissionMailEvidence'
-          '#microsoft.graph.security.teamsMessageEvidence': '#/components/schemas/microsoft.graph.security.teamsMessageEvidence'
-          '#microsoft.graph.security.urlEvidence': '#/components/schemas/microsoft.graph.security.urlEvidence'
-          '#microsoft.graph.security.userEvidence': '#/components/schemas/microsoft.graph.security.userEvidence'
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.alert:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -2948,187 +3314,26 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.alert'
-    microsoft.graph.security.alertComment:
-      title: alertComment
+    microsoft.graph.securityResource:
+      title: securityResource
       required:
       - '@odata.type'
       type: object
       properties:
-        comment:
+        resource:
           type:
           - string
           - 'null'
-          description: The comment text.
-        createdByDisplayName:
-          type:
-          - string
-          - 'null'
-          description: The person or app name that submitted the comment.
-        createdDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type: string
-          description: The time when the comment was submitted.
-          format: date-time
-        '@odata.type':
-          type: string
-    microsoft.graph.emailRole:
-      title: emailRole
-      enum:
-      - unknown
-      - sender
-      - recipient
-      - unknownFutureValue
-      type: string
-    microsoft.graph.malwareState:
-      title: malwareState
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        category:
-          type:
-          - string
-          - 'null'
-          description: Provider-generated malware category (for example, trojan, ransomware, etc.).
-        family:
-          type:
-          - string
-          - 'null'
-          description: Provider-generated malware family (for example, 'wannacry,' 'notpetya,' etc.).
-        name:
-          type:
-          - string
-          - 'null'
-          description: Provider-generated malware variant name (for example, Trojan:Win32/Powessere.H).
-        severity:
-          type:
-          - string
-          - 'null'
-          description: Provider-determined severity of this malware.
-        wasRunning:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates whether the detected file (malware/vulnerability) was running at the time of detection or was detected at rest on the disk.
-        '@odata.type':
-          type: string
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.userSecurityState:
-      title: userSecurityState
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        aadUserId:
-          type:
-          - string
-          - 'null'
-          description: AAD User object identifier (GUID) - represents the physical/multi-account user entity.
-        accountName:
-          type:
-          - string
-          - 'null'
-          description: Account name of user account (without Active Directory domain or DNS domain) - (also called mailNickName).
-        domainName:
-          type:
-          - string
-          - 'null'
-          description: NetBIOS/Active Directory domain of user account (that is, domain/account format).
-        emailRole:
+          description: Name of the resource that is related to current alert. Required.
+        resourceType:
           anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.emailRole'
+          - $ref: '#/components/schemas/microsoft.graph.securityResourceType'
           - type:
             - object
             - 'null'
-          description: 'For email-related alerts - user account''s email ''role''. The possible values are: unknown, sender, recipient.'
-        isVpn:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates whether the user logged on through a VPN.
-        logonDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Time at which the sign-in occurred. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-          format: date-time
-        logonId:
-          type:
-          - string
-          - 'null'
-          description: User sign-in ID.
-        logonIp:
-          type:
-          - string
-          - 'null'
-          description: IP Address the sign-in request originated from.
-        logonLocation:
-          type:
-          - string
-          - 'null'
-          description: Location (by IP address mapping) associated with a user sign-in event by this user.
-        logonType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.logonType'
-          - type:
-            - object
-            - 'null'
-          description: 'Method of user sign in. The possible values are: unknown, interactive, remoteInteractive, network, batch, service.'
-        onPremisesSecurityIdentifier:
-          type:
-          - string
-          - 'null'
-          description: Active Directory (on-premises) Security Identifier (SID) of the user.
-        riskScore:
-          type:
-          - string
-          - 'null'
-          description: Provider-generated/calculated risk score of the user account. Recommended value range of 0-1, which equates to a percentage.
-        userAccountType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.userAccountSecurityType'
-          - type:
-            - object
-            - 'null'
-          description: 'User account type (group membership), per Windows definition. The possible values are: unknown, standard, power, administrator.'
-        userPrincipalName:
-          type:
-          - string
-          - 'null'
-          description: 'User sign-in name - internet format: (user account name)@(user account DNS domain name).'
+          description: 'Represents type of security resources related to an alert. The possible values are: attacked, related.'
         '@odata.type':
           type: string
-    microsoft.graph.fileHash:
-      title: fileHash
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        hashType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.fileHashType'
-          - type:
-            - object
-            - 'null'
-          description: 'File hash type. The possible values are: unknown, sha1, sha256, md5, authenticodeHash256, lsHash, ctph, peSha1, peSha256.'
-        hashValue:
-          type:
-          - string
-          - 'null'
-          description: Value of the file hash.
-        '@odata.type':
-          type: string
-    microsoft.graph.securityResourceType:
-      title: securityResourceType
-      enum:
-      - unknown
-      - attacked
-      - related
-      - unknownFutureValue
-      type: string
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -3142,249 +3347,44 @@ components:
           type:
           - string
           - 'null'
-    microsoft.graph.networkConnection:
-      title: networkConnection
+    microsoft.graph.investigationSecurityState:
+      title: investigationSecurityState
       required:
       - '@odata.type'
       type: object
       properties:
-        applicationName:
+        name:
           type:
           - string
           - 'null'
-          description: Name of the application managing the network connection (for example, Facebook or SMTP).
-        destinationAddress:
-          type:
-          - string
-          - 'null'
-          description: Destination IP address (of the network connection).
-        destinationDomain:
-          type:
-          - string
-          - 'null'
-          description: Destination domain portion of the destination URL. (for example 'www.contoso.com').
-        destinationLocation:
-          type:
-          - string
-          - 'null'
-          description: Location (by IP address mapping) associated with the destination of a network connection.
-        destinationPort:
-          type:
-          - string
-          - 'null'
-          description: Destination port (of the network connection).
-        destinationUrl:
-          type:
-          - string
-          - 'null'
-          description: Network connection URL/URI string - excluding parameters. (for example 'www.contoso.com/products/default.html')
-        direction:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.connectionDirection'
-          - type:
-            - object
-            - 'null'
-          description: 'Network connection direction. The possible values are: unknown, inbound, outbound.'
-        domainRegisteredDateTime:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the destination domain was registered. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
-          format: date-time
-        localDnsName:
-          type:
-          - string
-          - 'null'
-          description: The local DNS name resolution as it appears in the host's local DNS cache (for example, in case the 'hosts' file was tampered with).
-        natDestinationAddress:
-          type:
-          - string
-          - 'null'
-          description: Network Address Translation destination IP address.
-        natDestinationPort:
-          type:
-          - string
-          - 'null'
-          description: Network Address Translation destination port.
-        natSourceAddress:
-          type:
-          - string
-          - 'null'
-          description: Network Address Translation source IP address.
-        natSourcePort:
-          type:
-          - string
-          - 'null'
-          description: Network Address Translation source port.
-        protocol:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.securityNetworkProtocol'
-          - type:
-            - object
-            - 'null'
-          description: 'Network protocol. The possible values are: unknown, ip, icmp, igmp, ggp, ipv4, tcp, pup, udp, idp, ipv6, ipv6RoutingHeader, ipv6FragmentHeader, ipSecEncapsulatingSecurityPayload, ipSecAuthenticationHeader, icmpV6, ipv6NoNextHeader, ipv6DestinationOptions, nd, raw, ipx, spx, spxII.'
-        riskScore:
-          type:
-          - string
-          - 'null'
-          description: Provider generated/calculated risk score of the network connection. Recommended value range of 0-1, which equates to a percentage.
-        sourceAddress:
-          type:
-          - string
-          - 'null'
-          description: Source (i.e. origin) IP address (of the network connection).
-        sourceLocation:
-          type:
-          - string
-          - 'null'
-          description: Location (by IP address mapping) associated with the source of a network connection.
-        sourcePort:
-          type:
-          - string
-          - 'null'
-          description: Source (i.e. origin) IP port (of the network connection).
         status:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.connectionStatus'
-          - type:
-            - object
-            - 'null'
-          description: 'Network connection status. The possible values are: unknown, attempted, succeeded, blocked, failed.'
-        urlParameters:
           type:
           - string
           - 'null'
-          description: Parameters (suffix) of the destination URL.
         '@odata.type':
           type: string
-    microsoft.graph.registryValueType:
-      title: registryValueType
-      enum:
-      - unknown
-      - binary
-      - dword
-      - dwordLittleEndian
-      - dwordBigEndian
-      - expandSz
-      - link
-      - multiSz
-      - none
-      - qword
-      - qwordlittleEndian
-      - sz
-      - unknownFutureValue
-      type: string
-    microsoft.graph.securityVendorInformation:
-      title: securityVendorInformation
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        provider:
-          type:
-          - string
-          - 'null'
-          description: Specific provider (product/service - not vendor company); for example, WindowsDefenderATP.
-        providerVersion:
-          type:
-          - string
-          - 'null'
-          description: Version of the provider or subprovider, if it exists, that generated the alert. Required
-        subProvider:
-          type:
-          - string
-          - 'null'
-          description: Specific subprovider (under aggregating provider); for example, WindowsDefenderATP.SmartScreen.
-        vendor:
-          type:
-          - string
-          - 'null'
-          description: Name of the alert vendor (for example, Microsoft, Dell, FireEye). Required
-        '@odata.type':
-          type: string
-    microsoft.graph.security.evidenceRemediationStatus:
-      title: evidenceRemediationStatus
-      enum:
-      - none
-      - remediated
-      - prevented
-      - blocked
-      - notFound
-      - unknownFutureValue
-      - active
-      - pendingApproval
-      - declined
-      - unremediated
-      - running
-      - partiallyRemediated
-      type: string
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
   responses:
-    microsoft.graph.alertCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.alertCollectionResponse'
-    microsoft.graph.security.alertCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.security.alertCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
     error:
       description: error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.alertCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.alertCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.security.alertCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.security.alertCollectionResponse'

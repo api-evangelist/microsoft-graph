@@ -156,8 +156,30 @@ paths:
         dispatcherRules: default
 components:
   schemas:
-    ErrorDetail:
-      title: ErrorDetail
+    AgreementAcceptanceCollectionResponse:
+      title: AgreementAcceptanceCollectionResponse
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementAcceptance'
+        '@odata.nextLink':
+          type: string
+          nullable: true
+        '@odata.count':
+          type: integer
+          format: int32
+    ODataError:
+      title: ODataError
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    MainError:
+      title: MainError
       required:
       - code
       - message
@@ -167,20 +189,19 @@ components:
           type: string
         message:
           type: string
+          x-ms-primary-error-message: true
         target:
           type: string
           nullable: true
-    InnerError:
-      title: InnerError
-      type: object
-      description: The structure of this object is service-specific
-    AgreementAcceptanceState:
-      title: AgreementAcceptanceState
-      type: string
-      enum:
-      - accepted
-      - declined
-      description: The state of the agreement acceptance.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+    ODataCountResponse:
+      type: integer
+      format: int32
     AgreementAcceptance:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -259,33 +280,19 @@ components:
           description: The unique identifier for an entity. Read-only.
         '@odata.type':
           type: string
-    ODataCountResponse:
-      type: integer
-      format: int32
-    ODataError:
-      title: ODataError
-      required:
-      - error
+    AgreementAcceptanceState:
+      title: AgreementAcceptanceState
+      type: string
+      enum:
+      - accepted
+      - declined
+      description: The state of the agreement acceptance.
+    InnerError:
+      title: InnerError
       type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
-    AgreementAcceptanceCollectionResponse:
-      title: AgreementAcceptanceCollectionResponse
-      type: object
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementAcceptance'
-        '@odata.nextLink':
-          type: string
-          nullable: true
-        '@odata.count':
-          type: integer
-          format: int32
-    MainError:
-      title: MainError
+      description: The structure of this object is service-specific
+    ErrorDetail:
+      title: ErrorDetail
       required:
       - code
       - message
@@ -295,49 +302,40 @@ components:
           type: string
         message:
           type: string
-          x-ms-primary-error-message: true
         target:
           type: string
           nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        innerError:
-          $ref: '#/components/schemas/InnerError'
+  responses:
+    AgreementAcceptanceCollectionResponse:
+      description: Retrieved collection of agreement acceptances
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgreementAcceptanceCollectionResponse'
+          examples:
+            AgreementAcceptanceCollectionExample:
+              $ref: '#/components/examples/AgreementAcceptanceCollectionExample'
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
   parameters:
-    Search:
-      name: $search
+    Count:
+      name: $count
       in: query
-      description: Search items by search phrases
+      description: Include count of items
       style: form
       explode: false
       schema:
-        type: string
-    AgreementAcceptanceId:
-      name: agreementAcceptance-id
-      in: path
-      description: The unique identifier of the agreement acceptance
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreementAcceptance
-    UserId:
-      name: user-id
-      in: path
-      description: The unique identifier of the user
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: user
-    Filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
+        type: boolean
     Skip:
       name: $skip
       in: query
@@ -347,14 +345,14 @@ components:
       schema:
         minimum: 0
         type: integer
-    Count:
-      name: $count
+    Search:
+      name: $search
       in: query
-      description: Include count of items
+      description: Search items by search phrases
       style: form
       explode: false
       schema:
-        type: boolean
+        type: string
     Top:
       name: $top
       in: query
@@ -365,29 +363,49 @@ components:
         minimum: 0
         type: integer
       example: 50
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
-    AgreementAcceptanceCollectionResponse:
-      description: Retrieved collection of agreement acceptances
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AgreementAcceptanceCollectionResponse'
-          examples:
-            AgreementAcceptanceCollectionExample:
-              $ref: '#/components/examples/AgreementAcceptanceCollectionExample'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
+    AgreementAcceptanceId:
+      name: agreementAcceptance-id
+      in: path
+      description: The unique identifier of the agreement acceptance
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreementAcceptance
+    Filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    UserId:
+      name: user-id
+      in: path
+      description: The unique identifier of the user
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: user
   examples:
+    GetUserAcceptanceResponse:
+      summary: Example response for getting a user's agreement acceptance
+      value:
+        id: 00000000-0000-0000-0000-000000000009
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000010
+        userDisplayName: Bob Johnson
+        userEmail: bob.johnson@example.com
+        userPrincipalName: bob.johnson@example.com
+        deviceDisplayName: Bob's Desktop
+        deviceId: 00000000-0000-0000-0000-000000000011
+        deviceOSType: Windows
+        deviceOSVersion: 10.0.22000
+        recordedDateTime: '2024-01-18T11:30:00Z'
+        expirationDateTime: '2024-04-18T11:30:00Z'
+        state: accepted
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
     AgreementAcceptanceCollectionExample:
       summary: Example collection of agreement acceptances
       value:
@@ -408,21 +426,3 @@ components:
           state: accepted
           '@odata.type': '#microsoft.graph.agreementAcceptance'
         '@odata.count': 1
-    GetUserAcceptanceResponse:
-      summary: Example response for getting a user's agreement acceptance
-      value:
-        id: 00000000-0000-0000-0000-000000000009
-        agreementId: 00000000-0000-0000-0000-000000000001
-        agreementFileId: 00000000-0000-0000-0000-000000000002
-        userId: 00000000-0000-0000-0000-000000000010
-        userDisplayName: Bob Johnson
-        userEmail: bob.johnson@example.com
-        userPrincipalName: bob.johnson@example.com
-        deviceDisplayName: Bob's Desktop
-        deviceId: 00000000-0000-0000-0000-000000000011
-        deviceOSType: Windows
-        deviceOSVersion: 10.0.22000
-        recordedDateTime: '2024-01-18T11:30:00Z'
-        expirationDateTime: '2024-04-18T11:30:00Z'
-        state: accepted
-        '@odata.type': '#microsoft.graph.agreementAcceptance'

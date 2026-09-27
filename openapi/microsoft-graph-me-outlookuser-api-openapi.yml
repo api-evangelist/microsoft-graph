@@ -390,97 +390,74 @@ paths:
         nextLinkName: '@odata.nextLink'
         operationName: listMore
 components:
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   schemas:
-    microsoft.graph.outlookCategoryCollectionResponse:
-      title: Collection of outlookCategory
-      type: object
+    microsoft.graph.outlookCategory:
       allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: outlookCategory
+        required:
+        - '@odata.type'
+        type: object
         properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.outlookCategory'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.timeZoneStandard:
-      title: timeZoneStandard
-      enum:
-      - windows
-      - iana
-      type: string
-    microsoft.graph.localeInfo:
-      title: localeInfo
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: A name representing the user's locale in natural language, for example, 'English (United States)'.
-        locale:
-          type:
-          - string
-          - 'null'
-          description: A locale representation for the user, which includes the user's preferred language and country/region. For example, 'en-us'. The language component follows 2-letter codes as defined in ISO 639-1, and the country component follows 2-letter codes as defined in ISO 3166-1 alpha-2.
-        '@odata.type':
-          type: string
-    microsoft.graph.timeZoneInformation:
-      title: timeZoneInformation
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        alias:
-          type:
-          - string
-          - 'null'
-          description: An identifier for the time zone.
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: A display string that represents the time zone.
-        '@odata.type':
-          type: string
-    microsoft.graph.categoryColor:
-      title: categoryColor
-      enum:
-      - none
-      - preset0
-      - preset1
-      - preset2
-      - preset3
-      - preset4
-      - preset5
-      - preset6
-      - preset7
-      - preset8
-      - preset9
-      - preset10
-      - preset11
-      - preset12
-      - preset13
-      - preset14
-      - preset15
-      - preset16
-      - preset17
-      - preset18
-      - preset19
-      - preset20
-      - preset21
-      - preset22
-      - preset23
-      - preset24
-      type: string
+          color:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.categoryColor'
+            - type:
+              - object
+              - 'null'
+            description: A pre-set color constant that characterizes a category, and that is mapped to one of 25 predefined colors. For more details, see the following note.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: A unique name that identifies a category in the user's mailbox. After a category is created, the name cannot be changed. Read-only.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.outlookCategory'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -523,6 +500,95 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.outlookUser'
+    microsoft.graph.categoryColor:
+      title: categoryColor
+      enum:
+      - none
+      - preset0
+      - preset1
+      - preset2
+      - preset3
+      - preset4
+      - preset5
+      - preset6
+      - preset7
+      - preset8
+      - preset9
+      - preset10
+      - preset11
+      - preset12
+      - preset13
+      - preset14
+      - preset15
+      - preset16
+      - preset17
+      - preset18
+      - preset19
+      - preset20
+      - preset21
+      - preset22
+      - preset23
+      - preset24
+      type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.localeInfo:
+      title: localeInfo
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: A name representing the user's locale in natural language, for example, 'English (United States)'.
+        locale:
+          type:
+          - string
+          - 'null'
+          description: A locale representation for the user, which includes the user's preferred language and country/region. For example, 'en-us'. The language component follows 2-letter codes as defined in ISO 639-1, and the country component follows 2-letter codes as defined in ISO 3166-1 alpha-2.
+        '@odata.type':
+          type: string
+    microsoft.graph.timeZoneInformation:
+      title: timeZoneInformation
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        alias:
+          type:
+          - string
+          - 'null'
+          description: An identifier for the time zone.
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: A display string that represents the time zone.
+        '@odata.type':
+          type: string
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.timeZoneStandard:
+      title: timeZoneStandard
+      enum:
+      - windows
+      - iana
+      type: string
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -544,6 +610,24 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.outlookCategoryCollectionResponse:
+      title: Collection of outlookCategory
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.outlookCategory'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1613,46 +1697,6 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.outlookCategory:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: outlookCategory
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          color:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.categoryColor'
-            - type:
-              - object
-              - 'null'
-            description: A pre-set color constant that characterizes a category, and that is mapped to one of 25 predefined colors. For more details, see the following note.
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: A unique name that identifies a category in the user's mailbox. After a category is created, the name cannot be changed. Read-only.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.outlookCategory'
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -1666,50 +1710,6 @@ components:
           type:
           - string
           - 'null'
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
   responses:
     microsoft.graph.outlookCategoryCollectionResponse:
       description: Retrieved collection
@@ -1717,15 +1717,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.outlookCategoryCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
     error:
       description: error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'

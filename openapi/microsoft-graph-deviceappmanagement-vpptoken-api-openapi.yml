@@ -233,14 +233,51 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   schemas:
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -266,6 +303,118 @@ components:
           format: date-time
         '@odata.type':
           type: string
+    microsoft.graph.vppToken:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: vppToken
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          appleId:
+            type:
+            - string
+            - 'null'
+            description: The apple Id associated with the given Apple Volume Purchase Program Token.
+          automaticallyUpdateApps:
+            type: boolean
+            description: Whether or not apps for the VPP token will be automatically updated.
+          countryOrRegion:
+            type:
+            - string
+            - 'null'
+            description: Whether or not apps for the VPP token will be automatically updated.
+          expirationDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The expiration date time of the Apple Volume Purchase Program Token.
+            format: date-time
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: Last modification date time associated with the Apple Volume Purchase Program Token.
+            format: date-time
+          lastSyncDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type: string
+            description: The last time when an application sync was done with the Apple volume purchase program service using the the Apple Volume Purchase Program Token.
+            format: date-time
+          lastSyncStatus:
+            $ref: '#/components/schemas/microsoft.graph.vppTokenSyncStatus'
+          organizationName:
+            type:
+            - string
+            - 'null'
+            description: The organization associated with the Apple Volume Purchase Program Token
+          state:
+            $ref: '#/components/schemas/microsoft.graph.vppTokenState'
+          token:
+            type:
+            - string
+            - 'null'
+            description: The Apple Volume Purchase Program Token string downloaded from the Apple Volume Purchase Program.
+          vppTokenAccountType:
+            $ref: '#/components/schemas/microsoft.graph.vppTokenAccountType'
+          '@odata.type':
+            type: string
+        description: You purchase multiple licenses for iOS apps through the Apple Volume Purchase Program for Business or Education. This involves setting up an Apple VPP account from the Apple website and uploading the Apple VPP Business or Education token to Intune. You can then synchronize your volume purchase information with Intune and track your volume-purchased app use. You can upload multiple Apple VPP Business or Education tokens.
+      x-ms-discriminator-value: '#microsoft.graph.vppToken'
+    microsoft.graph.vppTokenAccountType:
+      title: vppTokenAccountType
+      enum:
+      - business
+      - education
+      type: string
+      description: Possible types of an Apple Volume Purchase Program token.
+      x-ms-enum:
+        name: vppTokenAccountType
+        modelAsString: false
+        values:
+        - value: business
+          description: Apple Volume Purchase Program token associated with an business program.
+          name: business
+        - value: education
+          description: Apple Volume Purchase Program token associated with an education program.
+          name: education
+    microsoft.graph.vppTokenSyncStatus:
+      title: vppTokenSyncStatus
+      enum:
+      - none
+      - inProgress
+      - completed
+      - failed
+      type: string
+      description: Possible sync statuses associated with an Apple Volume Purchase Program token.
+      x-ms-enum:
+        name: vppTokenSyncStatus
+        modelAsString: false
+        values:
+        - value: none
+          description: Default status.
+          name: none
+        - value: inProgress
+          description: Last Sync in progress.
+          name: inProgress
+        - value: completed
+          description: Last Sync completed successfully.
+          name: completed
+        - value: failed
+          description: Last Sync failed.
+          name: failed
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
     microsoft.graph.vppTokenCollectionResponse:
       title: Collection of vppToken
       type: object
@@ -277,35 +426,9 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.vppToken'
-    microsoft.graph.vppTokenState:
-      title: vppTokenState
-      enum:
-      - unknown
-      - valid
-      - expired
-      - invalid
-      - assignedToExternalMDM
-      type: string
-      description: Possible states associated with an Apple Volume Purchase Program token.
-      x-ms-enum:
-        name: vppTokenState
-        modelAsString: false
-        values:
-        - value: unknown
-          description: Default state.
-          name: unknown
-        - value: valid
-          description: Token is valid.
-          name: valid
-        - value: expired
-          description: Token is expired.
-          name: expired
-        - value: invalid
-          description: Token is invalid.
-          name: invalid
-        - value: assignedToExternalMDM
-          description: Token is managed by another MDM Service.
-          name: assignedToExternalMDM
+    ODataCountResponse:
+      type: integer
+      format: int32
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -327,23 +450,13 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.vppTokenAccountType:
-      title: vppTokenAccountType
-      enum:
-      - business
-      - education
-      type: string
-      description: Possible types of an Apple Volume Purchase Program token.
-      x-ms-enum:
-        name: vppTokenAccountType
-        modelAsString: false
-        values:
-        - value: business
-          description: Apple Volume Purchase Program token associated with an business program.
-          name: business
-        - value: education
-          description: Apple Volume Purchase Program token associated with an education program.
-          name: education
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1413,104 +1526,6 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.vppTokenSyncStatus:
-      title: vppTokenSyncStatus
-      enum:
-      - none
-      - inProgress
-      - completed
-      - failed
-      type: string
-      description: Possible sync statuses associated with an Apple Volume Purchase Program token.
-      x-ms-enum:
-        name: vppTokenSyncStatus
-        modelAsString: false
-        values:
-        - value: none
-          description: Default status.
-          name: none
-        - value: inProgress
-          description: Last Sync in progress.
-          name: inProgress
-        - value: completed
-          description: Last Sync completed successfully.
-          name: completed
-        - value: failed
-          description: Last Sync failed.
-          name: failed
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.vppToken:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: vppToken
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          appleId:
-            type:
-            - string
-            - 'null'
-            description: The apple Id associated with the given Apple Volume Purchase Program Token.
-          automaticallyUpdateApps:
-            type: boolean
-            description: Whether or not apps for the VPP token will be automatically updated.
-          countryOrRegion:
-            type:
-            - string
-            - 'null'
-            description: Whether or not apps for the VPP token will be automatically updated.
-          expirationDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The expiration date time of the Apple Volume Purchase Program Token.
-            format: date-time
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: Last modification date time associated with the Apple Volume Purchase Program Token.
-            format: date-time
-          lastSyncDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type: string
-            description: The last time when an application sync was done with the Apple volume purchase program service using the the Apple Volume Purchase Program Token.
-            format: date-time
-          lastSyncStatus:
-            $ref: '#/components/schemas/microsoft.graph.vppTokenSyncStatus'
-          organizationName:
-            type:
-            - string
-            - 'null'
-            description: The organization associated with the Apple Volume Purchase Program Token
-          state:
-            $ref: '#/components/schemas/microsoft.graph.vppTokenState'
-          token:
-            type:
-            - string
-            - 'null'
-            description: The Apple Volume Purchase Program Token string downloaded from the Apple Volume Purchase Program.
-          vppTokenAccountType:
-            $ref: '#/components/schemas/microsoft.graph.vppTokenAccountType'
-          '@odata.type':
-            type: string
-        description: You purchase multiple licenses for iOS apps through the Apple Volume Purchase Program for Business or Education. This involves setting up an Apple VPP account from the Apple website and uploading the Apple VPP Business or Education token to Intune. You can then synchronize your volume purchase information with Intune and track your volume-purchased app use. You can upload multiple Apple VPP Business or Education tokens.
-      x-ms-discriminator-value: '#microsoft.graph.vppToken'
-    ODataCountResponse:
-      type: integer
-      format: int32
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -1524,6 +1539,35 @@ components:
           type:
           - string
           - 'null'
+    microsoft.graph.vppTokenState:
+      title: vppTokenState
+      enum:
+      - unknown
+      - valid
+      - expired
+      - invalid
+      - assignedToExternalMDM
+      type: string
+      description: Possible states associated with an Apple Volume Purchase Program token.
+      x-ms-enum:
+        name: vppTokenState
+        modelAsString: false
+        values:
+        - value: unknown
+          description: Default state.
+          name: unknown
+        - value: valid
+          description: Token is valid.
+          name: valid
+        - value: expired
+          description: Token is expired.
+          name: expired
+        - value: invalid
+          description: Token is invalid.
+          name: invalid
+        - value: assignedToExternalMDM
+          description: Token is managed by another MDM Service.
+          name: assignedToExternalMDM
   responses:
     microsoft.graph.vppTokenCollectionResponse:
       description: Retrieved collection
@@ -1531,59 +1575,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.vppTokenCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
     error:
       description: error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'

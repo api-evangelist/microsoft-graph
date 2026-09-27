@@ -607,28 +607,97 @@ paths:
       x-ms-docs-operation-type: operation
 components:
   schemas:
-    microsoft.graph.termStore.relation:
+    microsoft.graph.dateTimeColumn:
+      title: dateTimeColumn
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayAs:
+          type:
+          - string
+          - 'null'
+          description: How the value should be presented in the UX. Must be one of default, friendly, or standard. See below for more details. If unspecified, treated as default.
+        format:
+          type:
+          - string
+          - 'null'
+          description: Indicates whether the value should be presented as a date only or a date and time. Must be one of dateOnly or dateTime
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.termStore.term:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: relation
+      - title: term
         required:
         - '@odata.type'
         type: object
         properties:
-          relationship:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.termStore.relationType'
-            - type:
-              - object
-              - 'null'
-            description: 'The type of relation. The possible values are: pin, reuse.'
-          fromTerm:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.termStore.term'
-            - type:
-              - object
-              - 'null'
-            description: The from [term] of the relation. The term from which the relationship is defined. A null value would indicate the relation is directly with the [set].
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time of term creation. Read-only.
+            format: date-time
+          descriptions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.termStore.localizedDescription'
+            description: Description about term that is dependent on the languageTag.
+          labels:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.termStore.localizedLabel'
+            description: Label metadata for a term.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Last date and time of term modification. Read-only.
+            format: date-time
+          properties:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.keyValue'
+            description: Collection of properties on the term.
+          children:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.termStore.term'
+            description: Children of current term.
+            x-ms-navigationProperty: true
+          relations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.termStore.relation'
+            description: To indicate which terms are related to the current term as either pinned or reused.
             x-ms-navigationProperty: true
           set:
             anyOf:
@@ -636,19 +705,151 @@ components:
             - type:
               - object
               - 'null'
-            description: The [set] in which the relation is relevant.
-            x-ms-navigationProperty: true
-          toTerm:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.termStore.term'
-            - type:
-              - object
-              - 'null'
-            description: The to [term] of the relation. The term to which the relationship is defined.
+            description: The [set] in which the term is created.
             x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.termStore.relation'
+      x-ms-discriminator-value: '#microsoft.graph.termStore.term'
+    microsoft.graph.termStore.localizedDescription:
+      title: localizedDescription
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description in the localized language.
+        languageTag:
+          type:
+          - string
+          - 'null'
+          description: The language tag for the label.
+        '@odata.type':
+          type: string
+    microsoft.graph.defaultColumnValue:
+      title: defaultColumnValue
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        formula:
+          type:
+          - string
+          - 'null'
+          description: The formula used to compute the default value for the column.
+        value:
+          type:
+          - string
+          - 'null'
+          description: The direct value to use as the default value for the column.
+        '@odata.type':
+          type: string
+    microsoft.graph.textColumn:
+      title: textColumn
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        allowMultipleLines:
+          type:
+          - boolean
+          - 'null'
+          description: Whether to allow multiple lines of text.
+        appendChangesToExistingText:
+          type:
+          - boolean
+          - 'null'
+          description: Whether updates to this column should replace existing text, or append to it.
+        linesForEditing:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: The size of the text box.
+          format: int32
+        maxLength:
+          maximum: 2147483647
+          minimum: -2147483648
+          type:
+          - number
+          - 'null'
+          description: The maximum number of characters for the value.
+          format: int32
+        textType:
+          type:
+          - string
+          - 'null'
+          description: The type of text being stored. Must be one of plain or richText
+        '@odata.type':
+          type: string
+    microsoft.graph.contentApprovalStatusColumn:
+      title: contentApprovalStatusColumn
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+    microsoft.graph.choiceColumn:
+      title: choiceColumn
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        allowTextEntry:
+          type:
+          - boolean
+          - 'null'
+          description: If true, allows custom values that aren't in the configured choices.
+        choices:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+          description: The list of values available for this column.
+        displayAs:
+          type:
+          - string
+          - 'null'
+          description: How the choices are to be presented in the UX. Must be one of checkBoxes, dropDownMenu, or radioButtons
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.columnDefinitionCollectionResponse:
+      title: Collection of columnDefinition
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.columnDefinition'
+    microsoft.graph.termStore.relationType:
+      title: relationType
+      enum:
+      - pin
+      - reuse
+      - unknownFutureValue
+      type: string
     microsoft.graph.termStore.localizedName:
       title: localizedName
       required:
@@ -665,46 +866,6 @@ components:
           - string
           - 'null'
           description: The name in the localized language.
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.lookupColumn:
-      title: lookupColumn
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        allowMultipleValues:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates whether multiple values can be selected from the source.
-        allowUnlimitedLength:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates whether values in the column should be able to exceed the standard limit of 255 characters.
-        columnName:
-          type:
-          - string
-          - 'null'
-          description: The name of the lookup source column.
-        listId:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the lookup source list.
-        primaryLookupColumnId:
-          type:
-          - string
-          - 'null'
-          description: If specified, this column is a secondary lookup, pulling an additional field from the list item looked up by the primary lookup. Use the list item looked up by the primary as the source for the column named here.
         '@odata.type':
           type: string
     microsoft.graph.termColumn:
@@ -739,153 +900,50 @@ components:
           x-ms-navigationProperty: true
         '@odata.type':
           type: string
-    microsoft.graph.choiceColumn:
-      title: choiceColumn
+    microsoft.graph.lookupColumn:
+      title: lookupColumn
       required:
       - '@odata.type'
       type: object
       properties:
-        allowTextEntry:
-          type:
-          - boolean
-          - 'null'
-          description: If true, allows custom values that aren't in the configured choices.
-        choices:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-          description: The list of values available for this column.
-        displayAs:
-          type:
-          - string
-          - 'null'
-          description: How the choices are to be presented in the UX. Must be one of checkBoxes, dropDownMenu, or radioButtons
-        '@odata.type':
-          type: string
-    microsoft.graph.personOrGroupColumn:
-      title: personOrGroupColumn
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        allowMultipleSelection:
+        allowMultipleValues:
           type:
           - boolean
           - 'null'
           description: Indicates whether multiple values can be selected from the source.
-        chooseFromType:
+        allowUnlimitedLength:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether values in the column should be able to exceed the standard limit of 255 characters.
+        columnName:
           type:
           - string
           - 'null'
-          description: Whether to allow selection of people only, or people and groups. Must be one of peopleAndGroups or peopleOnly.
-        displayAs:
+          description: The name of the lookup source column.
+        listId:
           type:
           - string
           - 'null'
-          description: How to display the information about the person or group chosen. See below.
+          description: The unique identifier of the lookup source list.
+        primaryLookupColumnId:
+          type:
+          - string
+          - 'null'
+          description: If specified, this column is a secondary lookup, pulling an additional field from the list item looked up by the primary lookup. Use the list item looked up by the primary as the source for the column named here.
         '@odata.type':
           type: string
-    microsoft.graph.calculatedColumn:
-      title: calculatedColumn
+    microsoft.graph.currencyColumn:
+      title: currencyColumn
       required:
       - '@odata.type'
       type: object
       properties:
-        format:
+        locale:
           type:
           - string
           - 'null'
-          description: 'For dateTime output types, the format of the value. The possible values are: dateOnly or dateTime.'
-        formula:
-          type:
-          - string
-          - 'null'
-          description: The formula used to compute the value for this column.
-        outputType:
-          type:
-          - string
-          - 'null'
-          description: 'The output type used to format values in this column. The possible values are: boolean, currency, dateTime, number, or text.'
-        '@odata.type':
-          type: string
-    microsoft.graph.termStore.localizedDescription:
-      title: localizedDescription
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        description:
-          type:
-          - string
-          - 'null'
-          description: The description in the localized language.
-        languageTag:
-          type:
-          - string
-          - 'null'
-          description: The language tag for the label.
-        '@odata.type':
-          type: string
-    microsoft.graph.thumbnailColumn:
-      title: thumbnailColumn
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-    microsoft.graph.geolocationColumn:
-      title: geolocationColumn
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-    microsoft.graph.termStore.termGroupScope:
-      title: termGroupScope
-      enum:
-      - global
-      - system
-      - siteCollection
-      - unknownFutureValue
-      type: string
-    microsoft.graph.keyValue:
-      title: keyValue
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        key:
-          type:
-          - string
-          - 'null'
-          description: Key for the key-value pair.
-        value:
-          type:
-          - string
-          - 'null'
-          description: Value for the key-value pair.
-        '@odata.type':
-          type: string
-    microsoft.graph.defaultColumnValue:
-      title: defaultColumnValue
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        formula:
-          type:
-          - string
-          - 'null'
-          description: The formula used to compute the default value for the column.
-        value:
-          type:
-          - string
-          - 'null'
-          description: The direct value to use as the default value for the column.
+          description: Specifies the locale from which to infer the currency symbol.
         '@odata.type':
           type: string
     microsoft.graph.termStore.set:
@@ -941,241 +999,32 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.termStore.set'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
+    microsoft.graph.termStore.termGroupScope:
+      title: termGroupScope
+      enum:
+      - global
+      - system
+      - siteCollection
+      - unknownFutureValue
+      type: string
+    microsoft.graph.keyValue:
+      title: keyValue
       required:
       - '@odata.type'
       type: object
       properties:
-        request-id:
+        key:
           type:
           - string
           - 'null'
-          description: Request Id as tracked internally by the service
-        client-request-id:
+          description: Key for the key-value pair.
+        value:
           type:
           - string
           - 'null'
-          description: Client request Id as sent by the client application.
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the error occured.
-          format: date-time
+          description: Value for the key-value pair.
         '@odata.type':
           type: string
-    microsoft.graph.columnDefinition:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: columnDefinition
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          boolean:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.booleanColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column stores Boolean values.
-          calculated:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.calculatedColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column's data is calculated based on other columns.
-          choice:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.choiceColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column stores data from a list of choices.
-          columnGroup:
-            type:
-            - string
-            - 'null'
-            description: For site columns, the name of the group this column belongs to. Helps organize related columns.
-          contentApprovalStatus:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.contentApprovalStatusColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column stores content approval status.
-          currency:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.currencyColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column stores currency values.
-          dateTime:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.dateTimeColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column stores DateTime values.
-          defaultValue:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.defaultColumnValue'
-            - type:
-              - object
-              - 'null'
-            description: The default value for this column.
-          description:
-            type:
-            - string
-            - 'null'
-            description: The user-facing description of the column.
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: The user-facing name of the column.
-          enforceUniqueValues:
-            type:
-            - boolean
-            - 'null'
-            description: If true, no two list items may have the same value for this column.
-          geolocation:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.geolocationColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column stores a geolocation.
-          hidden:
-            type:
-            - boolean
-            - 'null'
-            description: Specifies whether the column is displayed in the user interface.
-          hyperlinkOrPicture:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.hyperlinkOrPictureColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column stores hyperlink or picture values.
-          indexed:
-            type:
-            - boolean
-            - 'null'
-            description: Specifies whether the column values can be used for sorting and searching.
-          isDeletable:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates whether this column can be deleted.
-          isReorderable:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates whether values in the column can be reordered. Read-only.
-          isSealed:
-            type:
-            - boolean
-            - 'null'
-            description: Specifies whether the column can be changed.
-          lookup:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.lookupColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column's data is looked up from another source in the site.
-          name:
-            type:
-            - string
-            - 'null'
-            description: The API-facing name of the column as it appears in the fields on a listItem. For the user-facing name, see displayName.
-          number:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.numberColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column stores number values.
-          personOrGroup:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.personOrGroupColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column stores Person or Group values.
-          propagateChanges:
-            type:
-            - boolean
-            - 'null'
-            description: If 'true', changes to this column will be propagated to lists that implement the column.
-          readOnly:
-            type:
-            - boolean
-            - 'null'
-            description: Specifies whether the column values can be modified.
-          required:
-            type:
-            - boolean
-            - 'null'
-            description: Specifies whether the column value isn't optional.
-          sourceContentType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.contentTypeInfo'
-            - type:
-              - object
-              - 'null'
-            description: ContentType from which this column is inherited from. Present only in contentTypes columns response. Read-only.
-          term:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.termColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column stores taxonomy terms.
-          text:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.textColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column stores text values.
-          thumbnail:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.thumbnailColumn'
-            - type:
-              - object
-              - 'null'
-            description: This column stores thumbnail values.
-          type:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.columnTypes'
-            - type:
-              - object
-              - 'null'
-            description: For site columns, the type of column. Read-only.
-          validation:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.columnValidation'
-            - type:
-              - object
-              - 'null'
-            description: This column stores validation formula and message for the column.
-          sourceColumn:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.columnDefinition'
-            - type:
-              - object
-              - 'null'
-            description: The source column for the content type column.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.columnDefinition'
     ReferenceNumeric:
       enum:
       - -INF
@@ -1184,22 +1033,131 @@ components:
       type:
       - string
       - 'null'
-    microsoft.graph.displayNameLocalization:
-      title: displayNameLocalization
+    microsoft.graph.termStore.relation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: relation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          relationship:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.termStore.relationType'
+            - type:
+              - object
+              - 'null'
+            description: 'The type of relation. The possible values are: pin, reuse.'
+          fromTerm:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.termStore.term'
+            - type:
+              - object
+              - 'null'
+            description: The from [term] of the relation. The term from which the relationship is defined. A null value would indicate the relation is directly with the [set].
+            x-ms-navigationProperty: true
+          set:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.termStore.set'
+            - type:
+              - object
+              - 'null'
+            description: The [set] in which the relation is relevant.
+            x-ms-navigationProperty: true
+          toTerm:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.termStore.term'
+            - type:
+              - object
+              - 'null'
+            description: The to [term] of the relation. The term to which the relationship is defined.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.termStore.relation'
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.hyperlinkOrPictureColumn:
+      title: hyperlinkOrPictureColumn
       required:
       - '@odata.type'
       type: object
       properties:
-        displayName:
+        isPicture:
+          type:
+          - boolean
+          - 'null'
+          description: Specifies whether the display format used for URL columns is an image or a hyperlink.
+        '@odata.type':
+          type: string
+    microsoft.graph.termStore.group:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: group
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time of the group creation. Read-only.
+            format: date-time
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description that gives details on the term usage.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Name of the group.
+          parentSiteId:
+            type:
+            - string
+            - 'null'
+            description: ID of the parent site of this group.
+          scope:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.termStore.termGroupScope'
+            - type:
+              - object
+              - 'null'
+            description: 'Returns the type of the group. The possible values are: global, system, and siteCollection.'
+          sets:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.termStore.set'
+            description: All sets under the group in a term [store].
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.termStore.group'
+    microsoft.graph.columnValidation:
+      title: columnValidation
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        defaultLanguage:
           type:
           - string
           - 'null'
-          description: If present, the value of this field contains the displayName string that has been set for the language present in the languageTag field.
-        languageTag:
+          description: Default BCP 47 language tag for the description.
+        descriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.displayNameLocalization'
+          description: Localized messages that explain what is needed for this column's value to be considered valid. User will be prompted with this message if validation fails.
+        formula:
           type:
           - string
           - 'null'
-          description: Provides the language culture-code and friendly name of the language that the displayName field has been provided in.
+          description: The formula to validate column value. For examples, see Examples of common formulas in lists.
         '@odata.type':
           type: string
     microsoft.graph.termStore.localizedLabel:
@@ -1225,6 +1183,103 @@ components:
           description: The name of the label.
         '@odata.type':
           type: string
+    microsoft.graph.thumbnailColumn:
+      title: thumbnailColumn
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+    microsoft.graph.personOrGroupColumn:
+      title: personOrGroupColumn
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        allowMultipleSelection:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether multiple values can be selected from the source.
+        chooseFromType:
+          type:
+          - string
+          - 'null'
+          description: Whether to allow selection of people only, or people and groups. Must be one of peopleAndGroups or peopleOnly.
+        displayAs:
+          type:
+          - string
+          - 'null'
+          description: How to display the information about the person or group chosen. See below.
+        '@odata.type':
+          type: string
+    microsoft.graph.numberColumn:
+      title: numberColumn
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        decimalPlaces:
+          type:
+          - string
+          - 'null'
+          description: How many decimal places to display. See below for information about the possible values.
+        displayAs:
+          type:
+          - string
+          - 'null'
+          description: How the value should be presented in the UX. Must be one of number or percentage. If unspecified, treated as number.
+        maximum:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The maximum permitted value.
+        minimum:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The minimum permitted value.
+        '@odata.type':
+          type: string
+    microsoft.graph.displayNameLocalization:
+      title: displayNameLocalization
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: If present, the value of this field contains the displayName string that has been set for the language present in the languageTag field.
+        languageTag:
+          type:
+          - string
+          - 'null'
+          description: Provides the language culture-code and friendly name of the language that the displayName field has been provided in.
+        '@odata.type':
+          type: string
+    microsoft.graph.booleanColumn:
+      title: booleanColumn
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -1246,37 +1301,29 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.columnValidation:
-      title: columnValidation
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        defaultLanguage:
-          type:
-          - string
-          - 'null'
-          description: Default BCP 47 language tag for the description.
-        descriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.displayNameLocalization'
-          description: Localized messages that explain what is needed for this column's value to be considered valid. User will be prompted with this message if validation fails.
-        formula:
-          type:
-          - string
-          - 'null'
-          description: The formula to validate column value. For examples, see Examples of common formulas in lists.
-        '@odata.type':
-          type: string
-    microsoft.graph.booleanColumn:
-      title: booleanColumn
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
+    microsoft.graph.columnTypes:
+      title: columnTypes
+      enum:
+      - note
+      - text
+      - choice
+      - multichoice
+      - number
+      - currency
+      - dateTime
+      - lookup
+      - boolean
+      - user
+      - url
+      - calculated
+      - location
+      - geolocation
+      - term
+      - multiterm
+      - thumbnail
+      - approvalStatus
+      - unknownFutureValue
+      type: string
     microsoft.graph.entity:
       title: entity
       required:
@@ -2346,242 +2393,44 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.hyperlinkOrPictureColumn:
-      title: hyperlinkOrPictureColumn
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        isPicture:
-          type:
-          - boolean
-          - 'null'
-          description: Specifies whether the display format used for URL columns is an image or a hyperlink.
-        '@odata.type':
-          type: string
-    microsoft.graph.termStore.group:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: group
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: Date and time of the group creation. Read-only.
-            format: date-time
-          description:
-            type:
-            - string
-            - 'null'
-            description: Description that gives details on the term usage.
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: Name of the group.
-          parentSiteId:
-            type:
-            - string
-            - 'null'
-            description: ID of the parent site of this group.
-          scope:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.termStore.termGroupScope'
-            - type:
-              - object
-              - 'null'
-            description: 'Returns the type of the group. The possible values are: global, system, and siteCollection.'
-          sets:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.termStore.set'
-            description: All sets under the group in a term [store].
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.termStore.group'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.textColumn:
-      title: textColumn
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        allowMultipleLines:
-          type:
-          - boolean
-          - 'null'
-          description: Whether to allow multiple lines of text.
-        appendChangesToExistingText:
-          type:
-          - boolean
-          - 'null'
-          description: Whether updates to this column should replace existing text, or append to it.
-        linesForEditing:
-          maximum: 2147483647
-          minimum: -2147483648
-          type:
-          - number
-          - 'null'
-          description: The size of the text box.
-          format: int32
-        maxLength:
-          maximum: 2147483647
-          minimum: -2147483648
-          type:
-          - number
-          - 'null'
-          description: The maximum number of characters for the value.
-          format: int32
-        textType:
-          type:
-          - string
-          - 'null'
-          description: The type of text being stored. Must be one of plain or richText
-        '@odata.type':
-          type: string
-    microsoft.graph.numberColumn:
-      title: numberColumn
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        decimalPlaces:
-          type:
-          - string
-          - 'null'
-          description: How many decimal places to display. See below for information about the possible values.
-        displayAs:
-          type:
-          - string
-          - 'null'
-          description: How the value should be presented in the UX. Must be one of number or percentage. If unspecified, treated as number.
-        maximum:
-          oneOf:
-          - type:
-            - number
-            - 'null'
-            format: double
-          - type:
-            - string
-            - 'null'
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The maximum permitted value.
-        minimum:
-          oneOf:
-          - type:
-            - number
-            - 'null'
-            format: double
-          - type:
-            - string
-            - 'null'
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The minimum permitted value.
-        '@odata.type':
-          type: string
-    microsoft.graph.currencyColumn:
-      title: currencyColumn
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        locale:
-          type:
-          - string
-          - 'null'
-          description: Specifies the locale from which to infer the currency symbol.
-        '@odata.type':
-          type: string
-    microsoft.graph.contentApprovalStatusColumn:
-      title: contentApprovalStatusColumn
+    microsoft.graph.geolocationColumn:
+      title: geolocationColumn
       required:
       - '@odata.type'
       type: object
       properties:
         '@odata.type':
           type: string
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.termStore.term:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: term
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: Date and time of term creation. Read-only.
-            format: date-time
-          descriptions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.termStore.localizedDescription'
-            description: Description about term that is dependent on the languageTag.
-          labels:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.termStore.localizedLabel'
-            description: Label metadata for a term.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: Last date and time of term modification. Read-only.
-            format: date-time
-          properties:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.keyValue'
-            description: Collection of properties on the term.
-          children:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.termStore.term'
-            description: Children of current term.
-            x-ms-navigationProperty: true
-          relations:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.termStore.relation'
-            description: To indicate which terms are related to the current term as either pinned or reused.
-            x-ms-navigationProperty: true
-          set:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.termStore.set'
-            - type:
-              - object
-              - 'null'
-            description: The [set] in which the term is created.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.termStore.term'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.calculatedColumn:
+      title: calculatedColumn
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        format:
+          type:
+          - string
+          - 'null'
+          description: 'For dateTime output types, the format of the value. The possible values are: dateOnly or dateTime.'
+        formula:
+          type:
+          - string
+          - 'null'
+          description: The formula used to compute the value for this column.
+        outputType:
+          type:
+          - string
+          - 'null'
+          description: 'The output type used to format values in this column. The possible values are: boolean, currency, dateTime, number, or text.'
+        '@odata.type':
+          type: string
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -2595,13 +2444,216 @@ components:
           type:
           - string
           - 'null'
-    microsoft.graph.termStore.relationType:
-      title: relationType
-      enum:
-      - pin
-      - reuse
-      - unknownFutureValue
-      type: string
+    microsoft.graph.columnDefinition:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: columnDefinition
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          boolean:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.booleanColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column stores Boolean values.
+          calculated:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.calculatedColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column's data is calculated based on other columns.
+          choice:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.choiceColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column stores data from a list of choices.
+          columnGroup:
+            type:
+            - string
+            - 'null'
+            description: For site columns, the name of the group this column belongs to. Helps organize related columns.
+          contentApprovalStatus:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.contentApprovalStatusColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column stores content approval status.
+          currency:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.currencyColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column stores currency values.
+          dateTime:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.dateTimeColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column stores DateTime values.
+          defaultValue:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.defaultColumnValue'
+            - type:
+              - object
+              - 'null'
+            description: The default value for this column.
+          description:
+            type:
+            - string
+            - 'null'
+            description: The user-facing description of the column.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: The user-facing name of the column.
+          enforceUniqueValues:
+            type:
+            - boolean
+            - 'null'
+            description: If true, no two list items may have the same value for this column.
+          geolocation:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.geolocationColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column stores a geolocation.
+          hidden:
+            type:
+            - boolean
+            - 'null'
+            description: Specifies whether the column is displayed in the user interface.
+          hyperlinkOrPicture:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.hyperlinkOrPictureColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column stores hyperlink or picture values.
+          indexed:
+            type:
+            - boolean
+            - 'null'
+            description: Specifies whether the column values can be used for sorting and searching.
+          isDeletable:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether this column can be deleted.
+          isReorderable:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether values in the column can be reordered. Read-only.
+          isSealed:
+            type:
+            - boolean
+            - 'null'
+            description: Specifies whether the column can be changed.
+          lookup:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.lookupColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column's data is looked up from another source in the site.
+          name:
+            type:
+            - string
+            - 'null'
+            description: The API-facing name of the column as it appears in the fields on a listItem. For the user-facing name, see displayName.
+          number:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.numberColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column stores number values.
+          personOrGroup:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.personOrGroupColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column stores Person or Group values.
+          propagateChanges:
+            type:
+            - boolean
+            - 'null'
+            description: If 'true', changes to this column will be propagated to lists that implement the column.
+          readOnly:
+            type:
+            - boolean
+            - 'null'
+            description: Specifies whether the column values can be modified.
+          required:
+            type:
+            - boolean
+            - 'null'
+            description: Specifies whether the column value isn't optional.
+          sourceContentType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.contentTypeInfo'
+            - type:
+              - object
+              - 'null'
+            description: ContentType from which this column is inherited from. Present only in contentTypes columns response. Read-only.
+          term:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.termColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column stores taxonomy terms.
+          text:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.textColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column stores text values.
+          thumbnail:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.thumbnailColumn'
+            - type:
+              - object
+              - 'null'
+            description: This column stores thumbnail values.
+          type:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.columnTypes'
+            - type:
+              - object
+              - 'null'
+            description: For site columns, the type of column. Read-only.
+          validation:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.columnValidation'
+            - type:
+              - object
+              - 'null'
+            description: This column stores validation formula and message for the column.
+          sourceColumn:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.columnDefinition'
+            - type:
+              - object
+              - 'null'
+            description: The source column for the content type column.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.columnDefinition'
     microsoft.graph.contentTypeInfo:
       title: contentTypeInfo
       required:
@@ -2620,75 +2672,7 @@ components:
           description: The name of the content type.
         '@odata.type':
           type: string
-    microsoft.graph.columnTypes:
-      title: columnTypes
-      enum:
-      - note
-      - text
-      - choice
-      - multichoice
-      - number
-      - currency
-      - dateTime
-      - lookup
-      - boolean
-      - user
-      - url
-      - calculated
-      - location
-      - geolocation
-      - term
-      - multiterm
-      - thumbnail
-      - approvalStatus
-      - unknownFutureValue
-      type: string
-    microsoft.graph.columnDefinitionCollectionResponse:
-      title: Collection of columnDefinition
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.columnDefinition'
-    microsoft.graph.dateTimeColumn:
-      title: dateTimeColumn
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayAs:
-          type:
-          - string
-          - 'null'
-          description: How the value should be presented in the UX. Must be one of default, friendly, or standard. See below for more details. If unspecified, treated as default.
-        format:
-          type:
-          - string
-          - 'null'
-          description: Indicates whether the value should be presented as a date only or a date and time. Must be one of dateOnly or dateTime
-        '@odata.type':
-          type: string
   parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
     skip:
       name: $skip
       in: query
@@ -2698,6 +2682,22 @@ components:
       schema:
         minimum: 0
         type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
     count:
       name: $count
       in: query
@@ -2717,21 +2717,21 @@ components:
         type: integer
       example: 50
   responses:
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
     microsoft.graph.columnDefinitionCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.columnDefinitionCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'

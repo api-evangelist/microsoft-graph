@@ -558,68 +558,51 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   schemas:
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.printTaskTrigger:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: printTaskTrigger
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          event:
-            $ref: '#/components/schemas/microsoft.graph.printEvent'
-          definition:
-            $ref: '#/components/schemas/microsoft.graph.printTaskDefinition'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.printTaskTrigger'
-    microsoft.graph.printTaskProcessingState:
-      title: printTaskProcessingState
-      enum:
-      - pending
-      - processing
-      - completed
-      - aborted
-      - unknownFutureValue
-      type: string
-    microsoft.graph.printTaskStatus:
-      title: printTaskStatus
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        description:
-          type: string
-          description: A human-readable description of the current processing state of the printTask.
-        state:
-          $ref: '#/components/schemas/microsoft.graph.printTaskProcessingState'
-        '@odata.type':
-          type: string
-    microsoft.graph.printEvent:
-      title: printEvent
-      enum:
-      - jobStarted
-      - unknownFutureValue
-      type: string
-    microsoft.graph.printTaskDefinitionCollectionResponse:
-      title: Collection of printTaskDefinition
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.printTaskDefinition'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -645,6 +628,48 @@ components:
           format: date-time
         '@odata.type':
           type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.appIdentity:
+      title: appIdentity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        appId:
+          type:
+          - string
+          - 'null'
+          description: Refers to the unique ID representing application in Microsoft Entra ID.
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Refers to the application name displayed in the Microsoft Entra admin center.
+        servicePrincipalId:
+          type:
+          - string
+          - 'null'
+          description: Refers to the unique ID for the service principal in Microsoft Entra ID.
+        servicePrincipalName:
+          type:
+          - string
+          - 'null'
+          description: Refers to the Service Principal Name is the Application name in the tenant.
+        '@odata.type':
+          type: string
     microsoft.graph.printTaskCollectionResponse:
       title: Collection of printTask
       type: object
@@ -656,6 +681,77 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.printTask'
+    microsoft.graph.printTaskTrigger:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: printTaskTrigger
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          event:
+            $ref: '#/components/schemas/microsoft.graph.printEvent'
+          definition:
+            $ref: '#/components/schemas/microsoft.graph.printTaskDefinition'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.printTaskTrigger'
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.printTaskDefinitionCollectionResponse:
+      title: Collection of printTaskDefinition
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.printTaskDefinition'
+    microsoft.graph.printTask:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: printTask
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          parentUrl:
+            type: string
+            description: The URL for the print entity that triggered this task. For example, https://graph.microsoft.com/v1.0/print/printers/{printerId}/jobs/{jobId}. Read-only.
+          status:
+            $ref: '#/components/schemas/microsoft.graph.printTaskStatus'
+          definition:
+            $ref: '#/components/schemas/microsoft.graph.printTaskDefinition'
+          trigger:
+            $ref: '#/components/schemas/microsoft.graph.printTaskTrigger'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.printTask'
+    microsoft.graph.printTaskStatus:
+      title: printTaskStatus
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        description:
+          type: string
+          description: A human-readable description of the current processing state of the printTask.
+        state:
+          $ref: '#/components/schemas/microsoft.graph.printTaskProcessingState'
+        '@odata.type':
+          type: string
+    microsoft.graph.printTaskProcessingState:
+      title: printTaskProcessingState
+      enum:
+      - pending
+      - processing
+      - completed
+      - aborted
+      - unknownFutureValue
+      type: string
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -699,6 +795,12 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.printTaskDefinition'
+    microsoft.graph.printEvent:
+      title: printEvent
+      enum:
+      - jobStarted
+      - unknownFutureValue
+      type: string
     microsoft.graph.entity:
       title: entity
       required:
@@ -1768,43 +1870,13 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.printTask:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: printTask
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          parentUrl:
-            type: string
-            description: The URL for the print entity that triggered this task. For example, https://graph.microsoft.com/v1.0/print/printers/{printerId}/jobs/{jobId}. Read-only.
-          status:
-            $ref: '#/components/schemas/microsoft.graph.printTaskStatus'
-          definition:
-            $ref: '#/components/schemas/microsoft.graph.printTaskDefinition'
-          trigger:
-            $ref: '#/components/schemas/microsoft.graph.printTaskTrigger'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.printTask'
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    ODataCountResponse:
-      type: integer
-      format: int32
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -1818,100 +1890,28 @@ components:
           type:
           - string
           - 'null'
-    microsoft.graph.appIdentity:
-      title: appIdentity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        appId:
-          type:
-          - string
-          - 'null'
-          description: Refers to the unique ID representing application in Microsoft Entra ID.
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: Refers to the application name displayed in the Microsoft Entra admin center.
-        servicePrincipalId:
-          type:
-          - string
-          - 'null'
-          description: Refers to the unique ID for the service principal in Microsoft Entra ID.
-        servicePrincipalName:
-          type:
-          - string
-          - 'null'
-          description: Refers to the Service Principal Name is the Application name in the tenant.
-        '@odata.type':
-          type: string
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
   responses:
-    microsoft.graph.printTaskDefinitionCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.printTaskDefinitionCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
     microsoft.graph.printTaskCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.printTaskCollectionResponse'
+    microsoft.graph.printTaskDefinitionCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.printTaskDefinitionCollectionResponse'
     error:
       description: error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'

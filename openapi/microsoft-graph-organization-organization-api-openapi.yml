@@ -211,235 +211,51 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   schemas:
-    microsoft.graph.loginPageLayoutConfiguration:
-      title: loginPageLayoutConfiguration
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        isFooterShown:
-          type:
-          - boolean
-          - 'null'
-          description: Option to show the footer on the sign-in page.
-        isHeaderShown:
-          type:
-          - boolean
-          - 'null'
-          description: Option to show the header on the sign-in page.
-        layoutTemplateType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.layoutTemplateType'
-          - type:
-            - object
-            - 'null'
-          description: Represents the layout template to be displayed on the login page for a tenant. The possible values are  default - Represents the default Microsoft layout with a centered lightbox.  verticalSplit - Represents a layout with a background on the left side and a full-height lightbox to the right.  unknownFutureValue - Evolvable enumeration sentinel value. Don't use.
-        '@odata.type':
-          type: string
-    microsoft.graph.layoutTemplateType:
-      title: layoutTemplateType
-      enum:
-      - default
-      - verticalSplit
-      - unknownFutureValue
-      type: string
-    microsoft.graph.contentCustomization:
-      title: contentCustomization
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        attributeCollection:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.keyValue'
-          description: Represents the content options of External Identities to be customized throughout the authentication flow for a tenant.
-        attributeCollectionRelativeUrl:
-          type:
-          - string
-          - 'null'
-          description: A relative URL for the content options of External Identities to be customized throughout the authentication flow for a tenant.
-        registrationCampaign:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.keyValue'
-          description: Represents content options to customize during MFA proofup interruptions.
-        registrationCampaignRelativeUrl:
-          type:
-          - string
-          - 'null'
-          description: The relative URL of the content options to customize during MFA proofup interruptions.
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.directoryObject:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: directoryObject
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          deletedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: Date and time when this object was deleted. Always null when the object hasn't been deleted.
-            format: date-time
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.administrativeUnit': '#/components/schemas/microsoft.graph.administrativeUnit'
-            '#microsoft.graph.application': '#/components/schemas/microsoft.graph.application'
-            '#microsoft.graph.appRoleAssignment': '#/components/schemas/microsoft.graph.appRoleAssignment'
-            '#microsoft.graph.certificateAuthorityDetail': '#/components/schemas/microsoft.graph.certificateAuthorityDetail'
-            '#microsoft.graph.certificateBasedAuthPki': '#/components/schemas/microsoft.graph.certificateBasedAuthPki'
-            '#microsoft.graph.contract': '#/components/schemas/microsoft.graph.contract'
-            '#microsoft.graph.device': '#/components/schemas/microsoft.graph.device'
-            '#microsoft.graph.directoryObjectPartnerReference': '#/components/schemas/microsoft.graph.directoryObjectPartnerReference'
-            '#microsoft.graph.directoryRole': '#/components/schemas/microsoft.graph.directoryRole'
-            '#microsoft.graph.directoryRoleTemplate': '#/components/schemas/microsoft.graph.directoryRoleTemplate'
-            '#microsoft.graph.endpoint': '#/components/schemas/microsoft.graph.endpoint'
-            '#microsoft.graph.extensionProperty': '#/components/schemas/microsoft.graph.extensionProperty'
-            '#microsoft.graph.group': '#/components/schemas/microsoft.graph.group'
-            '#microsoft.graph.groupSettingTemplate': '#/components/schemas/microsoft.graph.groupSettingTemplate'
-            '#microsoft.graph.multiTenantOrganizationMember': '#/components/schemas/microsoft.graph.multiTenantOrganizationMember'
-            '#microsoft.graph.organization': '#/components/schemas/microsoft.graph.organization'
-            '#microsoft.graph.orgContact': '#/components/schemas/microsoft.graph.orgContact'
-            '#microsoft.graph.policyBase': '#/components/schemas/microsoft.graph.policyBase'
-            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
-            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
-            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
-            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
-            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
-            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
-            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
-            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
-            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
-            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
-            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
-            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
-            '#microsoft.graph.resourceSpecificPermissionGrant': '#/components/schemas/microsoft.graph.resourceSpecificPermissionGrant'
-            '#microsoft.graph.servicePrincipal': '#/components/schemas/microsoft.graph.servicePrincipal'
-            '#microsoft.graph.user': '#/components/schemas/microsoft.graph.user'
-    microsoft.graph.organizationalBranding:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.organizationalBrandingProperties'
-      - title: organizationalBranding
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          localizations:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.organizationalBrandingLocalization'
-            description: Add different branding based on a locale.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.organizationalBranding'
-      x-ms-discriminator-value: '#microsoft.graph.organizationalBranding'
-    microsoft.graph.loginPageTextVisibilitySettings:
-      title: loginPageTextVisibilitySettings
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        hideAccountResetCredentials:
-          type:
-          - boolean
-          - 'null'
-          description: Option to hide the self-service password reset (SSPR) hyperlinks such as 'Can't access your account?', 'Forgot my password' and 'Reset it now' on the sign-in form.
-        hideCannotAccessYourAccount:
-          type:
-          - boolean
-          - 'null'
-          description: Option to hide the self-service password reset (SSPR) 'Can't access your account?' hyperlink on the sign-in form.
-        hideForgotMyPassword:
-          type:
-          - boolean
-          - 'null'
-          description: Option to hide the self-service password reset (SSPR) 'Forgot my password' hyperlink on the sign-in form.
-        hidePrivacyAndCookies:
-          type:
-          - boolean
-          - 'null'
-          description: Option to hide the 'Privacy & Cookies' hyperlink in the footer.
-        hideResetItNow:
-          type:
-          - boolean
-          - 'null'
-          description: Option to hide the self-service password reset (SSPR) 'reset it now' hyperlink on the sign-in form.
-        hideTermsOfUse:
-          type:
-          - boolean
-          - 'null'
-          description: Option to hide the 'Terms of Use' hyperlink in the footer.
-        '@odata.type':
-          type: string
-    microsoft.graph.organizationCollectionResponse:
-      title: Collection of organization
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.organization'
-    microsoft.graph.keyValue:
-      title: keyValue
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        key:
-          type:
-          - string
-          - 'null'
-          description: Key for the key-value pair.
-        value:
-          type:
-          - string
-          - 'null'
-          description: Value for the key-value pair.
-        '@odata.type':
-          type: string
-    microsoft.graph.organizationalBrandingLocalization:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.organizationalBrandingProperties'
-      - title: organizationalBrandingLocalization
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.organizationalBrandingLocalization'
-      x-ms-discriminator-value: '#microsoft.graph.organizationalBrandingLocalization'
-    microsoft.graph.partnerTenantType:
-      title: partnerTenantType
-      enum:
-      - microsoftSupport
-      - syndicatePartner
-      - breadthPartner
-      - breadthPartnerDelegatedAdmin
-      - resellerPartnerDelegatedAdmin
-      - valueAddedResellerPartnerDelegatedAdmin
-      - unknownFutureValue
-      type: string
     microsoft.graph.organizationalBrandingProperties:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -668,6 +484,70 @@ components:
           format: date-time
         '@odata.type':
           type: string
+    microsoft.graph.partnerTenantType:
+      title: partnerTenantType
+      enum:
+      - microsoftSupport
+      - syndicatePartner
+      - breadthPartner
+      - breadthPartnerDelegatedAdmin
+      - resellerPartnerDelegatedAdmin
+      - valueAddedResellerPartnerDelegatedAdmin
+      - unknownFutureValue
+      type: string
+    microsoft.graph.directoryObject:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: directoryObject
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          deletedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when this object was deleted. Always null when the object hasn't been deleted.
+            format: date-time
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.administrativeUnit': '#/components/schemas/microsoft.graph.administrativeUnit'
+            '#microsoft.graph.application': '#/components/schemas/microsoft.graph.application'
+            '#microsoft.graph.appRoleAssignment': '#/components/schemas/microsoft.graph.appRoleAssignment'
+            '#microsoft.graph.certificateAuthorityDetail': '#/components/schemas/microsoft.graph.certificateAuthorityDetail'
+            '#microsoft.graph.certificateBasedAuthPki': '#/components/schemas/microsoft.graph.certificateBasedAuthPki'
+            '#microsoft.graph.contract': '#/components/schemas/microsoft.graph.contract'
+            '#microsoft.graph.device': '#/components/schemas/microsoft.graph.device'
+            '#microsoft.graph.directoryObjectPartnerReference': '#/components/schemas/microsoft.graph.directoryObjectPartnerReference'
+            '#microsoft.graph.directoryRole': '#/components/schemas/microsoft.graph.directoryRole'
+            '#microsoft.graph.directoryRoleTemplate': '#/components/schemas/microsoft.graph.directoryRoleTemplate'
+            '#microsoft.graph.endpoint': '#/components/schemas/microsoft.graph.endpoint'
+            '#microsoft.graph.extensionProperty': '#/components/schemas/microsoft.graph.extensionProperty'
+            '#microsoft.graph.group': '#/components/schemas/microsoft.graph.group'
+            '#microsoft.graph.groupSettingTemplate': '#/components/schemas/microsoft.graph.groupSettingTemplate'
+            '#microsoft.graph.multiTenantOrganizationMember': '#/components/schemas/microsoft.graph.multiTenantOrganizationMember'
+            '#microsoft.graph.organization': '#/components/schemas/microsoft.graph.organization'
+            '#microsoft.graph.orgContact': '#/components/schemas/microsoft.graph.orgContact'
+            '#microsoft.graph.policyBase': '#/components/schemas/microsoft.graph.policyBase'
+            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
+            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
+            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
+            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
+            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
+            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
+            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
+            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
+            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
+            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
+            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
+            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
+            '#microsoft.graph.resourceSpecificPermissionGrant': '#/components/schemas/microsoft.graph.resourceSpecificPermissionGrant'
+            '#microsoft.graph.servicePrincipal': '#/components/schemas/microsoft.graph.servicePrincipal'
+            '#microsoft.graph.user': '#/components/schemas/microsoft.graph.user'
     microsoft.graph.assignedPlan:
       title: assignedPlan
       required:
@@ -700,6 +580,20 @@ components:
           format: uuid
         '@odata.type':
           type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
     microsoft.graph.certificateAuthority:
       title: certificateAuthority
       required:
@@ -731,6 +625,235 @@ components:
           description: The subject key identifier of the certificate, calculated from the certificate value. Read-only.
         '@odata.type':
           type: string
+    microsoft.graph.mdmAuthority:
+      title: mdmAuthority
+      enum:
+      - unknown
+      - intune
+      - sccm
+      - office365
+      type: string
+      description: Mobile device management authority.
+      x-ms-enum:
+        name: mdmAuthority
+        modelAsString: false
+        values:
+        - value: unknown
+          description: Unknown
+          name: unknown
+        - value: intune
+          description: Intune
+          name: intune
+        - value: sccm
+          description: SCCM
+          name: sccm
+        - value: office365
+          description: Office365
+          name: office365
+    microsoft.graph.loginPageTextVisibilitySettings:
+      title: loginPageTextVisibilitySettings
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        hideAccountResetCredentials:
+          type:
+          - boolean
+          - 'null'
+          description: Option to hide the self-service password reset (SSPR) hyperlinks such as 'Can't access your account?', 'Forgot my password' and 'Reset it now' on the sign-in form.
+        hideCannotAccessYourAccount:
+          type:
+          - boolean
+          - 'null'
+          description: Option to hide the self-service password reset (SSPR) 'Can't access your account?' hyperlink on the sign-in form.
+        hideForgotMyPassword:
+          type:
+          - boolean
+          - 'null'
+          description: Option to hide the self-service password reset (SSPR) 'Forgot my password' hyperlink on the sign-in form.
+        hidePrivacyAndCookies:
+          type:
+          - boolean
+          - 'null'
+          description: Option to hide the 'Privacy & Cookies' hyperlink in the footer.
+        hideResetItNow:
+          type:
+          - boolean
+          - 'null'
+          description: Option to hide the self-service password reset (SSPR) 'reset it now' hyperlink on the sign-in form.
+        hideTermsOfUse:
+          type:
+          - boolean
+          - 'null'
+          description: Option to hide the 'Terms of Use' hyperlink in the footer.
+        '@odata.type':
+          type: string
+    microsoft.graph.layoutTemplateType:
+      title: layoutTemplateType
+      enum:
+      - default
+      - verticalSplit
+      - unknownFutureValue
+      type: string
+    microsoft.graph.verifiedDomain:
+      title: verifiedDomain
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        capabilities:
+          type:
+          - string
+          - 'null'
+          description: For example, Email, OfficeCommunicationsOnline.
+        isDefault:
+          type:
+          - boolean
+          - 'null'
+          description: true if this is the default domain associated with the tenant; otherwise, false.
+        isInitial:
+          type:
+          - boolean
+          - 'null'
+          description: true if this is the initial domain associated with the tenant; otherwise, false.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The domain name; for example, contoso.com.
+        type:
+          type:
+          - string
+          - 'null'
+          description: For example, Managed.
+        '@odata.type':
+          type: string
+    microsoft.graph.loginPageLayoutConfiguration:
+      title: loginPageLayoutConfiguration
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        isFooterShown:
+          type:
+          - boolean
+          - 'null'
+          description: Option to show the footer on the sign-in page.
+        isHeaderShown:
+          type:
+          - boolean
+          - 'null'
+          description: Option to show the header on the sign-in page.
+        layoutTemplateType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.layoutTemplateType'
+          - type:
+            - object
+            - 'null'
+          description: Represents the layout template to be displayed on the login page for a tenant. The possible values are  default - Represents the default Microsoft layout with a centered lightbox.  verticalSplit - Represents a layout with a background on the left side and a full-height lightbox to the right.  unknownFutureValue - Evolvable enumeration sentinel value. Don't use.
+        '@odata.type':
+          type: string
+    microsoft.graph.organizationalBranding:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.organizationalBrandingProperties'
+      - title: organizationalBranding
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          localizations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.organizationalBrandingLocalization'
+            description: Add different branding based on a locale.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.organizationalBranding'
+      x-ms-discriminator-value: '#microsoft.graph.organizationalBranding'
+    microsoft.graph.contentCustomization:
+      title: contentCustomization
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        attributeCollection:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.keyValue'
+          description: Represents the content options of External Identities to be customized throughout the authentication flow for a tenant.
+        attributeCollectionRelativeUrl:
+          type:
+          - string
+          - 'null'
+          description: A relative URL for the content options of External Identities to be customized throughout the authentication flow for a tenant.
+        registrationCampaign:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.keyValue'
+          description: Represents content options to customize during MFA proofup interruptions.
+        registrationCampaignRelativeUrl:
+          type:
+          - string
+          - 'null'
+          description: The relative URL of the content options to customize during MFA proofup interruptions.
+        '@odata.type':
+          type: string
+    microsoft.graph.keyValue:
+      title: keyValue
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        key:
+          type:
+          - string
+          - 'null'
+          description: Key for the key-value pair.
+        value:
+          type:
+          - string
+          - 'null'
+          description: Value for the key-value pair.
+        '@odata.type':
+          type: string
+    microsoft.graph.provisionedPlan:
+      title: provisionedPlan
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        capabilityStatus:
+          type:
+          - string
+          - 'null'
+          description: Condition of the capability assignment. The possible values are Enabled, Warning, Suspended, Deleted, LockedOut. See a detailed description of each value.
+        provisioningStatus:
+          type:
+          - string
+          - 'null'
+          description: The possible values are:Success - Service is fully provisioned.Disabled - Service is disabled.Error - The service plan isn't provisioned and is in an error state.PendingInput - The service isn't provisioned and is awaiting service confirmation.PendingActivation - The service is provisioned but requires explicit activation by an administrator (for example, Intune_O365 service plan)PendingProvisioning - Microsoft has added a new service to the product SKU and it isn't activated in the tenant.
+        service:
+          type:
+          - string
+          - 'null'
+          description: The name of the service; for example, 'AccessControlS2S'.
+        '@odata.type':
+          type: string
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.organizationCollectionResponse:
+      title: Collection of organization
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.organization'
     microsoft.graph.organization:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.directoryObject'
@@ -888,22 +1011,32 @@ components:
             type: string
             default: '#microsoft.graph.organization'
       x-ms-discriminator-value: '#microsoft.graph.organization'
-    microsoft.graph.certificateBasedAuthConfiguration:
+    microsoft.graph.extension:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: certificateBasedAuthConfiguration
+      - title: extension
         required:
         - '@odata.type'
         type: object
         properties:
-          certificateAuthorities:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.certificateAuthority'
-            description: Collection of certificate authorities which creates a trusted certificate chain.
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.certificateBasedAuthConfiguration'
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.openTypeExtension': '#/components/schemas/microsoft.graph.openTypeExtension'
+    microsoft.graph.organizationalBrandingLocalization:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.organizationalBrandingProperties'
+      - title: organizationalBrandingLocalization
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.organizationalBrandingLocalization'
+      x-ms-discriminator-value: '#microsoft.graph.organizationalBrandingLocalization'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -1994,85 +2127,29 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.extension:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.certificateBasedAuthConfiguration:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: extension
+      - title: certificateBasedAuthConfiguration
         required:
         - '@odata.type'
         type: object
         properties:
+          certificateAuthorities:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.certificateAuthority'
+            description: Collection of certificate authorities which creates a trusted certificate chain.
           '@odata.type':
             type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.openTypeExtension': '#/components/schemas/microsoft.graph.openTypeExtension'
-    microsoft.graph.mdmAuthority:
-      title: mdmAuthority
-      enum:
-      - unknown
-      - intune
-      - sccm
-      - office365
-      type: string
-      description: Mobile device management authority.
-      x-ms-enum:
-        name: mdmAuthority
-        modelAsString: false
-        values:
-        - value: unknown
-          description: Unknown
-          name: unknown
-        - value: intune
-          description: Intune
-          name: intune
-        - value: sccm
-          description: SCCM
-          name: sccm
-        - value: office365
-          description: Office365
-          name: office365
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.provisionedPlan:
-      title: provisionedPlan
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        capabilityStatus:
-          type:
-          - string
-          - 'null'
-          description: Condition of the capability assignment. The possible values are Enabled, Warning, Suspended, Deleted, LockedOut. See a detailed description of each value.
-        provisioningStatus:
-          type:
-          - string
-          - 'null'
-          description: The possible values are:Success - Service is fully provisioned.Disabled - Service is disabled.Error - The service plan isn't provisioned and is in an error state.PendingInput - The service isn't provisioned and is awaiting service confirmation.PendingActivation - The service is provisioned but requires explicit activation by an administrator (for example, Intune_O365 service plan)PendingProvisioning - Microsoft has added a new service to the product SKU and it isn't activated in the tenant.
-        service:
-          type:
-          - string
-          - 'null'
-          description: The name of the service; for example, 'AccessControlS2S'.
-        '@odata.type':
-          type: string
+      x-ms-discriminator-value: '#microsoft.graph.certificateBasedAuthConfiguration'
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -2086,90 +2163,7 @@ components:
           type:
           - string
           - 'null'
-    microsoft.graph.verifiedDomain:
-      title: verifiedDomain
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        capabilities:
-          type:
-          - string
-          - 'null'
-          description: For example, Email, OfficeCommunicationsOnline.
-        isDefault:
-          type:
-          - boolean
-          - 'null'
-          description: true if this is the default domain associated with the tenant; otherwise, false.
-        isInitial:
-          type:
-          - boolean
-          - 'null'
-          description: true if this is the initial domain associated with the tenant; otherwise, false.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The domain name; for example, contoso.com.
-        type:
-          type:
-          - string
-          - 'null'
-          description: For example, Managed.
-        '@odata.type':
-          type: string
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
   responses:
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
     microsoft.graph.organizationCollectionResponse:
       description: Retrieved collection
       content:
@@ -2182,3 +2176,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'

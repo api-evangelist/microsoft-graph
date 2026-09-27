@@ -540,96 +540,76 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
-  schemas:
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.teamsAppResourceSpecificPermissionType:
-      title: teamsAppResourceSpecificPermissionType
-      enum:
-      - delegated
-      - application
-      - unknownFutureValue
-      type: string
-    microsoft.graph.teamsAppDefinitionCollectionResponse:
-      title: Collection of teamsAppDefinition
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.teamsAppDefinition'
-    microsoft.graph.teamworkBot:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: teamworkBot
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.teamworkBot'
-    microsoft.graph.teamsApp:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: teamsApp
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: The name of the catalog app provided by the app developer in the Microsoft Teams zip app package.
-          distributionMethod:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.teamsAppDistributionMethod'
-            - type:
-              - object
-              - 'null'
-            description: The method of distribution for the app. Read-only.
-          externalId:
-            type:
-            - string
-            - 'null'
-            description: The ID of the catalog provided by the app developer in the Microsoft Teams zip app package.
-          appDefinitions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.teamsAppDefinition'
-            description: The details for each version of the app.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.teamsApp'
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+  responses:
     microsoft.graph.teamsAppCollectionResponse:
-      title: Collection of teamsApp
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.teamsApp'
-    microsoft.graph.teamsAppPublishingState:
-      title: teamsAppPublishingState
-      enum:
-      - submitted
-      - rejected
-      - published
-      - unknownFutureValue
-      type: string
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.teamsAppCollectionResponse'
+    microsoft.graph.teamsAppDefinitionCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.teamsAppDefinitionCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+  schemas:
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -655,6 +635,74 @@ components:
           format: date-time
         '@odata.type':
           type: string
+    microsoft.graph.teamsAppPublishingState:
+      title: teamsAppPublishingState
+      enum:
+      - submitted
+      - rejected
+      - published
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.teamworkBot:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: teamworkBot
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.teamworkBot'
+    microsoft.graph.teamsAppPermissionSet:
+      title: teamsAppPermissionSet
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        resourceSpecificPermissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.teamsAppResourceSpecificPermission'
+          description: A collection of resource-specific permissions.
+        '@odata.type':
+          type: string
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.teamsAppDistributionMethod:
+      title: teamsAppDistributionMethod
+      enum:
+      - store
+      - organization
+      - sideloaded
+      - unknownFutureValue
+      type: string
+    microsoft.graph.teamsAppCollectionResponse:
+      title: Collection of teamsApp
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.teamsApp'
     microsoft.graph.teamsAppResourceSpecificPermission:
       title: teamsAppResourceSpecificPermission
       required:
@@ -675,47 +723,6 @@ components:
           description: The name of the resource-specific permission.
         '@odata.type':
           type: string
-    microsoft.graph.identity:
-      title: identity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
-        id:
-          type:
-          - string
-          - 'null'
-          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
-          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
-          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
-          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
-          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
-          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
-          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
-          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
-          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
-          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
-          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
-          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
-          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
-          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
-          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
-          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
-          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
-          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
-          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
-          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
     microsoft.graph.identitySet:
       title: identitySet
       required:
@@ -776,6 +783,119 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.teamsApp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: teamsApp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: The name of the catalog app provided by the app developer in the Microsoft Teams zip app package.
+          distributionMethod:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.teamsAppDistributionMethod'
+            - type:
+              - object
+              - 'null'
+            description: The method of distribution for the app. Read-only.
+          externalId:
+            type:
+            - string
+            - 'null'
+            description: The ID of the catalog provided by the app developer in the Microsoft Teams zip app package.
+          appDefinitions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.teamsAppDefinition'
+            description: The details for each version of the app.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.teamsApp'
+    microsoft.graph.teamsAppAuthorization:
+      title: teamsAppAuthorization
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        clientAppId:
+          type:
+          - string
+          - 'null'
+          description: The registration ID of the Microsoft Entra app ID associated with the teamsApp.
+        requiredPermissionSet:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.teamsAppPermissionSet'
+          - type:
+            - object
+            - 'null'
+          description: Set of permissions required by the teamsApp.
+        '@odata.type':
+          type: string
+    microsoft.graph.teamsAppResourceSpecificPermissionType:
+      title: teamsAppResourceSpecificPermissionType
+      enum:
+      - delegated
+      - application
+      - unknownFutureValue
+      type: string
+    microsoft.graph.teamsAppDefinitionCollectionResponse:
+      title: Collection of teamsAppDefinition
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.teamsAppDefinition'
+    microsoft.graph.identity:
+      title: identity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
+        id:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
+          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
+          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
+          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
+          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
+          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
+          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
+          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
+          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
+          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
+          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
+          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
+          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
+          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
+          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
+          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
+          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
+          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
+          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
+          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1845,56 +1965,13 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.teamsAppPermissionSet:
-      title: teamsAppPermissionSet
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - '@odata.type'
+      - error
       type: object
       properties:
-        resourceSpecificPermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.teamsAppResourceSpecificPermission'
-          description: A collection of resource-specific permissions.
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.teamsAppAuthorization:
-      title: teamsAppAuthorization
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        clientAppId:
-          type:
-          - string
-          - 'null'
-          description: The registration ID of the Microsoft Entra app ID associated with the teamsApp.
-        requiredPermissionSet:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.teamsAppPermissionSet'
-          - type:
-            - object
-            - 'null'
-          description: Set of permissions required by the teamsApp.
-        '@odata.type':
-          type: string
-    ODataCountResponse:
-      type: integer
-      format: int32
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -1908,14 +1985,6 @@ components:
           type:
           - string
           - 'null'
-    microsoft.graph.teamsAppDistributionMethod:
-      title: teamsAppDistributionMethod
-      enum:
-      - store
-      - organization
-      - sideloaded
-      - unknownFutureValue
-      type: string
     microsoft.graph.teamsAppDefinition:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -1986,72 +2055,3 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.teamsAppDefinition'
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-  responses:
-    microsoft.graph.teamsAppCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.teamsAppCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.teamsAppDefinitionCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.teamsAppDefinitionCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

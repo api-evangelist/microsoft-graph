@@ -1459,42 +1459,57 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
-    microsoft.graph.onAttributeCollectionStartHandler:
-      title: onAttributeCollectionStartHandler
+    microsoft.graph.authenticationAttributeCollectionInputConfiguration:
+      title: authenticationAttributeCollectionInputConfiguration
       required:
       - '@odata.type'
       type: object
       properties:
+        attribute:
+          type: string
+          description: The built-in or custom attribute for which a value is being collected.
+        defaultValue:
+          type:
+          - string
+          - 'null'
+          description: The default value of the attribute displayed to the end user. The capability to set the default value isn't available through the Microsoft Entra admin center.
+        editable:
+          type:
+          - boolean
+          - 'null'
+          description: Defines whether the attribute is editable by the end user.
+        hidden:
+          type:
+          - boolean
+          - 'null'
+          description: Defines whether the attribute is displayed to the end user. The capability to hide isn't available through the Microsoft Entra admin center.
+        inputType:
+          $ref: '#/components/schemas/microsoft.graph.authenticationAttributeCollectionInputType'
+        label:
+          type: string
+          description: The label of the attribute field that's displayed to end user, unless overridden.
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.authenticationAttributeCollectionOptionConfiguration'
+          description: The option values for certain multiple-option input types.
+        required:
+          type:
+          - boolean
+          - 'null'
+          description: Defines whether the field is required.
+        validationRegEx:
+          type:
+          - string
+          - 'null'
+          description: The regex for the value of the field. For more information about the supported regexes, see validationRegEx values for inputType objects. To understand how to specify regexes, see the Regular expressions cheat sheet.
+        writeToDirectory:
+          type:
+          - boolean
+          - 'null'
+          description: Defines whether Microsoft Entra ID stores the value that it collects.
         '@odata.type':
           type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.onAttributeCollectionStartCustomExtensionHandler': '#/components/schemas/microsoft.graph.onAttributeCollectionStartCustomExtensionHandler'
-    microsoft.graph.onAuthenticationMethodLoadStartExternalUsersSelfServiceSignUp:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.onAuthenticationMethodLoadStartHandler'
-      - title: onAuthenticationMethodLoadStartExternalUsersSelfServiceSignUp
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          identityProviders:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.identityProviderBase'
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.onAuthenticationMethodLoadStartExternalUsersSelfServiceSignUp'
-      x-ms-discriminator-value: '#microsoft.graph.onAuthenticationMethodLoadStartExternalUsersSelfServiceSignUp'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     ReferenceCreate:
       type: object
       properties:
@@ -1502,8 +1517,8 @@ components:
           type: string
       additionalProperties:
         type: object
-    microsoft.graph.onUserCreateStartHandler:
-      title: onUserCreateStartHandler
+    microsoft.graph.onAttributeCollectionSubmitHandler:
+      title: onAttributeCollectionSubmitHandler
       required:
       - '@odata.type'
       type: object
@@ -1513,9 +1528,135 @@ components:
       discriminator:
         propertyName: '@odata.type'
         mapping:
-          '#microsoft.graph.onUserCreateStartExternalUsersSelfServiceSignUp': '#/components/schemas/microsoft.graph.onUserCreateStartExternalUsersSelfServiceSignUp'
-    microsoft.graph.externalUsersSelfServiceSignUpEventsFlowCollectionResponse:
-      title: Collection of externalUsersSelfServiceSignUpEventsFlow
+          '#microsoft.graph.onAttributeCollectionSubmitCustomExtensionHandler': '#/components/schemas/microsoft.graph.onAttributeCollectionSubmitCustomExtensionHandler'
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.onAttributeCollectionExternalUsersSelfServiceSignUp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.onAttributeCollectionHandler'
+      - title: onAttributeCollectionExternalUsersSelfServiceSignUp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          attributeCollectionPage:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.authenticationAttributeCollectionPage'
+            - type:
+              - object
+              - 'null'
+            description: Required. The configuration for how attributes are displayed in the sign-up experience defined by a user flow, like the externalUsersSelfServiceSignupEventsFlow, specifically on the attribute collection page.
+          attributes:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttribute'
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.onAttributeCollectionExternalUsersSelfServiceSignUp'
+      x-ms-discriminator-value: '#microsoft.graph.onAttributeCollectionExternalUsersSelfServiceSignUp'
+    microsoft.graph.authenticationAttributeCollectionInputType:
+      title: authenticationAttributeCollectionInputType
+      enum:
+      - text
+      - radioSingleSelect
+      - checkboxMultiSelect
+      - boolean
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.externalUsersSelfServiceSignUpEventsFlow:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.authenticationEventsFlow'
+      - title: externalUsersSelfServiceSignUpEventsFlow
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          onAttributeCollection:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.onAttributeCollectionHandler'
+            - type:
+              - object
+              - 'null'
+            description: The configuration for what to invoke when attributes are ready to be collected from the user.
+          onAttributeCollectionStart:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.onAttributeCollectionStartHandler'
+            - type:
+              - object
+              - 'null'
+            description: The configuration for what to invoke when attribution collection starts.
+          onAttributeCollectionSubmit:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.onAttributeCollectionSubmitHandler'
+            - type:
+              - object
+              - 'null'
+            description: The configuration for what to invoke when attributes are submitted at the end of attribution collection.
+          onAuthenticationMethodLoadStart:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.onAuthenticationMethodLoadStartHandler'
+            - type:
+              - object
+              - 'null'
+            description: Required. The configuration for what to invoke when authentication methods are ready to be presented to the user. Must have at least one identity provider linked.  Supports $filter (eq). See support for filtering on user flows for syntax information.
+          onInteractiveAuthFlowStart:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.onInteractiveAuthFlowStartHandler'
+            - type:
+              - object
+              - 'null'
+            description: Required. The configuration for what to invoke when an authentication flow is ready to be initiated.
+          onUserCreateStart:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.onUserCreateStartHandler'
+            - type:
+              - object
+              - 'null'
+            description: The configuration for what to invoke during user creation.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.externalUsersSelfServiceSignUpEventsFlow'
+      x-ms-discriminator-value: '#microsoft.graph.externalUsersSelfServiceSignUpEventsFlow'
+    microsoft.graph.authenticationEventsFlowCollectionResponse:
+      title: Collection of authenticationEventsFlow
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -1524,7 +1665,18 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.externalUsersSelfServiceSignUpEventsFlow'
+              $ref: '#/components/schemas/microsoft.graph.authenticationEventsFlow'
+    microsoft.graph.identityProviderBaseCollectionResponse:
+      title: Collection of identityProviderBase
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identityProviderBase'
     StringCollectionResponse:
       title: Collection of string
       type: object
@@ -1536,51 +1688,17 @@ components:
             type: array
             items:
               type: string
-    microsoft.graph.identityProviderBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityProviderBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: The display name of the identity provider.
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.appleManagedIdentityProvider': '#/components/schemas/microsoft.graph.appleManagedIdentityProvider'
-            '#microsoft.graph.builtInIdentityProvider': '#/components/schemas/microsoft.graph.builtInIdentityProvider'
-            '#microsoft.graph.samlOrWsFedProvider': '#/components/schemas/microsoft.graph.samlOrWsFedProvider'
-            '#microsoft.graph.internalDomainFederation': '#/components/schemas/microsoft.graph.internalDomainFederation'
-            '#microsoft.graph.samlOrWsFedExternalDomainFederation': '#/components/schemas/microsoft.graph.samlOrWsFedExternalDomainFederation'
-            '#microsoft.graph.socialIdentityProvider': '#/components/schemas/microsoft.graph.socialIdentityProvider'
-    microsoft.graph.authenticationAttributeCollectionPageViewConfiguration:
-      title: authenticationAttributeCollectionPageViewConfiguration
+    microsoft.graph.authenticationConditionsApplications:
+      title: authenticationConditionsApplications
       required:
       - '@odata.type'
       type: object
       properties:
-        description:
-          type:
-          - string
-          - 'null'
-          description: The description of the page.
-        inputs:
+        includeApplications:
           type: array
           items:
-            $ref: '#/components/schemas/microsoft.graph.authenticationAttributeCollectionInputConfiguration'
-          description: The display configuration of attributes being collected on the attribute collection page. You must specify all attributes that you want to retain, otherwise they're removed from the user flow.
-        title:
-          type:
-          - string
-          - 'null'
-          description: The title of the attribute collection page.
+            $ref: '#/components/schemas/microsoft.graph.authenticationConditionApplication'
+          x-ms-navigationProperty: true
         '@odata.type':
           type: string
     microsoft.graph.authenticationEventsFlow:
@@ -1612,8 +1730,31 @@ components:
           propertyName: '@odata.type'
           mapping:
             '#microsoft.graph.externalUsersSelfServiceSignUpEventsFlow': '#/components/schemas/microsoft.graph.externalUsersSelfServiceSignUpEventsFlow'
-    microsoft.graph.onAttributeCollectionSubmitHandler:
-      title: onAttributeCollectionSubmitHandler
+    microsoft.graph.authenticationAttributeCollectionPageViewConfiguration:
+      title: authenticationAttributeCollectionPageViewConfiguration
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description of the page.
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.authenticationAttributeCollectionInputConfiguration'
+          description: The display configuration of attributes being collected on the attribute collection page. You must specify all attributes that you want to retain, otherwise they're removed from the user flow.
+        title:
+          type:
+          - string
+          - 'null'
+          description: The title of the attribute collection page.
+        '@odata.type':
+          type: string
+    microsoft.graph.onAttributeCollectionHandler:
+      title: onAttributeCollectionHandler
       required:
       - '@odata.type'
       type: object
@@ -1623,7 +1764,21 @@ components:
       discriminator:
         propertyName: '@odata.type'
         mapping:
-          '#microsoft.graph.onAttributeCollectionSubmitCustomExtensionHandler': '#/components/schemas/microsoft.graph.onAttributeCollectionSubmitCustomExtensionHandler'
+          '#microsoft.graph.onAttributeCollectionExternalUsersSelfServiceSignUp': '#/components/schemas/microsoft.graph.onAttributeCollectionExternalUsersSelfServiceSignUp'
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.authenticationConditionApplicationCollectionResponse:
+      title: Collection of authenticationConditionApplication
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.authenticationConditionApplication'
     microsoft.graph.identityUserFlowAttribute:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -1653,31 +1808,6 @@ components:
           mapping:
             '#microsoft.graph.identityBuiltInUserFlowAttribute': '#/components/schemas/microsoft.graph.identityBuiltInUserFlowAttribute'
             '#microsoft.graph.identityCustomUserFlowAttribute': '#/components/schemas/microsoft.graph.identityCustomUserFlowAttribute'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type:
-          - string
-          - 'null'
-          description: Request Id as tracked internally by the service
-        client-request-id:
-          type:
-          - string
-          - 'null'
-          description: Client request Id as sent by the client application.
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the error occured.
-          format: date-time
-        '@odata.type':
-          type: string
     microsoft.graph.identityUserFlowAttributeCollectionResponse:
       title: Collection of identityUserFlowAttribute
       type: object
@@ -1689,19 +1819,8 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttribute'
-    microsoft.graph.identityProviderBaseCollectionResponse:
-      title: Collection of identityProviderBase
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.identityProviderBase'
-    microsoft.graph.onAttributeCollectionHandler:
-      title: onAttributeCollectionHandler
+    microsoft.graph.onAttributeCollectionStartHandler:
+      title: onAttributeCollectionStartHandler
       required:
       - '@odata.type'
       type: object
@@ -1711,7 +1830,7 @@ components:
       discriminator:
         propertyName: '@odata.type'
         mapping:
-          '#microsoft.graph.onAttributeCollectionExternalUsersSelfServiceSignUp': '#/components/schemas/microsoft.graph.onAttributeCollectionExternalUsersSelfServiceSignUp'
+          '#microsoft.graph.onAttributeCollectionStartCustomExtensionHandler': '#/components/schemas/microsoft.graph.onAttributeCollectionStartCustomExtensionHandler'
     microsoft.graph.identityUserFlowAttributeType:
       title: identityUserFlowAttributeType
       enum:
@@ -1720,6 +1839,106 @@ components:
       - required
       - unknownFutureValue
       type: string
+    microsoft.graph.authenticationAttributeCollectionOptionConfiguration:
+      title: authenticationAttributeCollectionOptionConfiguration
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        label:
+          type: string
+          description: The label of the option that will be displayed to user, unless overridden.
+        value:
+          type: string
+          description: The value of the option that will be stored.
+        '@odata.type':
+          type: string
+    microsoft.graph.authenticationConditionApplication:
+      title: authenticationConditionApplication
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        appId:
+          type: string
+          description: The identifier for an application corresponding to a condition which will trigger an authenticationEventListener.
+        '@odata.type':
+          type: string
+    microsoft.graph.onInteractiveAuthFlowStartHandler:
+      title: onInteractiveAuthFlowStartHandler
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.onInteractiveAuthFlowStartExternalUsersSelfServiceSignUp': '#/components/schemas/microsoft.graph.onInteractiveAuthFlowStartExternalUsersSelfServiceSignUp'
+    microsoft.graph.externalUsersSelfServiceSignUpEventsFlowCollectionResponse:
+      title: Collection of externalUsersSelfServiceSignUpEventsFlow
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.externalUsersSelfServiceSignUpEventsFlow'
+    microsoft.graph.authenticationConditions:
+      title: authenticationConditions
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        applications:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.authenticationConditionsApplications'
+          - type:
+            - object
+            - 'null'
+          description: Applications which trigger a custom authentication extension.
+        '@odata.type':
+          type: string
+    microsoft.graph.identityProviderBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: identityProviderBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: The display name of the identity provider.
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.appleManagedIdentityProvider': '#/components/schemas/microsoft.graph.appleManagedIdentityProvider'
+            '#microsoft.graph.builtInIdentityProvider': '#/components/schemas/microsoft.graph.builtInIdentityProvider'
+            '#microsoft.graph.samlOrWsFedProvider': '#/components/schemas/microsoft.graph.samlOrWsFedProvider'
+            '#microsoft.graph.internalDomainFederation': '#/components/schemas/microsoft.graph.internalDomainFederation'
+            '#microsoft.graph.samlOrWsFedExternalDomainFederation': '#/components/schemas/microsoft.graph.samlOrWsFedExternalDomainFederation'
+            '#microsoft.graph.socialIdentityProvider': '#/components/schemas/microsoft.graph.socialIdentityProvider'
+    microsoft.graph.authenticationAttributeCollectionPage:
+      title: authenticationAttributeCollectionPage
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        views:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.authenticationAttributeCollectionPageViewConfiguration'
+          description: A collection of displays of the attribute collection page.
+        '@odata.type':
+          type: string
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -1741,18 +1960,33 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.onAuthenticationMethodLoadStartHandler:
-      title: onAuthenticationMethodLoadStartHandler
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.onAuthenticationMethodLoadStartExternalUsersSelfServiceSignUp': '#/components/schemas/microsoft.graph.onAuthenticationMethodLoadStartExternalUsersSelfServiceSignUp'
+    microsoft.graph.identityUserFlowAttributeDataType:
+      title: identityUserFlowAttributeDataType
+      enum:
+      - string
+      - boolean
+      - int64
+      - stringCollection
+      - dateTime
+      - unknownFutureValue
+      type: string
+    microsoft.graph.onAuthenticationMethodLoadStartExternalUsersSelfServiceSignUp:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.onAuthenticationMethodLoadStartHandler'
+      - title: onAuthenticationMethodLoadStartExternalUsersSelfServiceSignUp
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          identityProviders:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identityProviderBase'
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.onAuthenticationMethodLoadStartExternalUsersSelfServiceSignUp'
+      x-ms-discriminator-value: '#microsoft.graph.onAuthenticationMethodLoadStartExternalUsersSelfServiceSignUp'
     microsoft.graph.entity:
       title: entity
       required:
@@ -2822,211 +3056,13 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.authenticationAttributeCollectionOptionConfiguration:
-      title: authenticationAttributeCollectionOptionConfiguration
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - '@odata.type'
+      - error
       type: object
       properties:
-        label:
-          type: string
-          description: The label of the option that will be displayed to user, unless overridden.
-        value:
-          type: string
-          description: The value of the option that will be stored.
-        '@odata.type':
-          type: string
-    microsoft.graph.authenticationConditionsApplications:
-      title: authenticationConditionsApplications
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        includeApplications:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.authenticationConditionApplication'
-          x-ms-navigationProperty: true
-        '@odata.type':
-          type: string
-    microsoft.graph.externalUsersSelfServiceSignUpEventsFlow:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.authenticationEventsFlow'
-      - title: externalUsersSelfServiceSignUpEventsFlow
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          onAttributeCollection:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.onAttributeCollectionHandler'
-            - type:
-              - object
-              - 'null'
-            description: The configuration for what to invoke when attributes are ready to be collected from the user.
-          onAttributeCollectionStart:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.onAttributeCollectionStartHandler'
-            - type:
-              - object
-              - 'null'
-            description: The configuration for what to invoke when attribution collection starts.
-          onAttributeCollectionSubmit:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.onAttributeCollectionSubmitHandler'
-            - type:
-              - object
-              - 'null'
-            description: The configuration for what to invoke when attributes are submitted at the end of attribution collection.
-          onAuthenticationMethodLoadStart:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.onAuthenticationMethodLoadStartHandler'
-            - type:
-              - object
-              - 'null'
-            description: Required. The configuration for what to invoke when authentication methods are ready to be presented to the user. Must have at least one identity provider linked.  Supports $filter (eq). See support for filtering on user flows for syntax information.
-          onInteractiveAuthFlowStart:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.onInteractiveAuthFlowStartHandler'
-            - type:
-              - object
-              - 'null'
-            description: Required. The configuration for what to invoke when an authentication flow is ready to be initiated.
-          onUserCreateStart:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.onUserCreateStartHandler'
-            - type:
-              - object
-              - 'null'
-            description: The configuration for what to invoke during user creation.
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.externalUsersSelfServiceSignUpEventsFlow'
-      x-ms-discriminator-value: '#microsoft.graph.externalUsersSelfServiceSignUpEventsFlow'
-    microsoft.graph.authenticationAttributeCollectionPage:
-      title: authenticationAttributeCollectionPage
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        views:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.authenticationAttributeCollectionPageViewConfiguration'
-          description: A collection of displays of the attribute collection page.
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.onInteractiveAuthFlowStartHandler:
-      title: onInteractiveAuthFlowStartHandler
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.onInteractiveAuthFlowStartExternalUsersSelfServiceSignUp': '#/components/schemas/microsoft.graph.onInteractiveAuthFlowStartExternalUsersSelfServiceSignUp'
-    microsoft.graph.authenticationEventsFlowCollectionResponse:
-      title: Collection of authenticationEventsFlow
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationEventsFlow'
-    microsoft.graph.authenticationAttributeCollectionInputConfiguration:
-      title: authenticationAttributeCollectionInputConfiguration
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        attribute:
-          type: string
-          description: The built-in or custom attribute for which a value is being collected.
-        defaultValue:
-          type:
-          - string
-          - 'null'
-          description: The default value of the attribute displayed to the end user. The capability to set the default value isn't available through the Microsoft Entra admin center.
-        editable:
-          type:
-          - boolean
-          - 'null'
-          description: Defines whether the attribute is editable by the end user.
-        hidden:
-          type:
-          - boolean
-          - 'null'
-          description: Defines whether the attribute is displayed to the end user. The capability to hide isn't available through the Microsoft Entra admin center.
-        inputType:
-          $ref: '#/components/schemas/microsoft.graph.authenticationAttributeCollectionInputType'
-        label:
-          type: string
-          description: The label of the attribute field that's displayed to end user, unless overridden.
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.authenticationAttributeCollectionOptionConfiguration'
-          description: The option values for certain multiple-option input types.
-        required:
-          type:
-          - boolean
-          - 'null'
-          description: Defines whether the field is required.
-        validationRegEx:
-          type:
-          - string
-          - 'null'
-          description: The regex for the value of the field. For more information about the supported regexes, see validationRegEx values for inputType objects. To understand how to specify regexes, see the Regular expressions cheat sheet.
-        writeToDirectory:
-          type:
-          - boolean
-          - 'null'
-          description: Defines whether Microsoft Entra ID stores the value that it collects.
-        '@odata.type':
-          type: string
-    microsoft.graph.authenticationAttributeCollectionInputType:
-      title: authenticationAttributeCollectionInputType
-      enum:
-      - text
-      - radioSingleSelect
-      - checkboxMultiSelect
-      - boolean
-      - unknownFutureValue
-      type: string
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.authenticationConditionApplication:
-      title: authenticationConditionApplication
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        appId:
-          type: string
-          description: The identifier for an application corresponding to a condition which will trigger an authenticationEventListener.
-        '@odata.type':
-          type: string
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -3040,83 +3076,31 @@ components:
           type:
           - string
           - 'null'
-    microsoft.graph.authenticationConditions:
-      title: authenticationConditions
+    microsoft.graph.onUserCreateStartHandler:
+      title: onUserCreateStartHandler
       required:
       - '@odata.type'
       type: object
       properties:
-        applications:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.authenticationConditionsApplications'
-          - type:
-            - object
-            - 'null'
-          description: Applications which trigger a custom authentication extension.
         '@odata.type':
           type: string
-    microsoft.graph.identityUserFlowAttributeDataType:
-      title: identityUserFlowAttributeDataType
-      enum:
-      - string
-      - boolean
-      - int64
-      - stringCollection
-      - dateTime
-      - unknownFutureValue
-      type: string
-    microsoft.graph.authenticationConditionApplicationCollectionResponse:
-      title: Collection of authenticationConditionApplication
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.onUserCreateStartExternalUsersSelfServiceSignUp': '#/components/schemas/microsoft.graph.onUserCreateStartExternalUsersSelfServiceSignUp'
+    microsoft.graph.onAuthenticationMethodLoadStartHandler:
+      title: onAuthenticationMethodLoadStartHandler
+      required:
+      - '@odata.type'
       type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.authenticationConditionApplication'
-    microsoft.graph.onAttributeCollectionExternalUsersSelfServiceSignUp:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.onAttributeCollectionHandler'
-      - title: onAttributeCollectionExternalUsersSelfServiceSignUp
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          attributeCollectionPage:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.authenticationAttributeCollectionPage'
-            - type:
-              - object
-              - 'null'
-            description: Required. The configuration for how attributes are displayed in the sign-up experience defined by a user flow, like the externalUsersSelfServiceSignupEventsFlow, specifically on the attribute collection page.
-          attributes:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttribute'
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.onAttributeCollectionExternalUsersSelfServiceSignUp'
-      x-ms-discriminator-value: '#microsoft.graph.onAttributeCollectionExternalUsersSelfServiceSignUp'
+      properties:
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.onAuthenticationMethodLoadStartExternalUsersSelfServiceSignUp': '#/components/schemas/microsoft.graph.onAuthenticationMethodLoadStartExternalUsersSelfServiceSignUp'
   parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
     skip:
       name: $skip
       in: query
@@ -3126,6 +3110,22 @@ components:
       schema:
         minimum: 0
         type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
     count:
       name: $count
       in: query
@@ -3145,54 +3145,54 @@ components:
         type: integer
       example: 50
   responses:
-    microsoft.graph.authenticationConditionApplicationCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.authenticationConditionApplicationCollectionResponse'
-    StringCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/StringCollectionResponse'
-    microsoft.graph.externalUsersSelfServiceSignUpEventsFlowCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.externalUsersSelfServiceSignUpEventsFlowCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
     microsoft.graph.identityUserFlowAttributeCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.authenticationEventsFlowCollectionResponse:
+    StringCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/microsoft.graph.authenticationEventsFlowCollectionResponse'
+            $ref: '#/components/schemas/StringCollectionResponse'
     microsoft.graph.identityProviderBaseCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.identityProviderBaseCollectionResponse'
+    microsoft.graph.authenticationConditionApplicationCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.authenticationConditionApplicationCollectionResponse'
+    microsoft.graph.authenticationEventsFlowCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.authenticationEventsFlowCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.externalUsersSelfServiceSignUpEventsFlowCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.externalUsersSelfServiceSignUpEventsFlowCollectionResponse'
   requestBodies:
     refPostBody:
       description: New navigation property ref value

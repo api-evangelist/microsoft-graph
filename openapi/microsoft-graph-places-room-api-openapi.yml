@@ -474,114 +474,62 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
-  responses:
-    microsoft.graph.checkInClaimCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.checkInClaimCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.roomCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.roomCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
   schemas:
-    microsoft.graph.room:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.place'
-      - title: room
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          audioDeviceName:
-            type:
-            - string
-            - 'null'
-            description: Specifies the name of the audio device in the room.
-          bookingType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.bookingType'
-            - type:
-              - object
-              - 'null'
-            description: 'Type of room. Possible values are: unknown, standard, reserved.'
-          building:
-            type:
-            - string
-            - 'null'
-            description: Specifies the building name or building number that the room is in.
-          capacity:
-            maximum: 2147483647
-            minimum: -2147483648
-            type:
-            - number
-            - 'null'
-            description: Specifies the capacity of the room.
-            format: int32
-          displayDeviceName:
-            type:
-            - string
-            - 'null'
-            description: Specifies the name of the display device in the room.
-          emailAddress:
-            type:
-            - string
-            - 'null'
-            description: Email address of the room.
-          floorLabel:
-            type:
-            - string
-            - 'null'
-            description: Specifies a descriptive label for the floor, for example, P.
-          floorNumber:
-            maximum: 2147483647
-            minimum: -2147483648
-            type:
-            - number
-            - 'null'
-            description: Specifies the floor number that the room is on.
-            format: int32
-          nickname:
-            type: string
-            description: Specifies a nickname for the room, for example, 'conf room'.
-          videoDeviceName:
-            type:
-            - string
-            - 'null'
-            description: Specifies the name of the video device in the room.
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.room'
-      x-ms-discriminator-value: '#microsoft.graph.room'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
+    microsoft.graph.checkInClaimCollectionResponse:
+      title: Collection of checkInClaim
       type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.bookingType:
-      title: bookingType
-      enum:
-      - unknown
-      - standard
-      - reserved
-      type: string
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.checkInClaim'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -607,6 +555,29 @@ components:
           format: date-time
         '@odata.type':
           type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.checkInMethod:
+      title: checkInMethod
+      enum:
+      - unspecified
+      - manual
+      - inferred
+      - verified
+      - unknownFutureValue
+      type: string
     ReferenceNumeric:
       enum:
       - -INF
@@ -615,6 +586,9 @@ components:
       type:
       - string
       - 'null'
+    ODataCountResponse:
+      type: integer
+      format: int32
     microsoft.graph.place:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -683,6 +657,148 @@ components:
             '#microsoft.graph.roomList': '#/components/schemas/microsoft.graph.roomList'
             '#microsoft.graph.section': '#/components/schemas/microsoft.graph.section'
             '#microsoft.graph.workspace': '#/components/schemas/microsoft.graph.workspace'
+    microsoft.graph.room:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.place'
+      - title: room
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          audioDeviceName:
+            type:
+            - string
+            - 'null'
+            description: Specifies the name of the audio device in the room.
+          bookingType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.bookingType'
+            - type:
+              - object
+              - 'null'
+            description: 'Type of room. Possible values are: unknown, standard, reserved.'
+          building:
+            type:
+            - string
+            - 'null'
+            description: Specifies the building name or building number that the room is in.
+          capacity:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Specifies the capacity of the room.
+            format: int32
+          displayDeviceName:
+            type:
+            - string
+            - 'null'
+            description: Specifies the name of the display device in the room.
+          emailAddress:
+            type:
+            - string
+            - 'null'
+            description: Email address of the room.
+          floorLabel:
+            type:
+            - string
+            - 'null'
+            description: Specifies a descriptive label for the floor, for example, P.
+          floorNumber:
+            maximum: 2147483647
+            minimum: -2147483648
+            type:
+            - number
+            - 'null'
+            description: Specifies the floor number that the room is on.
+            format: int32
+          nickname:
+            type: string
+            description: Specifies a nickname for the room, for example, 'conf room'.
+          videoDeviceName:
+            type:
+            - string
+            - 'null'
+            description: Specifies the name of the video device in the room.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.room'
+      x-ms-discriminator-value: '#microsoft.graph.room'
+    microsoft.graph.roomCollectionResponse:
+      title: Collection of room
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.room'
+    microsoft.graph.outlookGeoCoordinates:
+      title: outlookGeoCoordinates
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        accuracy:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The accuracy of the latitude and longitude. As an example, the accuracy can be measured in meters, such as the latitude and longitude are accurate to within 50 meters.
+        altitude:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The altitude of the location.
+        altitudeAccuracy:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The accuracy of the altitude.
+        latitude:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The latitude of the location.
+        longitude:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+          description: The longitude of the location.
+        '@odata.type':
+          type: string
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -704,17 +820,46 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.roomCollectionResponse:
-      title: Collection of room
+    microsoft.graph.physicalAddress:
+      title: physicalAddress
+      required:
+      - '@odata.type'
       type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.room'
+      properties:
+        city:
+          type:
+          - string
+          - 'null'
+          description: The city.
+        countryOrRegion:
+          type:
+          - string
+          - 'null'
+          description: The country or region. It's a free-format string value, for example, 'United States'.
+        postalCode:
+          type:
+          - string
+          - 'null'
+          description: The postal code.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The state.
+        street:
+          type:
+          - string
+          - 'null'
+          description: The street.
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1784,152 +1929,6 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.checkInMethod:
-      title: checkInMethod
-      enum:
-      - unspecified
-      - manual
-      - inferred
-      - verified
-      - unknownFutureValue
-      type: string
-    microsoft.graph.outlookGeoCoordinates:
-      title: outlookGeoCoordinates
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        accuracy:
-          oneOf:
-          - type:
-            - number
-            - 'null'
-            format: double
-          - type:
-            - string
-            - 'null'
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The accuracy of the latitude and longitude. As an example, the accuracy can be measured in meters, such as the latitude and longitude are accurate to within 50 meters.
-        altitude:
-          oneOf:
-          - type:
-            - number
-            - 'null'
-            format: double
-          - type:
-            - string
-            - 'null'
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The altitude of the location.
-        altitudeAccuracy:
-          oneOf:
-          - type:
-            - number
-            - 'null'
-            format: double
-          - type:
-            - string
-            - 'null'
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The accuracy of the altitude.
-        latitude:
-          oneOf:
-          - type:
-            - number
-            - 'null'
-            format: double
-          - type:
-            - string
-            - 'null'
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The latitude of the location.
-        longitude:
-          oneOf:
-          - type:
-            - number
-            - 'null'
-            format: double
-          - type:
-            - string
-            - 'null'
-          - $ref: '#/components/schemas/ReferenceNumeric'
-          description: The longitude of the location.
-        '@odata.type':
-          type: string
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.physicalAddress:
-      title: physicalAddress
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        city:
-          type:
-          - string
-          - 'null'
-          description: The city.
-        countryOrRegion:
-          type:
-          - string
-          - 'null'
-          description: The country or region. It's a free-format string value, for example, 'United States'.
-        postalCode:
-          type:
-          - string
-          - 'null'
-          description: The postal code.
-        state:
-          type:
-          - string
-          - 'null'
-          description: The state.
-        street:
-          type:
-          - string
-          - 'null'
-          description: The street.
-        '@odata.type':
-          type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type:
-          - integer
-          - 'null'
-          format: int64
-        '@odata.nextLink':
-          type:
-          - string
-          - 'null'
-    microsoft.graph.checkInClaimCollectionResponse:
-      title: Collection of checkInClaim
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.checkInClaim'
     microsoft.graph.checkInClaim:
       title: checkInClaim
       required:
@@ -1950,47 +1949,48 @@ components:
           format: date-time
         '@odata.type':
           type: string
-  parameters:
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.bookingType:
+      title: bookingType
+      enum:
+      - unknown
+      - standard
+      - reserved
+      type: string
+  responses:
+    microsoft.graph.checkInClaimCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.checkInClaimCollectionResponse'
+    microsoft.graph.roomCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.roomCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
