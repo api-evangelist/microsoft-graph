@@ -219,19 +219,22 @@ paths:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
 components:
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   schemas:
-    microsoft.graph.workingTimeSchedule:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: workingTimeSchedule
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.workingTimeSchedule'
-    microsoft.graph.ODataErrors.MainError:
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
       - message
@@ -241,17 +244,10 @@ components:
           type: string
         message:
           type: string
-          x-ms-primary-error-message: true
         target:
           type:
           - string
           - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -277,13 +273,46 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.ODataError:
+    microsoft.graph.userSolutionRoot:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: userSolutionRoot
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          workingTimeSchedule:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.workingTimeSchedule'
+            - type:
+              - object
+              - 'null'
+            description: The working time schedule entity associated with the solution.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.userSolutionRoot'
+    microsoft.graph.ODataErrors.MainError:
       required:
-      - error
+      - code
+      - message
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1353,43 +1382,14 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.userSolutionRoot:
+    microsoft.graph.workingTimeSchedule:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: userSolutionRoot
+      - title: workingTimeSchedule
         required:
         - '@odata.type'
         type: object
         properties:
-          workingTimeSchedule:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.workingTimeSchedule'
-            - type:
-              - object
-              - 'null'
-            description: The working time schedule entity associated with the solution.
-            x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.userSolutionRoot'
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+      x-ms-discriminator-value: '#microsoft.graph.workingTimeSchedule'

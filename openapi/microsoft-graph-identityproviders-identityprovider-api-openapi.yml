@@ -255,8 +255,89 @@ paths:
         version: 2021-05/identityProvider
         description: The identityProvider API is deprecated and will stop returning data on March 2023. Please use the new identityProviderBase API.
 components:
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.identityProviderCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.identityProviderCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
   schemas:
-    microsoft.graph.ODataErrors.MainError:
+    microsoft.graph.identityProviderCollectionResponse:
+      title: Collection of identityProvider
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identityProvider'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
       - message
@@ -266,17 +347,10 @@ components:
           type: string
         message:
           type: string
-          x-ms-primary-error-message: true
         target:
           type:
           - string
           - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -302,44 +376,43 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.identityProvider:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityProvider
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          clientId:
-            type:
-            - string
-            - 'null'
-            description: The client ID for the application. This is the client ID obtained when registering the application with the identity provider. Required. Not nullable.
-          clientSecret:
-            type:
-            - string
-            - 'null'
-            description: The client secret for the application. This is the client secret obtained when registering the application with the identity provider. This is write-only. A read operation will return .  Required. Not nullable.
-          name:
-            type:
-            - string
-            - 'null'
-            description: The display name of the identity provider. Not nullable.
-          type:
-            type:
-            - string
-            - 'null'
-            description: 'The identity provider type is a required field. For B2B scenario: Google, Facebook. For B2C scenario: Microsoft, Google, Amazon, LinkedIn, Facebook, GitHub, Twitter, Weibo, QQ, WeChat, OpenIDConnect. Not nullable.'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.identityProvider'
-    microsoft.graph.ODataErrors.ODataError:
+    microsoft.graph.ODataErrors.MainError:
       required:
-      - error
+      - code
+      - message
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    ODataCountResponse:
+      type: integer
+      format: int32
     microsoft.graph.entity:
       title: entity
       required:
@@ -1409,107 +1482,34 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type:
-          - integer
-          - 'null'
-          format: int64
-        '@odata.nextLink':
-          type:
-          - string
-          - 'null'
-    microsoft.graph.identityProviderCollectionResponse:
-      title: Collection of identityProvider
-      type: object
+    microsoft.graph.identityProvider:
       allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: identityProvider
+        required:
+        - '@odata.type'
+        type: object
         properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.identityProvider'
-    ODataCountResponse:
-      type: integer
-      format: int32
-  parameters:
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-  responses:
-    microsoft.graph.identityProviderCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.identityProviderCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
+          clientId:
+            type:
+            - string
+            - 'null'
+            description: The client ID for the application. This is the client ID obtained when registering the application with the identity provider. Required. Not nullable.
+          clientSecret:
+            type:
+            - string
+            - 'null'
+            description: The client secret for the application. This is the client secret obtained when registering the application with the identity provider. This is write-only. A read operation will return .  Required. Not nullable.
+          name:
+            type:
+            - string
+            - 'null'
+            description: The display name of the identity provider. Not nullable.
+          type:
+            type:
+            - string
+            - 'null'
+            description: 'The identity provider type is a required field. For B2B scenario: Google, Facebook. For B2C scenario: Microsoft, Google, Amazon, LinkedIn, Facebook, GitHub, Twitter, Weibo, QQ, WeChat, OpenIDConnect. Not nullable.'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.identityProvider'

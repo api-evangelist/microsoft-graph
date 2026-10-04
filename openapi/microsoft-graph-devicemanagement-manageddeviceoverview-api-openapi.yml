@@ -54,8 +54,66 @@ paths:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
 components:
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   schemas:
-    microsoft.graph.ODataErrors.MainError:
+    microsoft.graph.managedDeviceOverview:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: managedDeviceOverview
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          deviceExchangeAccessStateSummary:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.deviceExchangeAccessStateSummary'
+            - type:
+              - object
+              - 'null'
+            description: Distribution of Exchange Access State in Intune
+          deviceOperatingSystemSummary:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.deviceOperatingSystemSummary'
+            - type:
+              - object
+              - 'null'
+            description: Device operating system summary.
+          dualEnrolledDeviceCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The number of devices enrolled in both MDM and EAS
+            format: int32
+          enrolledDeviceCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: Total enrolled device count. Does not include PC devices managed via Intune PC Agent
+            format: int32
+          mdmEnrolledCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The number of devices enrolled in MDM
+            format: int32
+          '@odata.type':
+            type: string
+        description: Summary data for managed devices
+      x-ms-discriminator-value: '#microsoft.graph.managedDeviceOverview'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
       - message
@@ -65,17 +123,10 @@ components:
           type: string
         message:
           type: string
-          x-ms-primary-error-message: true
         target:
           type:
           - string
           - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -101,87 +152,27 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.deviceOperatingSystemSummary:
-      title: deviceOperatingSystemSummary
+    microsoft.graph.ODataErrors.MainError:
       required:
-      - '@odata.type'
+      - code
+      - message
       type: object
       properties:
-        androidCorporateWorkProfileCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: The count of Corporate work profile Android devices. Also known as Corporate Owned Personally Enabled (COPE). Valid values -1 to 2147483647
-          format: int32
-        androidCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of android device count.
-          format: int32
-        androidDedicatedCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of dedicated Android devices.
-          format: int32
-        androidDeviceAdminCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of device admin Android devices.
-          format: int32
-        androidFullyManagedCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of fully managed Android devices.
-          format: int32
-        androidWorkProfileCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of work profile Android devices.
-          format: int32
-        configMgrDeviceCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of ConfigMgr managed devices.
-          format: int32
-        iosCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of iOS device count.
-          format: int32
-        macOSCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of Mac OS X device count.
-          format: int32
-        unknownCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of unknown device count.
-          format: int32
-        windowsCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of Windows device count.
-          format: int32
-        windowsMobileCount:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          description: Number of Windows mobile device count.
-          format: int32
-        '@odata.type':
+        code:
           type: string
-      description: Device operating system summary.
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1251,6 +1242,87 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.deviceOperatingSystemSummary:
+      title: deviceOperatingSystemSummary
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        androidCorporateWorkProfileCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: The count of Corporate work profile Android devices. Also known as Corporate Owned Personally Enabled (COPE). Valid values -1 to 2147483647
+          format: int32
+        androidCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Number of android device count.
+          format: int32
+        androidDedicatedCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Number of dedicated Android devices.
+          format: int32
+        androidDeviceAdminCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Number of device admin Android devices.
+          format: int32
+        androidFullyManagedCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Number of fully managed Android devices.
+          format: int32
+        androidWorkProfileCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Number of work profile Android devices.
+          format: int32
+        configMgrDeviceCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Number of ConfigMgr managed devices.
+          format: int32
+        iosCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Number of iOS device count.
+          format: int32
+        macOSCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Number of Mac OS X device count.
+          format: int32
+        unknownCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Number of unknown device count.
+          format: int32
+        windowsCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Number of Windows device count.
+          format: int32
+        windowsMobileCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          description: Number of Windows mobile device count.
+          format: int32
+        '@odata.type':
+          type: string
+      description: Device operating system summary.
     microsoft.graph.deviceExchangeAccessStateSummary:
       title: deviceExchangeAccessStateSummary
       required:
@@ -1290,75 +1362,3 @@ components:
         '@odata.type':
           type: string
       description: Device Exchange Access State summary
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.managedDeviceOverview:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: managedDeviceOverview
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          deviceExchangeAccessStateSummary:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.deviceExchangeAccessStateSummary'
-            - type:
-              - object
-              - 'null'
-            description: Distribution of Exchange Access State in Intune
-          deviceOperatingSystemSummary:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.deviceOperatingSystemSummary'
-            - type:
-              - object
-              - 'null'
-            description: Device operating system summary.
-          dualEnrolledDeviceCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The number of devices enrolled in both MDM and EAS
-            format: int32
-          enrolledDeviceCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Total enrolled device count. Does not include PC devices managed via Intune PC Agent
-            format: int32
-          mdmEnrolledCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The number of devices enrolled in MDM
-            format: int32
-          '@odata.type':
-            type: string
-        description: Summary data for managed devices
-      x-ms-discriminator-value: '#microsoft.graph.managedDeviceOverview'
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

@@ -2279,117 +2279,7 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
-  parameters:
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
   schemas:
-    ReferenceCreate:
-      type: object
-      properties:
-        '@odata.id':
-          type: string
-      additionalProperties:
-        type: object
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type:
-          - string
-          - 'null'
-          description: Request Id as tracked internally by the service
-        client-request-id:
-          type:
-          - string
-          - 'null'
-          description: Client request Id as sent by the client application.
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the error occured.
-          format: date-time
-        '@odata.type':
-          type: string
-    ReferenceUpdate:
-      type: object
-      properties:
-        '@odata.id':
-          type: string
-        '@odata.type':
-          type:
-          - string
-          - 'null'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.identityProviderCollectionResponse:
-      title: Collection of identityProvider
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.identityProvider'
     microsoft.graph.userFlowApiConnectorConfiguration:
       title: userFlowApiConnectorConfiguration
       required:
@@ -2412,28 +2302,6 @@ components:
           x-ms-navigationProperty: true
         '@odata.type':
           type: string
-    microsoft.graph.identityProviderBaseCollectionResponse:
-      title: Collection of identityProviderBase
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.identityProviderBase'
-    microsoft.graph.userFlowLanguagePageCollectionResponse:
-      title: Collection of userFlowLanguagePage
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.userFlowLanguagePage'
     microsoft.graph.apiAuthenticationConfigurationBase:
       title: apiAuthenticationConfigurationBase
       required:
@@ -2448,288 +2316,6 @@ components:
           '#microsoft.graph.basicAuthentication': '#/components/schemas/microsoft.graph.basicAuthentication'
           '#microsoft.graph.clientCertificateAuthentication': '#/components/schemas/microsoft.graph.clientCertificateAuthentication'
           '#microsoft.graph.pkcs12Certificate': '#/components/schemas/microsoft.graph.pkcs12Certificate'
-    StringCollectionResponse:
-      title: Collection of string
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              type: string
-    microsoft.graph.userAttributeValuesItem:
-      title: userAttributeValuesItem
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        isDefault:
-          type: boolean
-          description: Determines whether the value is set as the default.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The display name of the property displayed to the user in the user flow.
-        value:
-          type:
-          - string
-          - 'null'
-          description: The value that is set when this item is selected.
-        '@odata.type':
-          type: string
-    ReferenceNumeric:
-      enum:
-      - -INF
-      - INF
-      - NaN
-      type:
-      - string
-      - 'null'
-    microsoft.graph.b2xIdentityUserFlow:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.identityUserFlow'
-      - title: b2xIdentityUserFlow
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          apiConnectorConfiguration:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.userFlowApiConnectorConfiguration'
-            - type:
-              - object
-              - 'null'
-            description: Configuration for enabling an API connector for use as part of the self-service sign-up user flow. You can only obtain the value of this object using Get userFlowApiConnectorConfiguration.
-          identityProviders:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.identityProvider'
-            description: The identity providers included in the user flow.
-            x-ms-navigationProperty: true
-          languages:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.userFlowLanguageConfiguration'
-            description: The languages supported for customization within the user flow. Language customization is enabled by default in self-service sign-up user flow. You can't create custom languages in self-service sign-up user flows.
-            x-ms-navigationProperty: true
-          userAttributeAssignments:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeAssignment'
-            description: The user attribute assignments included in the user flow.
-            x-ms-navigationProperty: true
-          userFlowIdentityProviders:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.identityProviderBase'
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.b2xIdentityUserFlow'
-    microsoft.graph.b2xIdentityUserFlowCollectionResponse:
-      title: Collection of b2xIdentityUserFlow
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.b2xIdentityUserFlow'
-    microsoft.graph.assignmentOrder:
-      title: assignmentOrder
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        order:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-          description: A list of identityUserFlowAttribute object identifiers that determine the order in which attributes should be collected within a user flow.
-        '@odata.type':
-          type: string
-    microsoft.graph.identityUserFlowAttribute:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityUserFlowAttribute
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          dataType:
-            $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeDataType'
-          description:
-            type:
-            - string
-            - 'null'
-            description: The description of the user flow attribute that's shown to the user at the time of sign up.
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: The display name of the user flow attribute.  Supports $filter (eq, ne).
-          userFlowAttributeType:
-            $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeType'
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.identityBuiltInUserFlowAttribute': '#/components/schemas/microsoft.graph.identityBuiltInUserFlowAttribute'
-            '#microsoft.graph.identityCustomUserFlowAttribute': '#/components/schemas/microsoft.graph.identityCustomUserFlowAttribute'
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.userFlowLanguageConfigurationCollectionResponse:
-      title: Collection of userFlowLanguageConfiguration
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.userFlowLanguageConfiguration'
-    microsoft.graph.identityUserFlowAttributeType:
-      title: identityUserFlowAttributeType
-      enum:
-      - builtIn
-      - custom
-      - required
-      - unknownFutureValue
-      type: string
-    microsoft.graph.identityApiConnector:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityApiConnector
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          authenticationConfiguration:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.apiAuthenticationConfigurationBase'
-            - type:
-              - object
-              - 'null'
-            description: The object which describes the authentication configuration details for calling the API. Basic and PKCS 12 client certificate are supported.
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: The name of the API connector.
-          targetUrl:
-            type:
-            - string
-            - 'null'
-            description: The URL of the API endpoint to call.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.identityApiConnector'
-    microsoft.graph.identityProvider:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityProvider
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          clientId:
-            type:
-            - string
-            - 'null'
-            description: The client ID for the application. This is the client ID obtained when registering the application with the identity provider. Required. Not nullable.
-          clientSecret:
-            type:
-            - string
-            - 'null'
-            description: The client secret for the application. This is the client secret obtained when registering the application with the identity provider. This is write-only. A read operation will return .  Required. Not nullable.
-          name:
-            type:
-            - string
-            - 'null'
-            description: The display name of the identity provider. Not nullable.
-          type:
-            type:
-            - string
-            - 'null'
-            description: 'The identity provider type is a required field. For B2B scenario: Google, Facebook. For B2C scenario: Microsoft, Google, Amazon, LinkedIn, Facebook, GitHub, Twitter, Weibo, QQ, WeChat, OpenIDConnect. Not nullable.'
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.identityProvider'
-    microsoft.graph.identityProviderBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: identityProviderBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: The display name of the identity provider.
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.appleManagedIdentityProvider': '#/components/schemas/microsoft.graph.appleManagedIdentityProvider'
-            '#microsoft.graph.builtInIdentityProvider': '#/components/schemas/microsoft.graph.builtInIdentityProvider'
-            '#microsoft.graph.samlOrWsFedProvider': '#/components/schemas/microsoft.graph.samlOrWsFedProvider'
-            '#microsoft.graph.internalDomainFederation': '#/components/schemas/microsoft.graph.internalDomainFederation'
-            '#microsoft.graph.samlOrWsFedExternalDomainFederation': '#/components/schemas/microsoft.graph.samlOrWsFedExternalDomainFederation'
-            '#microsoft.graph.socialIdentityProvider': '#/components/schemas/microsoft.graph.socialIdentityProvider'
-    microsoft.graph.identityUserFlowAttributeInputType:
-      title: identityUserFlowAttributeInputType
-      enum:
-      - textBox
-      - dateTimeDropdown
-      - radioSingleSelect
-      - dropdownSingleSelect
-      - emailBox
-      - checkboxMultiSelect
-      type: string
-    microsoft.graph.userFlowLanguageConfiguration:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: userFlowLanguageConfiguration
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: The language name to display. This property is read-only.
-          isEnabled:
-            type: boolean
-            description: Indicates whether the language is enabled within the user flow.
-          defaultPages:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.userFlowLanguagePage'
-            description: Collection of pages with the default content to display in a user flow for a specified language. This collection doesn't allow any kind of modification.
-            x-ms-navigationProperty: true
-          overridesPages:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.userFlowLanguagePage'
-            description: Collection of pages with the overrides messages to display in a user flow for a specified language. This collection only allows you to modify the content of the page, any other modification isn't allowed (creation or deletion of pages).
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.userFlowLanguageConfiguration'
     microsoft.graph.userFlowType:
       title: userFlowType
       enum:
@@ -2741,8 +2327,8 @@ components:
       - resourceOwner
       - unknownFutureValue
       type: string
-    microsoft.graph.identityUserFlowAttributeAssignmentCollectionResponse:
-      title: Collection of identityUserFlowAttributeAssignment
+    microsoft.graph.b2xIdentityUserFlowCollectionResponse:
+      title: Collection of b2xIdentityUserFlow
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -2751,49 +2337,7 @@ components:
           value:
             type: array
             items:
-              $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeAssignment'
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type:
-          - string
-          - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.identityUserFlowAttributeDataType:
-      title: identityUserFlowAttributeDataType
-      enum:
-      - string
-      - boolean
-      - int64
-      - stringCollection
-      - dateTime
-      - unknownFutureValue
-      type: string
-    microsoft.graph.userFlowLanguagePage:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: userFlowLanguagePage
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.userFlowLanguagePage'
+              $ref: '#/components/schemas/microsoft.graph.b2xIdentityUserFlow'
     microsoft.graph.entity:
       title: entity
       required:
@@ -3889,13 +3433,37 @@ components:
           propertyName: '@odata.type'
           mapping:
             '#microsoft.graph.b2xIdentityUserFlow': '#/components/schemas/microsoft.graph.b2xIdentityUserFlow'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.identityProvider:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: identityProvider
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          clientId:
+            type:
+            - string
+            - 'null'
+            description: The client ID for the application. This is the client ID obtained when registering the application with the identity provider. Required. Not nullable.
+          clientSecret:
+            type:
+            - string
+            - 'null'
+            description: The client secret for the application. This is the client secret obtained when registering the application with the identity provider. This is write-only. A read operation will return .  Required. Not nullable.
+          name:
+            type:
+            - string
+            - 'null'
+            description: The display name of the identity provider. Not nullable.
+          type:
+            type:
+            - string
+            - 'null'
+            description: 'The identity provider type is a required field. For B2B scenario: Google, Facebook. For B2C scenario: Microsoft, Google, Amazon, LinkedIn, Facebook, GitHub, Twitter, Weibo, QQ, WeChat, OpenIDConnect. Not nullable.'
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.identityProvider'
     microsoft.graph.identityUserFlowAttributeAssignment:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -3933,6 +3501,394 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.identityUserFlowAttributeAssignment'
+    microsoft.graph.userFlowLanguagePageCollectionResponse:
+      title: Collection of userFlowLanguagePage
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.userFlowLanguagePage'
+    microsoft.graph.identityApiConnector:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: identityApiConnector
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          authenticationConfiguration:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.apiAuthenticationConfigurationBase'
+            - type:
+              - object
+              - 'null'
+            description: The object which describes the authentication configuration details for calling the API. Basic and PKCS 12 client certificate are supported.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: The name of the API connector.
+          targetUrl:
+            type:
+            - string
+            - 'null'
+            description: The URL of the API endpoint to call.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.identityApiConnector'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    ReferenceNumeric:
+      enum:
+      - -INF
+      - INF
+      - NaN
+      type:
+      - string
+      - 'null'
+    microsoft.graph.userFlowLanguageConfiguration:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: userFlowLanguageConfiguration
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: The language name to display. This property is read-only.
+          isEnabled:
+            type: boolean
+            description: Indicates whether the language is enabled within the user flow.
+          defaultPages:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.userFlowLanguagePage'
+            description: Collection of pages with the default content to display in a user flow for a specified language. This collection doesn't allow any kind of modification.
+            x-ms-navigationProperty: true
+          overridesPages:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.userFlowLanguagePage'
+            description: Collection of pages with the overrides messages to display in a user flow for a specified language. This collection only allows you to modify the content of the page, any other modification isn't allowed (creation or deletion of pages).
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.userFlowLanguageConfiguration'
+    ReferenceUpdate:
+      type: object
+      properties:
+        '@odata.id':
+          type: string
+        '@odata.type':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.identityUserFlowAttributeInputType:
+      title: identityUserFlowAttributeInputType
+      enum:
+      - textBox
+      - dateTimeDropdown
+      - radioSingleSelect
+      - dropdownSingleSelect
+      - emailBox
+      - checkboxMultiSelect
+      type: string
+    microsoft.graph.assignmentOrder:
+      title: assignmentOrder
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        order:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+          description: A list of identityUserFlowAttribute object identifiers that determine the order in which attributes should be collected within a user flow.
+        '@odata.type':
+          type: string
+    microsoft.graph.identityProviderCollectionResponse:
+      title: Collection of identityProvider
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identityProvider'
+    microsoft.graph.userFlowLanguagePage:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: userFlowLanguagePage
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.userFlowLanguagePage'
+    microsoft.graph.identityUserFlowAttribute:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: identityUserFlowAttribute
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          dataType:
+            $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeDataType'
+          description:
+            type:
+            - string
+            - 'null'
+            description: The description of the user flow attribute that's shown to the user at the time of sign up.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: The display name of the user flow attribute.  Supports $filter (eq, ne).
+          userFlowAttributeType:
+            $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeType'
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.identityBuiltInUserFlowAttribute': '#/components/schemas/microsoft.graph.identityBuiltInUserFlowAttribute'
+            '#microsoft.graph.identityCustomUserFlowAttribute': '#/components/schemas/microsoft.graph.identityCustomUserFlowAttribute'
+    StringCollectionResponse:
+      title: Collection of string
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              type: string
+    ReferenceCreate:
+      type: object
+      properties:
+        '@odata.id':
+          type: string
+      additionalProperties:
+        type: object
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.userFlowLanguageConfigurationCollectionResponse:
+      title: Collection of userFlowLanguageConfiguration
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.userFlowLanguageConfiguration'
+    microsoft.graph.identityProviderBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: identityProviderBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: The display name of the identity provider.
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.appleManagedIdentityProvider': '#/components/schemas/microsoft.graph.appleManagedIdentityProvider'
+            '#microsoft.graph.builtInIdentityProvider': '#/components/schemas/microsoft.graph.builtInIdentityProvider'
+            '#microsoft.graph.samlOrWsFedProvider': '#/components/schemas/microsoft.graph.samlOrWsFedProvider'
+            '#microsoft.graph.internalDomainFederation': '#/components/schemas/microsoft.graph.internalDomainFederation'
+            '#microsoft.graph.samlOrWsFedExternalDomainFederation': '#/components/schemas/microsoft.graph.samlOrWsFedExternalDomainFederation'
+            '#microsoft.graph.socialIdentityProvider': '#/components/schemas/microsoft.graph.socialIdentityProvider'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.identityProviderBaseCollectionResponse:
+      title: Collection of identityProviderBase
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identityProviderBase'
+    microsoft.graph.identityUserFlowAttributeType:
+      title: identityUserFlowAttributeType
+      enum:
+      - builtIn
+      - custom
+      - required
+      - unknownFutureValue
+      type: string
+    microsoft.graph.identityUserFlowAttributeDataType:
+      title: identityUserFlowAttributeDataType
+      enum:
+      - string
+      - boolean
+      - int64
+      - stringCollection
+      - dateTime
+      - unknownFutureValue
+      type: string
+    microsoft.graph.b2xIdentityUserFlow:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.identityUserFlow'
+      - title: b2xIdentityUserFlow
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          apiConnectorConfiguration:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.userFlowApiConnectorConfiguration'
+            - type:
+              - object
+              - 'null'
+            description: Configuration for enabling an API connector for use as part of the self-service sign-up user flow. You can only obtain the value of this object using Get userFlowApiConnectorConfiguration.
+          identityProviders:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identityProvider'
+            description: The identity providers included in the user flow.
+            x-ms-navigationProperty: true
+          languages:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.userFlowLanguageConfiguration'
+            description: The languages supported for customization within the user flow. Language customization is enabled by default in self-service sign-up user flow. You can't create custom languages in self-service sign-up user flows.
+            x-ms-navigationProperty: true
+          userAttributeAssignments:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeAssignment'
+            description: The user attribute assignments included in the user flow.
+            x-ms-navigationProperty: true
+          userFlowIdentityProviders:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identityProviderBase'
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.b2xIdentityUserFlow'
+    microsoft.graph.userAttributeValuesItem:
+      title: userAttributeValuesItem
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        isDefault:
+          type: boolean
+          description: Determines whether the value is set as the default.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The display name of the property displayed to the user in the user flow.
+        value:
+          type:
+          - string
+          - 'null'
+          description: The value that is set when this item is selected.
+        '@odata.type':
+          type: string
+    microsoft.graph.identityUserFlowAttributeAssignmentCollectionResponse:
+      title: Collection of identityUserFlowAttributeAssignment
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeAssignment'
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -3946,73 +3902,117 @@ components:
           type:
           - string
           - 'null'
+  parameters:
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
   responses:
-    StringCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/StringCollectionResponse'
-    microsoft.graph.identityProviderBaseCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.identityProviderBaseCollectionResponse'
-    microsoft.graph.identityUserFlowAttributeAssignmentCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeAssignmentCollectionResponse'
-    microsoft.graph.identityProviderCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.identityProviderCollectionResponse'
     error:
       description: error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.userFlowLanguagePageCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.userFlowLanguagePageCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
     microsoft.graph.b2xIdentityUserFlowCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.b2xIdentityUserFlowCollectionResponse'
+    microsoft.graph.identityUserFlowAttributeAssignmentCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.identityUserFlowAttributeAssignmentCollectionResponse'
+    microsoft.graph.identityProviderBaseCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.identityProviderBaseCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.userFlowLanguagePageCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.userFlowLanguagePageCollectionResponse'
+    microsoft.graph.identityProviderCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.identityProviderCollectionResponse'
     microsoft.graph.userFlowLanguageConfigurationCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.userFlowLanguageConfigurationCollectionResponse'
-  requestBodies:
-    refPutBody:
-      description: New navigation property ref values
+    StringCollectionResponse:
+      description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ReferenceUpdate'
-      required: true
+            $ref: '#/components/schemas/StringCollectionResponse'
+  requestBodies:
     refPostBody:
       description: New navigation property ref value
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ReferenceCreate'
+      required: true
+    refPutBody:
+      description: New navigation property ref values
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReferenceUpdate'
       required: true

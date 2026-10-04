@@ -226,125 +226,75 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: default
 components:
-  examples:
-    UpdateAgreementFileVersionResponse:
-      summary: Example response for updated agreement file version
-      value:
-        id: 00000000-0000-0000-0000-000000000007
-        displayName: Updated Terms of Use - Spanish v2
-        fileName: terms-of-use-es-v2.pdf
-        language: es-ES
-        isMajorVersion: true
-        createdDateTime: '2024-02-01T10:30:00Z'
-        '@odata.type': '#microsoft.graph.agreementFileVersion'
-    UpdateAgreementFileVersionRequest:
-      summary: Example request to update an agreement file version
-      value:
-        displayName: Updated Terms of Use - Spanish v2
-        '@odata.type': '#microsoft.graph.agreementFileVersion'
-    CreateAgreementFileVersionRequest:
-      summary: Example request to create an agreement file version
-      value:
-        displayName: Terms of Use - Spanish v2
-        fileName: terms-of-use-es-v2.pdf
-        language: es-ES
-        isMajorVersion: true
-        '@odata.type': '#microsoft.graph.agreementFileVersion'
-    CreateAgreementFileVersionResponse:
-      summary: Example response for created agreement file version
-      value:
-        id: 00000000-0000-0000-0000-000000000007
-        displayName: Terms of Use - Spanish v2
-        fileName: terms-of-use-es-v2.pdf
-        language: es-ES
-        isMajorVersion: true
-        createdDateTime: '2024-02-01T10:30:00Z'
-        '@odata.type': '#microsoft.graph.agreementFileVersion'
-    GetAgreementFileVersionResponse:
-      summary: Example response for getting an agreement file version
-      value:
-        id: 00000000-0000-0000-0000-000000000007
-        displayName: Terms of Use - Spanish v2
-        fileName: terms-of-use-es-v2.pdf
-        language: es-ES
-        isMajorVersion: true
-        createdDateTime: '2024-02-01T10:30:00Z'
-        '@odata.type': '#microsoft.graph.agreementFileVersion'
+  parameters:
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    Count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    AgreementFileVersionId:
+      name: agreementFileVersion-id
+      in: path
+      description: The unique identifier of the agreement file version
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreementFileVersion
+    AgreementFileLocalizationId:
+      name: agreementFileLocalization-id
+      in: path
+      description: The unique identifier of the agreement file localization
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreementFileLocalization
+    Top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    AgreementId:
+      name: agreement-id
+      in: path
+      description: The unique identifier of the agreement
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreement
+    Filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    Skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
   schemas:
-    ODataError:
-      title: ODataError
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
-    AgreementFileVersionCollectionResponse:
-      title: AgreementFileVersionCollectionResponse
-      type: object
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementFileVersion'
-        '@odata.nextLink':
-          type: string
-          nullable: true
-        '@odata.count':
-          type: integer
-          format: int32
-    MainError:
-      title: MainError
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        innerError:
-          $ref: '#/components/schemas/InnerError'
-    AgreementFileVersion:
-      allOf:
-      - $ref: '#/components/schemas/AgreementFileProperties'
-      - title: AgreementFileVersion
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
-    Entity:
-      title: Entity
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for an entity. Read-only.
-        '@odata.type':
-          type: string
-    AgreementFileData:
-      title: AgreementFileData
-      type: object
-      properties:
-        data:
-          type: string
-          description: Data that represents the terms of use PDF document. Read-only.
-          format: base64url
-          nullable: true
-        '@odata.type':
-          type: string
     AgreementFileProperties:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -385,10 +335,80 @@ components:
             nullable: true
           '@odata.type':
             type: string
-    InnerError:
-      title: InnerError
+    Entity:
+      title: Entity
       type: object
-      description: The structure of this object is service-specific
+      properties:
+        id:
+          type: string
+          description: The unique identifier for an entity. Read-only.
+        '@odata.type':
+          type: string
+    AgreementFileVersionCollectionResponse:
+      title: AgreementFileVersionCollectionResponse
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementFileVersion'
+        '@odata.nextLink':
+          type: string
+          nullable: true
+        '@odata.count':
+          type: integer
+          format: int32
+    ODataError:
+      title: ODataError
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    AgreementFileVersion:
+      allOf:
+      - $ref: '#/components/schemas/AgreementFileProperties'
+      - title: AgreementFileVersion
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
+    MainError:
+      title: MainError
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+    AgreementFileData:
+      title: AgreementFileData
+      type: object
+      properties:
+        data:
+          type: string
+          description: Data that represents the terms of use PDF document. Read-only.
+          format: base64url
+          nullable: true
+        '@odata.type':
+          type: string
     ErrorDetail:
       title: ErrorDetail
       required:
@@ -403,6 +423,10 @@ components:
         target:
           type: string
           nullable: true
+    InnerError:
+      title: InnerError
+      type: object
+      description: The structure of this object is service-specific
   responses:
     AgreementFileVersionCollectionResponse:
       description: Retrieved collection of agreement file versions
@@ -416,71 +440,47 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ODataError'
-  parameters:
-    AgreementId:
-      name: agreement-id
-      in: path
-      description: The unique identifier of the agreement
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreement
-    Count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    Skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    Search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    Top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-    Filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    AgreementFileLocalizationId:
-      name: agreementFileLocalization-id
-      in: path
-      description: The unique identifier of the agreement file localization
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreementFileLocalization
-    AgreementFileVersionId:
-      name: agreementFileVersion-id
-      in: path
-      description: The unique identifier of the agreement file version
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreementFileVersion
+  examples:
+    GetAgreementFileVersionResponse:
+      summary: Example response for getting an agreement file version
+      value:
+        id: 00000000-0000-0000-0000-000000000007
+        displayName: Terms of Use - Spanish v2
+        fileName: terms-of-use-es-v2.pdf
+        language: es-ES
+        isMajorVersion: true
+        createdDateTime: '2024-02-01T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
+    CreateAgreementFileVersionRequest:
+      summary: Example request to create an agreement file version
+      value:
+        displayName: Terms of Use - Spanish v2
+        fileName: terms-of-use-es-v2.pdf
+        language: es-ES
+        isMajorVersion: true
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
+    CreateAgreementFileVersionResponse:
+      summary: Example response for created agreement file version
+      value:
+        id: 00000000-0000-0000-0000-000000000007
+        displayName: Terms of Use - Spanish v2
+        fileName: terms-of-use-es-v2.pdf
+        language: es-ES
+        isMajorVersion: true
+        createdDateTime: '2024-02-01T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
+    UpdateAgreementFileVersionRequest:
+      summary: Example request to update an agreement file version
+      value:
+        displayName: Updated Terms of Use - Spanish v2
+        '@odata.type': '#microsoft.graph.agreementFileVersion'
+    UpdateAgreementFileVersionResponse:
+      summary: Example response for updated agreement file version
+      value:
+        id: 00000000-0000-0000-0000-000000000007
+        displayName: Updated Terms of Use - Spanish v2
+        fileName: terms-of-use-es-v2.pdf
+        language: es-ES
+        isMajorVersion: true
+        createdDateTime: '2024-02-01T10:30:00Z'
+        '@odata.type': '#microsoft.graph.agreementFileVersion'

@@ -524,90 +524,7 @@ paths:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
 components:
-  parameters:
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
   schemas:
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type:
-          - string
-          - 'null'
-          description: Request Id as tracked internally by the service
-        client-request-id:
-          type:
-          - string
-          - 'null'
-          description: Client request Id as sent by the client application.
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the error occured.
-          format: date-time
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
     microsoft.graph.riskyUserCollectionResponse:
       title: Collection of riskyUser
       type: object
@@ -619,209 +536,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.riskyUser'
-    microsoft.graph.riskyUserHistoryItemCollectionResponse:
-      title: Collection of riskyUserHistoryItem
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.riskyUserHistoryItem'
-    microsoft.graph.riskState:
-      title: riskState
-      enum:
-      - none
-      - confirmedSafe
-      - remediated
-      - dismissed
-      - atRisk
-      - confirmedCompromised
-      - unknownFutureValue
-      type: string
-    microsoft.graph.riskUserActivity:
-      title: riskUserActivity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        detail:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.riskDetail'
-          - type:
-            - object
-            - 'null'
-          description: For more information, see riskDetail.
-        riskEventTypes:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-          description: The type of risk event detected.
-        '@odata.type':
-          type: string
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.riskyUserHistoryItem:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.riskyUser'
-      - title: riskyUserHistoryItem
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          activity:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskUserActivity'
-            - type:
-              - object
-              - 'null'
-            description: The activity related to user risk level change.
-          initiatedBy:
-            type:
-            - string
-            - 'null'
-            description: The ID of actor that does the operation.
-          userId:
-            type:
-            - string
-            - 'null'
-            description: The ID of the user.
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.riskyUserHistoryItem'
-    microsoft.graph.riskDetail:
-      title: riskDetail
-      enum:
-      - none
-      - adminGeneratedTemporaryPassword
-      - userPerformedSecuredPasswordChange
-      - userPerformedSecuredPasswordReset
-      - adminConfirmedSigninSafe
-      - aiConfirmedSigninSafe
-      - userPassedMFADrivenByRiskBasedPolicy
-      - adminDismissedAllRiskForUser
-      - adminConfirmedSigninCompromised
-      - hidden
-      - adminConfirmedUserCompromised
-      - unknownFutureValue
-      - m365DAdminDismissedDetection
-      - adminConfirmedServicePrincipalCompromised
-      - adminDismissedAllRiskForServicePrincipal
-      - userChangedPasswordOnPremises
-      - adminDismissedRiskForSignIn
-      - adminConfirmedAccountSafe
-      type: string
-    microsoft.graph.riskyUser:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: riskyUser
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          isDeleted:
-            type:
-            - boolean
-            - 'null'
-            description: 'Indicates whether the user is deleted. The possible values are: true, false.'
-          isProcessing:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates whether the backend is processing a user's risky state.
-          riskDetail:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskDetail'
-            - type:
-              - object
-              - 'null'
-            description: Details of the detected risk.
-          riskLastUpdatedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: The date and time that the risky user was last updated. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
-            format: date-time
-          riskLevel:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskLevel'
-            - type:
-              - object
-              - 'null'
-            description: 'Level of the detected risky user. The possible values are: low, medium, high, hidden, none, unknownFutureValue.'
-          riskState:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.riskState'
-            - type:
-              - object
-              - 'null'
-            description: 'State of the user''s risk. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue.'
-          userDisplayName:
-            type:
-            - string
-            - 'null'
-            description: Risky user display name.
-          userPrincipalName:
-            type:
-            - string
-            - 'null'
-            description: Risky user principal name.
-          history:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.riskyUserHistoryItem'
-            description: The activity related to user risk level change
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.riskyUserHistoryItem': '#/components/schemas/microsoft.graph.riskyUserHistoryItem'
-    microsoft.graph.riskLevel:
-      title: riskLevel
-      enum:
-      - low
-      - medium
-      - high
-      - hidden
-      - none
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type:
-          - string
-          - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1891,6 +1605,248 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.riskLevel:
+      title: riskLevel
+      enum:
+      - low
+      - medium
+      - high
+      - hidden
+      - none
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.riskDetail:
+      title: riskDetail
+      enum:
+      - none
+      - adminGeneratedTemporaryPassword
+      - userPerformedSecuredPasswordChange
+      - userPerformedSecuredPasswordReset
+      - adminConfirmedSigninSafe
+      - aiConfirmedSigninSafe
+      - userPassedMFADrivenByRiskBasedPolicy
+      - adminDismissedAllRiskForUser
+      - adminConfirmedSigninCompromised
+      - hidden
+      - adminConfirmedUserCompromised
+      - unknownFutureValue
+      - m365DAdminDismissedDetection
+      - adminConfirmedServicePrincipalCompromised
+      - adminDismissedAllRiskForServicePrincipal
+      - userChangedPasswordOnPremises
+      - adminDismissedRiskForSignIn
+      - adminConfirmedAccountSafe
+      type: string
+    microsoft.graph.riskUserActivity:
+      title: riskUserActivity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        detail:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.riskDetail'
+          - type:
+            - object
+            - 'null'
+          description: For more information, see riskDetail.
+        riskEventTypes:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+          description: The type of risk event detected.
+        '@odata.type':
+          type: string
+    microsoft.graph.riskyUser:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: riskyUser
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          isDeleted:
+            type:
+            - boolean
+            - 'null'
+            description: 'Indicates whether the user is deleted. The possible values are: true, false.'
+          isProcessing:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the backend is processing a user's risky state.
+          riskDetail:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskDetail'
+            - type:
+              - object
+              - 'null'
+            description: Details of the detected risk.
+          riskLastUpdatedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date and time that the risky user was last updated. The DateTimeOffset type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.
+            format: date-time
+          riskLevel:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskLevel'
+            - type:
+              - object
+              - 'null'
+            description: 'Level of the detected risky user. The possible values are: low, medium, high, hidden, none, unknownFutureValue.'
+          riskState:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskState'
+            - type:
+              - object
+              - 'null'
+            description: 'State of the user''s risk. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue.'
+          userDisplayName:
+            type:
+            - string
+            - 'null'
+            description: Risky user display name.
+          userPrincipalName:
+            type:
+            - string
+            - 'null'
+            description: Risky user principal name.
+          history:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.riskyUserHistoryItem'
+            description: The activity related to user risk level change
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.riskyUserHistoryItem': '#/components/schemas/microsoft.graph.riskyUserHistoryItem'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.riskState:
+      title: riskState
+      enum:
+      - none
+      - confirmedSafe
+      - remediated
+      - dismissed
+      - atRisk
+      - confirmedCompromised
+      - unknownFutureValue
+      type: string
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.riskyUserHistoryItem:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.riskyUser'
+      - title: riskyUserHistoryItem
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          activity:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.riskUserActivity'
+            - type:
+              - object
+              - 'null'
+            description: The activity related to user risk level change.
+          initiatedBy:
+            type:
+            - string
+            - 'null'
+            description: The ID of actor that does the operation.
+          userId:
+            type:
+            - string
+            - 'null'
+            description: The ID of the user.
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.riskyUserHistoryItem'
+    microsoft.graph.riskyUserHistoryItemCollectionResponse:
+      title: Collection of riskyUserHistoryItem
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.riskyUserHistoryItem'
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -1904,28 +1860,72 @@ components:
           type:
           - string
           - 'null'
+  parameters:
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
   responses:
-    microsoft.graph.riskyUserHistoryItemCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.riskyUserHistoryItemCollectionResponse'
     error:
       description: error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
     microsoft.graph.riskyUserCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.riskyUserCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.riskyUserHistoryItemCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.riskyUserHistoryItemCollectionResponse'

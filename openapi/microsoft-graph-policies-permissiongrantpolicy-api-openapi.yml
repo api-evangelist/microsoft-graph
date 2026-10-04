@@ -663,214 +663,7 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
-  parameters:
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
   schemas:
-    microsoft.graph.policyBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
-      - title: policyBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          description:
-            type:
-            - string
-            - 'null'
-            description: Description for this policy. Required.
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: Display name for this policy. Required.
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.policyBase'
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
-            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
-            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
-            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
-            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
-            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
-            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
-            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
-            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
-            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
-            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
-            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type:
-          - string
-          - 'null'
-          description: Request Id as tracked internally by the service
-        client-request-id:
-          type:
-          - string
-          - 'null'
-          description: Client request Id as sent by the client application.
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the error occured.
-          format: date-time
-        '@odata.type':
-          type: string
-    microsoft.graph.permissionGrantPolicy:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.policyBase'
-      - title: permissionGrantPolicy
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          excludes:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.permissionGrantConditionSet'
-            description: Condition sets that are excluded in this permission grant policy. Automatically expanded on GET.
-            x-ms-navigationProperty: true
-          includes:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.permissionGrantConditionSet'
-            description: Condition sets that are included in this permission grant policy. Automatically expanded on GET.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.permissionGrantPolicy'
-      x-ms-discriminator-value: '#microsoft.graph.permissionGrantPolicy'
-    microsoft.graph.directoryObject:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: directoryObject
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          deletedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: Date and time when this object was deleted. Always null when the object hasn't been deleted.
-            format: date-time
-          '@odata.type':
-            type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.administrativeUnit': '#/components/schemas/microsoft.graph.administrativeUnit'
-            '#microsoft.graph.application': '#/components/schemas/microsoft.graph.application'
-            '#microsoft.graph.appRoleAssignment': '#/components/schemas/microsoft.graph.appRoleAssignment'
-            '#microsoft.graph.certificateAuthorityDetail': '#/components/schemas/microsoft.graph.certificateAuthorityDetail'
-            '#microsoft.graph.certificateBasedAuthPki': '#/components/schemas/microsoft.graph.certificateBasedAuthPki'
-            '#microsoft.graph.contract': '#/components/schemas/microsoft.graph.contract'
-            '#microsoft.graph.device': '#/components/schemas/microsoft.graph.device'
-            '#microsoft.graph.directoryObjectPartnerReference': '#/components/schemas/microsoft.graph.directoryObjectPartnerReference'
-            '#microsoft.graph.directoryRole': '#/components/schemas/microsoft.graph.directoryRole'
-            '#microsoft.graph.directoryRoleTemplate': '#/components/schemas/microsoft.graph.directoryRoleTemplate'
-            '#microsoft.graph.endpoint': '#/components/schemas/microsoft.graph.endpoint'
-            '#microsoft.graph.extensionProperty': '#/components/schemas/microsoft.graph.extensionProperty'
-            '#microsoft.graph.group': '#/components/schemas/microsoft.graph.group'
-            '#microsoft.graph.groupSettingTemplate': '#/components/schemas/microsoft.graph.groupSettingTemplate'
-            '#microsoft.graph.multiTenantOrganizationMember': '#/components/schemas/microsoft.graph.multiTenantOrganizationMember'
-            '#microsoft.graph.organization': '#/components/schemas/microsoft.graph.organization'
-            '#microsoft.graph.orgContact': '#/components/schemas/microsoft.graph.orgContact'
-            '#microsoft.graph.policyBase': '#/components/schemas/microsoft.graph.policyBase'
-            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
-            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
-            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
-            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
-            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
-            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
-            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
-            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
-            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
-            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
-            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
-            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
-            '#microsoft.graph.resourceSpecificPermissionGrant': '#/components/schemas/microsoft.graph.resourceSpecificPermissionGrant'
-            '#microsoft.graph.servicePrincipal': '#/components/schemas/microsoft.graph.servicePrincipal'
-            '#microsoft.graph.user': '#/components/schemas/microsoft.graph.user'
-    microsoft.graph.permissionGrantPolicyCollectionResponse:
-      title: Collection of permissionGrantPolicy
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.permissionGrantPolicy'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
     microsoft.graph.permissionGrantConditionSet:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -932,48 +725,66 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.permissionGrantConditionSet'
-    microsoft.graph.permissionType:
-      title: permissionType
-      enum:
-      - delegatedUserConsentable
-      - delegated
-      - application
-      type: string
-    microsoft.graph.permissionGrantConditionSetCollectionResponse:
-      title: Collection of permissionGrantConditionSet
-      type: object
+    microsoft.graph.permissionGrantPolicy:
       allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
+      - $ref: '#/components/schemas/microsoft.graph.policyBase'
+      - title: permissionGrantPolicy
+        required:
+        - '@odata.type'
+        type: object
         properties:
-          value:
+          excludes:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.permissionGrantConditionSet'
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type:
-          - string
-          - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+            description: Condition sets that are excluded in this permission grant policy. Automatically expanded on GET.
+            x-ms-navigationProperty: true
+          includes:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.permissionGrantConditionSet'
+            description: Condition sets that are included in this permission grant policy. Automatically expanded on GET.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.permissionGrantPolicy'
+      x-ms-discriminator-value: '#microsoft.graph.permissionGrantPolicy'
+    microsoft.graph.policyBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
+      - title: policyBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description for this policy. Required.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Display name for this policy. Required.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.policyBase'
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
+            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
+            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
+            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
+            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
+            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
+            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
+            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
+            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
+            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
+            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
+            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
     microsoft.graph.entity:
       title: entity
       required:
@@ -2050,6 +1861,151 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.permissionGrantPolicyCollectionResponse:
+      title: Collection of permissionGrantPolicy
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.permissionGrantPolicy'
+    microsoft.graph.permissionGrantConditionSetCollectionResponse:
+      title: Collection of permissionGrantConditionSet
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.permissionGrantConditionSet'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.permissionType:
+      title: permissionType
+      enum:
+      - delegatedUserConsentable
+      - delegated
+      - application
+      type: string
+    microsoft.graph.directoryObject:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: directoryObject
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          deletedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when this object was deleted. Always null when the object hasn't been deleted.
+            format: date-time
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.administrativeUnit': '#/components/schemas/microsoft.graph.administrativeUnit'
+            '#microsoft.graph.application': '#/components/schemas/microsoft.graph.application'
+            '#microsoft.graph.appRoleAssignment': '#/components/schemas/microsoft.graph.appRoleAssignment'
+            '#microsoft.graph.certificateAuthorityDetail': '#/components/schemas/microsoft.graph.certificateAuthorityDetail'
+            '#microsoft.graph.certificateBasedAuthPki': '#/components/schemas/microsoft.graph.certificateBasedAuthPki'
+            '#microsoft.graph.contract': '#/components/schemas/microsoft.graph.contract'
+            '#microsoft.graph.device': '#/components/schemas/microsoft.graph.device'
+            '#microsoft.graph.directoryObjectPartnerReference': '#/components/schemas/microsoft.graph.directoryObjectPartnerReference'
+            '#microsoft.graph.directoryRole': '#/components/schemas/microsoft.graph.directoryRole'
+            '#microsoft.graph.directoryRoleTemplate': '#/components/schemas/microsoft.graph.directoryRoleTemplate'
+            '#microsoft.graph.endpoint': '#/components/schemas/microsoft.graph.endpoint'
+            '#microsoft.graph.extensionProperty': '#/components/schemas/microsoft.graph.extensionProperty'
+            '#microsoft.graph.group': '#/components/schemas/microsoft.graph.group'
+            '#microsoft.graph.groupSettingTemplate': '#/components/schemas/microsoft.graph.groupSettingTemplate'
+            '#microsoft.graph.multiTenantOrganizationMember': '#/components/schemas/microsoft.graph.multiTenantOrganizationMember'
+            '#microsoft.graph.organization': '#/components/schemas/microsoft.graph.organization'
+            '#microsoft.graph.orgContact': '#/components/schemas/microsoft.graph.orgContact'
+            '#microsoft.graph.policyBase': '#/components/schemas/microsoft.graph.policyBase'
+            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
+            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
+            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
+            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
+            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
+            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
+            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
+            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
+            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
+            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
+            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
+            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
+            '#microsoft.graph.resourceSpecificPermissionGrant': '#/components/schemas/microsoft.graph.resourceSpecificPermissionGrant'
+            '#microsoft.graph.servicePrincipal': '#/components/schemas/microsoft.graph.servicePrincipal'
+            '#microsoft.graph.user': '#/components/schemas/microsoft.graph.user'
     BaseCollectionPaginationCountResponse:
       title: Base collection pagination and count responses
       type: object
@@ -2063,19 +2019,51 @@ components:
           type:
           - string
           - 'null'
+  parameters:
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
   responses:
-    microsoft.graph.permissionGrantConditionSetCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.permissionGrantConditionSetCollectionResponse'
-    microsoft.graph.permissionGrantPolicyCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.permissionGrantPolicyCollectionResponse'
     error:
       description: error
       content:
@@ -2088,3 +2076,15 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.permissionGrantPolicyCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.permissionGrantPolicyCollectionResponse'
+    microsoft.graph.permissionGrantConditionSetCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.permissionGrantConditionSetCollectionResponse'

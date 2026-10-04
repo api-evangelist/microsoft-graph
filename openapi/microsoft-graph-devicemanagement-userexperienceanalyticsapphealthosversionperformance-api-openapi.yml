@@ -201,28 +201,77 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.userExperienceAnalyticsAppHealthOSVersionPerformanceCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsAppHealthOSVersionPerformanceCollectionResponse'
   schemas:
-    microsoft.graph.ODataErrors.MainError:
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type:
-          - string
-          - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
@@ -237,30 +286,51 @@ components:
           type:
           - string
           - 'null'
-    microsoft.graph.userExperienceAnalyticsAppHealthOSVersionPerformanceCollectionResponse:
-      title: Collection of userExperienceAnalyticsAppHealthOSVersionPerformance
-      type: object
+    microsoft.graph.userExperienceAnalyticsAppHealthOSVersionPerformance:
       allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: userExperienceAnalyticsAppHealthOSVersionPerformance
+        required:
+        - '@odata.type'
+        type: object
         properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsAppHealthOSVersionPerformance'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type:
-          - integer
-          - 'null'
-          format: int64
-        '@odata.nextLink':
-          type:
-          - string
-          - 'null'
+          activeDeviceCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: 'The number of active devices for the OS version. Valid values 0 to 2147483647. Supports: $filter, $select, $OrderBy. Read-only. Valid values -2147483648 to 2147483647'
+            format: int32
+          meanTimeToFailureInMinutes:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: 'The mean time to failure for the application in minutes. Valid values 0 to 2147483647. Supports: $filter, $select, $OrderBy. Read-only. Valid values -2147483648 to 2147483647'
+            format: int32
+          osBuildNumber:
+            type:
+            - string
+            - 'null'
+            description: 'The OS build number installed on the device. Supports: $select, $OrderBy. Read-only.'
+          osVersion:
+            type:
+            - string
+            - 'null'
+            description: 'The OS version installed on the device. Supports: $select, $OrderBy. Read-only.'
+          osVersionAppHealthScore:
+            oneOf:
+            - type:
+              - number
+              - 'null'
+              format: double
+            - type:
+              - string
+              - 'null'
+            - $ref: '#/components/schemas/ReferenceNumeric'
+            description: 'The application health score of the OS version. Valid values 0 to 100. Supports: $filter, $select, $OrderBy. Read-only. Valid values -1.79769313486232E+308 to 1.79769313486232E+308'
+          '@odata.type':
+            type: string
+        description: The user experience analytics device OS version performance entity contains OS version performance details.
+      x-ms-discriminator-value: '#microsoft.graph.userExperienceAnalyticsAppHealthOSVersionPerformance'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -286,6 +356,38 @@ components:
           format: date-time
         '@odata.type':
           type: string
+    ReferenceNumeric:
+      enum:
+      - -INF
+      - INF
+      - NaN
+      type:
+      - string
+      - 'null'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    ODataCountResponse:
+      type: integer
+      format: int32
     microsoft.graph.entity:
       title: entity
       required:
@@ -1355,129 +1457,27 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
+    microsoft.graph.userExperienceAnalyticsAppHealthOSVersionPerformanceCollectionResponse:
+      title: Collection of userExperienceAnalyticsAppHealthOSVersionPerformance
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsAppHealthOSVersionPerformance'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    ReferenceNumeric:
-      enum:
-      - -INF
-      - INF
-      - NaN
-      type:
-      - string
-      - 'null'
-    microsoft.graph.userExperienceAnalyticsAppHealthOSVersionPerformance:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: userExperienceAnalyticsAppHealthOSVersionPerformance
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          activeDeviceCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: 'The number of active devices for the OS version. Valid values 0 to 2147483647. Supports: $filter, $select, $OrderBy. Read-only. Valid values -2147483648 to 2147483647'
-            format: int32
-          meanTimeToFailureInMinutes:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: 'The mean time to failure for the application in minutes. Valid values 0 to 2147483647. Supports: $filter, $select, $OrderBy. Read-only. Valid values -2147483648 to 2147483647'
-            format: int32
-          osBuildNumber:
-            type:
-            - string
-            - 'null'
-            description: 'The OS build number installed on the device. Supports: $select, $OrderBy. Read-only.'
-          osVersion:
-            type:
-            - string
-            - 'null'
-            description: 'The OS version installed on the device. Supports: $select, $OrderBy. Read-only.'
-          osVersionAppHealthScore:
-            oneOf:
-            - type:
-              - number
-              - 'null'
-              format: double
-            - type:
-              - string
-              - 'null'
-            - $ref: '#/components/schemas/ReferenceNumeric'
-            description: 'The application health score of the OS version. Valid values 0 to 100. Supports: $filter, $select, $OrderBy. Read-only. Valid values -1.79769313486232E+308 to 1.79769313486232E+308'
-          '@odata.type':
-            type: string
-        description: The user experience analytics device OS version performance entity contains OS version performance details.
-      x-ms-discriminator-value: '#microsoft.graph.userExperienceAnalyticsAppHealthOSVersionPerformance'
-    ODataCountResponse:
-      type: integer
-      format: int32
-  parameters:
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-  responses:
-    microsoft.graph.userExperienceAnalyticsAppHealthOSVersionPerformanceCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsAppHealthOSVersionPerformanceCollectionResponse'
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'

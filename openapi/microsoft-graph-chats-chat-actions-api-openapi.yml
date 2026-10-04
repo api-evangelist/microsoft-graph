@@ -298,7 +298,95 @@ paths:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
 components:
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   schemas:
+    microsoft.graph.teamworkUserIdentityType:
+      title: teamworkUserIdentityType
+      enum:
+      - aadUser
+      - onPremiseAadUser
+      - anonymousGuest
+      - federatedUser
+      - personalMicrosoftAccountUser
+      - skypeUser
+      - phoneUser
+      - unknownFutureValue
+      - emailUser
+      type: string
+    microsoft.graph.teamworkActivityTopicSource:
+      title: teamworkActivityTopicSource
+      enum:
+      - entityUrl
+      - text
+      type: string
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.keyValuePair:
+      title: keyValuePair
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name for this key-value pair
+        value:
+          type:
+          - string
+          - 'null'
+          description: Value for this key-value pair
+        '@odata.type':
+          type: string
+    microsoft.graph.bodyType:
+      title: bodyType
+      enum:
+      - text
+      - html
+      type: string
+    microsoft.graph.teamworkUserIdentity:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.identity'
+      - title: teamworkUserIdentity
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          userIdentityType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.teamworkUserIdentityType'
+            - type:
+              - object
+              - 'null'
+            description: 'Type of user. The possible values are: aadUser, onPremiseAadUser, anonymousGuest, federatedUser, personalMicrosoftAccountUser, skypeUser, phoneUser, unknownFutureValue and emailUser.'
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.teamworkUserIdentity'
+      x-ms-discriminator-value: '#microsoft.graph.teamworkUserIdentity'
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -320,32 +408,6 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.itemBody:
-      title: itemBody
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        content:
-          type:
-          - string
-          - 'null'
-          description: The content of the item.
-        contentType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.bodyType'
-          - type:
-            - object
-            - 'null'
-          description: The type of the content. Possible values are text and html.
-        '@odata.type':
-          type: string
-    microsoft.graph.bodyType:
-      title: bodyType
-      enum:
-      - text
-      - html
-      type: string
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -371,20 +433,24 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.keyValuePair:
-      title: keyValuePair
+    microsoft.graph.itemBody:
+      title: itemBody
       required:
       - '@odata.type'
       type: object
       properties:
-        name:
-          type: string
-          description: Name for this key-value pair
-        value:
+        content:
           type:
           - string
           - 'null'
-          description: Value for this key-value pair
+          description: The content of the item.
+        contentType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.bodyType'
+          - type:
+            - object
+            - 'null'
+          description: The type of the content. Possible values are text and html.
         '@odata.type':
           type: string
     microsoft.graph.teamworkActivityTopic:
@@ -466,69 +532,3 @@ components:
           '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
           '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
           '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.teamworkUserIdentity:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.identity'
-      - title: teamworkUserIdentity
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          userIdentityType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.teamworkUserIdentityType'
-            - type:
-              - object
-              - 'null'
-            description: 'Type of user. The possible values are: aadUser, onPremiseAadUser, anonymousGuest, federatedUser, personalMicrosoftAccountUser, skypeUser, phoneUser, unknownFutureValue and emailUser.'
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.teamworkUserIdentity'
-      x-ms-discriminator-value: '#microsoft.graph.teamworkUserIdentity'
-    microsoft.graph.teamworkUserIdentityType:
-      title: teamworkUserIdentityType
-      enum:
-      - aadUser
-      - onPremiseAadUser
-      - anonymousGuest
-      - federatedUser
-      - personalMicrosoftAccountUser
-      - skypeUser
-      - phoneUser
-      - unknownFutureValue
-      - emailUser
-      type: string
-    microsoft.graph.teamworkActivityTopicSource:
-      title: teamworkActivityTopicSource
-      enum:
-      - entityUrl
-      - text
-      type: string
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

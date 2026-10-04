@@ -214,8 +214,78 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
+  parameters:
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    microsoft.graph.certificateBasedAuthConfigurationCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.certificateBasedAuthConfigurationCollectionResponse'
   schemas:
-    microsoft.graph.ODataErrors.MainError:
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
       - message
@@ -225,48 +295,10 @@ components:
           type: string
         message:
           type: string
-          x-ms-primary-error-message: true
         target:
           type:
           - string
           - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.certificateAuthority:
-      title: certificateAuthority
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        certificate:
-          type: string
-          description: Required. The base64 encoded string representing the public certificate.
-          format: base64url
-        certificateRevocationListUrl:
-          type:
-          - string
-          - 'null'
-          description: The URL of the certificate revocation list.
-        deltaCertificateRevocationListUrl:
-          type:
-          - string
-          - 'null'
-          description: The URL contains the list of all revoked certificates since the last time a full certificate revocaton list was created.
-        isRootAuthority:
-          type: boolean
-          description: Required. true if the trusted certificate is a root authority, false if the trusted certificate is an intermediate authority.
-        issuer:
-          type: string
-          description: The issuer of the certificate, calculated from the certificate value. Read-only.
-        issuerSki:
-          type: string
-          description: The subject key identifier of the certificate, calculated from the certificate value. Read-only.
-        '@odata.type':
-          type: string
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -292,6 +324,33 @@ components:
           format: date-time
         '@odata.type':
           type: string
+    microsoft.graph.certificateBasedAuthConfigurationCollectionResponse:
+      title: Collection of certificateBasedAuthConfiguration
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.certificateBasedAuthConfiguration'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    ODataCountResponse:
+      type: integer
+      format: int32
     microsoft.graph.entity:
       title: entity
       required:
@@ -1361,13 +1420,27 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ODataError:
+    microsoft.graph.ODataErrors.MainError:
       required:
-      - error
+      - code
+      - message
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.certificateBasedAuthConfiguration:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -1384,107 +1457,34 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.certificateBasedAuthConfiguration'
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.certificateAuthority:
+      title: certificateAuthority
       required:
-      - code
-      - message
+      - '@odata.type'
       type: object
       properties:
-        code:
+        certificate:
           type: string
-        message:
-          type: string
-        target:
+          description: Required. The base64 encoded string representing the public certificate.
+          format: base64url
+        certificateRevocationListUrl:
           type:
           - string
           - 'null'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type:
-          - integer
-          - 'null'
-          format: int64
-        '@odata.nextLink':
+          description: The URL of the certificate revocation list.
+        deltaCertificateRevocationListUrl:
           type:
           - string
           - 'null'
-    microsoft.graph.certificateBasedAuthConfigurationCollectionResponse:
-      title: Collection of certificateBasedAuthConfiguration
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.certificateBasedAuthConfiguration'
-    ODataCountResponse:
-      type: integer
-      format: int32
-  parameters:
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
-    microsoft.graph.certificateBasedAuthConfigurationCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.certificateBasedAuthConfigurationCollectionResponse'
+          description: The URL contains the list of all revoked certificates since the last time a full certificate revocaton list was created.
+        isRootAuthority:
+          type: boolean
+          description: Required. true if the trusted certificate is a root authority, false if the trusted certificate is an intermediate authority.
+        issuer:
+          type: string
+          description: The issuer of the certificate, calculated from the certificate value. Read-only.
+        issuerSki:
+          type: string
+          description: The subject key identifier of the certificate, calculated from the certificate value. Read-only.
+        '@odata.type':
+          type: string

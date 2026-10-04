@@ -347,317 +347,7 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
-  parameters:
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
   schemas:
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type:
-          - string
-          - 'null'
-          description: Request Id as tracked internally by the service
-        client-request-id:
-          type:
-          - string
-          - 'null'
-          description: Client request Id as sent by the client application.
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the error occured.
-          format: date-time
-        '@odata.type':
-          type: string
-    microsoft.graph.security.retentionEventStatus:
-      title: retentionEventStatus
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        error:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.publicError'
-          - type:
-            - object
-            - 'null'
-          description: The error if the status isn't successful.
-        status:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.security.eventStatusType'
-          - type:
-            - object
-            - 'null'
-          description: 'The status of the distribution. The possible values are: pending, error, success, notAvaliable.'
-        '@odata.type':
-          type: string
-    microsoft.graph.security.retentionEventCollectionResponse:
-      title: Collection of retentionEvent
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.retentionEvent'
-    microsoft.graph.security.retentionEvent:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: retentionEvent
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type:
-              - object
-              - 'null'
-            description: The user who created the retentionEvent.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: The date time when the retentionEvent was created.
-            format: date-time
-          description:
-            type:
-            - string
-            - 'null'
-            description: Optional information about the event.
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: Name of the event.
-          eventPropagationResults:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.eventPropagationResult'
-            description: Represents the success status of a created event and additional information.
-          eventQueries:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.security.eventQuery'
-            description: Represents the workload (SharePoint Online, OneDrive for Business, Exchange Online) and identification information associated with a retention event.
-          eventStatus:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.retentionEventStatus'
-            - type:
-              - object
-              - 'null'
-            description: Status of event propogation to the scoped locations after the event has been created.
-          eventTriggerDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: Optional time when the event should be triggered.
-            format: date-time
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type:
-              - object
-              - 'null'
-            description: The user who last modified the retentionEvent.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: The latest date time when the retentionEvent was modified.
-            format: date-time
-          lastStatusUpdateDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: Last time the status of the event was updated.
-            format: date-time
-          retentionEventType:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.security.retentionEventType'
-            - type:
-              - object
-              - 'null'
-            description: Specifies the event that will start the retention period for labels that use this event type when an event is created.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.retentionEvent'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.security.eventStatusType:
-      title: eventStatusType
-      enum:
-      - pending
-      - error
-      - success
-      - notAvaliable
-      - unknownFutureValue
-      type: string
-    microsoft.graph.security.eventPropagationStatus:
-      title: eventPropagationStatus
-      enum:
-      - none
-      - inProcessing
-      - failed
-      - success
-      - unknownFutureValue
-      type: string
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type:
-          - integer
-          - 'null'
-          format: int64
-        '@odata.nextLink':
-          type:
-          - string
-          - 'null'
-    microsoft.graph.publicErrorDetail:
-      title: publicErrorDetail
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        code:
-          type:
-          - string
-          - 'null'
-          description: The error code.
-        message:
-          type:
-          - string
-          - 'null'
-          description: The error message.
-        target:
-          type:
-          - string
-          - 'null'
-          description: The target of the error.
-        '@odata.type':
-          type: string
-    ODataCountResponse:
-      type: integer
-      format: int32
-    microsoft.graph.security.retentionEventType:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: retentionEventType
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          createdBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type:
-              - object
-              - 'null'
-            description: The user who created the retentionEventType.
-          createdDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: The date time when the retentionEventType was created.
-            format: date-time
-          description:
-            type:
-            - string
-            - 'null'
-            description: Optional information about the event type.
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: Name of the event type.
-          lastModifiedBy:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.identitySet'
-            - type:
-              - object
-              - 'null'
-            description: The user who last modified the retentionEventType.
-          lastModifiedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: The latest date time when the retentionEventType was modified.
-            format: date-time
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.security.retentionEventType'
     microsoft.graph.security.triggersRoot:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -674,162 +364,6 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.security.triggersRoot'
-    microsoft.graph.security.eventPropagationResult:
-      title: eventPropagationResult
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        location:
-          type:
-          - string
-          - 'null'
-          description: The name of the specific location in the workload associated with the event.
-        serviceName:
-          type:
-          - string
-          - 'null'
-          description: The name of the workload associated with the event.
-        status:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.security.eventPropagationStatus'
-          - type:
-            - object
-            - 'null'
-          description: 'Indicates the status of the event creation request. The possible values are: none, inProcessing, failed, success, unknownFutureValue.'
-        statusInformation:
-          type:
-          - string
-          - 'null'
-          description: Additional information about the status of the event creation request.
-        '@odata.type':
-          type: string
-    microsoft.graph.identitySet:
-      title: identitySet
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        application:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type:
-            - object
-            - 'null'
-          description: Optional. The application associated with this action.
-        device:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type:
-            - object
-            - 'null'
-          description: Optional. The device associated with this action.
-        user:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.identity'
-          - type:
-            - object
-            - 'null'
-          description: Optional. The user associated with this action.
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.aiInteractionMentionedIdentitySet': '#/components/schemas/microsoft.graph.aiInteractionMentionedIdentitySet'
-          '#microsoft.graph.chatMessageFromIdentitySet': '#/components/schemas/microsoft.graph.chatMessageFromIdentitySet'
-          '#microsoft.graph.chatMessageMentionedIdentitySet': '#/components/schemas/microsoft.graph.chatMessageMentionedIdentitySet'
-          '#microsoft.graph.chatMessageReactionIdentitySet': '#/components/schemas/microsoft.graph.chatMessageReactionIdentitySet'
-          '#microsoft.graph.communicationsIdentitySet': '#/components/schemas/microsoft.graph.communicationsIdentitySet'
-          '#microsoft.graph.engagementIdentitySet': '#/components/schemas/microsoft.graph.engagementIdentitySet'
-          '#microsoft.graph.sharePointIdentitySet': '#/components/schemas/microsoft.graph.sharePointIdentitySet'
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type:
-          - string
-          - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.security.eventQuery:
-      title: eventQuery
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        query:
-          type: string
-          description: Represents unique identification for the  query. 'Asset ID' for SharePoint Online and OneDrive for Business, 'keywords' for Exchange Online.
-        queryType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.security.queryType'
-          - type:
-            - object
-            - 'null'
-          description: 'Represents the type of query associated with an event. ''files'' for SPO and ODB and ''messages'' for EXO.The possible values are: files, messages, unknownFutureValue.'
-        '@odata.type':
-          type: string
-    microsoft.graph.security.queryType:
-      title: queryType
-      enum:
-      - files
-      - messages
-      - unknownFutureValue
-      type: string
-    microsoft.graph.identity:
-      title: identity
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
-        id:
-          type:
-          - string
-          - 'null'
-          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
-          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
-          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
-          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
-          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
-          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
-          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
-          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
-          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
-          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
-          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
-          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
-          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
-          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
-          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
-          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
-          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
-          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
-          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
-          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1899,6 +1433,245 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.security.retentionEventType:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: retentionEventType
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type:
+              - object
+              - 'null'
+            description: The user who created the retentionEventType.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date time when the retentionEventType was created.
+            format: date-time
+          description:
+            type:
+            - string
+            - 'null'
+            description: Optional information about the event type.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Name of the event type.
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type:
+              - object
+              - 'null'
+            description: The user who last modified the retentionEventType.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The latest date time when the retentionEventType was modified.
+            format: date-time
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.security.retentionEventType'
+    microsoft.graph.security.retentionEventStatus:
+      title: retentionEventStatus
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        error:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.publicError'
+          - type:
+            - object
+            - 'null'
+          description: The error if the status isn't successful.
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.security.eventStatusType'
+          - type:
+            - object
+            - 'null'
+          description: 'The status of the distribution. The possible values are: pending, error, success, notAvaliable.'
+        '@odata.type':
+          type: string
+    microsoft.graph.identity:
+      title: identity
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: The display name of the identity.For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don't show up as changed when using delta.
+        id:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that's subject to review.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.azureCommunicationServicesUserIdentity': '#/components/schemas/microsoft.graph.azureCommunicationServicesUserIdentity'
+          '#microsoft.graph.communicationsApplicationIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationIdentity'
+          '#microsoft.graph.communicationsApplicationInstanceIdentity': '#/components/schemas/microsoft.graph.communicationsApplicationInstanceIdentity'
+          '#microsoft.graph.communicationsEncryptedIdentity': '#/components/schemas/microsoft.graph.communicationsEncryptedIdentity'
+          '#microsoft.graph.communicationsGuestIdentity': '#/components/schemas/microsoft.graph.communicationsGuestIdentity'
+          '#microsoft.graph.communicationsPhoneIdentity': '#/components/schemas/microsoft.graph.communicationsPhoneIdentity'
+          '#microsoft.graph.communicationsUserIdentity': '#/components/schemas/microsoft.graph.communicationsUserIdentity'
+          '#microsoft.graph.emailIdentity': '#/components/schemas/microsoft.graph.emailIdentity'
+          '#microsoft.graph.initiator': '#/components/schemas/microsoft.graph.initiator'
+          '#microsoft.graph.provisionedIdentity': '#/components/schemas/microsoft.graph.provisionedIdentity'
+          '#microsoft.graph.provisioningServicePrincipal': '#/components/schemas/microsoft.graph.provisioningServicePrincipal'
+          '#microsoft.graph.provisioningSystem': '#/components/schemas/microsoft.graph.provisioningSystem'
+          '#microsoft.graph.servicePrincipalIdentity': '#/components/schemas/microsoft.graph.servicePrincipalIdentity'
+          '#microsoft.graph.sharePointIdentity': '#/components/schemas/microsoft.graph.sharePointIdentity'
+          '#microsoft.graph.teamworkApplicationIdentity': '#/components/schemas/microsoft.graph.teamworkApplicationIdentity'
+          '#microsoft.graph.teamworkConversationIdentity': '#/components/schemas/microsoft.graph.teamworkConversationIdentity'
+          '#microsoft.graph.teamworkTagIdentity': '#/components/schemas/microsoft.graph.teamworkTagIdentity'
+          '#microsoft.graph.teamworkUserIdentity': '#/components/schemas/microsoft.graph.teamworkUserIdentity'
+          '#microsoft.graph.userIdentity': '#/components/schemas/microsoft.graph.userIdentity'
+          '#microsoft.graph.callRecords.userIdentity': '#/components/schemas/microsoft.graph.callRecords.userIdentity'
+    microsoft.graph.identitySet:
+      title: identitySet
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        application:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type:
+            - object
+            - 'null'
+          description: Optional. The application associated with this action.
+        device:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type:
+            - object
+            - 'null'
+          description: Optional. The device associated with this action.
+        user:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.identity'
+          - type:
+            - object
+            - 'null'
+          description: Optional. The user associated with this action.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.aiInteractionMentionedIdentitySet': '#/components/schemas/microsoft.graph.aiInteractionMentionedIdentitySet'
+          '#microsoft.graph.chatMessageFromIdentitySet': '#/components/schemas/microsoft.graph.chatMessageFromIdentitySet'
+          '#microsoft.graph.chatMessageMentionedIdentitySet': '#/components/schemas/microsoft.graph.chatMessageMentionedIdentitySet'
+          '#microsoft.graph.chatMessageReactionIdentitySet': '#/components/schemas/microsoft.graph.chatMessageReactionIdentitySet'
+          '#microsoft.graph.communicationsIdentitySet': '#/components/schemas/microsoft.graph.communicationsIdentitySet'
+          '#microsoft.graph.engagementIdentitySet': '#/components/schemas/microsoft.graph.engagementIdentitySet'
+          '#microsoft.graph.sharePointIdentitySet': '#/components/schemas/microsoft.graph.sharePointIdentitySet'
+    microsoft.graph.security.retentionEvent:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: retentionEvent
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          createdBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type:
+              - object
+              - 'null'
+            description: The user who created the retentionEvent.
+          createdDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The date time when the retentionEvent was created.
+            format: date-time
+          description:
+            type:
+            - string
+            - 'null'
+            description: Optional information about the event.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Name of the event.
+          eventPropagationResults:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.eventPropagationResult'
+            description: Represents the success status of a created event and additional information.
+          eventQueries:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.eventQuery'
+            description: Represents the workload (SharePoint Online, OneDrive for Business, Exchange Online) and identification information associated with a retention event.
+          eventStatus:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.retentionEventStatus'
+            - type:
+              - object
+              - 'null'
+            description: Status of event propogation to the scoped locations after the event has been created.
+          eventTriggerDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Optional time when the event should be triggered.
+            format: date-time
+          lastModifiedBy:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.identitySet'
+            - type:
+              - object
+              - 'null'
+            description: The user who last modified the retentionEvent.
+          lastModifiedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: The latest date time when the retentionEvent was modified.
+            format: date-time
+          lastStatusUpdateDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Last time the status of the event was updated.
+            format: date-time
+          retentionEventType:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.security.retentionEventType'
+            - type:
+              - object
+              - 'null'
+            description: Specifies the event that will start the retention period for labels that use this event type when an event is created.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.security.retentionEvent'
     microsoft.graph.ODataErrors.ODataError:
       required:
       - error
@@ -1906,34 +1679,6 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.publicInnerError:
-      title: publicInnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        code:
-          type:
-          - string
-          - 'null'
-          description: The error code.
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.publicErrorDetail'
-          description: A collection of error details.
-        message:
-          type:
-          - string
-          - 'null'
-          description: The error message.
-        target:
-          type:
-          - string
-          - 'null'
-          description: The target of the error.
-        '@odata.type':
-          type: string
     microsoft.graph.publicError:
       title: publicError
       required:
@@ -1969,6 +1714,217 @@ components:
           description: The target of the error.
         '@odata.type':
           type: string
+    microsoft.graph.publicInnerError:
+      title: publicInnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+          description: The error code.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.publicErrorDetail'
+          description: A collection of error details.
+        message:
+          type:
+          - string
+          - 'null'
+          description: The error message.
+        target:
+          type:
+          - string
+          - 'null'
+          description: The target of the error.
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.security.eventQuery:
+      title: eventQuery
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        query:
+          type: string
+          description: Represents unique identification for the  query. 'Asset ID' for SharePoint Online and OneDrive for Business, 'keywords' for Exchange Online.
+        queryType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.security.queryType'
+          - type:
+            - object
+            - 'null'
+          description: 'Represents the type of query associated with an event. ''files'' for SPO and ODB and ''messages'' for EXO.The possible values are: files, messages, unknownFutureValue.'
+        '@odata.type':
+          type: string
+    microsoft.graph.publicErrorDetail:
+      title: publicErrorDetail
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+          description: The error code.
+        message:
+          type:
+          - string
+          - 'null'
+          description: The error message.
+        target:
+          type:
+          - string
+          - 'null'
+          description: The target of the error.
+        '@odata.type':
+          type: string
+    microsoft.graph.security.eventStatusType:
+      title: eventStatusType
+      enum:
+      - pending
+      - error
+      - success
+      - notAvaliable
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.security.eventPropagationResult:
+      title: eventPropagationResult
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        location:
+          type:
+          - string
+          - 'null'
+          description: The name of the specific location in the workload associated with the event.
+        serviceName:
+          type:
+          - string
+          - 'null'
+          description: The name of the workload associated with the event.
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.security.eventPropagationStatus'
+          - type:
+            - object
+            - 'null'
+          description: 'Indicates the status of the event creation request. The possible values are: none, inProcessing, failed, success, unknownFutureValue.'
+        statusInformation:
+          type:
+          - string
+          - 'null'
+          description: Additional information about the status of the event creation request.
+        '@odata.type':
+          type: string
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    microsoft.graph.security.retentionEventCollectionResponse:
+      title: Collection of retentionEvent
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.security.retentionEvent'
+    microsoft.graph.security.queryType:
+      title: queryType
+      enum:
+      - files
+      - messages
+      - unknownFutureValue
+      type: string
+    microsoft.graph.security.eventPropagationStatus:
+      title: eventPropagationStatus
+      enum:
+      - none
+      - inProcessing
+      - failed
+      - success
+      - unknownFutureValue
+      type: string
   responses:
     microsoft.graph.security.retentionEventCollectionResponse:
       description: Retrieved collection
@@ -1988,3 +1944,47 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/ODataCountResponse'
+  parameters:
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string

@@ -97,8 +97,22 @@ paths:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
 components:
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   schemas:
-    microsoft.graph.ODataErrors.MainError:
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
       - message
@@ -108,17 +122,10 @@ components:
           type: string
         message:
           type: string
-          x-ms-primary-error-message: true
         target:
           type:
           - string
           - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -144,66 +151,27 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.deviceConfigurationDeviceStateSummary:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: deviceConfigurationDeviceStateSummary
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          compliantDeviceCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Number of compliant devices
-            format: int32
-          conflictDeviceCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Number of conflict devices
-            format: int32
-          errorDeviceCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Number of error devices
-            format: int32
-          nonCompliantDeviceCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Number of NonCompliant devices
-            format: int32
-          notApplicableDeviceCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Number of not applicable devices
-            format: int32
-          remediatedDeviceCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Number of remediated devices
-            format: int32
-          unknownDeviceCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: Number of unknown devices
-            format: int32
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.deviceConfigurationDeviceStateSummary'
-    microsoft.graph.ODataErrors.ODataError:
+    microsoft.graph.ODataErrors.MainError:
       required:
-      - error
+      - code
+      - message
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1273,24 +1241,56 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
+    microsoft.graph.deviceConfigurationDeviceStateSummary:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: deviceConfigurationDeviceStateSummary
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          compliantDeviceCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: Number of compliant devices
+            format: int32
+          conflictDeviceCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: Number of conflict devices
+            format: int32
+          errorDeviceCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: Number of error devices
+            format: int32
+          nonCompliantDeviceCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: Number of NonCompliant devices
+            format: int32
+          notApplicableDeviceCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: Number of not applicable devices
+            format: int32
+          remediatedDeviceCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: Number of remediated devices
+            format: int32
+          unknownDeviceCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: Number of unknown devices
+            format: int32
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.deviceConfigurationDeviceStateSummary'

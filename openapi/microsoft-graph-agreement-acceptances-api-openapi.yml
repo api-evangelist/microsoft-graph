@@ -491,53 +491,179 @@ paths:
     - url: https://graph.microsoft.com/v1.0
       description: Microsoft Graph API v1.0 endpoint
 components:
-  schemas:
-    AgreementAcceptanceCollectionResponse:
-      title: AgreementAcceptanceCollectionResponse
-      type: object
-      properties:
+  examples:
+    UpdateAgreementAcceptanceRequest:
+      summary: Example request to update an agreement acceptance
+      value:
+        state: declined
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    CreateAgreementAcceptanceResponse:
+      summary: Example response for created agreement acceptance
+      value:
+        id: 00000000-0000-0000-0000-000000000005
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000003
+        userDisplayName: John Doe
+        userEmail: john.doe@example.com
+        userPrincipalName: john.doe@example.com
+        deviceDisplayName: John's Laptop
+        deviceId: 00000000-0000-0000-0000-000000000004
+        deviceOSType: Windows
+        deviceOSVersion: 10.0.19041
+        recordedDateTime: '2024-01-15T10:30:00Z'
+        expirationDateTime: '2024-04-15T10:30:00Z'
+        state: accepted
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    GetAgreementAcceptanceResponse:
+      summary: Example response for getting an agreement acceptance
+      value:
+        id: 00000000-0000-0000-0000-000000000005
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000003
+        userDisplayName: John Doe
+        userEmail: john.doe@example.com
+        userPrincipalName: john.doe@example.com
+        deviceDisplayName: John's Laptop
+        deviceId: 00000000-0000-0000-0000-000000000004
+        deviceOSType: Windows
+        deviceOSVersion: 10.0.19041
+        recordedDateTime: '2024-01-15T10:30:00Z'
+        expirationDateTime: '2024-04-15T10:30:00Z'
+        state: accepted
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    CreateAgreementAcceptanceRequest:
+      summary: Example request to create an agreement acceptance
+      value:
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000003
+        userDisplayName: John Doe
+        userEmail: john.doe@example.com
+        userPrincipalName: john.doe@example.com
+        deviceDisplayName: John's Laptop
+        deviceId: 00000000-0000-0000-0000-000000000004
+        deviceOSType: Windows
+        deviceOSVersion: 10.0.19041
+        recordedDateTime: '2024-01-15T10:30:00Z'
+        state: accepted
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    UpdateAgreementAcceptanceResponse:
+      summary: Example response for updated agreement acceptance
+      value:
+        id: 00000000-0000-0000-0000-000000000005
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000003
+        userDisplayName: John Doe
+        userEmail: john.doe@example.com
+        userPrincipalName: john.doe@example.com
+        deviceDisplayName: John's Laptop
+        deviceId: 00000000-0000-0000-0000-000000000004
+        deviceOSType: Windows
+        deviceOSVersion: 10.0.19041
+        recordedDateTime: '2024-01-15T10:30:00Z'
+        expirationDateTime: '2024-04-15T10:30:00Z'
+        state: declined
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    AgreementAcceptanceCollectionExample:
+      summary: Example collection of agreement acceptances
+      value:
         value:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementAcceptance'
-        '@odata.nextLink':
-          type: string
-          nullable: true
-        '@odata.count':
-          type: integer
-          format: int32
-    ODataError:
-      title: ODataError
-      required:
-      - error
+        - id: 00000000-0000-0000-0000-000000000005
+          agreementId: 00000000-0000-0000-0000-000000000001
+          agreementFileId: 00000000-0000-0000-0000-000000000002
+          userId: 00000000-0000-0000-0000-000000000003
+          userDisplayName: John Doe
+          userEmail: john.doe@example.com
+          userPrincipalName: john.doe@example.com
+          deviceDisplayName: John's Laptop
+          deviceId: 00000000-0000-0000-0000-000000000004
+          deviceOSType: Windows
+          deviceOSVersion: 10.0.19041
+          recordedDateTime: '2024-01-15T10:30:00Z'
+          expirationDateTime: '2024-04-15T10:30:00Z'
+          state: accepted
+          '@odata.type': '#microsoft.graph.agreementAcceptance'
+        '@odata.count': 1
+  parameters:
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    Count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    AgreementAcceptanceId:
+      name: agreementAcceptance-id
+      in: path
+      description: The unique identifier of the agreement acceptance
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreementAcceptance
+    Top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    Filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    Skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    AgreementId:
+      name: agreement-id
+      in: path
+      description: The unique identifier of the agreement
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreement
+  schemas:
+    AgreementAcceptanceState:
+      title: AgreementAcceptanceState
+      type: string
+      enum:
+      - accepted
+      - declined
+      description: The state of the agreement acceptance.
+    Entity:
+      title: Entity
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/MainError'
-    MainError:
-      title: MainError
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
+        id:
           type: string
-        message:
+          description: The unique identifier for an entity. Read-only.
+        '@odata.type':
           type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        innerError:
-          $ref: '#/components/schemas/InnerError'
-    ODataCountResponse:
-      type: integer
-      format: int32
     AgreementAcceptance:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -607,26 +733,52 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementAcceptance'
-    Entity:
-      title: Entity
+    AgreementAcceptanceCollectionResponse:
+      title: AgreementAcceptanceCollectionResponse
       type: object
       properties:
-        id:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementAcceptance'
+        '@odata.nextLink':
           type: string
-          description: The unique identifier for an entity. Read-only.
-        '@odata.type':
-          type: string
-    AgreementAcceptanceState:
-      title: AgreementAcceptanceState
-      type: string
-      enum:
-      - accepted
-      - declined
-      description: The state of the agreement acceptance.
-    InnerError:
-      title: InnerError
+          nullable: true
+        '@odata.count':
+          type: integer
+          format: int32
+    ODataError:
+      title: ODataError
+      required:
+      - error
       type: object
-      description: The structure of this object is service-specific
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
+    MainError:
+      title: MainError
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+    ODataCountResponse:
+      type: integer
+      format: int32
     ErrorDetail:
       title: ErrorDetail
       required:
@@ -641,6 +793,10 @@ components:
         target:
           type: string
           nullable: true
+    InnerError:
+      title: InnerError
+      type: object
+      description: The structure of this object is service-specific
   responses:
     AgreementAcceptanceCollectionResponse:
       description: Retrieved collection of agreement acceptances
@@ -651,180 +807,24 @@ components:
           examples:
             AgreementAcceptanceCollectionExample:
               $ref: '#/components/examples/AgreementAcceptanceCollectionExample'
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
     ODataCountResponse:
       description: The count of the resource
       content:
         text/plain:
           schema:
             $ref: '#/components/schemas/ODataCountResponse'
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'
     AgreementAcceptanceCollectionResponse_2:
       description: Retrieved collection of agreement acceptances
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/AgreementAcceptanceCollectionResponse'
-  parameters:
-    Count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    Skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    Top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-    Search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    AgreementAcceptanceId:
-      name: agreementAcceptance-id
-      in: path
-      description: The unique identifier of the agreement acceptance
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreementAcceptance
-    Filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    AgreementId:
-      name: agreement-id
-      in: path
-      description: The unique identifier of the agreement
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreement
-  examples:
-    GetAgreementAcceptanceResponse:
-      summary: Example response for getting an agreement acceptance
-      value:
-        id: 00000000-0000-0000-0000-000000000005
-        agreementId: 00000000-0000-0000-0000-000000000001
-        agreementFileId: 00000000-0000-0000-0000-000000000002
-        userId: 00000000-0000-0000-0000-000000000003
-        userDisplayName: John Doe
-        userEmail: john.doe@example.com
-        userPrincipalName: john.doe@example.com
-        deviceDisplayName: John's Laptop
-        deviceId: 00000000-0000-0000-0000-000000000004
-        deviceOSType: Windows
-        deviceOSVersion: 10.0.19041
-        recordedDateTime: '2024-01-15T10:30:00Z'
-        expirationDateTime: '2024-04-15T10:30:00Z'
-        state: accepted
-        '@odata.type': '#microsoft.graph.agreementAcceptance'
-    CreateAgreementAcceptanceResponse:
-      summary: Example response for created agreement acceptance
-      value:
-        id: 00000000-0000-0000-0000-000000000005
-        agreementId: 00000000-0000-0000-0000-000000000001
-        agreementFileId: 00000000-0000-0000-0000-000000000002
-        userId: 00000000-0000-0000-0000-000000000003
-        userDisplayName: John Doe
-        userEmail: john.doe@example.com
-        userPrincipalName: john.doe@example.com
-        deviceDisplayName: John's Laptop
-        deviceId: 00000000-0000-0000-0000-000000000004
-        deviceOSType: Windows
-        deviceOSVersion: 10.0.19041
-        recordedDateTime: '2024-01-15T10:30:00Z'
-        expirationDateTime: '2024-04-15T10:30:00Z'
-        state: accepted
-        '@odata.type': '#microsoft.graph.agreementAcceptance'
-    UpdateAgreementAcceptanceResponse:
-      summary: Example response for updated agreement acceptance
-      value:
-        id: 00000000-0000-0000-0000-000000000005
-        agreementId: 00000000-0000-0000-0000-000000000001
-        agreementFileId: 00000000-0000-0000-0000-000000000002
-        userId: 00000000-0000-0000-0000-000000000003
-        userDisplayName: John Doe
-        userEmail: john.doe@example.com
-        userPrincipalName: john.doe@example.com
-        deviceDisplayName: John's Laptop
-        deviceId: 00000000-0000-0000-0000-000000000004
-        deviceOSType: Windows
-        deviceOSVersion: 10.0.19041
-        recordedDateTime: '2024-01-15T10:30:00Z'
-        expirationDateTime: '2024-04-15T10:30:00Z'
-        state: declined
-        '@odata.type': '#microsoft.graph.agreementAcceptance'
-    UpdateAgreementAcceptanceRequest:
-      summary: Example request to update an agreement acceptance
-      value:
-        state: declined
-        '@odata.type': '#microsoft.graph.agreementAcceptance'
-    CreateAgreementAcceptanceRequest:
-      summary: Example request to create an agreement acceptance
-      value:
-        agreementId: 00000000-0000-0000-0000-000000000001
-        agreementFileId: 00000000-0000-0000-0000-000000000002
-        userId: 00000000-0000-0000-0000-000000000003
-        userDisplayName: John Doe
-        userEmail: john.doe@example.com
-        userPrincipalName: john.doe@example.com
-        deviceDisplayName: John's Laptop
-        deviceId: 00000000-0000-0000-0000-000000000004
-        deviceOSType: Windows
-        deviceOSVersion: 10.0.19041
-        recordedDateTime: '2024-01-15T10:30:00Z'
-        state: accepted
-        '@odata.type': '#microsoft.graph.agreementAcceptance'
-    AgreementAcceptanceCollectionExample:
-      summary: Example collection of agreement acceptances
-      value:
-        value:
-        - id: 00000000-0000-0000-0000-000000000005
-          agreementId: 00000000-0000-0000-0000-000000000001
-          agreementFileId: 00000000-0000-0000-0000-000000000002
-          userId: 00000000-0000-0000-0000-000000000003
-          userDisplayName: John Doe
-          userEmail: john.doe@example.com
-          userPrincipalName: john.doe@example.com
-          deviceDisplayName: John's Laptop
-          deviceId: 00000000-0000-0000-0000-000000000004
-          deviceOSType: Windows
-          deviceOSVersion: 10.0.19041
-          recordedDateTime: '2024-01-15T10:30:00Z'
-          expirationDateTime: '2024-04-15T10:30:00Z'
-          state: accepted
-          '@odata.type': '#microsoft.graph.agreementAcceptance'
-        '@odata.count': 1
 x-refined-from:
 - agreementacceptances-openapi-original.yml
 - agreements-openapi-original.yml

@@ -97,8 +97,54 @@ paths:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
 components:
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   schemas:
-    microsoft.graph.ODataErrors.MainError:
+    microsoft.graph.onPremisesConditionalAccessSettings:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: onPremisesConditionalAccessSettings
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          enabled:
+            type: boolean
+            description: Indicates if on premises conditional access is enabled for this organization
+          excludedGroups:
+            type: array
+            items:
+              pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+              type: string
+              format: uuid
+            description: User groups that will be exempt by on premises conditional access. All users in these groups will be exempt from the conditional access policy.
+          includedGroups:
+            type: array
+            items:
+              pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+              type: string
+              format: uuid
+            description: User groups that will be targeted by on premises conditional access. All users in these groups will be required to have mobile device managed and compliant for mail access.
+          overrideDefaultRule:
+            type: boolean
+            description: Override the default access rule when allowing a device to ensure access is granted.
+          '@odata.type':
+            type: string
+        description: Singleton entity which represents the Exchange OnPremises Conditional Access Settings for a tenant.
+      x-ms-discriminator-value: '#microsoft.graph.onPremisesConditionalAccessSettings'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
       - message
@@ -108,17 +154,10 @@ components:
           type: string
         message:
           type: string
-          x-ms-primary-error-message: true
         target:
           type:
           - string
           - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -144,13 +183,27 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.ODataError:
+    microsoft.graph.ODataErrors.MainError:
       required:
-      - error
+      - code
+      - message
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1220,56 +1273,3 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.onPremisesConditionalAccessSettings:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: onPremisesConditionalAccessSettings
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          enabled:
-            type: boolean
-            description: Indicates if on premises conditional access is enabled for this organization
-          excludedGroups:
-            type: array
-            items:
-              pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-              type: string
-              format: uuid
-            description: User groups that will be exempt by on premises conditional access. All users in these groups will be exempt from the conditional access policy.
-          includedGroups:
-            type: array
-            items:
-              pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-              type: string
-              format: uuid
-            description: User groups that will be targeted by on premises conditional access. All users in these groups will be required to have mobile device managed and compliant for mail access.
-          overrideDefaultRule:
-            type: boolean
-            description: Override the default access rule when allowing a device to ensure access is granted.
-          '@odata.type':
-            type: string
-        description: Singleton entity which represents the Exchange OnPremises Conditional Access Settings for a tenant.
-      x-ms-discriminator-value: '#microsoft.graph.onPremisesConditionalAccessSettings'
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
