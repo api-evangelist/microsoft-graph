@@ -105,6 +105,36 @@ paths:
       x-ms-docs-operation-type: operation
 components:
   schemas:
+    microsoft.graph.allowInvitesFrom:
+      title: allowInvitesFrom
+      enum:
+      - none
+      - adminsAndGuestInviters
+      - adminsGuestInvitersAndAllMembers
+      - everyone
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.defaultUserRolePermissions:
       title: defaultUserRolePermissions
       required:
@@ -139,6 +169,110 @@ components:
           description: Indicates if user consent to apps is allowed, and if it is, which permission to grant consent and which app consent policy (permissionGrantPolicy) govern the permission for users to grant consent. Value should be in the format managePermissionGrantsForSelf.{id}, where {id} is the id of a built-in or custom app consent policy. An empty list indicates user consent to apps is disabled.
         '@odata.type':
           type: string
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.policyBase:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
+      - title: policyBase
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description for this policy. Required.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Display name for this policy. Required.
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.policyBase'
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
+            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
+            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
+            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
+            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
+            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
+            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
+            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
+            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
+            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
+            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
+            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.authorizationPolicy:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.policyBase'
+      - title: authorizationPolicy
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          allowedToSignUpEmailBasedSubscriptions:
+            type: boolean
+            description: Indicates whether users can sign up for email based subscriptions.
+          allowedToUseSSPR:
+            type: boolean
+            description: Indicates whether administrators of the tenant can use the Self-Service Password Reset (SSPR). For more information, see Self-service password reset for administrators.
+          allowEmailVerifiedUsersToJoinOrganization:
+            type: boolean
+            description: Indicates whether a user can join the tenant by email validation.
+          allowInvitesFrom:
+            anyOf:
+            - $ref: '#/components/schemas/microsoft.graph.allowInvitesFrom'
+            - type:
+              - object
+              - 'null'
+            description: 'Indicates who can invite guests to the organization. The possible values are: none, adminsAndGuestInviters, adminsGuestInvitersAndAllMembers, everyone.  everyone is the default setting for all cloud environments except US Government. For more information, see allowInvitesFrom values.'
+          allowUserConsentForRiskyApps:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether user consent for risky apps is allowed. We recommend keeping allowUserConsentForRiskyApps as false. Default value is false.
+          blockMsolPowerShell:
+            type:
+            - boolean
+            - 'null'
+            description: To disable the use of MSOL PowerShell, set this property to true. This also disables user-based access to the legacy service endpoint used by MSOL PowerShell. This doesn't affect Microsoft Entra Connect or Microsoft Graph.
+          defaultUserRolePermissions:
+            $ref: '#/components/schemas/microsoft.graph.defaultUserRolePermissions'
+          guestUserRoleId:
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+            type:
+            - string
+            - 'null'
+            description: 'Represents role templateId for the role that should be granted to guests. Currently following roles are supported:  User (a0b1b346-4d3e-4e8b-98f8-753987be4970), Guest User (10dae51f-b6af-4016-8d66-8c2a99b929b3), and Restricted Guest User (2af84b1e-32c8-42b7-82bc-daa82404023b).'
+            format: uuid
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.authorizationPolicy'
+      x-ms-discriminator-value: '#microsoft.graph.authorizationPolicy'
     microsoft.graph.directoryObject:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -192,74 +326,6 @@ components:
             '#microsoft.graph.resourceSpecificPermissionGrant': '#/components/schemas/microsoft.graph.resourceSpecificPermissionGrant'
             '#microsoft.graph.servicePrincipal': '#/components/schemas/microsoft.graph.servicePrincipal'
             '#microsoft.graph.user': '#/components/schemas/microsoft.graph.user'
-    microsoft.graph.authorizationPolicy:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.policyBase'
-      - title: authorizationPolicy
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          allowedToSignUpEmailBasedSubscriptions:
-            type: boolean
-            description: Indicates whether users can sign up for email based subscriptions.
-          allowedToUseSSPR:
-            type: boolean
-            description: Indicates whether administrators of the tenant can use the Self-Service Password Reset (SSPR). For more information, see Self-service password reset for administrators.
-          allowEmailVerifiedUsersToJoinOrganization:
-            type: boolean
-            description: Indicates whether a user can join the tenant by email validation.
-          allowInvitesFrom:
-            anyOf:
-            - $ref: '#/components/schemas/microsoft.graph.allowInvitesFrom'
-            - type:
-              - object
-              - 'null'
-            description: 'Indicates who can invite guests to the organization. The possible values are: none, adminsAndGuestInviters, adminsGuestInvitersAndAllMembers, everyone.  everyone is the default setting for all cloud environments except US Government. For more information, see allowInvitesFrom values.'
-          allowUserConsentForRiskyApps:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates whether user consent for risky apps is allowed. We recommend keeping allowUserConsentForRiskyApps as false. Default value is false.
-          blockMsolPowerShell:
-            type:
-            - boolean
-            - 'null'
-            description: To disable the use of MSOL PowerShell, set this property to true. This also disables user-based access to the legacy service endpoint used by MSOL PowerShell. This doesn't affect Microsoft Entra Connect or Microsoft Graph.
-          defaultUserRolePermissions:
-            $ref: '#/components/schemas/microsoft.graph.defaultUserRolePermissions'
-          guestUserRoleId:
-            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
-            type:
-            - string
-            - 'null'
-            description: 'Represents role templateId for the role that should be granted to guests. Currently following roles are supported:  User (a0b1b346-4d3e-4e8b-98f8-753987be4970), Guest User (10dae51f-b6af-4016-8d66-8c2a99b929b3), and Restricted Guest User (2af84b1e-32c8-42b7-82bc-daa82404023b).'
-            format: uuid
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.authorizationPolicy'
-      x-ms-discriminator-value: '#microsoft.graph.authorizationPolicy'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1354,72 +1420,6 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type:
-          - string
-          - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.policyBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
-      - title: policyBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          description:
-            type:
-            - string
-            - 'null'
-            description: Description for this policy. Required.
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: Display name for this policy. Required.
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.policyBase'
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
-            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
-            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
-            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
-            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
-            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
-            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
-            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
-            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
-            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
-            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
-            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
-    microsoft.graph.allowInvitesFrom:
-      title: allowInvitesFrom
-      enum:
-      - none
-      - adminsAndGuestInviters
-      - adminsGuestInvitersAndAllMembers
-      - everyone
-      - unknownFutureValue
-      type: string
   responses:
     error:
       description: error

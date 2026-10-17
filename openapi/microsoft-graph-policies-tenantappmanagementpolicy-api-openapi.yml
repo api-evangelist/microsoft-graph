@@ -105,6 +105,30 @@ paths:
       x-ms-docs-operation-type: operation
 components:
   schemas:
+    microsoft.graph.appManagementConfiguration:
+      title: appManagementConfiguration
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        keyCredentials:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.keyCredentialConfiguration'
+          description: Collection of keyCredential restrictions settings to be applied to an application or service principal.
+        passwordCredentials:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.passwordCredentialConfiguration'
+          description: Collection of password restrictions settings to be applied to an application or service principal.
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.appManagementApplicationConfiguration': '#/components/schemas/microsoft.graph.appManagementApplicationConfiguration'
+          '#microsoft.graph.appManagementServicePrincipalConfiguration': '#/components/schemas/microsoft.graph.appManagementServicePrincipalConfiguration'
+          '#microsoft.graph.customAppManagementConfiguration': '#/components/schemas/microsoft.graph.customAppManagementConfiguration'
     microsoft.graph.keyCredentialConfiguration:
       title: keyCredentialConfiguration
       required:
@@ -136,66 +160,30 @@ components:
           $ref: '#/components/schemas/microsoft.graph.appManagementRestrictionState'
         '@odata.type':
           type: string
-    microsoft.graph.appManagementRestrictionState:
-      title: appManagementRestrictionState
-      enum:
-      - enabled
-      - disabled
-      - unknownFutureValue
-      type: string
-    microsoft.graph.directoryObject:
+    microsoft.graph.appManagementServicePrincipalConfiguration:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: directoryObject
+      - $ref: '#/components/schemas/microsoft.graph.appManagementConfiguration'
+      - title: appManagementServicePrincipalConfiguration
         required:
         - '@odata.type'
         type: object
         properties:
-          deletedDateTime:
-            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-            type:
-            - string
-            - 'null'
-            description: Date and time when this object was deleted. Always null when the object hasn't been deleted.
-            format: date-time
           '@odata.type':
             type: string
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.administrativeUnit': '#/components/schemas/microsoft.graph.administrativeUnit'
-            '#microsoft.graph.application': '#/components/schemas/microsoft.graph.application'
-            '#microsoft.graph.appRoleAssignment': '#/components/schemas/microsoft.graph.appRoleAssignment'
-            '#microsoft.graph.certificateAuthorityDetail': '#/components/schemas/microsoft.graph.certificateAuthorityDetail'
-            '#microsoft.graph.certificateBasedAuthPki': '#/components/schemas/microsoft.graph.certificateBasedAuthPki'
-            '#microsoft.graph.contract': '#/components/schemas/microsoft.graph.contract'
-            '#microsoft.graph.device': '#/components/schemas/microsoft.graph.device'
-            '#microsoft.graph.directoryObjectPartnerReference': '#/components/schemas/microsoft.graph.directoryObjectPartnerReference'
-            '#microsoft.graph.directoryRole': '#/components/schemas/microsoft.graph.directoryRole'
-            '#microsoft.graph.directoryRoleTemplate': '#/components/schemas/microsoft.graph.directoryRoleTemplate'
-            '#microsoft.graph.endpoint': '#/components/schemas/microsoft.graph.endpoint'
-            '#microsoft.graph.extensionProperty': '#/components/schemas/microsoft.graph.extensionProperty'
-            '#microsoft.graph.group': '#/components/schemas/microsoft.graph.group'
-            '#microsoft.graph.groupSettingTemplate': '#/components/schemas/microsoft.graph.groupSettingTemplate'
-            '#microsoft.graph.multiTenantOrganizationMember': '#/components/schemas/microsoft.graph.multiTenantOrganizationMember'
-            '#microsoft.graph.organization': '#/components/schemas/microsoft.graph.organization'
-            '#microsoft.graph.orgContact': '#/components/schemas/microsoft.graph.orgContact'
-            '#microsoft.graph.policyBase': '#/components/schemas/microsoft.graph.policyBase'
-            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
-            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
-            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
-            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
-            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
-            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
-            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
-            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
-            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
-            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
-            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
-            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
-            '#microsoft.graph.resourceSpecificPermissionGrant': '#/components/schemas/microsoft.graph.resourceSpecificPermissionGrant'
-            '#microsoft.graph.servicePrincipal': '#/components/schemas/microsoft.graph.servicePrincipal'
-            '#microsoft.graph.user': '#/components/schemas/microsoft.graph.user'
+            default: '#microsoft.graph.appManagementServicePrincipalConfiguration'
+      x-ms-discriminator-value: '#microsoft.graph.appManagementServicePrincipalConfiguration'
+    microsoft.graph.appManagementApplicationConfiguration:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.appManagementConfiguration'
+      - title: appManagementApplicationConfiguration
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+            default: '#microsoft.graph.appManagementApplicationConfiguration'
+      x-ms-discriminator-value: '#microsoft.graph.appManagementApplicationConfiguration'
     microsoft.graph.passwordCredentialConfiguration:
       title: passwordCredentialConfiguration
       required:
@@ -227,14 +215,7 @@ components:
           $ref: '#/components/schemas/microsoft.graph.appManagementRestrictionState'
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.ODataErrors.MainError:
       required:
       - code
       - message
@@ -244,22 +225,70 @@ components:
           type: string
         message:
           type: string
+          x-ms-primary-error-message: true
         target:
           type:
           - string
           - 'null'
-    microsoft.graph.appManagementApplicationConfiguration:
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.policyBase:
       allOf:
-      - $ref: '#/components/schemas/microsoft.graph.appManagementConfiguration'
-      - title: appManagementApplicationConfiguration
+      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
+      - title: policyBase
         required:
         - '@odata.type'
         type: object
         properties:
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description for this policy. Required.
+          displayName:
+            type:
+            - string
+            - 'null'
+            description: Display name for this policy. Required.
           '@odata.type':
             type: string
-            default: '#microsoft.graph.appManagementApplicationConfiguration'
-      x-ms-discriminator-value: '#microsoft.graph.appManagementApplicationConfiguration'
+            default: '#microsoft.graph.policyBase'
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
+            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
+            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
+            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
+            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
+            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
+            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
+            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
+            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
+            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
+            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
+            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
+    microsoft.graph.appCredentialRestrictionType:
+      title: appCredentialRestrictionType
+      enum:
+      - passwordAddition
+      - passwordLifetime
+      - symmetricKeyAddition
+      - symmetricKeyLifetime
+      - customPasswordAddition
+      - unknownFutureValue
+      type: string
     microsoft.graph.entity:
       title: entity
       required:
@@ -1329,48 +1358,7 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type:
-          - string
-          - 'null'
-          description: Request Id as tracked internally by the service
-        client-request-id:
-          type:
-          - string
-          - 'null'
-          description: Client request Id as sent by the client application.
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the error occured.
-          format: date-time
-        '@odata.type':
-          type: string
-    microsoft.graph.appCredentialRestrictionType:
-      title: appCredentialRestrictionType
-      enum:
-      - passwordAddition
-      - passwordLifetime
-      - symmetricKeyAddition
-      - symmetricKeyLifetime
-      - customPasswordAddition
-      - unknownFutureValue
-      type: string
-    microsoft.graph.appKeyCredentialRestrictionType:
-      title: appKeyCredentialRestrictionType
-      enum:
-      - asymmetricKeyLifetime
-      - unknownFutureValue
-      type: string
-    microsoft.graph.ODataErrors.MainError:
+    microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
       - message
@@ -1380,17 +1368,70 @@ components:
           type: string
         message:
           type: string
-          x-ms-primary-error-message: true
         target:
           type:
           - string
           - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.appManagementRestrictionState:
+      title: appManagementRestrictionState
+      enum:
+      - enabled
+      - disabled
+      - unknownFutureValue
+      type: string
+    microsoft.graph.directoryObject:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: directoryObject
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          deletedDateTime:
+            pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+            type:
+            - string
+            - 'null'
+            description: Date and time when this object was deleted. Always null when the object hasn't been deleted.
+            format: date-time
+          '@odata.type':
+            type: string
+        discriminator:
+          propertyName: '@odata.type'
+          mapping:
+            '#microsoft.graph.administrativeUnit': '#/components/schemas/microsoft.graph.administrativeUnit'
+            '#microsoft.graph.application': '#/components/schemas/microsoft.graph.application'
+            '#microsoft.graph.appRoleAssignment': '#/components/schemas/microsoft.graph.appRoleAssignment'
+            '#microsoft.graph.certificateAuthorityDetail': '#/components/schemas/microsoft.graph.certificateAuthorityDetail'
+            '#microsoft.graph.certificateBasedAuthPki': '#/components/schemas/microsoft.graph.certificateBasedAuthPki'
+            '#microsoft.graph.contract': '#/components/schemas/microsoft.graph.contract'
+            '#microsoft.graph.device': '#/components/schemas/microsoft.graph.device'
+            '#microsoft.graph.directoryObjectPartnerReference': '#/components/schemas/microsoft.graph.directoryObjectPartnerReference'
+            '#microsoft.graph.directoryRole': '#/components/schemas/microsoft.graph.directoryRole'
+            '#microsoft.graph.directoryRoleTemplate': '#/components/schemas/microsoft.graph.directoryRoleTemplate'
+            '#microsoft.graph.endpoint': '#/components/schemas/microsoft.graph.endpoint'
+            '#microsoft.graph.extensionProperty': '#/components/schemas/microsoft.graph.extensionProperty'
+            '#microsoft.graph.group': '#/components/schemas/microsoft.graph.group'
+            '#microsoft.graph.groupSettingTemplate': '#/components/schemas/microsoft.graph.groupSettingTemplate'
+            '#microsoft.graph.multiTenantOrganizationMember': '#/components/schemas/microsoft.graph.multiTenantOrganizationMember'
+            '#microsoft.graph.organization': '#/components/schemas/microsoft.graph.organization'
+            '#microsoft.graph.orgContact': '#/components/schemas/microsoft.graph.orgContact'
+            '#microsoft.graph.policyBase': '#/components/schemas/microsoft.graph.policyBase'
+            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
+            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
+            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
+            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
+            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
+            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
+            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
+            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
+            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
+            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
+            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
+            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
+            '#microsoft.graph.resourceSpecificPermissionGrant': '#/components/schemas/microsoft.graph.resourceSpecificPermissionGrant'
+            '#microsoft.graph.servicePrincipal': '#/components/schemas/microsoft.graph.servicePrincipal'
+            '#microsoft.graph.user': '#/components/schemas/microsoft.graph.user'
     microsoft.graph.tenantAppManagementPolicy:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.policyBase'
@@ -1420,78 +1461,37 @@ components:
             type: string
             default: '#microsoft.graph.tenantAppManagementPolicy'
       x-ms-discriminator-value: '#microsoft.graph.tenantAppManagementPolicy'
-    microsoft.graph.appManagementServicePrincipalConfiguration:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.appManagementConfiguration'
-      - title: appManagementServicePrincipalConfiguration
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.appManagementServicePrincipalConfiguration'
-      x-ms-discriminator-value: '#microsoft.graph.appManagementServicePrincipalConfiguration'
-    microsoft.graph.policyBase:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.directoryObject'
-      - title: policyBase
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          description:
-            type:
-            - string
-            - 'null'
-            description: Description for this policy. Required.
-          displayName:
-            type:
-            - string
-            - 'null'
-            description: Display name for this policy. Required.
-          '@odata.type':
-            type: string
-            default: '#microsoft.graph.policyBase'
-        discriminator:
-          propertyName: '@odata.type'
-          mapping:
-            '#microsoft.graph.appManagementPolicy': '#/components/schemas/microsoft.graph.appManagementPolicy'
-            '#microsoft.graph.authorizationPolicy': '#/components/schemas/microsoft.graph.authorizationPolicy'
-            '#microsoft.graph.crossTenantAccessPolicy': '#/components/schemas/microsoft.graph.crossTenantAccessPolicy'
-            '#microsoft.graph.identitySecurityDefaultsEnforcementPolicy': '#/components/schemas/microsoft.graph.identitySecurityDefaultsEnforcementPolicy'
-            '#microsoft.graph.permissionGrantPolicy': '#/components/schemas/microsoft.graph.permissionGrantPolicy'
-            '#microsoft.graph.stsPolicy': '#/components/schemas/microsoft.graph.stsPolicy'
-            '#microsoft.graph.activityBasedTimeoutPolicy': '#/components/schemas/microsoft.graph.activityBasedTimeoutPolicy'
-            '#microsoft.graph.claimsMappingPolicy': '#/components/schemas/microsoft.graph.claimsMappingPolicy'
-            '#microsoft.graph.homeRealmDiscoveryPolicy': '#/components/schemas/microsoft.graph.homeRealmDiscoveryPolicy'
-            '#microsoft.graph.tokenIssuancePolicy': '#/components/schemas/microsoft.graph.tokenIssuancePolicy'
-            '#microsoft.graph.tokenLifetimePolicy': '#/components/schemas/microsoft.graph.tokenLifetimePolicy'
-            '#microsoft.graph.tenantAppManagementPolicy': '#/components/schemas/microsoft.graph.tenantAppManagementPolicy'
-    microsoft.graph.appManagementConfiguration:
-      title: appManagementConfiguration
+    microsoft.graph.appKeyCredentialRestrictionType:
+      title: appKeyCredentialRestrictionType
+      enum:
+      - asymmetricKeyLifetime
+      - unknownFutureValue
+      type: string
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
       required:
       - '@odata.type'
       type: object
       properties:
-        keyCredentials:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.keyCredentialConfiguration'
-          description: Collection of keyCredential restrictions settings to be applied to an application or service principal.
-        passwordCredentials:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.passwordCredentialConfiguration'
-          description: Collection of password restrictions settings to be applied to an application or service principal.
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
         '@odata.type':
           type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.appManagementApplicationConfiguration': '#/components/schemas/microsoft.graph.appManagementApplicationConfiguration'
-          '#microsoft.graph.appManagementServicePrincipalConfiguration': '#/components/schemas/microsoft.graph.appManagementServicePrincipalConfiguration'
-          '#microsoft.graph.customAppManagementConfiguration': '#/components/schemas/microsoft.graph.customAppManagementConfiguration'
   responses:
     error:
       description: error

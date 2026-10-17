@@ -201,75 +201,75 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
+  parameters:
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
   schemas:
-    microsoft.graph.userExperienceAnalyticsAppHealthAppPerformanceByAppVersionDetailsCollectionResponse:
-      title: Collection of userExperienceAnalyticsAppHealthAppPerformanceByAppVersionDetails
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsAppHealthAppPerformanceByAppVersionDetails'
-    microsoft.graph.userExperienceAnalyticsAppHealthAppPerformanceByAppVersionDetails:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: userExperienceAnalyticsAppHealthAppPerformanceByAppVersionDetails
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          appCrashCount:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: The number of crashes for the app. Valid values -2147483648 to 2147483647
-            format: int32
-          appDisplayName:
-            type:
-            - string
-            - 'null'
-            description: The friendly name of the application.
-          appName:
-            type:
-            - string
-            - 'null'
-            description: The name of the application.
-          appPublisher:
-            type:
-            - string
-            - 'null'
-            description: The publisher of the application.
-          appVersion:
-            type:
-            - string
-            - 'null'
-            description: The version of the application.
-          deviceCountWithCrashes:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: number
-            description: 'The total number of devices that have reported one or more application crashes for this application and version. Valid values 0 to 2147483647. Supports: $select, $OrderBy. Read-only. Valid values -2147483648 to 2147483647'
-            format: int32
-          isLatestUsedVersion:
-            type: boolean
-            description: 'When TRUE, indicates the version of application is the latest version for that application that is in use. When FALSE, indicates the version is not the latest version. FALSE by default. Supports: $select, $OrderBy.'
-          isMostUsedVersion:
-            type: boolean
-            description: 'When TRUE, indicates the version of application is the most used version for that application. When FALSE, indicates the version is not the most used version. FALSE by default. Supports: $select, $OrderBy. Read-only.'
-          '@odata.type':
-            type: string
-        description: The user experience analytics application performance entity contains application performance by application version details.
-      x-ms-discriminator-value: '#microsoft.graph.userExperienceAnalyticsAppHealthAppPerformanceByAppVersionDetails'
-    microsoft.graph.ODataErrors.ODataError:
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.ODataErrors.MainError:
       required:
-      - error
+      - code
+      - message
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
     microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
@@ -284,9 +284,17 @@ components:
           type:
           - string
           - 'null'
-    ODataCountResponse:
-      type: integer
-      format: int32
+    microsoft.graph.userExperienceAnalyticsAppHealthAppPerformanceByAppVersionDetailsCollectionResponse:
+      title: Collection of userExperienceAnalyticsAppHealthAppPerformanceByAppVersionDetails
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsAppHealthAppPerformanceByAppVersionDetails'
     microsoft.graph.ODataErrors.InnerError:
       title: InnerError
       required:
@@ -312,40 +320,13 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.MainError:
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type:
-          - string
-          - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type:
-          - integer
-          - 'null'
-          format: int64
-        '@odata.nextLink':
-          type:
-          - string
-          - 'null'
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1415,51 +1396,76 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-  parameters:
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
+    microsoft.graph.userExperienceAnalyticsAppHealthAppPerformanceByAppVersionDetails:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: userExperienceAnalyticsAppHealthAppPerformanceByAppVersionDetails
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          appCrashCount:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: The number of crashes for the app. Valid values -2147483648 to 2147483647
+            format: int32
+          appDisplayName:
+            type:
+            - string
+            - 'null'
+            description: The friendly name of the application.
+          appName:
+            type:
+            - string
+            - 'null'
+            description: The name of the application.
+          appPublisher:
+            type:
+            - string
+            - 'null'
+            description: The publisher of the application.
+          appVersion:
+            type:
+            - string
+            - 'null'
+            description: The version of the application.
+          deviceCountWithCrashes:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: number
+            description: 'The total number of devices that have reported one or more application crashes for this application and version. Valid values 0 to 2147483647. Supports: $select, $OrderBy. Read-only. Valid values -2147483648 to 2147483647'
+            format: int32
+          isLatestUsedVersion:
+            type: boolean
+            description: 'When TRUE, indicates the version of application is the latest version for that application that is in use. When FALSE, indicates the version is not the latest version. FALSE by default. Supports: $select, $OrderBy.'
+          isMostUsedVersion:
+            type: boolean
+            description: 'When TRUE, indicates the version of application is the most used version for that application. When FALSE, indicates the version is not the most used version. FALSE by default. Supports: $select, $OrderBy. Read-only.'
+          '@odata.type':
+            type: string
+        description: The user experience analytics application performance entity contains application performance by application version details.
+      x-ms-discriminator-value: '#microsoft.graph.userExperienceAnalyticsAppHealthAppPerformanceByAppVersionDetails'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
   responses:
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
     error:
       description: error
       content:
@@ -1472,9 +1478,3 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.userExperienceAnalyticsAppHealthAppPerformanceByAppVersionDetailsCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'

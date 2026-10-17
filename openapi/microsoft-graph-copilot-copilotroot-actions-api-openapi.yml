@@ -77,6 +77,42 @@ paths:
       x-ms-docs-operation-type: action
 components:
   schemas:
+    microsoft.graph.dataSourceConfiguration:
+      title: dataSourceConfiguration
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        externalItem:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.externalItemConfiguration'
+          - type:
+            - object
+            - 'null'
+        '@odata.type':
+          type: string
+    microsoft.graph.retrievalExtract:
+      title: retrievalExtract
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        relevanceScore:
+          oneOf:
+          - type:
+            - number
+            - 'null'
+            format: double
+          - type:
+            - string
+            - 'null'
+          - $ref: '#/components/schemas/ReferenceNumeric'
+        text:
+          type:
+          - string
+          - 'null'
+        '@odata.type':
+          type: string
     microsoft.graph.sensitivityLabelInfo:
       title: sensitivityLabelInfo
       required:
@@ -108,28 +144,6 @@ components:
           - 'null'
         '@odata.type':
           type: string
-    microsoft.graph.retrievalExtract:
-      title: retrievalExtract
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        relevanceScore:
-          oneOf:
-          - type:
-            - number
-            - 'null'
-            format: double
-          - type:
-            - string
-            - 'null'
-          - $ref: '#/components/schemas/ReferenceNumeric'
-        text:
-          type:
-          - string
-          - 'null'
-        '@odata.type':
-          type: string
     microsoft.graph.retrievalDataSource:
       title: retrievalDataSource
       enum:
@@ -138,18 +152,82 @@ components:
       - externalItem
       - unknownFutureValue
       type: string
-    microsoft.graph.dataSourceConfiguration:
-      title: dataSourceConfiguration
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.retrievalEntityType:
+      title: retrievalEntityType
+      enum:
+      - site
+      - list
+      - listItem
+      - drive
+      - driveItem
+      - externalItem
+      - unknownFutureValue
+      type: string
+    microsoft.graph.retrievalHit:
+      title: retrievalHit
       required:
       - '@odata.type'
       type: object
       properties:
-        externalItem:
+        extracts:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.retrievalExtract'
+        resourceMetadata:
           anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.externalItemConfiguration'
+          - $ref: '#/components/schemas/microsoft.graph.searchResourceMetadataDictionary'
           - type:
             - object
             - 'null'
+        resourceType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.retrievalEntityType'
+          - type:
+            - object
+            - 'null'
+        sensitivityLabel:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.sensitivityLabelInfo'
+          - type:
+            - object
+            - 'null'
+        webUrl:
+          type:
+          - string
+          - 'null'
+        '@odata.type':
+          type: string
+    microsoft.graph.externalItemConfiguration:
+      title: externalItemConfiguration
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        connections:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.connectionItem'
         '@odata.type':
           type: string
     microsoft.graph.ODataErrors.ODataError:
@@ -159,6 +237,24 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    ReferenceNumeric:
+      enum:
+      - -INF
+      - INF
+      - NaN
+      type:
+      - string
+      - 'null'
+    microsoft.graph.connectionItem:
+      title: connectionItem
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        connectionId:
+          type: string
+        '@odata.type':
+          type: string
     microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
@@ -173,30 +269,17 @@ components:
           type:
           - string
           - 'null'
-    microsoft.graph.externalItemConfiguration:
-      title: externalItemConfiguration
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        connections:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.connectionItem'
-        '@odata.type':
-          type: string
-    microsoft.graph.retrievalResponse:
-      title: retrievalResponse
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        retrievalHits:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.retrievalHit'
-        '@odata.type':
-          type: string
+    microsoft.graph.searchResourceMetadataDictionary:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.dictionaries'
+      - title: searchResourceMetadataDictionary
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.searchResourceMetadataDictionary'
     microsoft.graph.dictionaries:
       title: dictionaries
       required:
@@ -234,99 +317,16 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    ReferenceNumeric:
-      enum:
-      - -INF
-      - INF
-      - NaN
-      type:
-      - string
-      - 'null'
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type:
-          - string
-          - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.connectionItem:
-      title: connectionItem
+    microsoft.graph.retrievalResponse:
+      title: retrievalResponse
       required:
       - '@odata.type'
       type: object
       properties:
-        connectionId:
-          type: string
-        '@odata.type':
-          type: string
-    microsoft.graph.retrievalEntityType:
-      title: retrievalEntityType
-      enum:
-      - site
-      - list
-      - listItem
-      - drive
-      - driveItem
-      - externalItem
-      - unknownFutureValue
-      type: string
-    microsoft.graph.searchResourceMetadataDictionary:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.dictionaries'
-      - title: searchResourceMetadataDictionary
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.searchResourceMetadataDictionary'
-    microsoft.graph.retrievalHit:
-      title: retrievalHit
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        extracts:
+        retrievalHits:
           type: array
           items:
-            $ref: '#/components/schemas/microsoft.graph.retrievalExtract'
-        resourceMetadata:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.searchResourceMetadataDictionary'
-          - type:
-            - object
-            - 'null'
-        resourceType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.retrievalEntityType'
-          - type:
-            - object
-            - 'null'
-        sensitivityLabel:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.sensitivityLabelInfo'
-          - type:
-            - object
-            - 'null'
-        webUrl:
-          type:
-          - string
-          - 'null'
+            $ref: '#/components/schemas/microsoft.graph.retrievalHit'
         '@odata.type':
           type: string
   responses:

@@ -77,13 +77,6 @@ paths:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
 components:
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
   schemas:
     microsoft.graph.teamworkActivityTopicSource:
       title: teamworkActivityTopicSource
@@ -91,14 +84,7 @@ components:
       - entityUrl
       - text
       type: string
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.ODataErrors.ErrorDetails:
+    microsoft.graph.ODataErrors.MainError:
       required:
       - code
       - message
@@ -108,10 +94,24 @@ components:
           type: string
         message:
           type: string
+          x-ms-primary-error-message: true
         target:
           type:
           - string
           - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.keyValuePair:
       title: keyValuePair
       required:
@@ -128,6 +128,55 @@ components:
           description: Value for this key-value pair
         '@odata.type':
           type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.itemBody:
+      title: itemBody
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        content:
+          type:
+          - string
+          - 'null'
+          description: The content of the item.
+        contentType:
+          anyOf:
+          - $ref: '#/components/schemas/microsoft.graph.bodyType'
+          - type:
+            - object
+            - 'null'
+          description: The type of the content. Possible values are text and html.
+        '@odata.type':
+          type: string
+    microsoft.graph.teamworkNotificationRecipient:
+      title: teamworkNotificationRecipient
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        '@odata.type':
+          type: string
+      discriminator:
+        propertyName: '@odata.type'
+        mapping:
+          '#microsoft.graph.aadUserNotificationRecipient': '#/components/schemas/microsoft.graph.aadUserNotificationRecipient'
+          '#microsoft.graph.channelMembersNotificationRecipient': '#/components/schemas/microsoft.graph.channelMembersNotificationRecipient'
+          '#microsoft.graph.chatMembersNotificationRecipient': '#/components/schemas/microsoft.graph.chatMembersNotificationRecipient'
+          '#microsoft.graph.teamMembersNotificationRecipient': '#/components/schemas/microsoft.graph.teamMembersNotificationRecipient'
     microsoft.graph.bodyType:
       title: bodyType
       enum:
@@ -159,47 +208,6 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type:
-          - string
-          - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    microsoft.graph.itemBody:
-      title: itemBody
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        content:
-          type:
-          - string
-          - 'null'
-          description: The content of the item.
-        contentType:
-          anyOf:
-          - $ref: '#/components/schemas/microsoft.graph.bodyType'
-          - type:
-            - object
-            - 'null'
-          description: The type of the content. Possible values are text and html.
-        '@odata.type':
-          type: string
     microsoft.graph.teamworkActivityTopic:
       title: teamworkActivityTopic
       required:
@@ -223,18 +231,10 @@ components:
           description: The link the user clicks when they select the notification. Optional when source is entityUrl; required when source is text.
         '@odata.type':
           type: string
-    microsoft.graph.teamworkNotificationRecipient:
-      title: teamworkNotificationRecipient
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        '@odata.type':
-          type: string
-      discriminator:
-        propertyName: '@odata.type'
-        mapping:
-          '#microsoft.graph.aadUserNotificationRecipient': '#/components/schemas/microsoft.graph.aadUserNotificationRecipient'
-          '#microsoft.graph.channelMembersNotificationRecipient': '#/components/schemas/microsoft.graph.channelMembersNotificationRecipient'
-          '#microsoft.graph.chatMembersNotificationRecipient': '#/components/schemas/microsoft.graph.chatMembersNotificationRecipient'
-          '#microsoft.graph.teamMembersNotificationRecipient': '#/components/schemas/microsoft.graph.teamMembersNotificationRecipient'
+  responses:
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

@@ -367,63 +367,6 @@ paths:
         5XX:
           $ref: '#/components/responses/error'
 components:
-  parameters:
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.profilePhotoCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.profilePhotoCollectionResponse'
   schemas:
     microsoft.graph.profilePhotoCollectionResponse:
       title: Collection of profilePhoto
@@ -436,27 +379,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.profilePhoto'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
     microsoft.graph.profilePhoto:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -484,31 +406,6 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.profilePhoto'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type:
-          - string
-          - 'null'
-          description: Request Id as tracked internally by the service
-        client-request-id:
-          type:
-          - string
-          - 'null'
-          description: Client request Id as sent by the client application.
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the error occured.
-          format: date-time
-        '@odata.type':
-          type: string
     microsoft.graph.ODataErrors.MainError:
       required:
       - code
@@ -530,19 +427,6 @@ components:
             $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
         innerError:
           $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type:
-          - integer
-          - 'null'
-          format: int64
-        '@odata.nextLink':
-          type:
-          - string
-          - 'null'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1612,3 +1496,119 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+  parameters:
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+  responses:
+    microsoft.graph.profilePhotoCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.profilePhotoCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

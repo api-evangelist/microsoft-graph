@@ -244,162 +244,33 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: default
 components:
-  examples:
-    UpdateIdentityGovernanceAcceptanceResponse:
-      summary: Example response for updated identity governance agreement acceptance
-      value:
-        id: 00000000-0000-0000-0000-000000000007
-        agreementId: 00000000-0000-0000-0000-000000000001
-        agreementFileId: 00000000-0000-0000-0000-000000000002
-        userId: 00000000-0000-0000-0000-000000000003
-        userDisplayName: Jane Smith
-        userEmail: jane.smith@example.com
-        userPrincipalName: jane.smith@example.com
-        deviceDisplayName: Jane's MacBook
-        deviceId: 00000000-0000-0000-0000-000000000006
-        deviceOSType: macOS
-        deviceOSVersion: '14.0'
-        recordedDateTime: '2024-01-16T14:00:00Z'
-        expirationDateTime: '2024-04-16T14:00:00Z'
-        state: declined
-        '@odata.type': '#microsoft.graph.agreementAcceptance'
-    GetIdentityGovernanceAcceptanceResponse:
-      summary: Example response for getting an identity governance agreement acceptance
-      value:
-        id: 00000000-0000-0000-0000-000000000007
-        agreementId: 00000000-0000-0000-0000-000000000001
-        agreementFileId: 00000000-0000-0000-0000-000000000002
-        userId: 00000000-0000-0000-0000-000000000003
-        userDisplayName: Jane Smith
-        userEmail: jane.smith@example.com
-        userPrincipalName: jane.smith@example.com
-        deviceDisplayName: Jane's MacBook
-        deviceId: 00000000-0000-0000-0000-000000000006
-        deviceOSType: macOS
-        deviceOSVersion: '14.0'
-        recordedDateTime: '2024-01-16T14:00:00Z'
-        expirationDateTime: '2024-04-16T14:00:00Z'
-        state: accepted
-        '@odata.type': '#microsoft.graph.agreementAcceptance'
-    UpdateIdentityGovernanceAcceptanceRequest:
-      summary: Example request to update an identity governance agreement acceptance
-      value:
-        state: declined
-        '@odata.type': '#microsoft.graph.agreementAcceptance'
-    CreateIdentityGovernanceAcceptanceRequest:
-      summary: Example request to create an identity governance agreement acceptance
-      value:
-        agreementId: 00000000-0000-0000-0000-000000000001
-        agreementFileId: 00000000-0000-0000-0000-000000000002
-        userId: 00000000-0000-0000-0000-000000000003
-        userDisplayName: Jane Smith
-        userEmail: jane.smith@example.com
-        userPrincipalName: jane.smith@example.com
-        deviceDisplayName: Jane's MacBook
-        deviceId: 00000000-0000-0000-0000-000000000006
-        deviceOSType: macOS
-        deviceOSVersion: '14.0'
-        recordedDateTime: '2024-01-16T14:00:00Z'
-        state: accepted
-        '@odata.type': '#microsoft.graph.agreementAcceptance'
-    AgreementAcceptanceCollectionExample:
-      summary: Example collection of agreement acceptances
-      value:
-        value:
-        - id: 00000000-0000-0000-0000-000000000005
-          agreementId: 00000000-0000-0000-0000-000000000001
-          agreementFileId: 00000000-0000-0000-0000-000000000002
-          userId: 00000000-0000-0000-0000-000000000003
-          userDisplayName: John Doe
-          userEmail: john.doe@example.com
-          userPrincipalName: john.doe@example.com
-          deviceDisplayName: John's Laptop
-          deviceId: 00000000-0000-0000-0000-000000000004
-          deviceOSType: Windows
-          deviceOSVersion: 10.0.19041
-          recordedDateTime: '2024-01-15T10:30:00Z'
-          expirationDateTime: '2024-04-15T10:30:00Z'
-          state: accepted
-          '@odata.type': '#microsoft.graph.agreementAcceptance'
-        '@odata.count': 1
-    CreateIdentityGovernanceAcceptanceResponse:
-      summary: Example response for created identity governance agreement acceptance
-      value:
-        id: 00000000-0000-0000-0000-000000000007
-        agreementId: 00000000-0000-0000-0000-000000000001
-        agreementFileId: 00000000-0000-0000-0000-000000000002
-        userId: 00000000-0000-0000-0000-000000000003
-        userDisplayName: Jane Smith
-        userEmail: jane.smith@example.com
-        userPrincipalName: jane.smith@example.com
-        deviceDisplayName: Jane's MacBook
-        deviceId: 00000000-0000-0000-0000-000000000006
-        deviceOSType: macOS
-        deviceOSVersion: '14.0'
-        recordedDateTime: '2024-01-16T14:00:00Z'
-        expirationDateTime: '2024-04-16T14:00:00Z'
-        state: accepted
-        '@odata.type': '#microsoft.graph.agreementAcceptance'
-  parameters:
-    Search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    Count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
-    AgreementAcceptanceId:
-      name: agreementAcceptance-id
-      in: path
-      description: The unique identifier of the agreement acceptance
-      required: true
-      schema:
-        type: string
-      x-ms-docs-key-type: agreementAcceptance
-    Top:
-      name: $top
-      in: query
-      description: Show only the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-      example: 50
-    Filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    Skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
   schemas:
-    AgreementAcceptanceState:
-      title: AgreementAcceptanceState
-      type: string
-      enum:
-      - accepted
-      - declined
-      description: The state of the agreement acceptance.
+    AgreementAcceptanceCollectionResponse:
+      title: AgreementAcceptanceCollectionResponse
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementAcceptance'
+        '@odata.nextLink':
+          type: string
+          nullable: true
+        '@odata.count':
+          type: integer
+          format: int32
+    InnerError:
+      title: InnerError
+      type: object
+      description: The structure of this object is service-specific
+    ODataError:
+      title: ODataError
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/MainError'
     Entity:
       title: Entity
       type: object
@@ -409,6 +280,51 @@ components:
           description: The unique identifier for an entity. Read-only.
         '@odata.type':
           type: string
+    AgreementAcceptanceState:
+      title: AgreementAcceptanceState
+      type: string
+      enum:
+      - accepted
+      - declined
+      description: The state of the agreement acceptance.
+    ODataCountResponse:
+      type: integer
+      format: int32
+    ErrorDetail:
+      title: ErrorDetail
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+          nullable: true
+    MainError:
+      title: MainError
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
     AgreementAcceptance:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -478,70 +394,154 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementAcceptance'
-    AgreementAcceptanceCollectionResponse:
-      title: AgreementAcceptanceCollectionResponse
-      type: object
-      properties:
+  examples:
+    UpdateIdentityGovernanceAcceptanceResponse:
+      summary: Example response for updated identity governance agreement acceptance
+      value:
+        id: 00000000-0000-0000-0000-000000000007
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000003
+        userDisplayName: Jane Smith
+        userEmail: jane.smith@example.com
+        userPrincipalName: jane.smith@example.com
+        deviceDisplayName: Jane's MacBook
+        deviceId: 00000000-0000-0000-0000-000000000006
+        deviceOSType: macOS
+        deviceOSVersion: '14.0'
+        recordedDateTime: '2024-01-16T14:00:00Z'
+        expirationDateTime: '2024-04-16T14:00:00Z'
+        state: declined
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    AgreementAcceptanceCollectionExample:
+      summary: Example collection of agreement acceptances
+      value:
         value:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementAcceptance'
-        '@odata.nextLink':
-          type: string
-          nullable: true
-        '@odata.count':
-          type: integer
-          format: int32
-    ODataError:
-      title: ODataError
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
-    MainError:
-      title: MainError
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        innerError:
-          $ref: '#/components/schemas/InnerError'
-    ODataCountResponse:
-      type: integer
-      format: int32
-    ErrorDetail:
-      title: ErrorDetail
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    InnerError:
-      title: InnerError
-      type: object
-      description: The structure of this object is service-specific
+        - id: 00000000-0000-0000-0000-000000000005
+          agreementId: 00000000-0000-0000-0000-000000000001
+          agreementFileId: 00000000-0000-0000-0000-000000000002
+          userId: 00000000-0000-0000-0000-000000000003
+          userDisplayName: John Doe
+          userEmail: john.doe@example.com
+          userPrincipalName: john.doe@example.com
+          deviceDisplayName: John's Laptop
+          deviceId: 00000000-0000-0000-0000-000000000004
+          deviceOSType: Windows
+          deviceOSVersion: 10.0.19041
+          recordedDateTime: '2024-01-15T10:30:00Z'
+          expirationDateTime: '2024-04-15T10:30:00Z'
+          state: accepted
+          '@odata.type': '#microsoft.graph.agreementAcceptance'
+        '@odata.count': 1
+    UpdateIdentityGovernanceAcceptanceRequest:
+      summary: Example request to update an identity governance agreement acceptance
+      value:
+        state: declined
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    CreateIdentityGovernanceAcceptanceRequest:
+      summary: Example request to create an identity governance agreement acceptance
+      value:
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000003
+        userDisplayName: Jane Smith
+        userEmail: jane.smith@example.com
+        userPrincipalName: jane.smith@example.com
+        deviceDisplayName: Jane's MacBook
+        deviceId: 00000000-0000-0000-0000-000000000006
+        deviceOSType: macOS
+        deviceOSVersion: '14.0'
+        recordedDateTime: '2024-01-16T14:00:00Z'
+        state: accepted
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    CreateIdentityGovernanceAcceptanceResponse:
+      summary: Example response for created identity governance agreement acceptance
+      value:
+        id: 00000000-0000-0000-0000-000000000007
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000003
+        userDisplayName: Jane Smith
+        userEmail: jane.smith@example.com
+        userPrincipalName: jane.smith@example.com
+        deviceDisplayName: Jane's MacBook
+        deviceId: 00000000-0000-0000-0000-000000000006
+        deviceOSType: macOS
+        deviceOSVersion: '14.0'
+        recordedDateTime: '2024-01-16T14:00:00Z'
+        expirationDateTime: '2024-04-16T14:00:00Z'
+        state: accepted
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+    GetIdentityGovernanceAcceptanceResponse:
+      summary: Example response for getting an identity governance agreement acceptance
+      value:
+        id: 00000000-0000-0000-0000-000000000007
+        agreementId: 00000000-0000-0000-0000-000000000001
+        agreementFileId: 00000000-0000-0000-0000-000000000002
+        userId: 00000000-0000-0000-0000-000000000003
+        userDisplayName: Jane Smith
+        userEmail: jane.smith@example.com
+        userPrincipalName: jane.smith@example.com
+        deviceDisplayName: Jane's MacBook
+        deviceId: 00000000-0000-0000-0000-000000000006
+        deviceOSType: macOS
+        deviceOSVersion: '14.0'
+        recordedDateTime: '2024-01-16T14:00:00Z'
+        expirationDateTime: '2024-04-16T14:00:00Z'
+        state: accepted
+        '@odata.type': '#microsoft.graph.agreementAcceptance'
+  parameters:
+    Top:
+      name: $top
+      in: query
+      description: Show only the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+      example: 50
+    Count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    AgreementAcceptanceId:
+      name: agreementAcceptance-id
+      in: path
+      description: The unique identifier of the agreement acceptance
+      required: true
+      schema:
+        type: string
+      x-ms-docs-key-type: agreementAcceptance
+    Skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    Search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
+    Filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
   responses:
     AgreementAcceptanceCollectionResponse:
       description: Retrieved collection of agreement acceptances

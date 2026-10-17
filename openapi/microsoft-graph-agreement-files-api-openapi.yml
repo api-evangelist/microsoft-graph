@@ -127,118 +127,16 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: default
 components:
-  examples:
-    UpdateAgreementFileResponse:
-      summary: Example response for updated agreement file
-      value:
-        id: 00000000-0000-0000-0000-000000000002
-        displayName: Updated Terms of Use - English
-        fileName: terms-of-use.pdf
-        language: en-US
-        isDefault: true
-        isMajorVersion: true
-        createdDateTime: '2024-01-01T00:00:00Z'
-        '@odata.type': '#microsoft.graph.agreementFile'
-    UpdateAgreementFileRequest:
-      summary: Example request to update an agreement file
-      value:
-        displayName: Updated Terms of Use - English
-        isDefault: true
-        '@odata.type': '#microsoft.graph.agreementFile'
-    GetAgreementFileResponse:
-      summary: Example response for getting an agreement file
-      value:
-        id: 00000000-0000-0000-0000-000000000002
-        displayName: Terms of Use - English
-        fileName: terms-of-use.pdf
-        language: en-US
-        isDefault: true
-        isMajorVersion: true
-        createdDateTime: '2024-01-01T00:00:00Z'
-        '@odata.type': '#microsoft.graph.agreementFile'
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ODataError'
   schemas:
-    ErrorDetail:
-      title: ErrorDetail
-      required:
-      - code
-      - message
+    Entity:
+      title: Entity
       type: object
       properties:
-        code:
+        id:
           type: string
-        message:
-          type: string
-        target:
-          type: string
-          nullable: true
-    MainError:
-      title: MainError
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type: string
-          nullable: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        innerError:
-          $ref: '#/components/schemas/InnerError'
-    AgreementFileLocalization:
-      allOf:
-      - $ref: '#/components/schemas/AgreementFileProperties'
-      - title: AgreementFileLocalization
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          versions:
-            type: array
-            items:
-              $ref: '#/components/schemas/AgreementFileVersion'
-            description: Read-only. Customized versions of the terms of use agreement in the Microsoft Entra tenant.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.agreementFileLocalization'
-    AgreementFileData:
-      title: AgreementFileData
-      type: object
-      properties:
-        data:
-          type: string
-          description: Data that represents the terms of use PDF document. Read-only.
-          format: base64url
-          nullable: true
+          description: The unique identifier for an entity. Read-only.
         '@odata.type':
           type: string
-    ODataError:
-      title: ODataError
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/MainError'
-    InnerError:
-      title: InnerError
-      type: object
-      description: The structure of this object is service-specific
     AgreementFileProperties:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -279,15 +177,39 @@ components:
             nullable: true
           '@odata.type':
             type: string
-    Entity:
-      title: Entity
+    AgreementFileVersion:
+      allOf:
+      - $ref: '#/components/schemas/AgreementFileProperties'
+      - title: AgreementFileVersion
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
+    ODataError:
+      title: ODataError
+      required:
+      - error
       type: object
       properties:
-        id:
+        error:
+          $ref: '#/components/schemas/MainError'
+    ErrorDetail:
+      title: ErrorDetail
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
           type: string
-          description: The unique identifier for an entity. Read-only.
-        '@odata.type':
+        message:
           type: string
+        target:
+          type: string
+          nullable: true
     AgreementFile:
       allOf:
       - $ref: '#/components/schemas/AgreementFileProperties'
@@ -305,17 +227,88 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementFile'
-    AgreementFileVersion:
+    AgreementFileLocalization:
       allOf:
       - $ref: '#/components/schemas/AgreementFileProperties'
-      - title: AgreementFileVersion
+      - title: AgreementFileLocalization
         required:
         - '@odata.type'
         type: object
         properties:
+          versions:
+            type: array
+            items:
+              $ref: '#/components/schemas/AgreementFileVersion'
+            description: Read-only. Customized versions of the terms of use agreement in the Microsoft Entra tenant.
+            x-ms-navigationProperty: true
           '@odata.type':
             type: string
-      x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
+      x-ms-discriminator-value: '#microsoft.graph.agreementFileLocalization'
+    AgreementFileData:
+      title: AgreementFileData
+      type: object
+      properties:
+        data:
+          type: string
+          description: Data that represents the terms of use PDF document. Read-only.
+          format: base64url
+          nullable: true
+        '@odata.type':
+          type: string
+    InnerError:
+      title: InnerError
+      type: object
+      description: The structure of this object is service-specific
+    MainError:
+      title: MainError
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type: string
+          nullable: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        innerError:
+          $ref: '#/components/schemas/InnerError'
+  examples:
+    GetAgreementFileResponse:
+      summary: Example response for getting an agreement file
+      value:
+        id: 00000000-0000-0000-0000-000000000002
+        displayName: Terms of Use - English
+        fileName: terms-of-use.pdf
+        language: en-US
+        isDefault: true
+        isMajorVersion: true
+        createdDateTime: '2024-01-01T00:00:00Z'
+        '@odata.type': '#microsoft.graph.agreementFile'
+    UpdateAgreementFileRequest:
+      summary: Example request to update an agreement file
+      value:
+        displayName: Updated Terms of Use - English
+        isDefault: true
+        '@odata.type': '#microsoft.graph.agreementFile'
+    UpdateAgreementFileResponse:
+      summary: Example response for updated agreement file
+      value:
+        id: 00000000-0000-0000-0000-000000000002
+        displayName: Updated Terms of Use - English
+        fileName: terms-of-use.pdf
+        language: en-US
+        isDefault: true
+        isMajorVersion: true
+        createdDateTime: '2024-01-01T00:00:00Z'
+        '@odata.type': '#microsoft.graph.agreementFile'
   parameters:
     AgreementId:
       name: agreement-id
@@ -325,3 +318,10 @@ components:
       schema:
         type: string
       x-ms-docs-key-type: agreement
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ODataError'

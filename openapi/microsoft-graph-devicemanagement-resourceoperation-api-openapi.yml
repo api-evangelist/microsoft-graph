@@ -202,39 +202,6 @@ paths:
           $ref: '#/components/responses/error'
 components:
   parameters:
-    skip:
-      name: $skip
-      in: query
-      description: Skip the first n items
-      style: form
-      explode: false
-      schema:
-        minimum: 0
-        type: integer
-    filter:
-      name: $filter
-      in: query
-      description: Filter items by property values
-      style: form
-      explode: false
-      schema:
-        type: string
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
-    count:
-      name: $count
-      in: query
-      description: Include count of items
-      style: form
-      explode: false
-      schema:
-        type: boolean
     top:
       name: $top
       in: query
@@ -245,60 +212,75 @@ components:
         minimum: 0
         type: integer
       example: 50
-  responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
-    microsoft.graph.resourceOperationCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.resourceOperationCollectionResponse'
-    ODataCountResponse:
-      description: The count of the resource
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/ODataCountResponse'
+    filter:
+      name: $filter
+      in: query
+      description: Filter items by property values
+      style: form
+      explode: false
+      schema:
+        type: string
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
+    count:
+      name: $count
+      in: query
+      description: Include count of items
+      style: form
+      explode: false
+      schema:
+        type: boolean
+    search:
+      name: $search
+      in: query
+      description: Search items by search phrases
+      style: form
+      explode: false
+      schema:
+        type: string
   schemas:
-    microsoft.graph.resourceOperation:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.entity'
-      - title: resourceOperation
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          actionName:
-            type:
-            - string
-            - 'null'
-            description: Type of action this operation is going to perform. The actionName should be concise and limited to as few words as possible.
-          description:
-            type:
-            - string
-            - 'null'
-            description: Description of the resource operation. The description is used in mouse-over text for the operation when shown in the Azure Portal.
-          resourceName:
-            type:
-            - string
-            - 'null'
-            description: Name of the Resource this operation is performed on.
-          '@odata.type':
-            type: string
-        description: Describes the resourceOperation resource (entity) of the Microsoft Graph API (REST), which supports Intune workflows related to role-based access control (RBAC).
-      x-ms-discriminator-value: '#microsoft.graph.resourceOperation'
-    microsoft.graph.ODataErrors.ODataError:
+    ODataCountResponse:
+      type: integer
+      format: int32
+    microsoft.graph.ODataErrors.MainError:
       required:
-      - error
+      - code
+      - message
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.resourceOperationCollectionResponse:
+      title: Collection of resourceOperation
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.resourceOperation'
     microsoft.graph.ODataErrors.ErrorDetails:
       required:
       - code
@@ -338,43 +320,40 @@ components:
           format: date-time
         '@odata.type':
           type: string
-    microsoft.graph.ODataErrors.MainError:
+    microsoft.graph.resourceOperation:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.entity'
+      - title: resourceOperation
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          actionName:
+            type:
+            - string
+            - 'null'
+            description: Type of action this operation is going to perform. The actionName should be concise and limited to as few words as possible.
+          description:
+            type:
+            - string
+            - 'null'
+            description: Description of the resource operation. The description is used in mouse-over text for the operation when shown in the Azure Portal.
+          resourceName:
+            type:
+            - string
+            - 'null'
+            description: Name of the Resource this operation is performed on.
+          '@odata.type':
+            type: string
+        description: Describes the resourceOperation resource (entity) of the Microsoft Graph API (REST), which supports Intune workflows related to role-based access control (RBAC).
+      x-ms-discriminator-value: '#microsoft.graph.resourceOperation'
+    microsoft.graph.ODataErrors.ODataError:
       required:
-      - code
-      - message
+      - error
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type:
-          - string
-          - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type:
-          - integer
-          - 'null'
-          format: int64
-        '@odata.nextLink':
-          type:
-          - string
-          - 'null'
-    ODataCountResponse:
-      type: integer
-      format: int32
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
     microsoft.graph.entity:
       title: entity
       required:
@@ -1444,14 +1423,35 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.resourceOperationCollectionResponse:
-      title: Collection of resourceOperation
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
       type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.resourceOperation'
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+  responses:
+    microsoft.graph.resourceOperationCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.resourceOperationCollectionResponse'
+    ODataCountResponse:
+      description: The count of the resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ODataCountResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'

@@ -559,6 +559,34 @@ paths:
           $ref: '#/components/responses/error'
 components:
   schemas:
+    microsoft.graph.agreementFileLocalizationCollectionResponse:
+      title: Collection of agreementFileLocalization
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+      - type: object
+        properties:
+          value:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
+    microsoft.graph.agreementFileLocalization:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.agreementFileProperties'
+      - title: agreementFileLocalization
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          versions:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
+            description: Read-only. Customized versions of the terms of use agreement in the Microsoft Entra tenant.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.agreementFileLocalization'
     microsoft.graph.agreementFileProperties:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -614,6 +642,44 @@ components:
             '#microsoft.graph.agreementFile': '#/components/schemas/microsoft.graph.agreementFile'
             '#microsoft.graph.agreementFileLocalization': '#/components/schemas/microsoft.graph.agreementFileLocalization'
             '#microsoft.graph.agreementFileVersion': '#/components/schemas/microsoft.graph.agreementFileVersion'
+    microsoft.graph.ODataErrors.ODataError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
+    microsoft.graph.agreementFile:
+      allOf:
+      - $ref: '#/components/schemas/microsoft.graph.agreementFileProperties'
+      - title: agreementFile
+        required:
+        - '@odata.type'
+        type: object
+        properties:
+          localizations:
+            type: array
+            items:
+              $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
+            description: The localized version of the terms of use agreement files attached to the agreement.
+            x-ms-navigationProperty: true
+          '@odata.type':
+            type: string
+      x-ms-discriminator-value: '#microsoft.graph.agreementFile'
+    microsoft.graph.agreementFileData:
+      title: agreementFileData
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        data:
+          type:
+          - string
+          - 'null'
+          description: Data that represents the terms of use PDF document. Read-only.
+          format: base64url
+        '@odata.type':
+          type: string
     microsoft.graph.agreementFileVersionCollectionResponse:
       title: Collection of agreementFileVersion
       type: object
@@ -625,6 +691,82 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
+    microsoft.graph.ODataErrors.MainError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          x-ms-primary-error-message: true
+        target:
+          type:
+          - string
+          - 'null'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
+        innerError:
+          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
+    microsoft.graph.ODataErrors.InnerError:
+      title: InnerError
+      required:
+      - '@odata.type'
+      type: object
+      properties:
+        request-id:
+          type:
+          - string
+          - 'null'
+          description: Request Id as tracked internally by the service
+        client-request-id:
+          type:
+          - string
+          - 'null'
+          description: Client request Id as sent by the client application.
+        date:
+          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
+          type:
+          - string
+          - 'null'
+          description: Date when the error occured.
+          format: date-time
+        '@odata.type':
+          type: string
+    microsoft.graph.ODataErrors.ErrorDetails:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type:
+          - string
+          - 'null'
+    BaseCollectionPaginationCountResponse:
+      title: Base collection pagination and count responses
+      type: object
+      properties:
+        '@odata.count':
+          type:
+          - integer
+          - 'null'
+          format: int64
+        '@odata.nextLink':
+          type:
+          - string
+          - 'null'
+    ODataCountResponse:
+      type: integer
+      format: int32
     microsoft.graph.entity:
       title: entity
       required:
@@ -1694,55 +1836,6 @@ components:
           '#microsoft.graph.termStore.set': '#/components/schemas/microsoft.graph.termStore.set'
           '#microsoft.graph.termStore.store': '#/components/schemas/microsoft.graph.termStore.store'
           '#microsoft.graph.termStore.term': '#/components/schemas/microsoft.graph.termStore.term'
-    microsoft.graph.ODataErrors.ODataError:
-      required:
-      - error
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.MainError'
-    microsoft.graph.ODataErrors.InnerError:
-      title: InnerError
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        request-id:
-          type:
-          - string
-          - 'null'
-          description: Request Id as tracked internally by the service
-        client-request-id:
-          type:
-          - string
-          - 'null'
-          description: Client request Id as sent by the client application.
-        date:
-          pattern: ^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$
-          type:
-          - string
-          - 'null'
-          description: Date when the error occured.
-          format: date-time
-        '@odata.type':
-          type: string
-    microsoft.graph.agreementFileLocalization:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.agreementFileProperties'
-      - title: agreementFileLocalization
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          versions:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileVersion'
-            description: Read-only. Customized versions of the terms of use agreement in the Microsoft Entra tenant.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.agreementFileLocalization'
     microsoft.graph.agreementFileVersion:
       allOf:
       - $ref: '#/components/schemas/microsoft.graph.agreementFileProperties'
@@ -1754,108 +1847,7 @@ components:
           '@odata.type':
             type: string
       x-ms-discriminator-value: '#microsoft.graph.agreementFileVersion'
-    microsoft.graph.agreementFileLocalizationCollectionResponse:
-      title: Collection of agreementFileLocalization
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-      - type: object
-        properties:
-          value:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-    microsoft.graph.agreementFile:
-      allOf:
-      - $ref: '#/components/schemas/microsoft.graph.agreementFileProperties'
-      - title: agreementFile
-        required:
-        - '@odata.type'
-        type: object
-        properties:
-          localizations:
-            type: array
-            items:
-              $ref: '#/components/schemas/microsoft.graph.agreementFileLocalization'
-            description: The localized version of the terms of use agreement files attached to the agreement.
-            x-ms-navigationProperty: true
-          '@odata.type':
-            type: string
-      x-ms-discriminator-value: '#microsoft.graph.agreementFile'
-    microsoft.graph.agreementFileData:
-      title: agreementFileData
-      required:
-      - '@odata.type'
-      type: object
-      properties:
-        data:
-          type:
-          - string
-          - 'null'
-          description: Data that represents the terms of use PDF document. Read-only.
-          format: base64url
-        '@odata.type':
-          type: string
-    microsoft.graph.ODataErrors.ErrorDetails:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        target:
-          type:
-          - string
-          - 'null'
-    microsoft.graph.ODataErrors.MainError:
-      required:
-      - code
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-          x-ms-primary-error-message: true
-        target:
-          type:
-          - string
-          - 'null'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ErrorDetails'
-        innerError:
-          $ref: '#/components/schemas/microsoft.graph.ODataErrors.InnerError'
-    ODataCountResponse:
-      type: integer
-      format: int32
-    BaseCollectionPaginationCountResponse:
-      title: Base collection pagination and count responses
-      type: object
-      properties:
-        '@odata.count':
-          type:
-          - integer
-          - 'null'
-          format: int64
-        '@odata.nextLink':
-          type:
-          - string
-          - 'null'
   parameters:
-    search:
-      name: $search
-      in: query
-      description: Search items by search phrases
-      style: form
-      explode: false
-      schema:
-        type: string
     top:
       name: $top
       in: query
@@ -1866,15 +1858,14 @@ components:
         minimum: 0
         type: integer
       example: 50
-    skip:
-      name: $skip
+    search:
+      name: $search
       in: query
-      description: Skip the first n items
+      description: Search items by search phrases
       style: form
       explode: false
       schema:
-        minimum: 0
-        type: integer
+        type: string
     filter:
       name: $filter
       in: query
@@ -1891,13 +1882,16 @@ components:
       explode: false
       schema:
         type: boolean
+    skip:
+      name: $skip
+      in: query
+      description: Skip the first n items
+      style: form
+      explode: false
+      schema:
+        minimum: 0
+        type: integer
   responses:
-    error:
-      description: error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
     microsoft.graph.agreementFileVersionCollectionResponse:
       description: Retrieved collection
       content:
@@ -1916,3 +1910,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/microsoft.graph.agreementFileLocalizationCollectionResponse'
+    error:
+      description: error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/microsoft.graph.ODataErrors.ODataError'
